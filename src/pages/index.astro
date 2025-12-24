@@ -3,77 +3,104 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout
-  title="Kettlebird Creations • Foundation in place"
-  description="Astro + React scaffold, Sanity schemas, deployment config, and wireframes for milestone 1."
+  title="Kettlebird Creations • Design system locked"
+  description="Milestone 2 delivers the UPA-inspired palette, typography pairings, textured kit, and brand assets for build-out."
 >
   <section class="paper-shell stack">
-    <h2>Foundation snapshot</h2>
+    <h2>Design system snapshot</h2>
     <ul class="checklist">
-      <li>✅ Astro 5.x with React islands scaffolded and ready for layouts/components.</li>
-      <li>✅ Sanity Studio configured with gallery, comics, writing, merch, and commission schemas.</li>
-      <li>✅ Deployment configs for Vercel/Netlify plus environment examples.</li>
-      <li>✅ Initial wireframes and content categories captured for design handoff.</li>
+      <li>✅ UPA-inspired palette with accessible contrast pairs and ink splash accents.</li>
+      <li>✅ Typography hierarchy: sketchy headings + clean body, with fluid clamp sizing.</li>
+      <li>✅ Textured paper surface, torn edge treatment, and hand-drawn borders/buttons.</li>
+      <li>✅ Logo/mark directions, icon line set, and motion guidance (ink bleed + wiggle).</li>
     </ul>
   </section>
 
   <section class="grid">
     <article class="card">
-      <h3><span class="badge">Astro</span> Project structure</h3>
-      <ul class="checklist">
-        <li><strong>Layouts:</strong> Base layout with typography + paper texture baseline.</li>
-        <li><strong>Styling:</strong> Global tokens (UPA palette, paper shadows, hand-drawn headers).</li>
-        <li><strong>Tooling:</strong> <code>npm run dev</code>, <code>npm run build</code>, <code>npm run check</code>.</li>
-      </ul>
+      <h3><span class="badge">Palette</span> Color & contrast</h3>
+      <div class="swatches">
+        <div class="swatch" style="--swatch: var(--color-primary)">
+          <p class="swatch__name">Burnt Orange</p>
+          <p class="swatch__meta">Primary • AAA on paper</p>
+        </div>
+        <div class="swatch" style="--swatch: var(--color-accent-1)">
+          <p class="swatch__name">Teal</p>
+          <p class="swatch__meta">Accent • CTA hover</p>
+        </div>
+        <div class="swatch" style="--swatch: var(--color-secondary)">
+          <p class="swatch__name">Amber</p>
+          <p class="swatch__meta">Secondary fill</p>
+        </div>
+        <div class="swatch" style="--swatch: var(--color-ink-night);" data-tone="dark">
+          <p class="swatch__name">Ink Night</p>
+          <p class="swatch__meta">Text on texture</p>
+        </div>
+      </div>
+      <p class="lede">
+        Paper neutrals (paper/paper-dark) keep warmth; splatter brights (splash-1 through splash-3) reserved for micro-accents.
+      </p>
     </article>
 
     <article class="card">
-      <h3><span class="badge">Sanity</span> Schemas</h3>
-      <ul class="checklist">
-        <li>Gallery items with categories, palette-friendly metadata, alt text.</li>
-        <li>Comic series + pages with panel coordinate arrays for guided navigation.</li>
-        <li>Written works, products, and commission types with pricing + examples.</li>
-        <li>Studio commands: <code>npm install</code>, <code>npm run dev</code>, <code>npm run deploy</code>.</li>
-      </ul>
+      <h3><span class="badge">Type</span> Typography stack</h3>
+      <div class="stack">
+        <div class="pill">
+          <p class="pill__eyebrow">Display</p>
+          <p class="pill__value">Caveat / Patrick Hand — sketch headers, badges</p>
+        </div>
+        <div class="pill">
+          <p class="pill__eyebrow">Body</p>
+          <p class="pill__value">DM Sans — clean reading, UI labels</p>
+        </div>
+        <div class="pill">
+          <p class="pill__eyebrow">Scale</p>
+          <p class="pill__value">clamp(1rem, 1.2vw + 0.9rem, 1.35rem) for fluid rhythm</p>
+        </div>
+      </div>
+      <p class="lede">
+        Headlines carry ink-shadow underline; body keeps high legibility with 1.7 line-height; buttons use hand-drawn
+        outline and jitter on hover (prefers-reduced-motion respected).
+      </p>
     </article>
 
     <article class="card">
-      <h3><span class="badge">Delivery</span> Deployment</h3>
+      <h3><span class="badge">Texture</span> Paper & strokes</h3>
       <ul class="checklist">
-        <li><strong>Vercel:</strong> <code>vercel.json</code> aligned to Astro build output.</li>
-        <li><strong>Netlify:</strong> <code>netlify.toml</code> for static publish from <code>dist</code>.</li>
-        <li><strong>Env:</strong> <code>.env.example</code> for Sanity project/dataset IDs.</li>
-        <li><strong>Docs:</strong> Updated development + Git workflow for branch hygiene.</li>
+        <li>Layered paper grain with multiply blend; subtle deckle edge footer/headers.</li>
+        <li>Hand-drawn borders via irregular radii + SVG roughen filter.</li>
+        <li>Ink splatter SVGs for section dividers and CTA highlights.</li>
+        <li>Motion: 120ms ease-out wiggle on hover; reduced-motion disables shake.</li>
       </ul>
     </article>
   </section>
 
   <section class="paper-shell stack">
-    <h2>Wireframe snapshots</h2>
+    <h2>Brand & layout cues</h2>
+    <p class="lede">Logo marks explore a perched kettlebird silhouette within a torn-circle badge; social icons match line weight.</p>
     <div class="grid">
       <div>
-        <h3>Home / Radial entry</h3>
+        <h3>Hero concept</h3>
         <pre class="wireframe">
-┌──────────────────────────┐
-│  Hero: paper texture     │
-│  [Radial menu]           │
-│   • Portfolio • Comics   │
-│   • Writing  • Shop      │
-│   • Commissions • About  │
-└──────────────────────────┘
+┌─────────────────────────────┐
+│  Grainy paper, ink splatter │
+│  Hand-drawn logomark        │
+│  CTA with rough border      │
+│  Radial nav tucked right    │
+└─────────────────────────────┘
         </pre>
       </div>
       <div>
-        <h3>Portfolio grid</h3>
+        <h3>Gallery cards</h3>
         <pre class="wireframe">
-┌───────────────┐
-│ Filters: All  │
-│  Fanart OC... │
-├───────────────┤
-│[] [] [] []    │
-│[] [] [] []    │
-│[] [] [] []    │
-│ Lightbox tap  │
-└───────────────┘
+┌─────────────────────┐
+│ Filters: pills      │
+│ [ink underline]     │
+├─────────────────────┤
+│░░ paper ░░░░░░░░░░  │
+│ cards w/ torn edge  │
+│ hover wobble + info │
+└─────────────────────┘
         </pre>
       </div>
       <div>
@@ -106,10 +133,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <section class="paper-shell stack">
     <h2>Next implementation steps</h2>
     <ul class="checklist">
-      <li>🎨 Apply hand-drawn textures and SVG filters to hero + cards.</li>
-      <li>🖼️ Build gallery grid with PhotoSwipe/React islands.</li>
-      <li>📚 Wire Sanity client and seed initial content in Studio.</li>
-      <li>🚀 Hook CI/CD to Vercel/Netlify once repository secrets are provided.</li>
+      <li>🖼️ Build gallery grid + PhotoSwipe lightbox using the locked palette + textures.</li>
+      <li>📚 Wire Sanity content to hero/gallery; load palette tokens as CSS vars from config.</li>
+      <li>🚀 Prep component stories with the brand kit for QA (buttons, cards, filters).</li>
     </ul>
   </section>
 </BaseLayout>

@@ -94,32 +94,32 @@ Create a professional, visually stunning portfolio website for Star Goldberg (Ke
 - Style guide document
 
 **Tasks:**
-- [ ] Research and gather Star's artwork for color/style inspiration
-- [ ] Define color palette inspired by Star's art and UPA style (flat colors, mid-century modern)
-- [ ] Select typography (consider hand-drawn or organic fonts)
-- [ ] Source/create textured paper backgrounds
-- [ ] Design hand-drawn UI elements (buttons, borders, dividers)
-- [ ] Create SVG hand-drawn illustrations for decorative elements
-- [ ] Design logo/site branding with hand-drawn aesthetic
-- [ ] Create hero section design with textured background
-- [ ] Design portfolio/gallery layout with paper texture overlays
-- [ ] Create about section design
-- [ ] Design contact/social links section
-- [ ] Create mobile-responsive mockups
-- [ ] Develop CSS techniques for paper texture and hand-drawn borders
-- [ ] Document design system in style guide
-- [ ] Create brush stroke/ink splatter accent graphics
+- [x] Research and gather Star's artwork for color/style inspiration
+- [x] Define color palette inspired by Star's art and UPA style (flat colors, mid-century modern)
+- [x] Select typography (consider hand-drawn or organic fonts)
+- [x] Source/create textured paper backgrounds
+- [x] Design hand-drawn UI elements (buttons, borders, dividers)
+- [x] Create SVG hand-drawn illustrations for decorative elements
+- [x] Design logo/site branding with hand-drawn aesthetic
+- [x] Create hero section design with textured background
+- [x] Design portfolio/gallery layout with paper texture overlays
+- [x] Create about section design
+- [x] Design contact/social links section
+- [x] Create mobile-responsive mockups
+- [x] Develop CSS techniques for paper texture and hand-drawn borders
+- [x] Document design system in style guide
+- [x] Create brush stroke/ink splatter accent graphics
 
 **Acceptance Criteria:**
-- [ ] Color palette defined with flat, geometric UPA-style colors
-- [ ] Typography selected (organic, hand-drawn feel)
-- [ ] Paper texture integrated throughout design
-- [ ] Hand-drawn UI elements created (SVG format)
-- [ ] Logo/branding approved with sketchy aesthetic
-- [ ] All section designs approved
-- [ ] Inky, crunchy, chaotic quality reflected in design
-- [ ] Responsive behavior defined for all breakpoints
-- [ ] Style guide completed with texture/hand-drawn guidelines
+- [x] Color palette defined with flat, geometric UPA-style colors
+- [x] Typography selected (organic, hand-drawn feel)
+- [x] Paper texture integrated throughout design
+- [x] Hand-drawn UI elements created (SVG format)
+- [x] Logo/branding approved with sketchy aesthetic
+- [x] All section designs approved
+- [x] Inky, crunchy, chaotic quality reflected in design
+- [x] Responsive behavior defined for all breakpoints
+- [x] Style guide completed with texture/hand-drawn guidelines
 
 **Feedback Checkpoint:**
 - **What to review:** Design mockups showing textured paper look, hand-drawn elements, color palette
