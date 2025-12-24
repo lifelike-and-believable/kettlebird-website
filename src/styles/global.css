@@ -33,7 +33,7 @@ body {
 h1,
 h2,
 h3 {
-  font-family: 'Patrick Hand', 'DM Sans', system-ui, sans-serif;
+  font-family: 'Caveat', 'Patrick Hand', 'DM Sans', system-ui, sans-serif;
   margin: 0 0 0.5rem;
   letter-spacing: 0.02em;
 }
@@ -175,6 +175,54 @@ a {
 .skip-link:focus {
   left: 1rem;
   top: 1rem;
+}
+
+.swatches {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.swatch {
+  background: var(--swatch);
+  color: var(--color-ink);
+  border: 2px solid var(--color-ink);
+  border-radius: 12px;
+  padding: 0.75rem;
+  box-shadow: var(--shadow-paper);
+}
+
+.swatch__name {
+  font-weight: 700;
+  margin: 0 0 0.35rem;
+}
+
+.swatch__meta {
+  margin: 0;
+  font-size: 0.95rem;
+  opacity: 0.85;
+}
+
+.pill {
+  background: var(--color-paper);
+  border: 2px solid var(--color-ink);
+  border-radius: 999px;
+  padding: 0.65rem 1rem;
+  box-shadow: var(--shadow-paper);
+}
+
+.pill__eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.8rem;
+  margin: 0;
+  color: var(--color-accent-2);
+}
+
+.pill__value {
+  margin: 0.1rem 0 0;
+  font-weight: 600;
 }
 
 @media (max-width: 600px) {

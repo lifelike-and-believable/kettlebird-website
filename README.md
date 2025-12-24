@@ -1,13 +1,13 @@
 # Kettlebird Creations • Astro + Sanity
 
-Milestone 1 lays the foundation for Star Goldberg’s portfolio: Astro with React islands, Sanity Studio schemas, and deployment wiring for Vercel/Netlify.
+Milestone 2 locks the visual system: UPA-inspired palette, hand-drawn typography, textured paper kit, and branding directions layered onto the Astro + Sanity foundation.
 
 ## Highlights
 
 - 🚀 **Astro 5.x + React islands** scaffolded with Base layout and global UPA-inspired tokens.
 - 🗂️ **Sanity Studio** schemas for gallery items, comic series/pages, written works, merch, and commission tiers.
 - 🔒 **Deployment ready** configs for Vercel (`vercel.json`) and Netlify (`netlify.toml`) with security headers.
-- 🧭 **Documentation** updated with development workflow, branching strategy, and initial wireframes.
+- 🧭 **Documentation + style guide** updated with palette, typography, texture, motion, and component treatments.
 
 ## Quick start
 
@@ -51,8 +51,9 @@ Add the Sanity project ID/dataset as environment variables in your hosting provi
 
 ## Documentation
 
-- `docs/PROJECT_PLAN.md` – milestone roadmap (Milestone 1 complete)
+- `docs/PROJECT_PLAN.md` – milestone roadmap (Milestone 2 complete)
 - `docs/TECHNICAL_ARCHITECTURE.md` – stack & patterns
+- `docs/STYLE_GUIDE.md` – approved colors, type, texture, motion, and component rules
 - `docs/CONTENT_STRATEGY.md` – content taxonomy and migration
 - `docs/DEVELOPMENT.md` – setup, scripts, branching workflow
 - `docs/WIREFRAMES.md` – initial page sketches for milestone 1

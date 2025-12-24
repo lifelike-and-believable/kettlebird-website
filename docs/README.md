@@ -67,6 +67,16 @@ In-depth technical documentation covering:
 
 ---
 
+### [STYLE_GUIDE.md](STYLE_GUIDE.md)
+**Approved milestone 2 brand system**
+
+- UPA-inspired palette and contrast pairs
+- Typography hierarchy (Caveat/Patrick Hand + DM Sans) with fluid scaling
+- Paper textures, hand-drawn borders, splatter accents, motion rules
+- Component treatments for buttons, pills, cards, lightbox, and focus states
+
+---
+
 ### [CONTENT_STRATEGY.md](CONTENT_STRATEGY.md)
 **Content organization and migration plan**
 
@@ -149,23 +159,23 @@ Paper-style wireframes for home, portfolio, comics, writing, and shop/commission
 
 ## 📊 Project Status
 
-**Current Phase:** Foundation & Planning (Milestone 1)  
-**Status:** ✅ Astro + Sanity foundation delivered
+**Current Phase:** Design & Branding (Milestone 2)  
+**Status:** ✅ Visual system approved (palette, typography, texture kit, branding notes)
 
 **Completed:**
 - [x] Project plan with 9 milestones
 - [x] Technical architecture document
-- [x] Visual design system defined
+- [x] Visual design system defined (palette, typography, texture, motion)
 - [x] Content strategy documented
-- [x] Hand-drawn aesthetic specifications
+- [x] Hand-drawn aesthetic specifications + style guide
 - [x] Astro project scaffolded with React integration
 - [x] Sanity Studio schemas created
 - [x] Initial wireframes captured
+- [x] Milestone 2 design/branding assets locked
 
 **Next Steps:**
-- [ ] Stakeholder review and approval
-- [ ] Design & branding polish (Milestone 2)
-- [ ] Build gallery and comic reader components
+- [ ] Implement gallery and comic reader components with new tokens
+- [ ] Wire Sanity content and start content seeding
 - [ ] Hook CI/CD previews once hosting is connected
 
 ---
