@@ -29,7 +29,7 @@ body {
   background-size: 400px 400px, cover;
 }
 
-/* Alternative: CSS-generated paper texture */
+/* Alternative: CSS-generated paper texture (lightweight, no image needed) */
 body::before {
   content: '';
   position: fixed;
@@ -39,10 +39,12 @@ body::before {
   height: 100%;
   opacity: 0.15;
   z-index: -1;
+  /* Simplified pattern for better performance */
   background-image: 
     repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,.03) 2px, rgba(0,0,0,.03) 4px),
     repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,.03) 2px, rgba(0,0,0,.03) 4px);
   pointer-events: none;
+  /* Note: For better performance, consider using a small repeating background image instead */
 }
 ```
 
@@ -100,6 +102,7 @@ Use SVG for crisp, scalable hand-drawn elements:
   bottom: -2px;
   background: none;
   border: 3px solid currentColor;
+  /* Irregular border-radius values create hand-drawn appearance */
   border-radius: 
     255px 15px 225px 15px / 
     15px 225px 15px 255px;
@@ -1062,7 +1065,7 @@ const ComicReader = ({ comicPage }) => {
     const x = (panel.x / 100) * imageRef.current.naturalWidth;
     const y = (panel.y / 100) * imageRef.current.naturalHeight;
     
-    panzoomRef.current.zoomToPoint(zoom, { clientX: x, clientY: y });
+    panzoomRef.current.zoomToPoint(zoom, { x, y });
     setCurrentPanel(panelIndex);
   };
   
@@ -1076,6 +1079,19 @@ const ComicReader = ({ comicPage }) => {
     if (currentPanel > 0) {
       navigateToPanel(currentPanel - 1);
     }
+  };
+  
+  const toggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      imageRef.current.parentElement.requestFullscreen();
+    } else {
+      document.exitFullscreen();
+    }
+  };
+  
+  const exitReader = () => {
+    // Navigate back or close reader
+    window.history.back();
   };
   
   // Keyboard controls

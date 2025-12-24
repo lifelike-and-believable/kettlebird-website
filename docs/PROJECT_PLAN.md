@@ -707,7 +707,7 @@ kettlebird-website/
 │   ├── PROJECT_PLAN.md           # This document
 │   ├── TECHNICAL_ARCHITECTURE.md # Detailed tech specs
 │   ├── CONTENT_STRATEGY.md       # Content planning
-│   └── STYLE_GUIDE.md            # Design system docs
+│   └── README.md                 # Documentation overview
 ├── astro.config.mjs              # Astro configuration
 ├── package.json
 └── vercel.json                   # Deployment config

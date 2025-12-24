@@ -52,14 +52,14 @@ This document outlines the content organization, migration strategy, and ongoing
   title: "Artwork Title",
   date: "2024-01-15",
   category: ["fanart", "commissions"],
-  fandom: "X-Men" (if applicable),
+  fandom: "X-Men", // if applicable
   medium: "digital painting",
   tools: "Procreate, iPad",
   description: "Description of the piece",
   process_notes: "Behind-the-scenes details",
-  commission_type: "Full-body character" (if commission),
-  featured: true/false,
-  content_rating: "SFW" or "Mature" (horror content)
+  commission_type: "Full-body character", // if commission
+  featured: true,
+  content_rating: "SFW" // or "Mature" for horror content
 }
 ```
 
