@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Your website description here">
+    <meta name="keywords" content="keywords, separated, by, commas">
+    <meta name="author" content="Your Name">
+    
+    <title>Website Title</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="assets/icons/favicon.ico">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav">
+            <div class="nav__logo">
+                <a href="index.html">Your Logo</a>
+            </div>
+            <ul class="nav__menu">
+                <li class="nav__item"><a href="#home" class="nav__link">Home</a></li>
+                <li class="nav__item"><a href="#about" class="nav__link">About</a></li>
+                <li class="nav__item"><a href="#services" class="nav__link">Services</a></li>
+                <li class="nav__item"><a href="#contact" class="nav__link">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Hero Section -->
+        <section id="home" class="hero">
+            <div class="container">
+                <h1 class="hero__title">Welcome to Your Website</h1>
+                <p class="hero__subtitle">This is a placeholder for your hero section</p>
+                <button class="btn btn--primary">Get Started</button>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="section">
+            <div class="container">
+                <h2 class="section__title">About</h2>
+                <p class="section__text">Add your about content here.</p>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="services" class="section">
+            <div class="container">
+                <h2 class="section__title">Services</h2>
+                <div class="services__grid">
+                    <div class="service__card">
+                        <h3 class="service__title">Service 1</h3>
+                        <p class="service__description">Description of service 1</p>
+                    </div>
+                    <div class="service__card">
+                        <h3 class="service__title">Service 2</h3>
+                        <p class="service__description">Description of service 2</p>
+                    </div>
+                    <div class="service__card">
+                        <h3 class="service__title">Service 3</h3>
+                        <p class="service__description">Description of service 3</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="section">
+            <div class="container">
+                <h2 class="section__title">Contact</h2>
+                <form class="contact__form">
+                    <label for="contact-name" class="visually-hidden">Name</label>
+                    <input type="text" id="contact-name" name="name" placeholder="Name" class="form__input" required>
+                    <label for="contact-email" class="visually-hidden">Email</label>
+                    <input type="email" id="contact-email" name="email" placeholder="Email" class="form__input" required>
+                    <label for="contact-message" class="visually-hidden">Message</label>
+                    <textarea id="contact-message" name="message" placeholder="Message" class="form__textarea" required></textarea>
+                    <button type="submit" class="btn btn--primary">Send Message</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p class="footer__text">&copy; 2025 Your Website. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/main.js"></script>
+</body>
+</html>
