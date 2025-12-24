@@ -20,25 +20,25 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <article class="card">
       <h3><span class="badge">Palette</span> Color & contrast</h3>
       <div class="swatches">
-        <div class="swatch" style="--swatch:#d95d39">
+        <div class="swatch" style="--swatch: var(--color-primary)">
           <p class="swatch__name">Burnt Orange</p>
           <p class="swatch__meta">Primary • AAA on paper</p>
         </div>
-        <div class="swatch" style="--swatch:#2a9d8f">
+        <div class="swatch" style="--swatch: var(--color-accent-1)">
           <p class="swatch__name">Teal</p>
           <p class="swatch__meta">Accent • CTA hover</p>
         </div>
-        <div class="swatch" style="--swatch:#f4a261">
+        <div class="swatch" style="--swatch: var(--color-secondary)">
           <p class="swatch__name">Amber</p>
           <p class="swatch__meta">Secondary fill</p>
         </div>
-        <div class="swatch" style="--swatch:#264653; color: #f5f1e8;">
+        <div class="swatch" style="--swatch: var(--color-ink-night);" data-tone="dark">
           <p class="swatch__name">Ink Night</p>
           <p class="swatch__meta">Text on texture</p>
         </div>
       </div>
       <p class="lede">
-        Paper neutrals (#f5f1e8/#e8e3d8) keep warmth; splatter brights (#e63946, #06ffa5) for micro-accents.
+        Paper neutrals (paper/paper-dark) keep warmth; splatter brights (splash-1, splash-2) reserved for micro-accents.
       </p>
     </article>
 

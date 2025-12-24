@@ -5,7 +5,7 @@ Approved brand system for development. Inspired by UPA mid-century palettes, cru
 ## Color System
 
 - **Paper neutrals:** `#f5f1e8` (base), `#e8e3d8` (shadow edge)
-- **Ink:** `#2b2b2b` primary text, `#595959` secondary text
+- **Ink:** `#2b2b2b` primary text, `#595959` secondary text (`--color-ink-light`)
 - **Core palette:** `#d95d39` (burnt orange), `#f4a261` (amber), `#2a9d8f` (teal), `#e76f51` (coral), `#264653` (ink night)
 - **Accent splashes:** `#e63946`, `#06ffa5`, `#ffbe0b` for micro-accents/splatter
 - **Contrast pairs:** Paper + Ink (AAA), Ink Night + Paper (AAA), Burnt Orange on Paper (AA Large/AAA with bold)
@@ -17,6 +17,8 @@ Approved brand system for development. Inspired by UPA mid-century palettes, cru
   --color-accent-1: #2a9d8f;
   --color-accent-2: #e76f51;
   --color-ink: #2b2b2b;
+  --color-ink-light: #595959;
+  --color-ink-night: #264653;
   --color-paper: #f5f1e8;
   --color-paper-dark: #e8e3d8;
   --color-splash-1: #e63946;
