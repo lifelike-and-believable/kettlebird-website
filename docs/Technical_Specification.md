@@ -4,7 +4,7 @@ Star Goldberg’s portfolio website requires a sophisticated technical approach 
 
 ## The artist: Star Goldberg’s work and content needs
 
-Star Goldberg (they/them) is a **22-year-old writer and illustrator based in Canada**  who aspires to work as a graphic novelist. Their Tumblr presence reveals a distinctive artistic identity with substantial content volume requiring thoughtful organization.
+Star Goldberg (they/them) is a **25-year-old writer and illustrator based in Canada**  who aspires to work as a graphic novelist. Their Tumblr presence reveals a distinctive artistic identity with substantial content volume requiring thoughtful organization.
 
 **Illustration style and aesthetic characteristics** include a versatile range spanning character-focused work with strong emphasis on expressive poses and dynamic compositions. Their work demonstrates facility with both digital painting and more stylized, cartoony approaches. They frequently reference “UPA style”  (United Productions of America—characterized by flat colors, geometric shapes, and mid-century modern aesthetics) and experiment with different brushes treating digital art like traditional work, achieving an inky, crunchy, chaotic quality. Subject matter gravitates toward fantasy characters (orcs, tieflings, elves), fanart (X-Men’s Nightcrawler, TMNT, Murderbot), and original characters including vampires and spies.
 
