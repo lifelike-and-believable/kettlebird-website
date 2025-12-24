@@ -1,0 +1,46 @@
+---
+import '../styles/global.css';
+
+const {
+  title = 'Kettlebird Creations',
+  description = 'Portfolio foundation with Astro + Sanity'
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Patrick+Hand:wght@400&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="page">
+    <a class="skip-link" href="#main">Skip to main content</a>
+    <header class="site-header">
+      <div class="paper-shell">
+        <p class="eyebrow">Milestone 1 • Project foundation</p>
+        <h1>Kettlebird Creations</h1>
+        <p class="lede">
+          Astro + React islands scaffolding, Sanity schemas, and deployment wiring to launch the hand-drawn
+          portfolio experience.
+        </p>
+      </div>
+    </header>
+    <main id="main" class="page__content">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div class="paper-shell">
+        <p class="eyebrow">Next up</p>
+        <p>Design & branding polish with the inky, textured aesthetic.</p>
+      </div>
+    </footer>
+  </body>
+</html>
