@@ -1,157 +1,106 @@
 # Development Guide
 
-## Getting Started
+Milestone 1 establishes the Astro + React front-end scaffold and Sanity Studio for content. Use this guide to run, develop, and deploy.
 
-### Prerequisites
+## Prerequisites
 
-- A modern web browser
-- A text editor or IDE
-- (Optional) Node.js for running a local development server
+- Node.js ≥ 18.17
+- npm 9+ (or pnpm/yarn if preferred)
+- Sanity CLI (`npm install -g sanity`, optional if running scripts locally)
 
-### Running Locally
-
-#### Option 1: Simple File Opening
-Simply open `index.html` in your web browser.
-
-#### Option 2: Using Node.js (Recommended)
-
-Install dependencies and run the development server:
+## Quick start
 
 ```bash
+# Install Astro workspace dependencies
 npm install
+
+# Start Astro dev server
 npm run dev
 ```
 
-This will start a local server at `http://localhost:8080` with live reload.
+Astro runs at `http://localhost:4321` by default.
 
-#### Option 3: Using Python
-
-If you have Python installed:
+## Sanity Studio
 
 ```bash
-# Python 3
-python -m http.server 8080
-
-# Python 2
-python -m SimpleHTTPServer 8080
+cd sanity-studio
+npm install
+npm run dev   # starts Studio at http://localhost:3333/studio
 ```
 
-## Project Structure
+Environment variables expected (see `.env.example`):
+
+```
+SANITY_PROJECT_ID=your-project-id
+SANITY_DATASET=production
+```
+
+### Sanity document types
+- `galleryItem` – images with categories, tags, alt text
+- `comicSeries` / `comicPage` – panel coordinates for guided reading
+- `writtenWork` – cover, excerpt, content blocks, external link
+- `product` – merch/Ko-fi listings
+- `commissionType` – tiers, pricing, examples
+
+## Scripts
+
+| Command | Purpose |
+| --- | --- |
+| `npm run dev` | Astro development server |
+| `npm run build` | Production build (`dist/`) |
+| `npm run preview` | Preview built site |
+| `npm run check` | Type and integration checks |
+| `npm run test` | Alias for `astro check` |
+| `npm run dev -- --host` | Expose dev server on local network |
+
+Sanity (inside `sanity-studio/`):
+
+| Command | Purpose |
+| --- | --- |
+| `npm run dev` | Run Studio locally |
+| `npm run build` | Build static Studio output |
+| `npm run deploy` | Deploy Studio to Sanity-managed hosting |
+
+## Project structure (updated)
 
 ```
 .
-├── assets/           # Static assets
-│   ├── fonts/       # Custom fonts
-│   ├── icons/       # Icons and favicons
-│   └── images/      # Images
-├── css/             # Stylesheets
-│   ├── main.css    # Main styles
-│   └── reset.css   # CSS reset/normalize
-├── docs/            # Documentation
-├── js/              # JavaScript files
-│   └── main.js     # Main JavaScript
-├── .gitignore       # Git ignore rules
-├── index.html       # Main HTML file
-├── LICENSE          # License file
-├── package.json     # Project metadata
-└── README.md        # Project documentation
+├── src/                  # Astro source
+│   ├── layouts/          # Base layout + shared chrome
+│   ├── pages/            # Astro pages (index scaffolded)
+│   └── styles/           # Global tokens/styles
+├── public/               # Static assets (place images/fonts here)
+├── sanity-studio/        # Sanity CMS workspace + schemas
+├── netlify.toml          # Netlify build/publish config
+├── vercel.json           # Vercel build output + headers
+└── package.json          # Astro workspace scripts/deps
 ```
 
-## Development Workflow
+Legacy static assets (`assets/`, `css/`, `js/`) are retained for reference and can be migrated into Astro as components.
 
-1. **Edit HTML**: Modify `index.html` to change page structure
-2. **Style Changes**: Update `css/main.css` for styling modifications
-3. **JavaScript**: Add functionality in `js/main.js`
-4. **Assets**: Add images, fonts, and icons to the `assets/` directory
-5. **Test**: View changes in your browser
-6. **Commit**: Use git to track your changes
+## Branching & PR workflow
 
-## CSS Architecture
+1. Create feature branches from `main`: `feature/<topic>` (e.g., `feature/gallery-grid`).
+2. Keep PRs scoped to a milestone task.
+3. Run `npm run check` and `npm run build` before opening a PR.
+4. Request review; deploy previews via Vercel/Netlify once secrets are set.
 
-### CSS Variables
-The project uses CSS custom properties (variables) for theming. Modify colors, spacing, and typography in the `:root` selector in `css/main.css`.
+## Deployment targets
 
-### BEM Methodology
-The CSS follows a modified BEM (Block Element Modifier) naming convention:
-- Block: `.nav`
-- Element: `.nav__link`
-- Modifier: `.nav__link--active`
+- **Vercel:** uses `vercel.json` (`npm run build`, output `dist`).
+- **Netlify:** `netlify.toml` (`npm run build`, publish `dist`).
 
-### Responsive Design
-Media queries are defined at the bottom of `css/main.css`. The default breakpoint is 768px for mobile devices.
+Set `SANITY_PROJECT_ID` and `SANITY_DATASET` in the hosting dashboard; add optional `SANITY_STUDIO_URL` for previews.
 
-## JavaScript Organization
+## Accessibility & performance guardrails
 
-- `initNavigation()`: Handles smooth scrolling and navigation interactions
-- `initContactForm()`: Manages form submission
-- `debounce()`: Utility function for performance optimization
-
-Add your custom functions following the same pattern.
-
-## Best Practices
-
-### HTML
-- Use semantic HTML5 elements
-- Include proper meta tags
-- Ensure accessibility with ARIA labels where needed
-- Validate HTML using [W3C Validator](https://validator.w3.org/)
-
-### CSS
-- Follow the existing naming conventions
-- Use CSS variables for consistent theming
-- Keep specificity low
-- Mobile-first approach for responsive design
-- Use flexbox and grid for layouts
-
-### JavaScript
-- Write modular, reusable functions
-- Use event delegation where appropriate
-- Avoid global variables
-- Comment complex logic
-- Handle errors gracefully
-
-### Performance
-- Optimize images before adding them
-- Minimize HTTP requests
-- Use CSS instead of JavaScript for animations when possible
-- Lazy load images below the fold
-
-### Accessibility
-- Use proper heading hierarchy (h1-h6)
-- Include alt text for all images
-- Ensure sufficient color contrast
-- Make interactive elements keyboard accessible
-- Test with screen readers
-
-## Browser Support
-
-This template supports:
-- Chrome (latest 2 versions)
-- Firefox (latest 2 versions)
-- Safari (latest 2 versions)
-- Edge (latest 2 versions)
+- Honor `prefers-reduced-motion`.
+- Provide alt text on every image (enforced in Sanity schema).
+- Keep images < 500KB where possible (Sanity CDN + WebP).
+- Use semantic headings and focus-visible styles from the base layout.
 
 ## Troubleshooting
 
-### Styles Not Loading
-- Check file paths in `index.html`
-- Ensure you're using a local server (not just opening the HTML file)
-- Clear browser cache
-
-### JavaScript Not Working
-- Check browser console for errors
-- Ensure scripts are loaded after the DOM
-- Verify file paths
-
-### Images Not Displaying
-- Verify image paths are correct
-- Check image file extensions
-- Ensure images are in the `assets/images/` directory
-
-## Next Steps
-
-- Customize colors and fonts in `css/main.css`
-- Replace placeholder content in `index.html`
-- Add your own images to `assets/images/`
-- Expand functionality in `js/main.js`
-- Add additional pages as needed
+- **Port conflict:** run `npm run dev -- --port 4000`.
+- **Env missing:** ensure `.env` or host secrets provide `SANITY_PROJECT_ID` / `SANITY_DATASET`.
+- **Sanity schema changes not appearing:** restart `npm run dev` inside `sanity-studio`.

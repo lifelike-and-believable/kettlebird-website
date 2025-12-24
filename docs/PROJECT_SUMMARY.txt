@@ -102,7 +102,7 @@
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
   Frontend:
-    • Astro 4.x (static generation, View Transitions)
+    • Astro 5.x (static generation, View Transitions)
     • React (interactive components via Islands)
     • Framer Motion (animations)
     • CSS custom properties (theming)

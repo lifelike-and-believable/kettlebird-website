@@ -37,7 +37,7 @@ Complete project plan covering all aspects of the Kettlebird Creations website d
 In-depth technical documentation covering:
 
 **Technology Stack:**
-- **Framework:** Astro 4.x with React Islands
+- **Framework:** Astro 5.x with React Islands
 - **CMS:** Sanity (superior image handling, panel coordinates)
 - **Animation:** Framer Motion, CSS View Transitions, panzoom
 - **Hosting:** Vercel/Netlify
@@ -99,7 +99,12 @@ Comprehensive content management strategy including:
 ### [DEVELOPMENT.md](DEVELOPMENT.md)
 **Developer setup and workflow guide**
 
-Development instructions for the project (will be updated once technical implementation begins).
+Updated for Astro + React + Sanity workflows (Milestone 1).
+
+### [WIREFRAMES.md](WIREFRAMES.md)
+**Initial layout sketches for milestone 1**
+
+Paper-style wireframes for home, portfolio, comics, writing, and shop/commissions.
 
 ---
 
@@ -145,7 +150,7 @@ Development instructions for the project (will be updated once technical impleme
 ## 📊 Project Status
 
 **Current Phase:** Foundation & Planning (Milestone 1)  
-**Status:** ✅ Planning Documents Complete
+**Status:** ✅ Astro + Sanity foundation delivered
 
 **Completed:**
 - [x] Project plan with 9 milestones
@@ -153,12 +158,15 @@ Development instructions for the project (will be updated once technical impleme
 - [x] Visual design system defined
 - [x] Content strategy documented
 - [x] Hand-drawn aesthetic specifications
+- [x] Astro project scaffolded with React integration
+- [x] Sanity Studio schemas created
+- [x] Initial wireframes captured
 
 **Next Steps:**
 - [ ] Stakeholder review and approval
-- [ ] Set up Astro project
-- [ ] Configure Sanity CMS
-- [ ] Begin design phase
+- [ ] Design & branding polish (Milestone 2)
+- [ ] Build gallery and comic reader components
+- [ ] Hook CI/CD previews once hosting is connected
 
 ---
 

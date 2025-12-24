@@ -134,7 +134,7 @@ For React integration, **@spaceymonk/react-radial-menu** provides nested submenu
 
 **Technical dependencies summary**:
 
-- **Framework**: Astro 4.x with React islands
+- **Framework**: Astro 5.x with React islands
 - **CMS**: Sanity (sanity.io)
 - **Animation**: Framer Motion, CSS View Transitions
 - **Comic reader**: panzoom, react-pageflip

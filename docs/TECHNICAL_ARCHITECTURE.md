@@ -654,7 +654,7 @@ Essential filters for hand-drawn aesthetic:
 
 ## Technology Stack
 
-### Core Framework: Astro 4.x
+### Core Framework: Astro 5.x
 
 **Selection Rationale:**
 - **Built-in View Transitions** - Native page transitions since v3.0 with `<ViewTransitions />` component
