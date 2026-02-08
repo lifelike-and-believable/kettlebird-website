@@ -980,6 +980,14 @@ a:focus {
   position: relative;
 }
 
+.comic-card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.comic-card-link:hover .comic-card,
+.comic-card-link:focus .comic-card,
 .comic-card:hover,
 .comic-card:focus-within {
   transform: translate(-2px, -2px);
@@ -987,6 +995,8 @@ a:focus {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .comic-card-link:hover .comic-card,
+  .comic-card-link:focus .comic-card,
   .comic-card:hover,
   .comic-card:focus-within {
     transform: none;
