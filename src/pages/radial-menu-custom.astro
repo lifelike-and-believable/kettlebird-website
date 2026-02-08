@@ -1,0 +1,120 @@
+---
+import RadialMenu from '../components/RadialMenu';
+
+// Custom menu items example
+const customMenuItems = [
+  { label: 'Dashboard', path: '/dashboard', icon: '📊' },
+  { label: 'Projects', path: '/projects', icon: '🚀' },
+  { label: 'Team', path: '/team', icon: '👥' },
+  { label: 'Settings', path: '/settings', icon: '⚙️' },
+  { label: 'Profile', path: '/profile', icon: '👤' },
+];
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RadialMenu Custom Example</title>
+  <link rel="stylesheet" href="../styles/global.css">
+  <style>
+    .custom-demo {
+      min-height: 100vh;
+      padding: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .custom-content {
+      max-width: 600px;
+      text-align: center;
+    }
+
+    .custom-content h1 {
+      font-size: 2.5rem;
+      color: var(--color-primary);
+      margin-bottom: 1rem;
+    }
+
+    .custom-content p {
+      font-size: 1.1rem;
+      color: var(--color-ink-light);
+      margin-bottom: 2rem;
+    }
+
+    .code-example {
+      background: var(--color-paper);
+      border: 2px solid var(--color-ink);
+      border-radius: 8px;
+      padding: 1.5rem;
+      text-align: left;
+      box-shadow: var(--shadow-paper);
+      margin-top: 2rem;
+    }
+
+    .code-example h2 {
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+      color: var(--color-accent-2);
+    }
+
+    .code-example pre {
+      background: #2b2b2b;
+      color: #f5f1e8;
+      padding: 1rem;
+      border-radius: 6px;
+      overflow-x: auto;
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    .code-example code {
+      font-family: 'DM Mono', monospace;
+    }
+  </style>
+</head>
+<body>
+  <div class="custom-demo">
+    <div class="custom-content">
+      <h1>🎨 Custom RadialMenu</h1>
+      <p>
+        This demo shows a customized RadialMenu with only 5 items and a larger radius.
+        Check the bottom-right corner!
+      </p>
+
+      <div class="code-example">
+        <h2>Usage Example:</h2>
+        <pre><code>{`const customMenuItems = [
+  { label: 'Dashboard', path: '/dashboard', icon: '📊' },
+  { label: 'Projects', path: '/projects', icon: '🚀' },
+  { label: 'Team', path: '/team', icon: '👥' },
+  { label: 'Settings', path: '/settings', icon: '⚙️' },
+  { label: 'Profile', path: '/profile', icon: '👤' },
+];
+
+<RadialMenu 
+  items={customMenuItems} 
+  radius={200} 
+  client:load 
+/>`}</code></pre>
+      </div>
+
+      <div class="code-example" style="margin-top: 1rem;">
+        <h2>Features:</h2>
+        <ul style="list-style: none; padding: 0;">
+          <li style="padding: 0.5rem 0;">✅ Customizable menu items</li>
+          <li style="padding: 0.5rem 0;">✅ Adjustable radius</li>
+          <li style="padding: 0.5rem 0;">✅ Emoji icons support</li>
+          <li style="padding: 0.5rem 0;">✅ Dynamic positioning</li>
+          <li style="padding: 0.5rem 0;">✅ Fully typed with TypeScript</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  {/* Custom RadialMenu with 5 items and larger radius */}
+  <RadialMenu items={customMenuItems} radius={200} client:load />
+</body>
+</html>

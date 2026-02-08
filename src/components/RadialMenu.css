@@ -1,0 +1,317 @@
+/* Radial Menu Styles */
+
+.radial-menu {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 1000;
+}
+
+/* Toggle Button */
+.radial-menu__toggle {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  min-width: 44px;
+  min-height: 44px;
+  border: 3px solid var(--color-ink);
+  border-radius: 2% 98% 3% 97% / 97% 2% 98% 3%;
+  background-color: var(--color-primary);
+  box-shadow: var(--shadow-paper);
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.radial-menu__toggle::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: 
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 3px,
+      rgba(255, 255, 255, 0.05) 3px,
+      rgba(255, 255, 255, 0.05) 6px
+    );
+  pointer-events: none;
+}
+
+.radial-menu__toggle:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-paper-hover);
+  background-color: var(--color-accent-2);
+  border-radius: 3% 97% 2% 98% / 98% 3% 97% 2%;
+}
+
+.radial-menu__toggle:focus {
+  outline: 3px solid var(--color-accent-1);
+  outline-offset: 4px;
+}
+
+.radial-menu__toggle:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.radial-menu__toggle:focus-visible {
+  outline: 3px solid var(--color-accent-1);
+  outline-offset: 4px;
+}
+
+.radial-menu__toggle:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-paper);
+}
+
+/* Toggle Icon (Plus/X) */
+.radial-menu__toggle-icon {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.radial-menu__toggle-line {
+  position: absolute;
+  width: 20px;
+  height: 3px;
+  background-color: var(--color-paper);
+  border-radius: 2px;
+  transition: transform 0.3s ease;
+}
+
+.radial-menu__toggle-line:first-child {
+  transform: rotate(0deg);
+}
+
+.radial-menu__toggle-line:last-child {
+  transform: rotate(90deg);
+}
+
+/* Toggle Text */
+.radial-menu__toggle-text {
+  font-family: 'Caveat', 'Patrick Hand', 'DM Sans', system-ui, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-paper);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Menu Container */
+.radial-menu__container {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 64px;
+  height: 64px;
+  pointer-events: none;
+}
+
+/* Center Circle */
+.radial-menu__center {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 64px;
+  height: 64px;
+  background-color: var(--color-paper);
+  border: 3px solid var(--color-ink);
+  border-radius: 50%;
+  box-shadow: 0 0 0 8px rgba(245, 241, 232, 0.5);
+  z-index: -1;
+}
+
+/* Menu Items */
+.radial-menu__item {
+  position: absolute;
+  bottom: 32px;
+  right: 32px;
+  width: 56px;
+  height: 56px;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.125rem;
+  text-decoration: none;
+  background-color: var(--color-paper);
+  border: 2px solid var(--color-ink);
+  border-radius: 3% 97% 4% 96% / 96% 3% 97% 4%;
+  box-shadow: var(--shadow-paper);
+  color: var(--color-ink);
+  cursor: pointer;
+  pointer-events: auto;
+  transform-origin: center;
+  /* Use CSS custom properties for positioning with calc */
+  transform: translate(
+    calc(var(--item-x) - 28px),
+    calc(var(--item-y) - 28px)
+  );
+  transition: background-color 0.2s ease;
+}
+
+.radial-menu__item::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.02) 2px,
+      rgba(0, 0, 0, 0.02) 4px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.02) 2px,
+      rgba(0, 0, 0, 0.02) 4px
+    );
+  background-size: 100px 100px, 100px 100px;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.radial-menu__item:hover,
+.radial-menu__item:focus {
+  background-color: var(--color-secondary);
+  border-radius: 4% 96% 3% 97% / 97% 4% 96% 3%;
+  z-index: 10;
+}
+
+.radial-menu__item:focus {
+  outline: 3px solid var(--color-accent-1);
+  outline-offset: 4px;
+}
+
+.radial-menu__item:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.radial-menu__item:focus-visible {
+  outline: 3px solid var(--color-accent-1);
+  outline-offset: 4px;
+}
+
+.radial-menu__item:active {
+  background-color: var(--color-primary);
+}
+
+/* Menu Item Icon */
+.radial-menu__item-icon {
+  font-size: 1.25rem;
+  line-height: 1;
+  margin-bottom: 0.125rem;
+}
+
+/* Menu Item Label */
+.radial-menu__item-label {
+  font-family: 'Caveat', 'Patrick Hand', 'DM Sans', system-ui, sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 0 0.25rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .radial-menu {
+    bottom: 1.5rem;
+    right: 1.5rem;
+  }
+
+  .radial-menu__toggle {
+    width: 56px;
+    height: 56px;
+  }
+
+  .radial-menu__center {
+    width: 56px;
+    height: 56px;
+  }
+
+  .radial-menu__item {
+    width: 52px;
+    height: 52px;
+    bottom: 28px;
+    right: 28px;
+    transform: translate(
+      calc(var(--item-x) * 0.85 - 26px),
+      calc(var(--item-y) * 0.85 - 26px)
+    );
+  }
+
+  .radial-menu__item-icon {
+    font-size: 1.1rem;
+  }
+
+  .radial-menu__item-label {
+    font-size: 0.6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .radial-menu {
+    bottom: 1rem;
+    right: 1rem;
+  }
+
+  .radial-menu__item {
+    transform: translate(
+      calc(var(--item-x) * 0.7 - 26px),
+      calc(var(--item-y) * 0.7 - 26px)
+    );
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .radial-menu__toggle,
+  .radial-menu__item {
+    transition: none;
+  }
+  
+  .radial-menu__toggle:hover {
+    transform: none;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .radial-menu__toggle,
+  .radial-menu__item {
+    border-width: 3px;
+  }
+
+  .radial-menu__toggle:focus,
+  .radial-menu__item:focus {
+    outline-width: 4px;
+  }
+}
+
+/* Print styles */
+@media print {
+  .radial-menu {
+    display: none;
+  }
+}

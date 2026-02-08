@@ -1,141 +1,183 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import RadialMenu from '../components/RadialMenu';
 ---
 
 <BaseLayout
-  title="Kettlebird Creations • Design system locked"
-  description="Milestone 2 delivers the UPA-inspired palette, typography pairings, textured kit, and brand assets for build-out."
+  title="Kettlebird Creations"
+  description="Illustration, comics, and creative writing by Star Goldberg"
 >
-  <section class="paper-shell stack">
-    <h2>Design system snapshot</h2>
-    <ul class="checklist">
-      <li>✅ UPA-inspired palette with accessible contrast pairs and ink splash accents.</li>
-      <li>✅ Typography hierarchy: sketchy headings + clean body, with fluid clamp sizing.</li>
-      <li>✅ Textured paper surface, torn edge treatment, and hand-drawn borders/buttons.</li>
-      <li>✅ Logo/mark directions, icon line set, and motion guidance (ink bleed + wiggle).</li>
-    </ul>
-  </section>
-
-  <section class="grid">
-    <article class="card">
-      <h3><span class="badge">Palette</span> Color & contrast</h3>
-      <div class="swatches">
-        <div class="swatch" style="--swatch: var(--color-primary)">
-          <p class="swatch__name">Burnt Orange</p>
-          <p class="swatch__meta">Primary • AAA on paper</p>
-        </div>
-        <div class="swatch" style="--swatch: var(--color-accent-1)">
-          <p class="swatch__name">Teal</p>
-          <p class="swatch__meta">Accent • CTA hover</p>
-        </div>
-        <div class="swatch" style="--swatch: var(--color-secondary)">
-          <p class="swatch__name">Amber</p>
-          <p class="swatch__meta">Secondary fill</p>
-        </div>
-        <div class="swatch" style="--swatch: var(--color-ink-night);" data-tone="dark">
-          <p class="swatch__name">Ink Night</p>
-          <p class="swatch__meta">Text on texture</p>
-        </div>
+  <section class="hero">
+    <div class="hero__content">
+      <div class="hero__logomark">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <!-- Hand-drawn circle badge -->
+          <circle 
+            cx="100" 
+            cy="100" 
+            r="90" 
+            fill="var(--color-paper)" 
+            stroke="var(--color-ink)" 
+            stroke-width="3"
+            style="filter: url(#rough);"
+          />
+          <!-- Kettlebird silhouette placeholder -->
+          <path 
+            d="M 70 120 Q 70 100, 85 90 Q 95 85, 105 90 L 110 85 Q 115 80, 120 85 L 115 95 Q 110 100, 105 100 Q 100 105, 100 115 L 95 125 Q 85 130, 75 125 L 70 120 Z" 
+            fill="var(--color-ink-night)"
+          />
+          <!-- SVG roughen filter -->
+          <defs>
+            <filter id="rough">
+              <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="2" result="noise"/>
+              <feDisplacementMap in="SourceGraphic" in2="noise" scale="2" />
+            </filter>
+          </defs>
+        </svg>
       </div>
-      <p class="lede">
-        Paper neutrals (paper/paper-dark) keep warmth; splatter brights (splash-1 through splash-3) reserved for micro-accents.
+      
+      <h2 class="hero__title">Welcome to Kettlebird Creations</h2>
+      <p class="hero__description">
+        Discover original artwork, comics, and stories crafted with ink, imagination, and a touch of chaos.
       </p>
-    </article>
-
-    <article class="card">
-      <h3><span class="badge">Type</span> Typography stack</h3>
-      <div class="stack">
-        <div class="pill">
-          <p class="pill__eyebrow">Display</p>
-          <p class="pill__value">Caveat / Patrick Hand — sketch headers, badges</p>
-        </div>
-        <div class="pill">
-          <p class="pill__eyebrow">Body</p>
-          <p class="pill__value">DM Sans — clean reading, UI labels</p>
-        </div>
-        <div class="pill">
-          <p class="pill__eyebrow">Scale</p>
-          <p class="pill__value">clamp(1rem, 1.2vw + 0.9rem, 1.35rem) for fluid rhythm</p>
-        </div>
-      </div>
-      <p class="lede">
-        Headlines carry ink-shadow underline; body keeps high legibility with 1.7 line-height; buttons use hand-drawn
-        outline and jitter on hover (prefers-reduced-motion respected).
-      </p>
-    </article>
-
-    <article class="card">
-      <h3><span class="badge">Texture</span> Paper & strokes</h3>
-      <ul class="checklist">
-        <li>Layered paper grain with multiply blend; subtle deckle edge footer/headers.</li>
-        <li>Hand-drawn borders via irregular radii + SVG roughen filter.</li>
-        <li>Ink splatter SVGs for section dividers and CTA highlights.</li>
-        <li>Motion: 120ms ease-out wiggle on hover; reduced-motion disables shake.</li>
-      </ul>
-    </article>
-  </section>
-
-  <section class="paper-shell stack">
-    <h2>Brand & layout cues</h2>
-    <p class="lede">Logo marks explore a perched kettlebird silhouette within a torn-circle badge; social icons match line weight.</p>
-    <div class="grid">
-      <div>
-        <h3>Hero concept</h3>
-        <pre class="wireframe">
-┌─────────────────────────────┐
-│  Grainy paper, ink splatter │
-│  Hand-drawn logomark        │
-│  CTA with rough border      │
-│  Radial nav tucked right    │
-└─────────────────────────────┘
-        </pre>
-      </div>
-      <div>
-        <h3>Gallery cards</h3>
-        <pre class="wireframe">
-┌─────────────────────┐
-│ Filters: pills      │
-│ [ink underline]     │
-├─────────────────────┤
-│░░ paper ░░░░░░░░░░  │
-│ cards w/ torn edge  │
-│ hover wobble + info │
-└─────────────────────┘
-        </pre>
-      </div>
-      <div>
-        <h3>Comic reader</h3>
-        <pre class="wireframe">
-┌───────────────┐
-│ Page viewport │
-│ [Panel guide] │
-│ ◀ Prev  Next ▶│
-│ Progress 3/12 │
-│ Toolbar: zoom │
-└───────────────┘
-        </pre>
-      </div>
-      <div>
-        <h3>Written works</h3>
-        <pre class="wireframe">
-┌───────────────┐
-│ Cover/Title   │
-│ Page flip UI  │
-│ 1 2 3 4 5 ... │
-│ TOC | Scroll  │
-│ Mode toggle   │
-└───────────────┘
-        </pre>
+      
+      <div class="hero__cta">
+        <a href="/portfolio" class="cta-button">
+          Explore Portfolio
+        </a>
+        <a href="/commissions" class="cta-button cta-button--secondary">
+          Commission Info
+        </a>
       </div>
     </div>
-  </section>
-
-  <section class="paper-shell stack">
-    <h2>Next implementation steps</h2>
-    <ul class="checklist">
-      <li>🖼️ Build gallery grid + PhotoSwipe lightbox using the locked palette + textures.</li>
-      <li>📚 Wire Sanity content to hero/gallery; load palette tokens as CSS vars from config.</li>
-      <li>🚀 Prep component stories with the brand kit for QA (buttons, cards, filters).</li>
-    </ul>
+    
+    <div class="hero__menu">
+      <RadialMenu client:load />
+    </div>
   </section>
 </BaseLayout>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1rem;
+  }
+
+  .hero__content {
+    max-width: 600px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero__logomark {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 2rem;
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero__logomark {
+      animation: none;
+    }
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  .hero__title {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    margin-bottom: 1rem;
+    color: var(--color-ink-night);
+  }
+
+  .hero__description {
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    line-height: 1.7;
+    color: var(--color-ink);
+    margin-bottom: 2rem;
+  }
+
+  .hero__cta {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .cta-button {
+    display: inline-block;
+    padding: 0.75rem 2rem;
+    background: var(--color-primary);
+    color: var(--color-paper);
+    text-decoration: none;
+    font-family: 'Caveat', 'Patrick Hand', sans-serif;
+    font-size: 1.5rem;
+    border: 2px solid var(--color-ink);
+    border-radius: 3% 97% 2% 98% / 97% 3% 98% 2%;
+    box-shadow: var(--shadow-paper);
+    transition: all 120ms ease-out;
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .cta-button:hover {
+    background: var(--color-accent-1);
+    transform: rotate(-2deg);
+    box-shadow: var(--shadow-paper-hover);
+  }
+
+  .cta-button:active {
+    transform: scale(0.95);
+  }
+
+  .cta-button--secondary {
+    background: var(--color-secondary);
+    color: var(--color-ink);
+  }
+
+  .cta-button--secondary:hover {
+    background: var(--color-accent-2);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cta-button:hover {
+      transform: none;
+    }
+  }
+
+  .hero__menu {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    z-index: 10;
+  }
+
+  @media (max-width: 768px) {
+    .hero {
+      min-height: 60vh;
+      padding: 2rem 1rem;
+    }
+
+    .hero__menu {
+      top: 1rem;
+      right: 1rem;
+    }
+
+    .hero__logomark {
+      width: 150px;
+      height: 150px;
+    }
+  }
+</style>
