@@ -6,20 +6,52 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   title="Kettlebird Creations • Writer & Illustrator"
   description="Portfolio of Star Goldberg (they/them) - UPA-inspired illustrations, comics, and written works featuring fantasy characters and fanart."
 >
-  <!-- Hero Section -->
+  <!-- Hero Section with Radial Navigation -->
   <section class="hero">
     <div class="hero-content">
-      <h1 class="hero-title">
-        <span class="ink-splatter-accent" aria-hidden="true"></span>
-        Kettlebird Creations
-      </h1>
-      <p class="hero-subtitle">Writer & Illustrator</p>
-      <p class="hero-intro">
-        Hi! I'm <strong>Star Goldberg</strong> (they/them), a Canadian artist creating 
-        UPA-inspired illustrations, character-focused comics, and fantasy fiction. 
-        I love drawing orcs, tieflings, elves, and fanart from X-Men to TMNT.
-      </p>
-      <a href="/portfolio" class="btn btn-primary">View Portfolio</a>
+      <nav class="radial-hub" aria-label="Main navigation">
+        <!-- Central logo -->
+        <div class="radial-center">
+          <div class="radial-logo-ring">
+            <img
+              src="/assets/images/logo-primary_Placeholder.jpg"
+              alt="Kettlebird Creations logo – a stylised bird silhouette with the letters K and B"
+              class="radial-logo-img"
+              width="200"
+              height="200"
+              loading="eager"
+            />
+          </div>
+        </div>
+
+        <!-- Radial menu items positioned around the logo -->
+        <ul class="radial-menu">
+          <li class="radial-item radial-item--top">
+            <a href="/">Home</a>
+          </li>
+          <li class="radial-item radial-item--top-right">
+            <a href="/portfolio">Artwork</a>
+          </li>
+          <li class="radial-item radial-item--right">
+            <a href="/comics">Comics</a>
+          </li>
+          <li class="radial-item radial-item--bottom-right">
+            <a href="/writing">Writing</a>
+          </li>
+          <li class="radial-item radial-item--bottom">
+            <a href="/about#contact">Contact</a>
+          </li>
+          <li class="radial-item radial-item--bottom-left">
+            <a href="/commissions">Commissions</a>
+          </li>
+          <li class="radial-item radial-item--left">
+            <a href="/shop">Merch</a>
+          </li>
+          <li class="radial-item radial-item--top-left">
+            <a href="/about">About</a>
+          </li>
+        </ul>
+      </nav>
     </div>
   </section>
 

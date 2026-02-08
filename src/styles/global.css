@@ -613,83 +613,134 @@ a:focus {
 }
 
 /* ===========================================
-   HERO SECTION
+   HERO SECTION – Radial Navigation Hub
    =========================================== */
 
 .hero {
   padding: 3rem var(--gutter-mobile) 4rem;
   text-align: center;
   position: relative;
-  background: linear-gradient(135deg, var(--color-paper) 0%, var(--color-paper-dark) 100%);
+  background: var(--color-paper);
   border-bottom: 2px solid var(--color-ink);
-  box-shadow: inset 0 -10px 20px rgba(0, 0, 0, 0.05);
 }
 
 .hero-content {
-  max-width: 800px;
-  margin: 0 auto;
-  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.hero-title {
-  font-family: 'Caveat', cursive;
-  font-size: clamp(2.5rem, 8vw, 4.5rem);
-  font-weight: 700;
-  margin: 0 0 0.5rem;
-  color: var(--color-ink);
-  line-height: 1.1;
+/* Radial hub container – holds the centre logo and orbiting items */
+.radial-hub {
   position: relative;
-  display: inline-block;
+  width: min(480px, 90vw);
+  height: min(480px, 90vw);
 }
 
-.ink-splatter-accent {
+/* ---------- Central logo area ---------- */
+
+.radial-center {
   position: absolute;
-  top: -20px;
-  right: -30px;
-  width: 40px;
-  height: 40px;
-  background: var(--color-splash-1);
-  border-radius: 45% 55% 60% 40% / 50% 60% 40% 50%;
-  opacity: 0.3;
-  animation: splatter-float 3s ease-in-out infinite;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
 }
 
-@keyframes splatter-float {
-  0%, 100% { transform: translate(0, 0) rotate(0deg); }
-  50% { transform: translate(5px, -5px) rotate(5deg); }
+.radial-logo-ring {
+  width: min(220px, 48vw);
+  height: min(220px, 48vw);
+  border-radius: 50%;
+  border: 2px solid var(--color-ink);
+  background: var(--color-secondary);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-paper);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .ink-splatter-accent {
-    animation: none;
+.radial-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+/* ---------- Radial menu items ---------- */
+
+.radial-menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  inset: 0;
+}
+
+.radial-item {
+  position: absolute;
+}
+
+.radial-item a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0.4rem 0.8rem;
+  font-family: 'Patrick Hand', 'DM Sans', sans-serif;
+  font-size: clamp(0.85rem, 2vw, 1rem);
+  color: var(--color-ink);
+  background: var(--color-paper);
+  border: 2px solid var(--color-ink);
+  border-radius: 4px;
+  text-decoration: none;
+  box-shadow: var(--shadow-paper);
+  white-space: nowrap;
+  transition: background var(--transition-fast) var(--ease-bounce),
+    color var(--transition-fast) var(--ease-bounce),
+    box-shadow var(--transition-fast) var(--ease-bounce),
+    translate var(--transition-fast) var(--ease-bounce);
+}
+
+.radial-item a:hover,
+.radial-item a:focus {
+  background: var(--color-accent-1);
+  color: white;
+  box-shadow: var(--shadow-paper-hover);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .radial-item a:hover,
+  .radial-item a:focus {
+    translate: -2px -2px;
   }
 }
 
-.hero-subtitle {
-  font-family: 'Patrick Hand', sans-serif;
-  font-size: clamp(1.25rem, 3vw, 1.75rem);
-  color: var(--color-accent-2);
-  margin: 0 0 1rem;
-}
+/*
+  Position each item around the circle.
+  The hub is 480×480; items are placed at the edges.
+  Offsets use left/top + translate to stay centered on their slot.
+*/
+.radial-item--top         { top: 0;    left: 50%;  transform: translate(-50%, -25%); }
+.radial-item--top-right   { top: 12%;  right: 0;   transform: translate(15%, -10%); }
+.radial-item--right       { top: 50%;  right: 0;   transform: translate(20%, -50%); }
+.radial-item--bottom-right{ bottom: 12%; right: 0;  transform: translate(15%, 10%); }
+.radial-item--bottom      { bottom: 0; left: 50%;  transform: translate(-50%, 25%); }
+.radial-item--bottom-left { bottom: 12%; left: 0;   transform: translate(-15%, 10%); }
+.radial-item--left        { top: 50%;  left: 0;    transform: translate(-20%, -50%); }
+.radial-item--top-left    { top: 12%;  left: 0;    transform: translate(-15%, -10%); }
 
-.hero-intro {
-  font-size: clamp(1rem, 2vw, 1.15rem);
-  line-height: 1.7;
-  margin: 0 0 2rem;
-  color: var(--color-ink-light);
-  max-width: 65ch;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.hero-intro strong {
-  color: var(--color-ink);
-  font-weight: 700;
-}
+/* ---------- Responsive adjustments ---------- */
 
 @media (min-width: 768px) {
   .hero {
     padding: 4rem var(--gutter-tablet) 5rem;
+  }
+
+  .radial-hub {
+    width: 480px;
+    height: 480px;
   }
 }
 
