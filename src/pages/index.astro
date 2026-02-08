@@ -76,10 +76,8 @@ import RadialMenu from '../components/RadialMenu';
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 500px;
-    height: 500px;
-    max-width: 90vw;
-    max-height: 90vw;
+    width: min(500px, 90vw);
+    height: min(500px, 90vw);
   }
 
   .hero__logomark {
@@ -181,8 +179,8 @@ import RadialMenu from '../components/RadialMenu';
     }
 
     .hero__center {
-      width: 350px;
-      height: 350px;
+      width: min(350px, 90vw);
+      height: min(350px, 90vw);
     }
   }
 </style>
