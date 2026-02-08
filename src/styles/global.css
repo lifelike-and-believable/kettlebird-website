@@ -887,10 +887,22 @@ a:focus {
 
 .artwork-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-template-columns: 1fr;
   gap: 1.5rem;
   margin: 0 auto 1rem;
   max-width: var(--max-width);
+}
+
+@media (min-width: 500px) {
+  .artwork-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 900px) {
+  .artwork-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 
 .artwork-card {
