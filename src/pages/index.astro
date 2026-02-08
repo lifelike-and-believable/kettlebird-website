@@ -1,191 +1,482 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+// Minimal layout that removes header/footer for the custom homepage
+const currentYear = new Date().getFullYear();
 ---
 
-<BaseLayout
-  title="Kettlebird Creations • Writer & Illustrator"
-  description="Portfolio of Star Goldberg (they/them) - UPA-inspired illustrations, comics, and written works featuring fantasy characters and fanart."
->
-  <!-- Hero Section with Radial Navigation -->
-  <section class="hero">
-    <div class="hero-content">
-      <nav class="radial-hub" aria-label="Main navigation">
-        <!-- Central logo -->
-        <div class="radial-center">
-          <div class="radial-logo-ring">
-            <img
-              src="/assets/images/logo-primary_Placeholder.jpg"
-              alt="Kettlebird Creations logo – a stylised bird silhouette with the letters K and B"
-              class="radial-logo-img"
-              width="200"
-              height="200"
-              loading="eager"
-            />
-          </div>
-        </div>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Kettlebird Creations • Writer & Illustrator</title>
+    <meta name="description" content="Portfolio of Star Goldberg (they/them) - UPA-inspired illustrations, comics, and written works featuring fantasy characters and fanart." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=DM+Sans:wght@400;500;700&family=Patrick+Hand:wght@400&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --color-beige: #f5f1e8;
+        --color-yellow: #F4CE6A;
+        --color-orange: #E89A5A;
+        --color-green: #A8D5BA;
+        --color-dark-purple: #4A4063;
+        --color-ink: #2b2b2b;
+      }
 
-        <!-- Radial menu items positioned around the logo -->
-        <ul class="radial-menu">
-          <li class="radial-item radial-item--top">
-            <a href="/">Home</a>
-          </li>
-          <li class="radial-item radial-item--top-right">
-            <a href="/portfolio">Artwork</a>
-          </li>
-          <li class="radial-item radial-item--right">
-            <a href="/comics">Comics</a>
-          </li>
-          <li class="radial-item radial-item--bottom-right">
-            <a href="/writing">Writing</a>
-          </li>
-          <li class="radial-item radial-item--bottom">
-            <a href="/about#contact">Contact</a>
-          </li>
-          <li class="radial-item radial-item--bottom-left">
-            <a href="/commissions">Commissions</a>
-          </li>
-          <li class="radial-item radial-item--left">
-            <a href="/shop">Merch</a>
-          </li>
-          <li class="radial-item radial-item--top-left">
-            <a href="/about">About</a>
-          </li>
-        </ul>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+        background-color: var(--color-beige);
+        color: var(--color-ink);
+        line-height: 1.6;
+        background-image:
+          repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, 0.03) 2px, rgba(0, 0, 0, 0.03) 4px),
+          repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0, 0, 0, 0.03) 2px, rgba(0, 0, 0, 0.03) 4px);
+        background-size: 400px 400px, 400px 400px;
+      }
+
+      .homepage {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+      }
+
+      /* Header */
+      .homepage-header {
+        margin-bottom: 2rem;
+      }
+
+      .homepage-title {
+        font-family: 'Caveat', cursive;
+        font-size: clamp(2.5rem, 6vw, 4rem);
+        font-weight: 700;
+        margin: 0;
+        letter-spacing: 0.02em;
+      }
+
+      .homepage-subtitle {
+        font-family: 'Caveat', cursive;
+        font-size: clamp(1.5rem, 4vw, 2.5rem);
+        font-weight: 600;
+        margin: 0;
+      }
+
+      /* Navigation */
+      .homepage-nav {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        margin-bottom: 2rem;
+      }
+
+      .nav-button {
+        font-family: 'Patrick Hand', sans-serif;
+        font-size: 1rem;
+        padding: 0.5rem 1.25rem;
+        border: 2px solid var(--color-ink);
+        background: var(--color-yellow);
+        color: var(--color-ink);
+        text-decoration: none;
+        display: inline-block;
+        font-weight: 600;
+        transition: all 0.2s;
+      }
+
+      .nav-button:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.2);
+      }
+
+      .nav-button.nav-button-highlight {
+        background: var(--color-ink);
+        color: white;
+      }
+
+      /* Main Grid */
+      .grid-container {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 1rem;
+        margin-bottom: 2rem;
+      }
+
+      .grid-tile {
+        border: 3px solid var(--color-ink);
+        overflow: hidden;
+        position: relative;
+        min-height: 150px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        transition: transform 0.2s;
+      }
+
+      .grid-tile:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.15);
+      }
+
+      .grid-tile-portfolio {
+        grid-column: span 2;
+        grid-row: span 2;
+        background: #8B7355;
+      }
+
+      .grid-tile-logo {
+        grid-column: span 2;
+        grid-row: span 3;
+        background: var(--color-yellow);
+      }
+
+      .grid-tile-merch {
+        grid-column: span 2;
+        grid-row: span 2;
+        background: var(--color-orange);
+      }
+
+      .grid-tile-comics {
+        grid-column: span 2;
+        grid-row: span 2;
+        background: #C8C8C8;
+      }
+
+      .grid-tile-commissions {
+        grid-column: span 2;
+        grid-row: span 2;
+        background: #A8A8A8;
+      }
+
+      .grid-tile-writing {
+        grid-column: span 2;
+        grid-row: span 2;
+        background: #D94F3D;
+      }
+
+      .grid-tile-contact {
+        grid-column: span 2;
+        grid-row: span 2;
+        background: #CC5544;
+      }
+
+      .grid-tile-about {
+        grid-column: span 1;
+        grid-row: span 2;
+        background: var(--color-green);
+      }
+
+      .grid-tile-news {
+        grid-column: span 1;
+        grid-row: span 2;
+        background: var(--color-yellow);
+      }
+
+      .tile-content {
+        text-align: center;
+        padding: 1rem;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0.2);
+      }
+
+      .tile-title {
+        font-family: 'Caveat', cursive;
+        font-size: clamp(1.5rem, 3vw, 2.5rem);
+        font-weight: 700;
+        color: white;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      }
+
+      .tile-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      /* Add subtle texture/pattern to tiles */
+      .grid-tile-portfolio {
+        background-image: 
+          linear-gradient(rgba(139, 115, 85, 0.9), rgba(139, 115, 85, 0.9)),
+          url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      }
+
+      .grid-tile-comics {
+        background-image: 
+          linear-gradient(rgba(200, 200, 200, 0.9), rgba(200, 200, 200, 0.9)),
+          url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23000000' fill-opacity='0.1' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E");
+      }
+
+      .grid-tile-writing {
+        background-image: 
+          linear-gradient(rgba(217, 79, 61, 0.9), rgba(217, 79, 61, 0.9)),
+          url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23000000' fill-opacity='0.15' fill-rule='evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%3C/g%3E%3C/svg%3E");
+      }
+
+      .grid-tile-commissions {
+        background-image: 
+          linear-gradient(rgba(168, 168, 168, 0.9), rgba(168, 168, 168, 0.9)),
+          url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      }
+
+      .grid-tile-contact {
+        background: linear-gradient(135deg, #CC5544 0%, #D94F3D 100%);
+      }
+
+      .logo-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+      }
+
+      .logo-shape {
+        width: clamp(150px, 50%, 250px);
+        height: clamp(180px, 60%, 300px);
+        background: var(--color-dark-purple);
+        border-radius: 50% 50% 0 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+        position: relative;
+      }
+
+      .logo-inner {
+        width: 35%;
+        height: 25%;
+        background: var(--color-beige);
+        border-radius: 50%;
+        position: absolute;
+        top: 30%;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .logo-letters {
+        font-family: 'Caveat', cursive;
+        font-size: clamp(2rem, 5vw, 4rem);
+        font-weight: 700;
+        color: var(--color-ink);
+      }
+
+      /* Social Links */
+      .social-links {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-bottom: 3rem;
+      }
+
+      .social-link {
+        font-family: 'Patrick Hand', sans-serif;
+        font-size: 1rem;
+        padding: 0.5rem 1rem;
+        border: 2px solid var(--color-ink);
+        text-decoration: none;
+        color: var(--color-ink);
+        font-weight: 600;
+        transition: all 0.2s;
+        display: inline-block;
+      }
+
+      .social-link:nth-child(1) { background: var(--color-green); }
+      .social-link:nth-child(2) { background: var(--color-yellow); }
+      .social-link:nth-child(3) { background: var(--color-orange); }
+      .social-link:nth-child(4) { background: #E89ACF; }
+
+      .social-link:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.2);
+      }
+
+      /* About Section */
+      .about-section {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        gap: 2rem;
+        margin-bottom: 2rem;
+        align-items: start;
+      }
+
+      .about-section h2 {
+        font-family: 'Caveat', cursive;
+        font-size: clamp(2rem, 4vw, 3rem);
+        font-weight: 700;
+        margin-bottom: 1rem;
+        grid-column: 1 / -1;
+      }
+
+      .portrait-placeholder {
+        background: var(--color-yellow);
+        border: 3px solid var(--color-ink);
+        aspect-ratio: 3/4;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Patrick Hand', sans-serif;
+        font-size: 1.2rem;
+        text-align: center;
+        padding: 2rem;
+        box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.1);
+      }
+
+      .about-text {
+        font-size: 1rem;
+        line-height: 1.8;
+        color: var(--color-ink);
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .grid-container {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .grid-tile-portfolio,
+        .grid-tile-logo,
+        .grid-tile-merch,
+        .grid-tile-comics,
+        .grid-tile-commissions,
+        .grid-tile-writing,
+        .grid-tile-contact {
+          grid-column: span 2;
+        }
+
+        .grid-tile-about,
+        .grid-tile-news {
+          grid-column: span 1;
+        }
+
+        .about-section {
+          grid-template-columns: 1fr;
+        }
+
+        .portrait-placeholder {
+          max-width: 300px;
+          margin: 0 auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="homepage">
+      <!-- Header -->
+      <header class="homepage-header">
+        <h1 class="homepage-title">Kettlebird</h1>
+        <p class="homepage-subtitle">Comics + Illustration</p>
+      </header>
+
+      <!-- Navigation -->
+      <nav class="homepage-nav">
+        <a href="/portfolio" class="nav-button">PORTFOLIO</a>
+        <a href="/comics" class="nav-button">COMICS</a>
+        <a href="/writing" class="nav-button">WRITING</a>
+        <a href="/about" class="nav-button">ABOUT</a>
+        <a href="#news" class="nav-button nav-button-highlight">NEWS</a>
       </nav>
-    </div>
-  </section>
 
-  <!-- Featured Work Preview -->
-  <section class="section section-featured">
-    <h2 class="section-heading">
-      Featured Artwork
-      <span class="sketchy-underline" aria-hidden="true"></span>
-    </h2>
-    <div class="artwork-grid">
-      <article class="artwork-card">
-        <div class="artwork-placeholder" style="--artwork-color: var(--color-accent-1);">
-          <span class="artwork-icon">🎨</span>
-        </div>
-        <h3 class="artwork-title">Fantasy Portraits</h3>
-        <p class="artwork-description">Character illustrations featuring orcs, tieflings, and other fantasy folks.</p>
-      </article>
-      <article class="artwork-card">
-        <div class="artwork-placeholder" style="--artwork-color: var(--color-secondary);">
-          <span class="artwork-icon">✨</span>
-        </div>
-        <h3 class="artwork-title">Fanart Collection</h3>
-        <p class="artwork-description">Celebrating beloved characters from across various fandoms and media.</p>
-      </article>
-      <article class="artwork-card">
-        <div class="artwork-placeholder" style="--artwork-color: var(--color-accent-2);">
-          <span class="artwork-icon">🌟</span>
-        </div>
-        <h3 class="artwork-title">Original Characters</h3>
-        <p class="artwork-description">Unique character designs with personality and flair.</p>
-      </article>
-      <article class="artwork-card">
-        <div class="artwork-placeholder" style="--artwork-color: var(--color-splash-1);">
-          <span class="artwork-icon">🖼️</span>
-        </div>
-        <h3 class="artwork-title">Sketches & Studies</h3>
-        <p class="artwork-description">Process work and experimental pieces.</p>
-      </article>
-    </div>
-    <a href="/portfolio" class="section-link">View Full Portfolio →</a>
-  </section>
-
-  <!-- Comics Preview -->
-  <section class="section section-comics">
-    <h2 class="section-heading">
-      Comics
-      <span class="sketchy-underline" aria-hidden="true"></span>
-    </h2>
-    <div class="comics-grid">
-      <a href="https://www.tumblr.com/kettle-bird/802567583219023872/the-writer-and-the-story-of-the-world-a-great-god" target="_blank" rel="noopener noreferrer" class="comic-card-link">
-        <article class="comic-card">
-          <div class="comic-cover" style="--comic-color: var(--color-ink-night);">
-            <span class="comic-icon">📝</span>
+      <!-- Main Grid -->
+      <div class="grid-container">
+        <!-- Portfolio Tile -->
+        <a href="/portfolio" class="grid-tile grid-tile-portfolio">
+          <div class="tile-content">
+            <span class="tile-title">PORTFOLIO</span>
           </div>
-          <h3 class="comic-title">The Writer and the Story of the World</h3>
-          <p class="comic-description">A Great God Grove fan comic exploring narrative and creation.</p>
-          <span class="comic-status">Complete</span>
-        </article>
-      </a>
-      <article class="comic-card">
-        <div class="comic-cover" style="--comic-color: var(--color-accent-1);">
-          <span class="comic-icon">📖</span>
-        </div>
-        <h3 class="comic-title">Short Stories</h3>
-        <p class="comic-description">One-shot comics and mini-series featuring original characters.</p>
-        <span class="comic-status">Available Now</span>
-      </article>
-    </div>
-    <a href="/comics" class="section-link">Read Comics →</a>
-  </section>
+        </a>
 
-  <!-- Written Works Preview -->
-  <section class="section section-writing">
-    <h2 class="section-heading">
-      Written Works
-      <span class="sketchy-underline" aria-hidden="true"></span>
-    </h2>
-    <div class="writing-grid">
-      <article class="writing-card">
-        <div class="writing-cover">
-          <span class="writing-icon">📚</span>
+        <!-- Logo Tile -->
+        <div class="grid-tile grid-tile-logo">
+          <div class="logo-content">
+            <div class="logo-shape">
+              <div class="logo-inner"></div>
+            </div>
+            <span class="logo-letters">KB</span>
+          </div>
         </div>
-        <h3 class="writing-title">Fantasy Fiction</h3>
-        <p class="writing-description">Short stories and longer works exploring fantastical worlds and characters.</p>
-      </article>
-      <article class="writing-card">
-        <div class="writing-cover">
-          <span class="writing-icon">✍️</span>
-        </div>
-        <h3 class="writing-title">Creative Essays</h3>
-        <p class="writing-description">Reflections on art, storytelling, and the creative process.</p>
-      </article>
-    </div>
-    <a href="/writing" class="section-link">Explore Writing →</a>
-  </section>
 
-  <!-- Commissions Section -->
-  <section class="section section-commissions">
-    <div class="commission-banner">
-      <div class="commission-status">
-        <span class="status-indicator status-open"></span>
-        <h2 class="commission-heading">Commissions: Open</h2>
+        <!-- Merch Tile -->
+        <a href="/shop" class="grid-tile grid-tile-merch">
+          <div class="tile-content">
+            <span class="tile-title">MERCH</span>
+          </div>
+        </a>
+
+        <!-- Comics Tile -->
+        <a href="/comics" class="grid-tile grid-tile-comics">
+          <div class="tile-content">
+            <span class="tile-title">COMICS</span>
+          </div>
+        </a>
+
+        <!-- Commissions Tile -->
+        <a href="/commissions" class="grid-tile grid-tile-commissions">
+          <div class="tile-content">
+            <span class="tile-title">COMMISSIONS</span>
+          </div>
+        </a>
+
+        <!-- Writing Tile -->
+        <a href="/writing" class="grid-tile grid-tile-writing">
+          <div class="tile-content">
+            <span class="tile-title">WRITING</span>
+          </div>
+        </a>
+
+        <!-- Contact Tile -->
+        <a href="/about#contact" class="grid-tile grid-tile-contact">
+          <div class="tile-content">
+            <span class="tile-title">CONTACT ME!</span>
+          </div>
+        </a>
+
+        <!-- About Tile -->
+        <a href="/about" class="grid-tile grid-tile-about">
+          <div class="tile-content">
+            <span class="tile-title">ABOUT</span>
+          </div>
+        </a>
+
+        <!-- News Tile -->
+        <a href="#news" class="grid-tile grid-tile-news">
+          <div class="tile-content">
+            <span class="tile-title">NEWS</span>
+          </div>
+        </a>
       </div>
-      <p class="commission-intro">
-        I'm currently accepting commission work for character illustrations, 
-        portrait pieces, and custom artwork. Whether you're looking for a 
-        D&D character, an original design, or fanart, I'd love to work with you!
-      </p>
-      <ul class="commission-offerings">
-        <li>✨ Character portraits & illustrations</li>
-        <li>🎨 Fantasy character designs</li>
-        <li>💫 Fanart commissions</li>
-        <li>📖 Comic page illustration</li>
-      </ul>
-      <a href="/commissions" class="btn btn-secondary">Learn More</a>
-    </div>
-  </section>
 
-  <!-- About Preview -->
-  <section class="section section-about">
-    <div class="about-preview">
-      <h2 class="section-heading">
-        About the Artist
-        <span class="sketchy-underline" aria-hidden="true"></span>
-      </h2>
-      <p class="about-text">
-        I'm Star Goldberg, a writer and illustrator based in Canada. My work is 
-        heavily influenced by the UPA animation style, with a focus on character-driven 
-        storytelling. I specialize in fantasy characters—especially orcs, tieflings, 
-        and elves—as well as fanart from properties like X-Men, TMNT, and The Murderbot 
-        Diaries. When I'm not drawing, I'm writing fiction and exploring new ways to 
-        tell stories through both words and images.
-      </p>
-      <a href="/about" class="section-link">More About Me →</a>
+      <!-- Social Links -->
+      <div class="social-links">
+        <a href="https://bsky.app/profile/kettlebird.bsky.social" target="_blank" rel="noopener noreferrer" class="social-link">BLUESKY</a>
+        <a href="https://kettle-bird.tumblr.com" target="_blank" rel="noopener noreferrer" class="social-link">TUMBLR</a>
+        <a href="https://www.instagram.com/kettlebirdart" target="_blank" rel="noopener noreferrer" class="social-link">INSTAGRAM</a>
+        <a href="https://ko-fi.com/kettlebirdart" target="_blank" rel="noopener noreferrer" class="social-link">KO-FI</a>
+      </div>
+
+      <!-- About the Artist Section -->
+      <section class="about-section">
+        <h2>ABOUT THE ARTIST</h2>
+        <div class="portrait-placeholder">
+          [INSERT<br>PORTRAIT HERE]
+        </div>
+        <div class="about-text">
+          <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>
+        </div>
+      </section>
     </div>
-  </section>
-</BaseLayout>
+  </body>
+</html>
