@@ -2,7 +2,7 @@
 
 .radial-menu {
   position: fixed;
-  bottom: 2rem;
+  top: 2rem;
   right: 2rem;
   z-index: 1000;
 }

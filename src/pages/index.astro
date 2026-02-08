@@ -51,9 +51,7 @@ import RadialMenu from '../components/RadialMenu';
       </div>
     </div>
     
-    <div class="hero__menu">
-      <RadialMenu client:load />
-    </div>
+    <RadialMenu client:load />
   </section>
 </BaseLayout>
 
@@ -157,22 +155,10 @@ import RadialMenu from '../components/RadialMenu';
     }
   }
 
-  .hero__menu {
-    position: absolute;
-    top: 2rem;
-    right: 2rem;
-    z-index: 10;
-  }
-
   @media (max-width: 768px) {
     .hero {
       min-height: 60vh;
       padding: 2rem 1rem;
-    }
-
-    .hero__menu {
-      top: 1rem;
-      right: 1rem;
     }
 
     .hero__logomark {

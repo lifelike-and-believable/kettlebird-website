@@ -33,7 +33,7 @@ export default function RadialMenu({
   className = '',
 }: RadialMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [, setFocusedIndex] = useState<number | null>(null);
+  const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const itemRefs = useRef<(HTMLAnchorElement | null)[]>([]);
