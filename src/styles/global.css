@@ -633,8 +633,14 @@ a:focus {
 /* Radial hub container – holds the centre logo and orbiting items */
 .radial-hub {
   position: relative;
-  width: min(480px, 90vw);
-  height: min(480px, 90vw);
+  width: min(600px, 90vw);
+  height: min(600px, 90vw);
+  transition: width 0.5s var(--ease-bounce), height 0.5s var(--ease-bounce);
+}
+
+.radial-hub:hover {
+  width: min(480px, 72vw);
+  height: min(480px, 72vw);
 }
 
 /* ---------- Central logo area ---------- */
@@ -648,8 +654,8 @@ a:focus {
 }
 
 .radial-logo-ring {
-  width: min(220px, 48vw);
-  height: min(220px, 48vw);
+  width: min(275px, 60vw);
+  height: min(275px, 60vw);
   border-radius: 50%;
   border: 2px solid var(--color-ink);
   background: var(--color-secondary);
@@ -658,6 +664,12 @@ a:focus {
   align-items: center;
   justify-content: center;
   box-shadow: var(--shadow-paper);
+  transition: width 0.5s var(--ease-bounce), height 0.5s var(--ease-bounce);
+}
+
+.radial-hub:hover .radial-logo-ring {
+  width: min(220px, 48vw);
+  height: min(220px, 48vw);
 }
 
 .radial-logo-img {
@@ -679,6 +691,17 @@ a:focus {
 
 .radial-item {
   position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s var(--ease-bounce),
+    transform 0.5s var(--ease-bounce),
+    top 0.5s var(--ease-bounce),
+    left 0.5s var(--ease-bounce);
+}
+
+.radial-hub:hover .radial-item {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .radial-item a {
@@ -721,15 +744,32 @@ a:focus {
   Position each item around the circle.
   The hub is 480×480; items are placed at the edges.
   Offsets use left/top + translate to stay centered on their slot.
+  Default state: items are centered and hidden
+  Hover state: items move to their final positions
 */
-.radial-item--top         { top: 0;    left: 50%;  transform: translate(-50%, -25%); }
-.radial-item--top-right   { top: 12%;  right: 0;   transform: translate(15%, -10%); }
-.radial-item--right       { top: 50%;  right: 0;   transform: translate(20%, -50%); }
-.radial-item--bottom-right{ bottom: 12%; right: 0;  transform: translate(15%, 10%); }
-.radial-item--bottom      { bottom: 0; left: 50%;  transform: translate(-50%, 25%); }
-.radial-item--bottom-left { bottom: 12%; left: 0;   transform: translate(-15%, 10%); }
-.radial-item--left        { top: 50%;  left: 0;    transform: translate(-20%, -50%); }
-.radial-item--top-left    { top: 12%;  left: 0;    transform: translate(-15%, -10%); }
+/* Default state: all items centered */
+.radial-item--top,
+.radial-item--top-right,
+.radial-item--right,
+.radial-item--bottom-right,
+.radial-item--bottom,
+.radial-item--bottom-left,
+.radial-item--left,
+.radial-item--top-left {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Hover state: items move to final positions (using top/left for smooth transitions) */
+.radial-hub:hover .radial-item--top         { top: 0;    left: 50%;  transform: translate(-50%, -25%); }
+.radial-hub:hover .radial-item--top-right   { top: 12%;  left: 100%; transform: translate(-85%, -10%); }
+.radial-hub:hover .radial-item--right       { top: 50%;  left: 100%; transform: translate(-80%, -50%); }
+.radial-hub:hover .radial-item--bottom-right{ top: 88%;  left: 100%; transform: translate(-85%, -90%); }
+.radial-hub:hover .radial-item--bottom      { top: 100%; left: 50%;  transform: translate(-50%, -75%); }
+.radial-hub:hover .radial-item--bottom-left { top: 88%;  left: 0;    transform: translate(-15%, -90%); }
+.radial-hub:hover .radial-item--left        { top: 50%;  left: 0;    transform: translate(-20%, -50%); }
+.radial-hub:hover .radial-item--top-left    { top: 12%;  left: 0;    transform: translate(-15%, -10%); }
 
 /* ---------- Responsive adjustments ---------- */
 
@@ -739,6 +779,11 @@ a:focus {
   }
 
   .radial-hub {
+    width: 600px;
+    height: 600px;
+  }
+
+  .radial-hub:hover {
     width: 480px;
     height: 480px;
   }
@@ -747,6 +792,14 @@ a:focus {
 @media (min-width: 1024px) {
   .hero {
     padding: 5rem var(--gutter-desktop) 6rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .radial-hub,
+  .radial-logo-ring,
+  .radial-item {
+    transition-duration: 0s;
   }
 }
 
