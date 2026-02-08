@@ -7,6 +7,7 @@ yarn-error.log
 dist/
 build/
 .cache/
+.astro/
 
 # Environment variables
 .env

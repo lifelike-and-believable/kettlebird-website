@@ -44,6 +44,8 @@ export default function RadialMenu({
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!isOpen) return;
 
+      let nextIndex: number | null = null;
+
       switch (e.key) {
         case 'Escape':
           e.preventDefault();
@@ -53,20 +55,16 @@ export default function RadialMenu({
         case 'ArrowRight':
         case 'ArrowDown':
           e.preventDefault();
-          setFocusedIndex((prev) => {
-            const nextIndex = prev === null ? 0 : (prev + 1) % items.length;
-            itemRefs.current[nextIndex]?.focus();
-            return nextIndex;
-          });
+          nextIndex = focusedIndex === null ? 0 : (focusedIndex + 1) % items.length;
+          setFocusedIndex(nextIndex);
+          itemRefs.current[nextIndex]?.focus();
           break;
         case 'ArrowLeft':
         case 'ArrowUp':
           e.preventDefault();
-          setFocusedIndex((prev) => {
-            const nextIndex = prev === null ? items.length - 1 : (prev - 1 + items.length) % items.length;
-            itemRefs.current[nextIndex]?.focus();
-            return nextIndex;
-          });
+          nextIndex = focusedIndex === null ? items.length - 1 : (focusedIndex - 1 + items.length) % items.length;
+          setFocusedIndex(nextIndex);
+          itemRefs.current[nextIndex]?.focus();
           break;
         case 'Home':
           e.preventDefault();
@@ -83,7 +81,7 @@ export default function RadialMenu({
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, items.length]);
+  }, [isOpen, items.length, focusedIndex]);
 
   // Close menu when clicking outside
   useEffect(() => {

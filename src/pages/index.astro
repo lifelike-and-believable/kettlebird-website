@@ -8,7 +8,8 @@ import RadialMenu from '../components/RadialMenu';
   description="Illustration, comics, and creative writing by Star Goldberg"
 >
   <section class="hero">
-    <div class="hero__content">
+    <div class="hero__center">
+      <!-- Hero image/logomark at center -->
       <div class="hero__logomark">
         <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <!-- Hand-drawn circle badge -->
@@ -36,6 +37,11 @@ import RadialMenu from '../components/RadialMenu';
         </svg>
       </div>
       
+      <!-- RadialMenu centered around the logomark -->
+      <RadialMenu client:load />
+    </div>
+    
+    <div class="hero__content">
       <h2 class="hero__title">Welcome to Kettlebird Creations</h2>
       <p class="hero__description">
         Discover original artwork, comics, and stories crafted with ink, imagination, and a touch of chaos.
@@ -50,33 +56,35 @@ import RadialMenu from '../components/RadialMenu';
         </a>
       </div>
     </div>
-    
-    <RadialMenu client:load />
   </section>
 </BaseLayout>
 
 <style>
   .hero {
     position: relative;
-    min-height: 70vh;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3rem;
+    padding: 4rem 1rem 3rem;
+  }
+
+  .hero__center {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 3rem 1rem;
-  }
-
-  .hero__content {
+    width: 100%;
     max-width: 600px;
-    text-align: center;
-    position: relative;
-    z-index: 1;
   }
 
   .hero__logomark {
     width: 200px;
     height: 200px;
-    margin: 0 auto 2rem;
     animation: float 6s ease-in-out infinite;
+    z-index: 1;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -92,6 +100,13 @@ import RadialMenu from '../components/RadialMenu';
     50% {
       transform: translateY(-10px);
     }
+  }
+
+  .hero__content {
+    max-width: 600px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
   }
 
   .hero__title {
@@ -157,8 +172,9 @@ import RadialMenu from '../components/RadialMenu';
 
   @media (max-width: 768px) {
     .hero {
-      min-height: 60vh;
-      padding: 2rem 1rem;
+      min-height: 70vh;
+      padding: 3rem 1rem 2rem;
+      gap: 2rem;
     }
 
     .hero__logomark {
