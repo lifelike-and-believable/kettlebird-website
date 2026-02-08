@@ -15,6 +15,10 @@ interface RadialMenuProps {
   radius?: number;
   /** Custom class name for styling */
   className?: string;
+  /** Use hover instead of click to open menu */
+  hoverMode?: boolean;
+  /** Show/hide toggle button (if false, expects parent to control hover) */
+  showToggle?: boolean;
 }
 
 const defaultMenuItems: MenuItem[] = [
@@ -31,6 +35,8 @@ export default function RadialMenu({
   items = defaultMenuItems,
   radius = 180,
   className = '',
+  hoverMode = false,
+  showToggle = true,
 }: RadialMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
@@ -38,6 +44,19 @@ export default function RadialMenu({
   const buttonRef = useRef<HTMLButtonElement>(null);
   const itemRefs = useRef<(HTMLAnchorElement | null)[]>([]);
   const shouldReduceMotion = useReducedMotion();
+
+  // Handle hover mode
+  const handleMouseEnter = () => {
+    if (hoverMode) {
+      setIsOpen(true);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (hoverMode) {
+      setIsOpen(false);
+    }
+  };
 
   // Handle keyboard navigation
   useEffect(() => {
@@ -158,25 +177,32 @@ export default function RadialMenu({
   };
 
   return (
-    <div ref={menuRef} className={`radial-menu ${className}`}>
-      {/* Toggle Button */}
-      <motion.button
-        ref={buttonRef}
-        className="radial-menu__toggle"
-        onClick={toggleMenu}
-        aria-expanded={isOpen}
-        aria-label={isOpen ? 'Close navigation menu' : 'Open navigation menu'}
-        aria-haspopup="menu"
-        animate={isOpen ? 'open' : 'closed'}
-        variants={buttonVariants}
-        transition={{ duration: shouldReduceMotion ? 0 : 0.3 }}
-      >
-        <span className="radial-menu__toggle-icon" aria-hidden="true">
-          <span className="radial-menu__toggle-line"></span>
-          <span className="radial-menu__toggle-line"></span>
-        </span>
-        <span className="radial-menu__toggle-text">Menu</span>
-      </motion.button>
+    <div 
+      ref={menuRef} 
+      className={`radial-menu ${className}`}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      {/* Toggle Button - only show if not in hover mode or if explicitly requested */}
+      {showToggle && !hoverMode && (
+        <motion.button
+          ref={buttonRef}
+          className="radial-menu__toggle"
+          onClick={toggleMenu}
+          aria-expanded={isOpen}
+          aria-label={isOpen ? 'Close navigation menu' : 'Open navigation menu'}
+          aria-haspopup="menu"
+          animate={isOpen ? 'open' : 'closed'}
+          variants={buttonVariants}
+          transition={{ duration: shouldReduceMotion ? 0 : 0.3 }}
+        >
+          <span className="radial-menu__toggle-icon" aria-hidden="true">
+            <span className="radial-menu__toggle-line"></span>
+            <span className="radial-menu__toggle-line"></span>
+          </span>
+          <span className="radial-menu__toggle-text">Menu</span>
+        </motion.button>
+      )}
 
       {/* Radial Menu Items */}
       <AnimatePresence>
