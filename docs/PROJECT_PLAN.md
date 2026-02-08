@@ -85,50 +85,48 @@ Create a professional, visually stunning portfolio website for Star Goldberg (Ke
 ---
 
 ### Milestone 2: Design & Branding (Week 2)
-**Goal:** Create visual design system and branding elements with hand-drawn, textured aesthetic  
+**Goal:** Implement visual design system based on approved client mockup (docs/homepage-mockup.jpg)
 **Deliverables:**
-- Color palette and typography system
-- Hand-drawn textured paper aesthetic
-- Logo/branding elements
-- High-fidelity mockups for key pages
-- Style guide document
+- Color palette and typography system matching mockup
+- Grid-based card layout system
+- Logo/branding elements (purple bird with KB initials)
+- Horizontal tab navigation component
+- Style guide document reflecting mockup design
 
 **Tasks:**
-- [x] Research and gather Star's artwork for color/style inspiration
-- [x] Define color palette inspired by Star's art and UPA style (flat colors, mid-century modern)
-- [x] Select typography (consider hand-drawn or organic fonts)
-- [x] Source/create textured paper backgrounds
-- [x] Design hand-drawn UI elements (buttons, borders, dividers)
-- [x] Create SVG hand-drawn illustrations for decorative elements
-- [x] Design logo/site branding with hand-drawn aesthetic
-- [x] Create hero section design with textured background
-- [x] Design portfolio/gallery layout with paper texture overlays
-- [x] Create about section design
-- [x] Design contact/social links section
-- [x] Create mobile-responsive mockups
-- [x] Develop CSS techniques for paper texture and hand-drawn borders
-- [x] Document design system in style guide
-- [x] Create brush stroke/ink splatter accent graphics
+- [x] Analyze client mockup for design specifications
+- [x] Define color palette from mockup (warm beige background, yellow/orange/green/purple accents)
+- [x] Identify typography requirements (bold sans-serif for headers, clean body font)
+- [x] Document grid-based card layout structure
+- [x] Specify thick black border styling (3-4px solid)
+- [x] Design horizontal tab navigation system (not radial menu)
+- [x] Document logo specifications (purple bird icon with "KB")
+- [x] Create component specifications for cards with colored backgrounds
+- [x] Document social media link styling (colored text labels)
+- [x] Define drop shadow specifications (4px hard shadows)
+- [x] Create mobile-responsive specifications
+- [x] Document design system in updated style guide
+- [x] Update wireframes to match approved mockup layout
 
 **Acceptance Criteria:**
-- [x] Color palette defined with flat, geometric UPA-style colors
-- [x] Typography selected (organic, hand-drawn feel)
-- [x] Paper texture integrated throughout design
-- [x] Hand-drawn UI elements created (SVG format)
-- [x] Logo/branding approved with sketchy aesthetic
-- [x] All section designs approved
-- [x] Inky, crunchy, chaotic quality reflected in design
-- [x] Responsive behavior defined for all breakpoints
-- [x] Style guide completed with texture/hand-drawn guidelines
+- [x] Color palette matches mockup warm tones (beige, yellow, orange, coral, mint, purple)
+- [x] Typography specified for bold brand display and clean body text
+- [x] Grid layout system documented with card variations
+- [x] Horizontal navigation tabs specified (no radial menu)
+- [x] Logo design documented (purple bird with KB)
+- [x] All component styles match mockup aesthetic
+- [x] Border and shadow specifications documented
+- [x] Responsive behavior defined for mobile
+- [x] Style guide updated with mockup-based specifications
 
 **Feedback Checkpoint:**
-- **What to review:** Design mockups showing textured paper look, hand-drawn elements, color palette
+- **What to review:** Style guide and wireframes now matching approved mockup
 - **Questions for stakeholder:**
-  - Does the design reflect your artistic style?
-  - Is the hand-drawn aesthetic authentic to your work?
-  - Are colors and typography appropriate?
-  - Does the paper texture enhance the experience?
-  - Any specific design elements to add/remove?
+  - Does the documented design accurately reflect the mockup?
+  - Any adjustments needed to colors or typography?
+  - Are the grid card sizes and layouts correct?
+  - Should any navigation items be added/removed?
+  - Any specific details from mockup we should emphasize?
 
 ---
 

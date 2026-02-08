@@ -1,64 +1,133 @@
 # Kettlebird Creations – Visual Style Guide (Milestone 2)
 
-Approved brand system for development. Inspired by UPA mid-century palettes, crunchy ink lines, and paper grain.
+Approved brand system for development based on client mockup (docs/homepage-mockup.jpg). Features warm textured paper backgrounds, bold grid-based card layout, and vibrant accent colors.
 
 ## Color System
 
-- **Paper neutrals:** `#f5f1e8` (base), `#e8e3d8` (shadow edge)
-- **Ink:** `#2b2b2b` primary text, `#595959` secondary text (`--color-ink-light`)
-- **Core palette:** `#d95d39` (burnt orange), `#f4a261` (amber), `#2a9d8f` (teal), `#e76f51` (coral), `#264653` (ink night)
-- **Accent splashes:** `#e63946`, `#06ffa5`, `#ffbe0b` for micro-accents/splatter
-- **Contrast pairs:** Paper + Ink (AAA), Ink Night + Paper (AAA), Burnt Orange on Paper (AA Large/AAA with bold)
+Based on the approved mockup design:
+
+- **Background:** `#e8dcc8` (warm beige/tan textured paper)
+- **Text/Borders:** `#000000` (black) for primary text and card borders, `#2b2b2b` for body text
+- **Navigation tabs:** `#f4c95d` (golden yellow) for active/primary navigation
+- **Section accents:**
+  - Orange: `#ea7547` (merch, contact sections)
+  - Coral/Red: `#c85a3e` (contact me section)
+  - Mint Green: `#8dc9a3` (about section)
+  - Lime Yellow: `#e8d65f` (news section)
+  - Purple: `#5a4a7d` (logo/brand accent)
+- **Social media labels:**
+  - Green: `#4a6b52` (Bluesky)
+  - Gold: `#d4a944` (Tumblr)
+  - Pink: `#e85d8a` (Instagram)
+  - Coral: `#c85a3e` (Ko-fi)
 
 ```css
 :root {
-  --color-primary: #d95d39;
-  --color-secondary: #f4a261;
-  --color-accent-1: #2a9d8f;
-  --color-accent-2: #e76f51;
-  --color-ink: #2b2b2b;
-  --color-ink-light: #595959;
-  --color-ink-night: #264653;
-  --color-paper: #f5f1e8;
-  --color-paper-dark: #e8e3d8;
-  --color-splash-1: #e63946;
-  --color-splash-2: #06ffa5;
-  --color-splash-3: #ffbe0b;
-  --shadow-paper: 2px 4px 8px rgba(0, 0, 0, 0.15);
+  /* Base colors from mockup */
+  --color-background: #e8dcc8;
+  --color-text-primary: #000000;
+  --color-text-body: #2b2b2b;
+  
+  /* Navigation */
+  --color-nav-primary: #f4c95d;
+  
+  /* Section colors */
+  --color-orange: #ea7547;
+  --color-coral: #c85a3e;
+  --color-mint: #8dc9a3;
+  --color-lime: #e8d65f;
+  --color-purple: #5a4a7d;
+  
+  /* Social media colors */
+  --color-bluesky: #4a6b52;
+  --color-tumblr: #d4a944;
+  --color-instagram: #e85d8a;
+  --color-kofi: #c85a3e;
+  
+  /* Borders and shadows */
+  --border-thick: 4px solid #000000;
+  --border-medium: 3px solid #000000;
+  --shadow-card: 4px 4px 0px rgba(0, 0, 0, 0.3);
 }
 ```
 
 ## Typography
 
-- **Display/Headings:** Caveat + Patrick Hand (hand-drawn, 700 weight)
-- **Body/UI:** DM Sans (clean, neutral)
-- **Code:** DM Mono
-- **Scale:** `clamp(1rem, 1.2vw + 0.9rem, 1.35rem)` for body; headings ascend by 1.35× ratio
-- **Treatment:** Ink-underlines on `h1–h3`, generous letter-spacing on eyebrows, 1.7 line-height for body.
+Based on the mockup design:
+
+- **Brand/Logo:** Bold, black sans-serif (similar to Archivo Black, Impact, or Bebas Neue)
+  - "Kettlebird" uses very bold, condensed display font
+  - "Comics + Illustration" uses medium weight sans-serif
+- **Navigation tabs:** Bold, uppercase sans-serif (700-900 weight)
+- **Section labels:** Bold, uppercase white text on colored backgrounds
+- **Body text:** Clean, readable sans-serif (similar to Open Sans, Inter, or DM Sans)
+- **Scale:** 
+  - Logo/Brand: 3.5-4rem (56-64px)
+  - Section headings: 2.5-3rem (40-48px)
+  - Navigation: 1.1-1.25rem (18-20px)
+  - Body: 1rem (16px) base with 1.6 line-height
+
+```css
+:root {
+  --font-brand: 'Bebas Neue', 'Archivo Black', 'Impact', sans-serif;
+  --font-heading: 'Inter', 'Open Sans', system-ui, sans-serif;
+  --font-body: 'Inter', 'Open Sans', system-ui, sans-serif;
+  --font-weight-bold: 700;
+  --font-weight-black: 900;
+}
+```
 
 Font loading via Google Fonts (preconnect) with system fallbacks.
 
 ## Texture & Surfaces
 
-- **Paper grain:** layered repeating linear gradients or small PNG tile; blend-mode multiply.
-- **Edges:** Deckled/torn edges using pseudo-elements with alternating diagonals.
-- **Cards:** Off-white paper, 2px ink border, irregular border-radius, paper shadow (`--shadow-paper`).
-- **Buttons:** Hand-drawn outline, jitter hover (`transform: translate(-2px,-2px);`), respects `prefers-reduced-motion: reduce`.
-- **Dividers:** SVG roughen filter + ink splatter sprite at low opacity (8–12%).
+Based on the approved mockup:
+
+- **Background texture:** Warm beige paper with subtle grain/noise texture (not strong paper grain)
+- **Card borders:** Thick black borders (3-4px solid) with sharp corners, not torn edges
+- **Card backgrounds:** Solid colors with optional subtle texture overlay
+  - Portfolio cards: Dark background with artwork overlay
+  - Content cards: Solid accent colors (orange, mint, yellow, coral)
+  - Logo card: Golden yellow with centered purple icon
+- **Shadows:** Hard drop shadows offset (4px right, 4px down) in black at 30% opacity
+- **Navigation tabs:** Solid color pills with thick borders, rectangular with slight rounding
+- **No deckled/torn edges:** Clean, geometric shapes throughout
 
 ## Components
 
-- **Pills/Filters:** Rounded 999px, ink border, active state uses primary fill with dark ink text.
-- **Badges:** Accent-1 background, white text, small-caps.
-- **Cards:** Paper background, torn edge footer strip, subtle wobble on hover.
-- **Lightbox/Modals:** Dark ink night overlay with paper card; focus trap + ESC close.
+Based on the mockup design:
+
+- **Navigation tabs:** Horizontal row of rectangular pills with golden yellow background, bold uppercase text, thick black borders
+- **Content cards:** Large rectangular sections with:
+  - Thick black borders (3-4px)
+  - Solid color backgrounds or image overlays
+  - Bold white uppercase labels
+  - Hard drop shadows for depth
+  - No border-radius (sharp corners)
+- **Logo card:** Centered purple bird icon with "KB" text on golden yellow background
+- **Social media links:** Horizontal row of colored rectangular labels with text (BLUESKY | TUMBLR | INSTAGRAM | KO-FI)
+- **Section cards:** Grid layout with different sized rectangles:
+  - Portfolio: Dark with artwork preview
+  - Comics: Grayscale artwork with text overlay
+  - Merch: Solid orange
+  - Commissions: Collage of artwork examples
+  - Writing: Dark with distinctive eyes artwork
+  - Contact Me!: Solid coral/red
+  - About: Solid mint green
+  - News: Solid lime yellow
 
 ## Motion
 
-- **Easing:** `cubic-bezier(0.22, 0.61, 0.36, 1)` (organic ease-out).
-- **Durations:** 120–180ms micro-interactions; 260ms section reveals.
-- **Reduced motion:** Disable wobble/jitter; keep fades only.
-- **Scroll effects:** Parallax paper grain max 6px offset; thresholded reveal to avoid jank.
+Subtle, professional animations:
+
+- **Easing:** `ease-out` or `cubic-bezier(0.25, 0.46, 0.45, 0.94)` for smooth transitions
+- **Durations:** 150-250ms for hover states and tab changes
+- **Hover effects:** 
+  - Cards: Slight lift with shadow increase
+  - Navigation tabs: Background color shift or underline appear
+  - No jitter or wobble effects
+- **Reduced motion:** Disable all animations and transitions, keep only instant state changes
+- **Page transitions:** Smooth fades between pages (200-300ms)
 
 ## Accessibility
 
@@ -70,20 +139,41 @@ Font loading via Google Fonts (preconnect) with system fallbacks.
 
 ## Branding & Iconography
 
-- **Logo direction:** Kettlebird silhouette perched on torn paper circle; ring can animate slight bob.
-- **Favicon/App icons:** Hand-drawn K within circle, paper grain background.
-- **Social icons:** Monoline stroke matching 2px border weight; filled hover with accent color.
-- **Dividers:** Ink strokes/brush swashes separating sections; small splatter near CTAs.
+Based on the approved mockup:
+
+- **Logo:** Purple bird silhouette with "KB" initials centered inside
+  - Color: Deep purple (#5a4a7d)
+  - Style: Simplified, iconic bird shape with teardrop/spade-like body
+  - Placement: On golden yellow background card in grid layout
+- **Brand name:** "Kettlebird" in bold, condensed black sans-serif
+- **Tagline:** "Comics + Illustration" in regular weight below brand name
+- **Favicon/App icons:** Simplified "KB" or bird icon from logo
+- **Social icons:** Text-based labels in colored rectangles (not icon symbols)
+- **No decorative elements:** Clean, geometric design without ink splatters or brush strokes
 
 ## Layout & Spacing
 
-- Grid: mobile-first; cards stack to one column under 640px, 2–3 columns at tablet/desktop.
-- Gutters: 16px mobile, 24px tablet, 32px desktop.
-- Max content width: 1100px with 1rem padding guardrails.
+From the mockup grid structure:
+
+- **Grid layout:** CSS Grid with varying card sizes
+  - Homepage uses asymmetric grid with different sized cards
+  - Cards can span multiple columns/rows for visual interest
+- **Gutters:** 12-16px between cards for clear separation
+- **Max content width:** 1400px centered with side margins
+- **Card proportions:** Mix of squares and rectangles creating dynamic layout
+- **Mobile behavior:** Stack cards in single column, maintaining card color/style
+- **Navigation:** Fixed horizontal tabs at top, always visible
+- **Social links:** Horizontal bar below main grid
 
 ## Implementation Notes
 
-- Use CSS custom properties from `global.css`; expose them to React islands as needed.
-- Ship a lightweight texture asset for production; fallback to CSS-generated grain.
-- Keep images under 500KB, prefer WebP; add blur-up or subtle skeletons for gallery cards.
-- Animate with GPU-friendly transforms; avoid layout thrash on hover wobble by using translate.
+- Use CSS custom properties from `global.css` for consistent color theming
+- Background texture can be a subtle noise PNG overlay or CSS filter
+- Grid layout using CSS Grid with named grid areas for responsive behavior
+- Navigation tabs should be keyboard accessible with proper ARIA labels
+- Card hover states should maintain accessibility with sufficient color contrast
+- Images within cards should use object-fit: cover for consistent sizing
+- Ensure all colored backgrounds meet WCAG contrast requirements for text
+- Use web-safe fonts with proper fallback stacks
+- Optimize textures and images for web (WebP format, compressed)
+- Hard-coded drop shadows perform better than CSS box-shadow blur

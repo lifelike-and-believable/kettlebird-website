@@ -43,18 +43,18 @@ In-depth technical documentation covering:
 - **Hosting:** Vercel/Netlify
 
 **Visual Design System:**
-- Hand-drawn textured paper aesthetic
-- UPA-style flat colors and mid-century modern influences
-- Inky, crunchy, chaotic quality reflecting Star's art style
-- SVG filters (roughen, ink bleed, watercolor effects)
-- Hand-drawn typography and sketchy borders
-- Ink splatter and brush stroke accents
-- Paper card styling with torn edges
+- Grid-based card layout with thick black borders
+- Warm textured paper background (beige/tan)
+- Bold color accents (yellow, orange, coral, mint green, purple)
+- Clean, bold typography for headers and navigation
+- Horizontal tab navigation system
+- Hard drop shadows (4px offset)
+- Purple bird logo with "KB" initials
 
 **Feature Implementations:**
 - **Comic Reader:** Frame-by-frame panel navigation with panzoom
 - **Page Flip Reader:** 3D book-turning for written works
-- **Radial Navigation:** CSS trigonometry + Framer Motion
+- **Horizontal Navigation:** Fixed tab navigation at top
 - **Gallery:** PhotoSwipe v5 with filtering
 - **Commerce:** Ko-fi integration for payments
 - **Commissions:** Google Forms + Trello queue
@@ -68,12 +68,14 @@ In-depth technical documentation covering:
 ---
 
 ### [STYLE_GUIDE.md](STYLE_GUIDE.md)
-**Approved milestone 2 brand system**
+**Approved milestone 2 brand system based on client mockup**
 
-- UPA-inspired palette and contrast pairs
-- Typography hierarchy (Caveat/Patrick Hand + DM Sans) with fluid scaling
-- Paper textures, hand-drawn borders, splatter accents, motion rules
-- Component treatments for buttons, pills, cards, lightbox, and focus states
+- Color palette with warm beige background and vibrant accents (yellow, orange, coral, mint, purple)
+- Typography: Bold sans-serif for brand/navigation, clean sans-serif for body
+- Grid-based card components with thick black borders (3-4px solid)
+- Hard drop shadows (4px offset) for depth
+- Horizontal tab navigation styling
+- Component specifications matching mockup design
 
 ---
 
@@ -112,9 +114,9 @@ Comprehensive content management strategy including:
 Updated for Astro + React + Sanity workflows (Milestone 1).
 
 ### [WIREFRAMES.md](WIREFRAMES.md)
-**Initial layout sketches for milestone 1**
+**Layout structures based on approved client mockup**
 
-Paper-style wireframes for home, portfolio, comics, writing, and shop/commissions.
+Grid-based homepage with colored card sections, horizontal tab navigation, and clear visual hierarchy matching mockup design.
 
 ---
 
@@ -160,21 +162,24 @@ Paper-style wireframes for home, portfolio, comics, writing, and shop/commission
 ## 📊 Project Status
 
 **Current Phase:** Design & Branding (Milestone 2)  
-**Status:** ✅ Visual system approved (palette, typography, texture kit, branding notes)
+**Status:** ✅ Visual system updated to match approved client mockup (docs/homepage-mockup.jpg)
 
 **Completed:**
 - [x] Project plan with 9 milestones
 - [x] Technical architecture document
-- [x] Visual design system defined (palette, typography, texture, motion)
+- [x] Visual design system based on approved client mockup
 - [x] Content strategy documented
-- [x] Hand-drawn aesthetic specifications + style guide
+- [x] Design specifications matching mockup (grid layout, colors, typography)
 - [x] Astro project scaffolded with React integration
 - [x] Sanity Studio schemas created
-- [x] Initial wireframes captured
-- [x] Milestone 2 design/branding assets locked
+- [x] Wireframes updated to match mockup
+- [x] Milestone 2 design/branding documentation complete
 
 **Next Steps:**
-- [ ] Implement gallery and comic reader components with new tokens
+- [ ] Implement grid-based card layout with CSS Grid
+- [ ] Build horizontal tab navigation component
+- [ ] Create card components with borders and shadows
+- [ ] Implement gallery and comic reader components
 - [ ] Wire Sanity content and start content seeding
 - [ ] Hook CI/CD previews once hosting is connected
 
@@ -190,11 +195,11 @@ Paper-style wireframes for home, portfolio, comics, writing, and shop/commission
 - 🎨 **Commission System** - Request forms and queue
 
 ### Visual Design
-- 📄 **Textured Paper Background** - Hand-drawn aesthetic
-- 🖊️ **Sketchy UI Elements** - Organic borders and buttons
-- 🎨 **UPA-Style Colors** - Flat, geometric palette
-- 💫 **Ink Splatter Accents** - Decorative flourishes
-- ✏️ **Hand-Drawn Typography** - Caveat, Indie Flower fonts
+- 📄 **Grid-Based Cards** - Asymmetric layout with colored sections
+- 🖊️ **Thick Black Borders** - Bold 3-4px borders on all components
+- 🎨 **Vibrant Color Palette** - Yellow, orange, coral, mint, purple accents
+- 💫 **Hard Drop Shadows** - 4px offset for depth
+- ✏️ **Bold Typography** - Clean sans-serif fonts for clarity
 
 ### Technical Excellence
 - ⚡ **Fast Performance** - Astro static generation
