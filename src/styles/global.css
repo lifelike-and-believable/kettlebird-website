@@ -620,7 +620,11 @@ a:focus {
   padding: 3rem var(--gutter-mobile) 4rem;
   text-align: center;
   position: relative;
-  background: var(--color-paper);
+  background-color: var(--color-paper);
+  background-image: url('/assets/images/SampleBackdrop.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   border-bottom: 2px solid var(--color-ink);
 }
 
