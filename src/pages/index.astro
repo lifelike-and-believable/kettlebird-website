@@ -3,139 +3,187 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout
-  title="Kettlebird Creations • Design system locked"
-  description="Milestone 2 delivers the UPA-inspired palette, typography pairings, textured kit, and brand assets for build-out."
+  title="Kettlebird Creations • Writer & Illustrator"
+  description="Portfolio of Star Goldberg (they/them) - UPA-inspired illustrations, comics, and written works featuring fantasy characters and fanart."
 >
-  <section class="paper-shell stack">
-    <h2>Design system snapshot</h2>
-    <ul class="checklist">
-      <li>✅ UPA-inspired palette with accessible contrast pairs and ink splash accents.</li>
-      <li>✅ Typography hierarchy: sketchy headings + clean body, with fluid clamp sizing.</li>
-      <li>✅ Textured paper surface, torn edge treatment, and hand-drawn borders/buttons.</li>
-      <li>✅ Logo/mark directions, icon line set, and motion guidance (ink bleed + wiggle).</li>
-    </ul>
-  </section>
+  <!-- Hero Section with Radial Navigation -->
+  <section class="hero">
+    <div class="hero-content">
+      <nav class="radial-hub" aria-label="Main navigation">
+        <!-- Central logo -->
+        <div class="radial-center">
+          <div class="radial-logo-ring">
+            <img
+              src="/assets/images/logo-primary_Placeholder.jpg"
+              alt="Kettlebird Creations logo – a stylised bird silhouette with the letters K and B"
+              class="radial-logo-img"
+              width="200"
+              height="200"
+              loading="eager"
+            />
+          </div>
+        </div>
 
-  <section class="grid">
-    <article class="card">
-      <h3><span class="badge">Palette</span> Color & contrast</h3>
-      <div class="swatches">
-        <div class="swatch" style="--swatch: var(--color-primary)">
-          <p class="swatch__name">Burnt Orange</p>
-          <p class="swatch__meta">Primary • AAA on paper</p>
-        </div>
-        <div class="swatch" style="--swatch: var(--color-accent-1)">
-          <p class="swatch__name">Teal</p>
-          <p class="swatch__meta">Accent • CTA hover</p>
-        </div>
-        <div class="swatch" style="--swatch: var(--color-secondary)">
-          <p class="swatch__name">Amber</p>
-          <p class="swatch__meta">Secondary fill</p>
-        </div>
-        <div class="swatch" style="--swatch: var(--color-ink-night);" data-tone="dark">
-          <p class="swatch__name">Ink Night</p>
-          <p class="swatch__meta">Text on texture</p>
-        </div>
-      </div>
-      <p class="lede">
-        Paper neutrals (paper/paper-dark) keep warmth; splatter brights (splash-1 through splash-3) reserved for micro-accents.
-      </p>
-    </article>
-
-    <article class="card">
-      <h3><span class="badge">Type</span> Typography stack</h3>
-      <div class="stack">
-        <div class="pill">
-          <p class="pill__eyebrow">Display</p>
-          <p class="pill__value">Caveat / Patrick Hand — sketch headers, badges</p>
-        </div>
-        <div class="pill">
-          <p class="pill__eyebrow">Body</p>
-          <p class="pill__value">DM Sans — clean reading, UI labels</p>
-        </div>
-        <div class="pill">
-          <p class="pill__eyebrow">Scale</p>
-          <p class="pill__value">clamp(1rem, 1.2vw + 0.9rem, 1.35rem) for fluid rhythm</p>
-        </div>
-      </div>
-      <p class="lede">
-        Headlines carry ink-shadow underline; body keeps high legibility with 1.7 line-height; buttons use hand-drawn
-        outline and jitter on hover (prefers-reduced-motion respected).
-      </p>
-    </article>
-
-    <article class="card">
-      <h3><span class="badge">Texture</span> Paper & strokes</h3>
-      <ul class="checklist">
-        <li>Layered paper grain with multiply blend; subtle deckle edge footer/headers.</li>
-        <li>Hand-drawn borders via irregular radii + SVG roughen filter.</li>
-        <li>Ink splatter SVGs for section dividers and CTA highlights.</li>
-        <li>Motion: 120ms ease-out wiggle on hover; reduced-motion disables shake.</li>
-      </ul>
-    </article>
-  </section>
-
-  <section class="paper-shell stack">
-    <h2>Brand & layout cues</h2>
-    <p class="lede">Logo marks explore a perched kettlebird silhouette within a torn-circle badge; social icons match line weight.</p>
-    <div class="grid">
-      <div>
-        <h3>Hero concept</h3>
-        <pre class="wireframe">
-┌─────────────────────────────┐
-│  Grainy paper, ink splatter │
-│  Hand-drawn logomark        │
-│  CTA with rough border      │
-│  Radial nav tucked right    │
-└─────────────────────────────┘
-        </pre>
-      </div>
-      <div>
-        <h3>Gallery cards</h3>
-        <pre class="wireframe">
-┌─────────────────────┐
-│ Filters: pills      │
-│ [ink underline]     │
-├─────────────────────┤
-│░░ paper ░░░░░░░░░░  │
-│ cards w/ torn edge  │
-│ hover wobble + info │
-└─────────────────────┘
-        </pre>
-      </div>
-      <div>
-        <h3>Comic reader</h3>
-        <pre class="wireframe">
-┌───────────────┐
-│ Page viewport │
-│ [Panel guide] │
-│ ◀ Prev  Next ▶│
-│ Progress 3/12 │
-│ Toolbar: zoom │
-└───────────────┘
-        </pre>
-      </div>
-      <div>
-        <h3>Written works</h3>
-        <pre class="wireframe">
-┌───────────────┐
-│ Cover/Title   │
-│ Page flip UI  │
-│ 1 2 3 4 5 ... │
-│ TOC | Scroll  │
-│ Mode toggle   │
-└───────────────┘
-        </pre>
-      </div>
+        <!-- Radial menu items positioned around the logo -->
+        <ul class="radial-menu">
+          <li class="radial-item radial-item--top">
+            <a href="/">Home</a>
+          </li>
+          <li class="radial-item radial-item--top-right">
+            <a href="/portfolio">Artwork</a>
+          </li>
+          <li class="radial-item radial-item--right">
+            <a href="/comics">Comics</a>
+          </li>
+          <li class="radial-item radial-item--bottom-right">
+            <a href="/writing">Writing</a>
+          </li>
+          <li class="radial-item radial-item--bottom">
+            <a href="/about#contact">Contact</a>
+          </li>
+          <li class="radial-item radial-item--bottom-left">
+            <a href="/commissions">Commissions</a>
+          </li>
+          <li class="radial-item radial-item--left">
+            <a href="/shop">Merch</a>
+          </li>
+          <li class="radial-item radial-item--top-left">
+            <a href="/about">About</a>
+          </li>
+        </ul>
+      </nav>
     </div>
   </section>
 
-  <section class="paper-shell stack">
-    <h2>Next implementation steps</h2>
-    <ul class="checklist">
-      <li>🖼️ Build gallery grid + PhotoSwipe lightbox using the locked palette + textures.</li>
-      <li>📚 Wire Sanity content to hero/gallery; load palette tokens as CSS vars from config.</li>
-      <li>🚀 Prep component stories with the brand kit for QA (buttons, cards, filters).</li>
-    </ul>
+  <!-- Featured Work Preview -->
+  <section class="section section-featured">
+    <h2 class="section-heading">
+      Featured Work
+      <span class="sketchy-underline" aria-hidden="true"></span>
+    </h2>
+    <div class="artwork-grid">
+      <article class="artwork-card">
+        <div class="artwork-placeholder" style="--artwork-color: var(--color-accent-1);">
+          <span class="artwork-icon">🎨</span>
+        </div>
+        <h3 class="artwork-title">Fantasy Portraits</h3>
+        <p class="artwork-description">Character illustrations featuring orcs, tieflings, and other fantasy folks.</p>
+      </article>
+      <article class="artwork-card">
+        <div class="artwork-placeholder" style="--artwork-color: var(--color-secondary);">
+          <span class="artwork-icon">✨</span>
+        </div>
+        <h3 class="artwork-title">Fanart Collection</h3>
+        <p class="artwork-description">Celebrating beloved characters from X-Men, TMNT, and Murderbot.</p>
+      </article>
+      <article class="artwork-card">
+        <div class="artwork-placeholder" style="--artwork-color: var(--color-accent-2);">
+          <span class="artwork-icon">🌟</span>
+        </div>
+        <h3 class="artwork-title">Original Characters</h3>
+        <p class="artwork-description">Unique character designs with personality and flair.</p>
+      </article>
+      <article class="artwork-card">
+        <div class="artwork-placeholder" style="--artwork-color: var(--color-splash-1);">
+          <span class="artwork-icon">🖼️</span>
+        </div>
+        <h3 class="artwork-title">Sketches & Studies</h3>
+        <p class="artwork-description">Process work and experimental pieces.</p>
+      </article>
+    </div>
+    <a href="/portfolio" class="section-link">View Full Portfolio →</a>
+  </section>
+
+  <!-- Comics Preview -->
+  <section class="section section-comics">
+    <h2 class="section-heading">
+      Comics
+      <span class="sketchy-underline" aria-hidden="true"></span>
+    </h2>
+    <div class="comics-grid">
+      <article class="comic-card">
+        <div class="comic-cover" style="--comic-color: var(--color-ink-night);">
+          <span class="comic-icon">🐢</span>
+        </div>
+        <h3 class="comic-title">Carapace</h3>
+        <p class="comic-description">A TMNT fancomic exploring character dynamics and adventure.</p>
+        <span class="comic-status">In Progress</span>
+      </article>
+      <article class="comic-card">
+        <div class="comic-cover" style="--comic-color: var(--color-accent-1);">
+          <span class="comic-icon">📖</span>
+        </div>
+        <h3 class="comic-title">Short Stories</h3>
+        <p class="comic-description">One-shot comics and mini-series featuring original characters.</p>
+        <span class="comic-status">Available Now</span>
+      </article>
+    </div>
+    <a href="/comics" class="section-link">Read Comics →</a>
+  </section>
+
+  <!-- Written Works Preview -->
+  <section class="section section-writing">
+    <h2 class="section-heading">
+      Written Works
+      <span class="sketchy-underline" aria-hidden="true"></span>
+    </h2>
+    <div class="writing-grid">
+      <article class="writing-card">
+        <div class="writing-cover">
+          <span class="writing-icon">📚</span>
+        </div>
+        <h3 class="writing-title">Fantasy Fiction</h3>
+        <p class="writing-description">Short stories and longer works exploring fantastical worlds and characters.</p>
+      </article>
+      <article class="writing-card">
+        <div class="writing-cover">
+          <span class="writing-icon">✍️</span>
+        </div>
+        <h3 class="writing-title">Creative Essays</h3>
+        <p class="writing-description">Reflections on art, storytelling, and the creative process.</p>
+      </article>
+    </div>
+    <a href="/writing" class="section-link">Explore Writing →</a>
+  </section>
+
+  <!-- Commissions Section -->
+  <section class="section section-commissions">
+    <div class="commission-banner">
+      <div class="commission-status">
+        <span class="status-indicator status-open"></span>
+        <h2 class="commission-heading">Commissions: Open</h2>
+      </div>
+      <p class="commission-intro">
+        I'm currently accepting commission work for character illustrations, 
+        portrait pieces, and custom artwork. Whether you're looking for a 
+        D&D character, an original design, or fanart, I'd love to work with you!
+      </p>
+      <ul class="commission-offerings">
+        <li>✨ Character portraits & illustrations</li>
+        <li>🎨 Fantasy character designs</li>
+        <li>💫 Fanart commissions</li>
+        <li>📖 Comic page illustration</li>
+      </ul>
+      <a href="/commissions" class="btn btn-secondary">Learn More</a>
+    </div>
+  </section>
+
+  <!-- About Preview -->
+  <section class="section section-about">
+    <div class="about-preview">
+      <h2 class="section-heading">
+        About the Artist
+        <span class="sketchy-underline" aria-hidden="true"></span>
+      </h2>
+      <p class="about-text">
+        I'm Star Goldberg, a writer and illustrator based in Canada. My work is 
+        heavily influenced by the UPA animation style, with a focus on character-driven 
+        storytelling. I specialize in fantasy characters—especially orcs, tieflings, 
+        and elves—as well as fanart from properties like X-Men, TMNT, and The Murderbot 
+        Diaries. When I'm not drawing, I'm writing fiction and exploring new ways to 
+        tell stories through both words and images.
+      </p>
+      <a href="/about" class="section-link">More About Me →</a>
+    </div>
   </section>
 </BaseLayout>
