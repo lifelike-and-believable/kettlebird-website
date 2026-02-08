@@ -76,15 +76,18 @@ import RadialMenu from '../components/RadialMenu';
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
-    max-width: 600px;
+    width: 500px;
+    height: 500px;
+    max-width: 90vw;
+    max-height: 90vw;
   }
 
   .hero__logomark {
-    width: 200px;
-    height: 200px;
+    width: 100%;
+    height: 100%;
     animation: float 6s ease-in-out infinite;
-    z-index: 1;
+    z-index: 5;
+    position: relative;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -177,9 +180,9 @@ import RadialMenu from '../components/RadialMenu';
       gap: 2rem;
     }
 
-    .hero__logomark {
-      width: 150px;
-      height: 150px;
+    .hero__center {
+      width: 350px;
+      height: 350px;
     }
   }
 </style>

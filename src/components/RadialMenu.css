@@ -21,14 +21,14 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 64px;
-  height: 64px;
+  width: 80px;
+  height: 80px;
   min-width: 44px;
   min-height: 44px;
   border: 3px solid var(--color-ink);
   border-radius: 2% 98% 3% 97% / 97% 2% 98% 3%;
-  background-color: var(--color-primary);
-  box-shadow: var(--shadow-paper);
+  background-color: transparent;
+  box-shadow: none;
   cursor: pointer;
   padding: 0;
   display: flex;
@@ -37,7 +37,14 @@
   justify-content: center;
   gap: 0.25rem;
   transition: all 0.3s ease;
-  overflow: hidden;
+  overflow: visible;
+  opacity: 0.3;
+  z-index: 2;
+}
+
+.radial-menu__toggle:hover {
+  opacity: 1;
+  background-color: rgba(217, 93, 57, 0.1);
 }
 
 .radial-menu__toggle::before {
@@ -55,15 +62,10 @@
   pointer-events: none;
 }
 
-.radial-menu__toggle:hover {
-  box-shadow: var(--shadow-paper-hover);
-  background-color: var(--color-accent-2);
-  border-radius: 3% 97% 2% 98% / 98% 3% 97% 2%;
-}
-
 .radial-menu__toggle:focus {
   outline: 3px solid var(--color-accent-1);
   outline-offset: 4px;
+  opacity: 1;
 }
 
 .radial-menu__toggle:focus:not(:focus-visible) {
@@ -73,10 +75,11 @@
 .radial-menu__toggle:focus-visible {
   outline: 3px solid var(--color-accent-1);
   outline-offset: 4px;
+  opacity: 1;
 }
 
 .radial-menu__toggle:active {
-  box-shadow: var(--shadow-paper);
+  box-shadow: none;
 }
 
 /* Toggle Icon (Plus/X) */
