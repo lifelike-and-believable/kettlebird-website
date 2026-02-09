@@ -87,20 +87,39 @@ Star already uses Ko-fi for commissions, which provides a proven foundation to b
 
 **Alternative platform consideration**: If Star wants more integrated commission management, **Artistree.io** offers 100% free artist accounts (clients pay a small platform fee),  built-in workflow management, invoicing, and dispute resolution— potentially replacing both Ko-fi and manual form/tracking systems.
 
-## UI/UX: Radial navigation and animated transitions
+## UI/UX: Horizontal tab navigation and grid-based layout
 
-The creative navigation vision requires modern CSS techniques combined with React animation libraries.
+Based on the approved client mockup (docs/homepage-mockup.jpg), the navigation uses a clean horizontal tab system, not a radial menu.
 
-**Radial menu implementation** should use CSS trigonometric functions (`sin()`, `cos()`) for positioning menu items in a circle—now fully supported across all modern browsers.  Una Kravets’ approach provides the cleanest implementation:  items positioned using `transform: translateX(calc(cos(var(--angle)) * var(--radius))) translateY(calc(sin(var(--angle) * -1) * var(--radius)))`. Add staggered `transition-delay` on nth-child selectors for sequential “flutter” reveal effect when the menu opens.  
+**Horizontal tab navigation** features:
+- Fixed position at top of page below brand header
+- Golden yellow background (#f4c95d) for active/primary tabs
+- Thick black borders (3-4px solid) around each tab
+- Bold uppercase text for labels: PORTFOLIO, COMICS, WRITING, ABOUT, NEWS
+- Tabs remain visible while scrolling (sticky positioning)
+- Responsive: collapse to hamburger menu or vertical stack on mobile
 
-For React integration, **@spaceymonk/react-radial-menu** provides nested submenu support and built-in animations.  The menu should have **5-7 items maximum**: Home, Portfolio/Gallery, Comics, Writing, Commissions, About, Contact.
+**Grid-based card layout** for homepage:
+- CSS Grid with named grid areas for flexible, asymmetric layout
+- Cards of varying sizes create visual interest
+- Each card has thick black border and optional drop shadow (4px offset)
+- Colored backgrounds match section type:
+  - Yellow/gold for branding elements
+  - Orange for merchandise/action items
+  - Coral/red for contact
+  - Mint green for about
+  - Lime yellow for news
+  - Dark overlays for portfolio/artwork previews
+- Logo card features centered purple bird icon with "KB" initials
 
-**Animated menu-to-navbar transformation** uses Framer Motion’s `layout` and `layoutId` props. When transitioning from a splash/landing page to inner pages, menu items can smoothly animate from their radial positions to a horizontal navbar. This creates the “items moving to navbar” effect described in requirements.
+**Gallery-to-detail transitions**: When clicking a gallery thumbnail or card, use smooth page transitions (Astro View Transitions) or modal lightbox overlay. Keep transitions simple and fast (200-300ms) without complex morphing animations.
 
-**Gallery-to-detail shared element transitions**: When clicking a gallery thumbnail, use `layoutId` matching between the thumbnail and detail page hero image. Framer Motion automatically animates the image expanding from its grid position to full-width detail view—a signature portfolio interaction that feels polished and intentional.
-
-**Accessibility requirements**: Include `role="menu"` and `role="menuitem"` ARIA attributes,  ensure 44x44px minimum touch targets,  provide keyboard navigation (Tab between items, Enter to select, Escape to close),  and implement `prefers-reduced-motion` media query support to disable animations for users who request it.
-
+**Accessibility requirements**: 
+- Proper ARIA labels for navigation (`role="navigation"`, `aria-label="Main navigation"`)
+- Ensure 44x44px minimum touch targets for all interactive elements
+- Keyboard navigation (Tab between items, Enter to select)
+- Focus indicators with high contrast outlines
+- `prefers-reduced-motion` support to disable animations
 ## Phased implementation roadmap
 
 **Phase 1: Foundation (Weeks 1-2)**
