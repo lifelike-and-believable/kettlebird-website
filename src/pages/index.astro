@@ -361,6 +361,11 @@
           grid-column: span 1;
         }
 
+        /* Make logo appear first on mobile */
+        .grid-tile-logo {
+          order: -1;
+        }
+
         .about-section {
           grid-template-columns: 1fr;
         }
@@ -391,7 +396,14 @@
 
       <!-- Main Grid -->
       <div class="grid-container">
-        <!-- Logo Tile - Hero image, appears first on mobile -->
+        <!-- Portfolio Tile -->
+        <a href="/portfolio" class="grid-tile grid-tile-portfolio">
+          <div class="tile-content">
+            <span class="tile-title">PORTFOLIO</span>
+          </div>
+        </a>
+
+        <!-- Logo Tile -->
         <div class="grid-tile grid-tile-logo">
           <div class="logo-content">
             <div class="logo-shape">
@@ -400,13 +412,6 @@
             <span class="logo-letters">KB</span>
           </div>
         </div>
-
-        <!-- Portfolio Tile -->
-        <a href="/portfolio" class="grid-tile grid-tile-portfolio">
-          <div class="tile-content">
-            <span class="tile-title">PORTFOLIO</span>
-          </div>
-        </a>
 
         <!-- Merch Tile -->
         <a href="/shop" class="grid-tile grid-tile-merch">
