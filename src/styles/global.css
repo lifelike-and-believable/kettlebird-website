@@ -43,7 +43,7 @@ body {
 h1,
 h2,
 h3 {
-  font-family: 'Caveat', 'Patrick Hand', 'DM Sans', system-ui, sans-serif;
+  font-family: 'Nunito', 'DM Sans', system-ui, sans-serif;
   margin: 0 0 0.5rem;
   letter-spacing: 0.02em;
 }
@@ -285,7 +285,7 @@ a:focus {
 }
 
 .logo-text {
-  font-family: 'Caveat', 'Patrick Hand', cursive;
+  font-family: 'Nunito', sans-serif;
   font-size: clamp(1.5rem, 4vw, 2rem);
   font-weight: 700;
   letter-spacing: 0.02em;
@@ -378,7 +378,7 @@ a:focus {
 }
 
 .nav-list a {
-  font-family: 'Patrick Hand', 'DM Sans', sans-serif;
+  font-family: 'Nunito', 'DM Sans', sans-serif;
   font-size: 1.1rem;
   color: var(--color-ink);
   text-decoration: none;
@@ -490,7 +490,7 @@ a:focus {
 }
 
 .footer-heading {
-  font-family: 'Patrick Hand', 'DM Sans', sans-serif;
+  font-family: 'Nunito', 'DM Sans', sans-serif;
   font-size: 1.25rem;
   margin: 0 0 0.5rem;
   color: var(--color-primary);
@@ -563,7 +563,7 @@ a:focus {
 
 .btn {
   display: inline-block;
-  font-family: 'Patrick Hand', 'DM Sans', sans-serif;
+  font-family: 'Nunito', 'DM Sans', sans-serif;
   font-size: 1.1rem;
   font-weight: 600;
   padding: 0.75rem 1.5rem;
@@ -715,7 +715,7 @@ a:focus {
   min-width: 44px;
   min-height: 44px;
   padding: 0.4rem 0.8rem;
-  font-family: 'Patrick Hand', 'DM Sans', sans-serif;
+  font-family: 'Nunito', 'DM Sans', sans-serif;
   font-size: clamp(0.85rem, 2vw, 1rem);
   color: var(--color-ink);
   background: var(--color-paper);
@@ -816,7 +816,7 @@ a:focus {
 }
 
 .section-heading {
-  font-family: 'Caveat', cursive;
+  font-family: 'Nunito', sans-serif;
   font-size: clamp(2rem, 5vw, 3rem);
   font-weight: 700;
   text-align: center;
@@ -841,7 +841,7 @@ a:focus {
 
 .section-link {
   display: inline-block;
-  font-family: 'Patrick Hand', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 1.1rem;
   color: var(--color-accent-1);
   text-decoration: none;
@@ -949,7 +949,7 @@ a:focus {
 }
 
 .artwork-title {
-  font-family: 'Patrick Hand', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 1.25rem;
   margin: 0 0 0.5rem;
   color: var(--color-ink);
@@ -1025,7 +1025,7 @@ a:focus {
 }
 
 .comic-title {
-  font-family: 'Caveat', cursive;
+  font-family: 'Nunito', sans-serif;
   font-size: 1.75rem;
   margin: 0 0 0.5rem;
   color: var(--color-ink);
@@ -1040,7 +1040,7 @@ a:focus {
 
 .comic-status {
   display: inline-block;
-  font-family: 'Patrick Hand', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 0.9rem;
   padding: 0.25rem 0.75rem;
   background: var(--color-accent-1);
@@ -1101,7 +1101,7 @@ a:focus {
 }
 
 .writing-title {
-  font-family: 'Caveat', cursive;
+  font-family: 'Nunito', sans-serif;
   font-size: 1.75rem;
   margin: 0 0 0.5rem;
   color: var(--color-ink);
@@ -1170,7 +1170,7 @@ a:focus {
 }
 
 .commission-heading {
-  font-family: 'Caveat', cursive;
+  font-family: 'Nunito', sans-serif;
   font-size: clamp(1.75rem, 4vw, 2.5rem);
   margin: 0;
   color: var(--color-ink);
@@ -1194,7 +1194,7 @@ a:focus {
 }
 
 .commission-offerings li {
-  font-family: 'Patrick Hand', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 1rem;
   padding: 0.5rem;
   text-align: center;
