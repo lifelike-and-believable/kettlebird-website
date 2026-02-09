@@ -361,10 +361,16 @@
           grid-column: span 1;
         }
 
-        /* Make logo appear first on mobile */
-        .grid-tile-logo {
-          order: -1;
-        }
+        /* Mobile panel ordering */
+        .grid-tile-logo { order: -1; }      /* 1st - Logo/Hero */
+        .grid-tile-portfolio { order: 0; }  /* 2nd - Portfolio */
+        .grid-tile-comics { order: 1; }     /* 3rd - Comics */
+        .grid-tile-writing { order: 2; }    /* 4th - Writing */
+        .grid-tile-commissions { order: 3; }/* 5th - Commissions */
+        .grid-tile-merch { order: 4; }      /* 6th - Merch */
+        .grid-tile-about { order: 5; }      /* 7th - About (left) */
+        .grid-tile-news { order: 6; }       /* 7th - News (right) */
+        .grid-tile-contact { order: 7; }    /* 8th - Contact */
 
         .about-section {
           grid-template-columns: 1fr;
@@ -405,12 +411,7 @@
 
         <!-- Logo Tile -->
         <div class="grid-tile grid-tile-logo">
-          <div class="logo-content">
-            <div class="logo-shape">
-              <div class="logo-inner"></div>
-            </div>
-            <span class="logo-letters">KB</span>
-          </div>
+          <img src="/assets/images/kblogo.png" alt="Kettlebird Logo" class="tile-image" width="1600" height="1600" />
         </div>
 
         <!-- Merch Tile -->
