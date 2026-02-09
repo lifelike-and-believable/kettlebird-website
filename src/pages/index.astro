@@ -61,6 +61,13 @@
         letter-spacing: 0.02em;
       }
 
+      .subtitle-nav-container {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+
       .homepage-subtitle {
         font-family: 'Caveat', cursive;
         font-size: clamp(1.5rem, 4vw, 2.5rem);
@@ -73,7 +80,6 @@
         display: flex;
         gap: 0.5rem;
         flex-wrap: wrap;
-        margin-bottom: 2rem;
       }
 
       .nav-button {
@@ -103,6 +109,7 @@
       .grid-container {
         display: grid;
         grid-template-columns: repeat(6, 1fr);
+        grid-template-rows: repeat(7, 150px);
         gap: 1rem;
         margin-bottom: 2rem;
       }
@@ -144,7 +151,7 @@
 
       .grid-tile-comics {
         grid-column: span 2;
-        grid-row: span 2;
+        grid-row: span 3;
         background: #C8C8C8;
       }
 
@@ -162,20 +169,28 @@
 
       .grid-tile-contact {
         grid-column: span 2;
-        grid-row: span 2;
+        grid-row: span 3;
         background: #CC5544;
       }
 
       .grid-tile-about {
         grid-column: span 1;
-        grid-row: span 2;
+        grid-row: span 3;
         background: var(--color-green);
+      }
+
+      .grid-tile-about .tile-content {
+        justify-content: flex-start;
       }
 
       .grid-tile-news {
         grid-column: span 1;
-        grid-row: span 2;
+        grid-row: span 3;
         background: var(--color-yellow);
+      }
+
+      .grid-tile-news .tile-content {
+        justify-content: flex-end;
       }
 
       .tile-content {
@@ -342,6 +357,11 @@
 
       /* Responsive */
       @media (max-width: 768px) {
+        .subtitle-nav-container {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
         .grid-container {
           grid-template-columns: repeat(2, 1fr);
         }
@@ -388,17 +408,18 @@
       <!-- Header -->
       <header class="homepage-header">
         <h1 class="homepage-title">Kettlebird</h1>
-        <p class="homepage-subtitle">Comics + Illustration</p>
+        <div class="subtitle-nav-container">
+          <p class="homepage-subtitle">Comics + Illustration</p>
+          <!-- Navigation -->
+          <nav class="homepage-nav">
+            <a href="/portfolio" class="nav-button">PORTFOLIO</a>
+            <a href="/comics" class="nav-button">COMICS</a>
+            <a href="/writing" class="nav-button">WRITING</a>
+            <a href="/about" class="nav-button">ABOUT</a>
+            <a href="#news" class="nav-button nav-button-highlight">NEWS</a>
+          </nav>
+        </div>
       </header>
-
-      <!-- Navigation -->
-      <nav class="homepage-nav">
-        <a href="/portfolio" class="nav-button">PORTFOLIO</a>
-        <a href="/comics" class="nav-button">COMICS</a>
-        <a href="/writing" class="nav-button">WRITING</a>
-        <a href="/about" class="nav-button">ABOUT</a>
-        <a href="#news" class="nav-button nav-button-highlight">NEWS</a>
-      </nav>
 
       <!-- Main Grid -->
       <div class="grid-container">
