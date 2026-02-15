@@ -27,14 +27,11 @@
         --color-dark-purple: #4a4063;
         --color-ink: #2b2b2b;
 
-        /* Use the actual pixel width of Paper_1_Torn.png */
+        /* Match the actual pixel width of Paper_1_Torn.png */
         --paper-torn-width: 1600px;
 
-        /* How tall the torn paper strip should be behind title+nav */
+        /* How tall the torn paper strip renders behind title + nav */
         --paper-torn-render-height: 300px;
-
-        /* How close the nav can sit to the torn edge */
-        --paper-torn-content-bottom-gap: 16px;
       }
 
       * {
@@ -63,29 +60,24 @@
       .homepage-header {
         background-color: transparent;
 
-        /* full-bleed header; 0 gap to the grid */
+        /* full-bleed sides; 0 gap to the grid below */
         margin: -2rem -1rem 0 -1rem;
 
         position: relative;
         z-index: 1;
 
-        /* crops the torn paper only on the sides */
+        /* clips the torn paper on the sides only */
         overflow: hidden;
 
-        /* content padding */
-        padding-top: 2rem;
-        padding-left: 1rem;
-        padding-right: 1rem;
-
         /*
-          Make the header tall enough to show the torn strip.
-          This prevents bottom clipping when render-height increases.
+          Normal content padding only.
+          The ::before is absolutely positioned so it doesn't need
+          extra padding-bottom to avoid clipping.
         */
-        padding-bottom: calc(
-          2rem + var(--paper-torn-render-height) - var(--paper-torn-content-bottom-gap)
-        );
+        padding: 2rem 1rem 1rem;
       }
 
+      /* Torn paper layer behind the title + menu */
       .homepage-header::before {
         content: '';
         position: absolute;
@@ -99,8 +91,9 @@
         background-position: center top;
 
         /*
-          Default: keep image at its native width -> narrow viewports crop left/right.
-          Height is forced to fill the strip (so no vertical cropping of the strip itself).
+          Default (narrow viewports): keep image at its native width.
+          The header's overflow:hidden crops only the left/right sides.
+          Height fills the strip fully (no vertical cropping).
         */
         background-size: var(--paper-torn-width) 100%;
 
@@ -108,14 +101,14 @@
         z-index: 0;
       }
 
-      /* Wide viewports: scale edge-to-edge */
+      /* Wide viewports: scale image edge-to-edge */
       @media (min-width: 1600px) {
         .homepage-header::before {
           background-size: 100% 100%;
         }
       }
 
-      /* Make sure header content is above the torn paper layer */
+      /* Keep header content above the torn paper layer */
       .homepage-header > * {
         position: relative;
         z-index: 1;
