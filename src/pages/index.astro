@@ -27,14 +27,12 @@
         --color-dark-purple: #4a4063;
         --color-ink: #2b2b2b;
 
-        /* Match your Paper_1_Torn.png dimensions */
+        /* Paper image dimensions */
         --paper-torn-width: 1600px;
+        --paper-torn-height: 470px;
 
-        /*
-          Small gap so the torn edge is visible below the nav
-          without creating a huge blank area.
-        */
-        --paper-torn-bottom-gap: 0.75rem;
+        /* Fixed overlap amount between paper edge and grid */
+        --paper-overlap: 10px;
       }
 
       * {
@@ -62,68 +60,34 @@
       /* Header */
       .homepage-header {
         background-color: transparent;
-
-        /* full-bleed sides; small bottom gap so torn edge is visible */
-        margin: -2rem -1rem var(--paper-torn-bottom-gap) -1rem;
-
-        position: relative;
-        z-index: 1;
-
-        /* clip sides only so narrow viewports crop left/right;
-           let the torn edge extend below without being clipped */
-        overflow-x: clip;
-        overflow-y: visible;
-
-        /* normal content padding */
-        padding: 2rem 1rem 1rem;
-      }
-
-      /* Torn paper layer behind the title + menu */
-      .homepage-header::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 50%;
-        transform: translateX(-50%);
-
-        /*
-          Always render at the image's native width.
-          Wider than the header on narrow screens,
-          but overflow-x:clip on the parent crops the sides.
-        */
-        width: var(--paper-torn-width);
-
-        /*
-          Use the image's real aspect ratio to set height:
-          (470 / 1600) × 100 = 29.375%
-          padding-bottom on an absolutely-positioned element with no
-          explicit height makes it size based on its own width,
-          preserving the torn paper's natural proportions at every size.
-        */
-        padding-bottom: 29.375%;
-
         background-image: url('/assets/images/Paper_1_Torn.png');
         background-repeat: no-repeat;
         background-position: center top;
-        background-size: 100% auto;
 
-        pointer-events: none;
-        z-index: 0;
-      }
+        /* Narrow screens: scale by height (no vertical squish) */
+        background-size: auto 100%;
 
-      /* Wide viewports: let the pseudo-element fill the header width */
-      @media (min-width: 1600px) {
-        .homepage-header::before {
-          width: 100%;
-          left: 0;
-          transform: none;
-        }
-      }
+        /* Allow content to grow if it wraps on mobile */
+        min-height: var(--paper-torn-height);
 
-      /* Keep header content above the torn paper layer */
-      .homepage-header > * {
+        /* Full bleed horizontally */
+        margin: -2rem -1rem 0 -1rem;
+
         position: relative;
         z-index: 1;
+
+        /* Allow the torn edge to overlap the grid */
+        overflow: visible;
+
+        /* Keep header content inside the paper area */
+        padding: 2rem 1rem 1rem;
+      }
+
+      /* Wide screens: scale to full width without squish */
+      @media (min-width: 1600px) {
+        .homepage-header {
+          background-size: 100% auto;
+        }
       }
 
       .homepage-title {
@@ -188,6 +152,10 @@
         grid-template-columns: repeat(6, 1fr);
         grid-template-rows: repeat(7, minmax(75px, auto));
         gap: 1rem;
+
+        /* Fixed overlap: pull grid up by a small amount */
+        margin-top: calc(-1 * var(--paper-overlap));
+
         margin-bottom: 2rem;
       }
 
@@ -327,6 +295,45 @@
 
       .grid-tile-contact {
         background: linear-gradient(135deg, #cc5544 0%, #d94f3d 100%);
+      }
+
+      .logo-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+      }
+
+      .logo-shape {
+        width: clamp(150px, 50%, 250px);
+        height: clamp(180px, 60%, 300px);
+        background: var(--color-dark-purple);
+        border-radius: 50% 50% 0 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+        position: relative;
+      }
+
+      .logo-inner {
+        width: 35%;
+        height: 25%;
+        background: var(--color-beige);
+        border-radius: 50%;
+        position: absolute;
+        top: 30%;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .logo-letters {
+        font-family: 'Nunito', sans-serif;
+        font-size: clamp(2rem, 5vw, 4rem);
+        font-weight: 700;
+        color: var(--color-ink);
       }
 
       /* Social Links */
