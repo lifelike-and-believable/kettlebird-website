@@ -8,7 +8,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Kettlebird Creations • Writer & Illustrator</title>
-    <meta name="description" content="Portfolio of Star Goldberg (they/them) - UPA-inspired illustrations, comics, and written works featuring fantasy characters and fanart." />
+    <meta
+      name="description"
+      content="Portfolio of Star Goldberg (they/them) - UPA-inspired illustrations, comics, and written works featuring fantasy characters and fanart."
+    />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -18,11 +21,14 @@
     <style>
       :root {
         --color-beige: #f5f1e8;
-        --color-yellow: #F4CE6A;
-        --color-orange: #E89A5A;
-        --color-green: #A8D5BA;
-        --color-dark-purple: #4A4063;
+        --color-yellow: #f4ce6a;
+        --color-orange: #e89a5a;
+        --color-green: #a8d5ba;
+        --color-dark-purple: #4a4063;
         --color-ink: #2b2b2b;
+
+        /* Set to the actual pixel width of Paper_1_Torn.png you will use */
+        --paper-torn-width: 1600px;
       }
 
       * {
@@ -51,14 +57,32 @@
       .homepage-header {
         background-color: #f5f1e8;
         background-image: url('/assets/images/Paper_1_Torn.png');
-        background-size: cover;
-        background-position: center top;
         background-repeat: no-repeat;
+
+        /*
+          Desired behavior:
+          - If window is narrower than the image: crop ONLY the left/right sides (never crop vertically).
+          - If window is wider than the image: scale to fit header width edge-to-edge.
+        */
+        background-position: center top;
+
+        /* Narrow windows: match header height => preserves full vertical image; side-crops only */
+        background-size: auto 100%;
+
         padding: 2rem 1rem 4rem;
         margin: -2rem -1rem 2rem -1rem;
         position: relative;
         z-index: 1;
-        overflow: visible;
+
+        /* ensure any horizontal overflow is clipped */
+        overflow: hidden;
+      }
+
+      /* Wide windows: scale image to fit the full header width edge-to-edge */
+      @media (min-width: 1600px) {
+        .homepage-header {
+          background-size: 100% auto;
+        }
       }
 
       .homepage-title {
@@ -146,7 +170,7 @@
       .grid-tile-portfolio {
         grid-column: span 2;
         grid-row: span 2;
-        background: #8B7355;
+        background: #8b7355;
       }
 
       .grid-tile-logo {
@@ -164,25 +188,25 @@
       .grid-tile-comics {
         grid-column: span 2;
         grid-row: span 3;
-        background: #C8C8C8;
+        background: #c8c8c8;
       }
 
       .grid-tile-commissions {
         grid-column: span 2;
         grid-row: span 2;
-        background: #A8A8A8;
+        background: #a8a8a8;
       }
 
       .grid-tile-writing {
         grid-column: 1 / span 2;
         grid-row: 6 / span 2;
-        background: #D94F3D;
+        background: #d94f3d;
       }
 
       .grid-tile-contact {
         grid-column: 3 / span 2;
         grid-row: 5 / span 3;
-        background: #CC5544;
+        background: #cc5544;
       }
 
       .grid-tile-about {
@@ -233,35 +257,35 @@
 
       /* Add subtle texture/pattern to tiles */
       .grid-tile-portfolio {
-        background: #8B7355;
-        background-image: url("/assets/images/bkgd-artwork.jpg");
+        background: #8b7355;
+        background-image: url('/assets/images/bkgd-artwork.jpg');
         background-size: cover;
         background-position: center;
       }
 
       .grid-tile-comics {
-        background: #C8C8C8;
-        background-image: url("/assets/images/bkgd-Comics.jpg");
+        background: #c8c8c8;
+        background-image: url('/assets/images/bkgd-Comics.jpg');
         background-size: cover;
         background-position: center;
       }
 
       .grid-tile-writing {
-        background: #D94F3D;
-        background-image: url("/assets/images/bkgd-writing.jpg");
+        background: #d94f3d;
+        background-image: url('/assets/images/bkgd-writing.jpg');
         background-size: cover;
         background-position: center;
       }
 
       .grid-tile-commissions {
-        background: #A8A8A8;
-        background-image: url("/assets/images/bkgd-commissions.jpeg");
+        background: #a8a8a8;
+        background-image: url('/assets/images/bkgd-commissions.jpeg');
         background-size: cover;
         background-position: center;
       }
 
       .grid-tile-contact {
-        background: linear-gradient(135deg, #CC5544 0%, #D94F3D 100%);
+        background: linear-gradient(135deg, #cc5544 0%, #d94f3d 100%);
       }
 
       .logo-content {
@@ -339,10 +363,18 @@
         border-right: none;
       }
 
-      .social-link:nth-child(1) { background-image: url('/assets/images/Highlighter_G.png'); }
-      .social-link:nth-child(2) { background-image: url('/assets/images/Highlighter_Y.png'); }
-      .social-link:nth-child(3) { background-image: url('/assets/images/Highlighter_O.png'); }
-      .social-link:nth-child(4) { background-image: url('/assets/images/Highlighter_M.png'); }
+      .social-link:nth-child(1) {
+        background-image: url('/assets/images/Highlighter_G.png');
+      }
+      .social-link:nth-child(2) {
+        background-image: url('/assets/images/Highlighter_Y.png');
+      }
+      .social-link:nth-child(3) {
+        background-image: url('/assets/images/Highlighter_O.png');
+      }
+      .social-link:nth-child(4) {
+        background-image: url('/assets/images/Highlighter_M.png');
+      }
 
       .social-link:hover {
         transform: scale(1.05);
@@ -423,15 +455,33 @@
         }
 
         /* Mobile panel ordering */
-        .grid-tile-logo { order: -1; }      /* 1st - Logo/Hero */
-        .grid-tile-portfolio { order: 0; }  /* 2nd - Portfolio */
-        .grid-tile-comics { order: 1; }     /* 3rd - Comics */
-        .grid-tile-writing { order: 2; }    /* 4th - Writing */
-        .grid-tile-commissions { order: 3; }/* 5th - Commissions */
-        .grid-tile-merch { order: 4; }      /* 6th - Merch */
-        .grid-tile-about { order: 5; }      /* 7th - About (left) */
-        .grid-tile-news { order: 6; }       /* 7th - News (right) */
-        .grid-tile-contact { order: 7; }    /* 8th - Contact */
+        .grid-tile-logo {
+          order: -1;
+        } /* 1st - Logo/Hero */
+        .grid-tile-portfolio {
+          order: 0;
+        } /* 2nd - Portfolio */
+        .grid-tile-comics {
+          order: 1;
+        } /* 3rd - Comics */
+        .grid-tile-writing {
+          order: 2;
+        } /* 4th - Writing */
+        .grid-tile-commissions {
+          order: 3;
+        } /* 5th - Commissions */
+        .grid-tile-merch {
+          order: 4;
+        } /* 6th - Merch */
+        .grid-tile-about {
+          order: 5;
+        } /* 7th - About (left) */
+        .grid-tile-news {
+          order: 6;
+        } /* 7th - News (right) */
+        .grid-tile-contact {
+          order: 7;
+        } /* 8th - Contact */
 
         .about-section {
           grid-template-columns: 1fr;
@@ -473,7 +523,13 @@
 
         <!-- Logo Tile -->
         <div class="grid-tile grid-tile-logo">
-          <img src="/assets/images/kblogo.png" alt="Kettlebird Logo" class="tile-image" width="1600" height="1600" />
+          <img
+            src="/assets/images/kblogo.png"
+            alt="Kettlebird Logo"
+            class="tile-image"
+            width="1600"
+            height="1600"
+          />
         </div>
 
         <!-- Merch Tile -->
@@ -528,20 +584,37 @@
 
       <!-- Social Links -->
       <div class="social-links">
-        <a href="https://bsky.app/profile/kettlebird.bsky.social" target="_blank" rel="noopener noreferrer" class="social-link">BLUESKY</a>
-        <a href="https://kettle-bird.tumblr.com" target="_blank" rel="noopener noreferrer" class="social-link">TUMBLR</a>
-        <a href="https://www.instagram.com/kettlebirdart" target="_blank" rel="noopener noreferrer" class="social-link">INSTAGRAM</a>
-        <a href="https://ko-fi.com/kettlebirdart" target="_blank" rel="noopener noreferrer" class="social-link">KO-FI</a>
+        <a
+          href="https://bsky.app/profile/kettlebird.bsky.social"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="social-link"
+          >BLUESKY</a
+        >
+        <a href="https://kettle-bird.tumblr.com" target="_blank" rel="noopener noreferrer" class="social-link"
+          >TUMBLR</a
+        >
+        <a
+          href="https://www.instagram.com/kettlebirdart"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="social-link"
+          >INSTAGRAM</a
+        >
+        <a href="https://ko-fi.com/kettlebirdart" target="_blank" rel="noopener noreferrer" class="social-link"
+          >KO-FI</a
+        >
       </div>
 
       <!-- About the Artist Section -->
       <section class="about-section">
-        <div class="portrait-placeholder">
-          [Insert<br>Portrait Here]
-        </div>
+        <div class="portrait-placeholder">[Insert<br />Portrait Here]</div>
         <div class="about-text">
           <h2>ABOUT THE ARTIST</h2>
-          <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>
+          <p>
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco lab[...]
+          </p>
         </div>
       </section>
     </div>
