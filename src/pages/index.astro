@@ -27,11 +27,14 @@
         --color-dark-purple: #4a4063;
         --color-ink: #2b2b2b;
 
-        /* Match the actual pixel width of Paper_1_Torn.png */
+        /* Match your Paper_1_Torn.png dimensions */
         --paper-torn-width: 1600px;
 
-        /* How tall the torn paper strip renders behind title + nav */
-        --paper-torn-render-height: 300px;
+        /*
+          Small gap so the torn edge is visible below the nav
+          without creating a huge blank area.
+        */
+        --paper-torn-bottom-gap: 0.75rem;
       }
 
       * {
@@ -60,20 +63,18 @@
       .homepage-header {
         background-color: transparent;
 
-        /* full-bleed sides; 0 gap to the grid below */
-        margin: -2rem -1rem 0.75rem -1rem;
+        /* full-bleed sides; small bottom gap so torn edge is visible */
+        margin: -2rem -1rem var(--paper-torn-bottom-gap) -1rem;
 
         position: relative;
         z-index: 1;
 
-        /* clips the torn paper on the sides only */
-        overflow: hidden;
+        /* clip sides only so narrow viewports crop left/right;
+           let the torn edge extend below without being clipped */
+        overflow-x: clip;
+        overflow-y: visible;
 
-        /*
-          Normal content padding only.
-          The ::before is absolutely positioned so it doesn't need
-          extra padding-bottom to avoid clipping.
-        */
+        /* normal content padding */
         padding: 2rem 1rem 1rem;
       }
 
@@ -82,29 +83,40 @@
         content: '';
         position: absolute;
         top: 0;
-        left: 0;
-        width: 100%;
-        height: var(--paper-torn-render-height);
+        left: 50%;
+        transform: translateX(-50%);
+
+        /*
+          Always render at the image's native width.
+          Wider than the header on narrow screens,
+          but overflow-x:clip on the parent crops the sides.
+        */
+        width: var(--paper-torn-width);
+
+        /*
+          Use the image's real aspect ratio to set height:
+          (470 / 1600) × 100 = 29.375%
+          padding-bottom on an absolutely-positioned element with no
+          explicit height makes it size based on its own width,
+          preserving the torn paper's natural proportions at every size.
+        */
+        padding-bottom: 29.375%;
 
         background-image: url('/assets/images/Paper_1_Torn.png');
         background-repeat: no-repeat;
         background-position: center top;
-
-        /*
-          Default (narrow viewports): keep image at its native width.
-          The header's overflow:hidden crops only the left/right sides.
-          Height fills the strip fully (no vertical cropping).
-        */
-        background-size: var(--paper-torn-width) 100%;
+        background-size: 100% auto;
 
         pointer-events: none;
         z-index: 0;
       }
 
-      /* Wide viewports: scale image edge-to-edge */
+      /* Wide viewports: let the pseudo-element fill the header width */
       @media (min-width: 1600px) {
         .homepage-header::before {
-          background-size: 100% 100%;
+          width: 100%;
+          left: 0;
+          transform: none;
         }
       }
 
@@ -418,11 +430,6 @@
 
       /* Responsive */
       @media (max-width: 768px) {
-        /* taller on mobile since nav wraps */
-        :root {
-          --paper-torn-render-height: 340px;
-        }
-
         .subtitle-nav-container {
           flex-direction: column;
           align-items: flex-start;
