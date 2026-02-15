@@ -295,24 +295,29 @@
       /* Social Links */
       .social-links {
         display: flex;
-        gap: 0.5rem;
+        gap: 1rem;
         flex-wrap: wrap;
         justify-content: center;
         margin-bottom: 3rem;
+        max-width: 80%;
+        margin-left: auto;
+        margin-right: auto;
       }
 
       .social-link {
         font-family: 'Nunito', sans-serif;
-        font-size: 1rem;
-        padding: 0.5rem 1rem;
+        font-size: 1.25rem;
+        padding: 1rem 2rem;
         text-decoration: none;
         color: var(--color-ink);
-        font-weight: 600;
-        transition: all 0.2s;
+        font-weight: 700;
+        transition: all 0.2s ease-out;
         display: inline-block;
         background-size: 100% 100%;
         background-repeat: no-repeat;
         background-position: center;
+        flex: 1 1 auto;
+        min-width: 180px;
       }
 
       .social-link:nth-child(1) { background-image: url('/assets/images/Highlighter_G.png'); }
@@ -321,8 +326,8 @@
       .social-link:nth-child(4) { background-image: url('/assets/images/Highlighter_M.png'); }
 
       .social-link:hover {
-        transform: translate(-2px, -2px);
-        box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.2);
+        transform: scale(1.05);
+        filter: brightness(1.1);
       }
 
       /* About Section */
