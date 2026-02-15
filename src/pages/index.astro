@@ -31,10 +31,11 @@
         --paper-torn-width: 1600px;
 
         /*
-          Height of the torn-paper strip area (should cover title + nav and stop before the grid).
-          Tweak this number if you want more/less paper behind the header content.
+          How tall to DRAW the torn-paper strip.
+          This should be tall enough to cover the title + nav visually,
+          but it should NOT control layout height.
         */
-        --paper-torn-height: 720px;
+        --paper-torn-render-height: 260px;
       }
 
       * {
@@ -61,34 +62,22 @@
 
       /* Header */
       .homepage-header {
-        /* Transparent so body paper texture shows through outside the PNG */
         background-color: transparent;
-
-        /* Torn paper behind title + menu */
         background-image: url('/assets/images/Paper_1_Torn.png');
         background-repeat: no-repeat;
         background-position: center top;
 
         /*
-          Key behavior:
-          - If viewport < image width: use image width => side crop only
-          - If viewport > image width: use 100% => scale to edge-to-edge width
-          - Fixed height so it doesn't "shrink" based on header content height
+          - viewport narrower than image: use image width => crops sides only
+          - viewport wider than image: use 100% => scales edge-to-edge
+          - fixed render height so it doesn't "shrink" based on header height
         */
-        background-size: max(100%, var(--paper-torn-width)) var(--paper-torn-height);
+        background-size: max(100%, var(--paper-torn-width)) var(--paper-torn-render-height);
 
-        /*
-          Make the header box exactly the height where you want the torn paper to stop,
-          so it ends before the grid panel below.
-        */
-        min-height: var(--paper-torn-height);
-
-        padding: 2rem 1rem 2rem;
+        padding: 2rem 1rem 1rem; /* reduced bottom padding so grid sits closer */
         margin: -2rem -1rem 2rem -1rem;
         position: relative;
         z-index: 1;
-
-        /* clip any horizontal overflow (side cropping) */
         overflow: hidden;
       }
 
@@ -396,9 +385,9 @@
 
       /* Responsive */
       @media (max-width: 768px) {
+        /* a little taller on mobile since nav wraps */
         :root {
-          /* a little taller on mobile since nav wraps */
-          --paper-torn-height: 320px;
+          --paper-torn-render-height: 320px;
         }
 
         .subtitle-nav-container {
