@@ -27,8 +27,14 @@
         --color-dark-purple: #4a4063;
         --color-ink: #2b2b2b;
 
-        /* Set to the actual pixel width of Paper_1_Torn.png you will use */
+        /* width of Paper_1_Torn.png you're using */
         --paper-torn-width: 1600px;
+
+        /*
+          Height of the torn-paper strip area (should cover title + nav and stop before the grid).
+          Tweak this number if you want more/less paper behind the header content.
+        */
+        --paper-torn-height: 260px;
       }
 
       * {
@@ -55,33 +61,35 @@
 
       /* Header */
       .homepage-header {
+        /* Transparent so body paper texture shows through outside the PNG */
+        background-color: transparent;
+
+        /* Torn paper behind title + menu */
         background-image: url('/assets/images/Paper_1_Torn.png');
         background-repeat: no-repeat;
+        background-position: center top;
 
         /*
-          Desired behavior:
-          - If window is narrower than the image: crop ONLY the left/right sides (never crop vertically).
-          - If window is wider than the image: scale to fit header width edge-to-edge.
+          Key behavior:
+          - If viewport < image width: use image width => side crop only
+          - If viewport > image width: use 100% => scale to edge-to-edge width
+          - Fixed height so it doesn't "shrink" based on header content height
         */
-        background-position: center top;
-        background-color: transparent;
-        /* Narrow windows: match header height => preserves full vertical image; side-crops only */
-        background-size: auto 100%;
+        background-size: max(100%, var(--paper-torn-width)) var(--paper-torn-height);
 
-        padding: 2rem 1rem 4rem;
+        /*
+          Make the header box exactly the height where you want the torn paper to stop,
+          so it ends before the grid panel below.
+        */
+        min-height: var(--paper-torn-height);
+
+        padding: 2rem 1rem 2rem;
         margin: -2rem -1rem 2rem -1rem;
         position: relative;
         z-index: 1;
 
-        /* ensure any horizontal overflow is clipped */
+        /* clip any horizontal overflow (side cropping) */
         overflow: hidden;
-      }
-
-      /* Wide windows: scale image to fit the full header width edge-to-edge */
-      @media (min-width: 1600px) {
-        .homepage-header {
-          background-size: 100% auto;
-        }
       }
 
       .homepage-title {
@@ -287,45 +295,6 @@
         background: linear-gradient(135deg, #cc5544 0%, #d94f3d 100%);
       }
 
-      .logo-content {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        height: 100%;
-      }
-
-      .logo-shape {
-        width: clamp(150px, 50%, 250px);
-        height: clamp(180px, 60%, 300px);
-        background: var(--color-dark-purple);
-        border-radius: 50% 50% 0 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 1rem;
-        position: relative;
-      }
-
-      .logo-inner {
-        width: 35%;
-        height: 25%;
-        background: var(--color-beige);
-        border-radius: 50%;
-        position: absolute;
-        top: 30%;
-        left: 50%;
-        transform: translateX(-50%);
-      }
-
-      .logo-letters {
-        font-family: 'Nunito', sans-serif;
-        font-size: clamp(2rem, 5vw, 4rem);
-        font-weight: 700;
-        color: var(--color-ink);
-      }
-
       /* Social Links */
       .social-links {
         display: flex;
@@ -427,6 +396,11 @@
 
       /* Responsive */
       @media (max-width: 768px) {
+        :root {
+          /* a little taller on mobile since nav wraps */
+          --paper-torn-height: 320px;
+        }
+
         .subtitle-nav-container {
           flex-direction: column;
           align-items: flex-start;
@@ -522,13 +496,7 @@
 
         <!-- Logo Tile -->
         <div class="grid-tile grid-tile-logo">
-          <img
-            src="/assets/images/kblogo.png"
-            alt="Kettlebird Logo"
-            class="tile-image"
-            width="1600"
-            height="1600"
-          />
+          <img src="/assets/images/kblogo.png" alt="Kettlebird Logo" class="tile-image" width="1600" height="1600" />
         </div>
 
         <!-- Merch Tile -->
@@ -583,26 +551,10 @@
 
       <!-- Social Links -->
       <div class="social-links">
-        <a
-          href="https://bsky.app/profile/kettlebird.bsky.social"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="social-link"
-          >BLUESKY</a
-        >
-        <a href="https://kettle-bird.tumblr.com" target="_blank" rel="noopener noreferrer" class="social-link"
-          >TUMBLR</a
-        >
-        <a
-          href="https://www.instagram.com/kettlebirdart"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="social-link"
-          >INSTAGRAM</a
-        >
-        <a href="https://ko-fi.com/kettlebirdart" target="_blank" rel="noopener noreferrer" class="social-link"
-          >KO-FI</a
-        >
+        <a href="https://bsky.app/profile/kettlebird.bsky.social" target="_blank" rel="noopener noreferrer" class="social-link">BLUESKY</a>
+        <a href="https://kettle-bird.tumblr.com" target="_blank" rel="noopener noreferrer" class="social-link">TUMBLR</a>
+        <a href="https://www.instagram.com/kettlebirdart" target="_blank" rel="noopener noreferrer" class="social-link">INSTAGRAM</a>
+        <a href="https://ko-fi.com/kettlebirdart" target="_blank" rel="noopener noreferrer" class="social-link">KO-FI</a>
       </div>
 
       <!-- About the Artist Section -->
