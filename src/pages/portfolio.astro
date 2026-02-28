@@ -1,0 +1,238 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import GalleryGrid from '../components/GalleryGrid';
+import { getAllGalleryItems, type GalleryItem } from '../lib/queries';
+
+// Fetch at build time (or on-demand if SSR is enabled later)
+let items: GalleryItem[] = [];
+try {
+  items = await getAllGalleryItems();
+} catch (e) {
+  // Sanity not yet configured — page will render with empty state
+  console.warn('[portfolio] Could not fetch gallery items:', e);
+}
+---
+
+<BaseLayout
+  title="Portfolio • Kettlebird Creations"
+  description="Illustrations, fanart, original characters, and commissioned work by Star Goldberg (Kettlebird)."
+>
+  <section class="portfolio-page">
+    <header class="portfolio-header">
+      <h1 class="portfolio-title">Portfolio</h1>
+      <p class="portfolio-subtitle">Illustrations, fanart, and original characters</p>
+    </header>
+
+    <!-- GalleryGrid is a React island: filtering + lightbox run client-side -->
+    <GalleryGrid items={items} client:load />
+  </section>
+</BaseLayout>
+
+<style>
+  .portfolio-page {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem 1rem 4rem;
+  }
+
+  .portfolio-header {
+    margin-bottom: 2rem;
+  }
+
+  .portfolio-title {
+    font-family: 'Nunito', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 700;
+    margin: 0 0 0.25rem;
+  }
+
+  .portfolio-subtitle {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.1rem;
+    color: var(--color-dark-purple, #4a4063);
+    margin: 0;
+  }
+
+  /* ── Filter bar ───────────────────────────────────────────── */
+  :global(.gallery-filters) {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+  }
+
+  :global(.filter-btn) {
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    padding: 0.4rem 1.1rem;
+    border: 2px solid var(--color-ink, #2b2b2b);
+    background: transparent;
+    color: var(--color-ink, #2b2b2b);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, transform 0.15s;
+  }
+
+  :global(.filter-btn:hover),
+  :global(.filter-btn--active) {
+    background: var(--color-ink, #2b2b2b);
+    color: var(--color-beige, #f5f1e8);
+    transform: translate(-1px, -1px);
+  }
+
+  /* ── Grid ─────────────────────────────────────────────────── */
+  :global(.gallery-grid) {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem;
+  }
+
+  :global(.gallery-card) {
+    position: relative;
+    border: 3px solid var(--color-ink, #2b2b2b);
+    overflow: hidden;
+    background: var(--color-beige, #f5f1e8);
+    padding: 0;
+    cursor: pointer;
+    aspect-ratio: 1;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  :global(.gallery-card:hover) {
+    transform: translate(-3px, -3px);
+    box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.15);
+  }
+
+  :global(.gallery-card__img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  :global(.gallery-card__placeholder) {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    background: var(--color-yellow, #f4ce6a);
+  }
+
+  :global(.gallery-card__overlay) {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.65));
+    padding: 1.5rem 0.75rem 0.6rem;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  :global(.gallery-card:hover .gallery-card__overlay),
+  :global(.gallery-card:focus-visible .gallery-card__overlay) {
+    opacity: 1;
+  }
+
+  :global(.gallery-card__title) {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #fff;
+  }
+
+  :global(.gallery-empty) {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.1rem;
+    padding: 3rem 0;
+    text-align: center;
+    color: var(--color-dark-purple, #4a4063);
+  }
+
+  /* ── Lightbox ─────────────────────────────────────────────── */
+  :global(.lightbox) {
+    position: fixed;
+    inset: 0;
+    background: rgba(43, 43, 43, 0.85);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+
+  :global(.lightbox__inner) {
+    background: var(--color-beige, #f5f1e8);
+    border: 3px solid var(--color-ink, #2b2b2b);
+    max-width: 900px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    display: grid;
+    grid-template-rows: auto 1fr;
+  }
+
+  :global(.lightbox__close) {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    background: var(--color-ink, #2b2b2b);
+    color: var(--color-beige, #f5f1e8);
+    border: none;
+    font-size: 1rem;
+    width: 2rem;
+    height: 2rem;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    z-index: 1;
+  }
+
+  :global(.lightbox__img) {
+    width: 100%;
+    height: auto;
+    display: block;
+    max-height: 65vh;
+    object-fit: contain;
+    background: var(--color-ink, #2b2b2b);
+  }
+
+  :global(.lightbox__info) {
+    padding: 1.25rem;
+  }
+
+  :global(.lightbox__title) {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem;
+  }
+
+  :global(.lightbox__description) {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0 0 0.75rem;
+  }
+
+  :global(.lightbox__tags) {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  :global(.lightbox__tag) {
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 0.2rem 0.6rem;
+    border: 2px solid var(--color-ink, #2b2b2b);
+    background: var(--color-yellow, #f4ce6a);
+  }
+</style>
