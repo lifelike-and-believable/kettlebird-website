@@ -1,0 +1,250 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getAllWrittenWorks, type WrittenWork } from '../lib/queries';
+import { urlFor } from '../lib/sanity';
+
+let works: WrittenWork[] = [];
+try {
+  works = await getAllWrittenWorks();
+} catch (e) {
+  console.warn('[writing] Could not fetch written works:', e);
+}
+
+const GENRE_COLORS = ['--color-yellow', '--color-green', '--color-orange'];
+---
+
+<BaseLayout
+  title="Writing • Kettlebird Creations"
+  description="Fiction, fanfiction, and other written works by Star Goldberg (Kettlebird)."
+>
+  <section class="writing-page">
+    <header class="page-header">
+      <h1 class="page-title">Writing</h1>
+      <p class="page-subtitle">Fiction, fanfic, and other words</p>
+    </header>
+
+    {works.length === 0 ? (
+      <div class="empty-state">
+        <p class="empty-state__text">Stories coming soon — check back shortly!</p>
+        <div class="empty-state__doodle" aria-hidden="true">✍️</div>
+      </div>
+    ) : (
+      <ul class="works-list">
+        {works.map((work) => {
+          const imgUrl = work.coverImage?.asset
+            ? urlFor(work.coverImage).width(400).height(560).fit('crop').auto('format').url()
+            : null;
+
+          return (
+            <li class="work-card">
+              <div class="work-card__cover">
+                {imgUrl
+                  ? <img src={imgUrl} alt={work.title} class="work-card__img" width={400} height={560} loading="lazy" />
+                  : <div class="work-card__cover-placeholder" aria-hidden="true">📖</div>
+                }
+              </div>
+              <div class="work-card__body">
+                <h2 class="work-card__title">{work.title}</h2>
+                {work.genre && work.genre.length > 0 && (
+                  <ul class="tag-list" aria-label="Genres">
+                    {work.genre.map((g, i) => (
+                      <li class="tag" style={`background: var(${GENRE_COLORS[i % GENRE_COLORS.length]})`}>{g}</li>
+                    ))}
+                  </ul>
+                )}
+                {work.excerpt && <p class="work-card__excerpt">{work.excerpt}</p>}
+                <div class="work-card__actions">
+                  {work.externalLink && (
+                    <a href={work.externalLink} target="_blank" rel="noopener noreferrer" class="btn">
+                      Read it →
+                    </a>
+                  )}
+                </div>
+              </div>
+            </li>
+          );
+        })}
+      </ul>
+    )}
+  </section>
+</BaseLayout>
+
+<style>
+  .writing-page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem 1rem 4rem;
+  }
+
+  .page-header {
+    margin-bottom: 2.5rem;
+  }
+
+  .page-title {
+    font-family: 'Nunito', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 700;
+    margin: 0 0 0.25rem;
+  }
+
+  .page-subtitle {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.1rem;
+    color: var(--color-dark-purple, #4a4063);
+    margin: 0;
+  }
+
+  /* ── Empty state ── */
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 5rem 1rem;
+    border: 3px dashed var(--color-dark-purple, #4a4063);
+    text-align: center;
+  }
+
+  .empty-state__text {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-dark-purple, #4a4063);
+    margin: 0;
+  }
+
+  .empty-state__doodle {
+    font-size: 3rem;
+  }
+
+  /* ── Works list ── */
+  .works-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .work-card {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 1.5rem;
+    border: 3px solid var(--color-ink, #2b2b2b);
+    background: var(--color-beige, #f5f1e8);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .work-card:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 6px 6px 0 rgba(0,0,0,0.12);
+  }
+
+  .work-card__cover {
+    aspect-ratio: 5/7;
+    overflow: hidden;
+    border-right: 3px solid var(--color-ink, #2b2b2b);
+    flex-shrink: 0;
+  }
+
+  .work-card__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .work-card__cover-placeholder {
+    width: 100%;
+    height: 100%;
+    min-height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    background: var(--color-green, #a8d5ba);
+  }
+
+  .work-card__body {
+    padding: 1.25rem 1.25rem 1.25rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .work-card__title {
+    font-family: 'Nunito', sans-serif;
+    font-size: clamp(1.2rem, 3vw, 1.75rem);
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .tag-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .tag {
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 0.2rem 0.6rem;
+    border: 2px solid var(--color-ink, #2b2b2b);
+  }
+
+  .work-card__excerpt {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0;
+    color: var(--color-ink, #2b2b2b);
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .work-card__actions {
+    margin-top: auto;
+  }
+
+  .btn {
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    padding: 0.5rem 1.25rem;
+    border: 2px solid var(--color-ink, #2b2b2b);
+    background: var(--color-ink, #2b2b2b);
+    color: var(--color-beige, #f5f1e8);
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.15s, color 0.15s, transform 0.15s;
+  }
+
+  .btn:hover {
+    background: var(--color-dark-purple, #4a4063);
+    transform: translate(-1px, -1px);
+  }
+
+  @media (max-width: 540px) {
+    .work-card {
+      grid-template-columns: 1fr;
+    }
+
+    .work-card__cover {
+      border-right: none;
+      border-bottom: 3px solid var(--color-ink, #2b2b2b);
+      aspect-ratio: 16/9;
+    }
+
+    .work-card__body {
+      padding: 1rem;
+    }
+  }
+</style>
