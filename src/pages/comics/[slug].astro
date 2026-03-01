@@ -1,0 +1,90 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+// Dynamic route — full comic reader coming soon.
+// For now, return a static placeholder for any slug.
+export async function getStaticPaths() {
+  // No pre-rendered paths yet; will be populated from Sanity once
+  // comic series and pages are added.
+  return [];
+}
+
+const { slug } = Astro.params;
+---
+
+<BaseLayout
+  title="Comics • Kettlebird Creations"
+  description="Comic reader coming soon."
+>
+  <section class="placeholder-page">
+    <div class="placeholder-inner">
+      <div class="placeholder-icon" aria-hidden="true">🖊️</div>
+      <h1 class="placeholder-title">Comic Reader</h1>
+      <p class="placeholder-text">
+        This series is on its way — the reader is still being built.
+        Check back soon!
+      </p>
+      <a href="/comics" class="placeholder-btn">← Back to Comics</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .placeholder-page {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 4rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 50vh;
+  }
+
+  .placeholder-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    text-align: center;
+    padding: 3rem 2rem;
+    border: 3px dashed var(--color-dark-purple, #4a4063);
+    width: 100%;
+  }
+
+  .placeholder-icon {
+    font-size: 3.5rem;
+  }
+
+  .placeholder-title {
+    font-family: 'Nunito', sans-serif;
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .placeholder-text {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: var(--color-dark-purple, #4a4063);
+    margin: 0;
+    max-width: 40ch;
+  }
+
+  .placeholder-btn {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 0.6rem 1.5rem;
+    border: 2px solid var(--color-ink, #2b2b2b);
+    background: var(--color-ink, #2b2b2b);
+    color: var(--color-beige, #f5f1e8);
+    text-decoration: none;
+    transition: background 0.15s, transform 0.15s;
+  }
+
+  .placeholder-btn:hover {
+    background: var(--color-dark-purple, #4a4063);
+    transform: translate(-2px, -2px);
+  }
+</style>
