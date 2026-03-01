@@ -1,0 +1,351 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="About • Kettlebird Creations"
+  description="About Star Goldberg — writer, illustrator, and creator behind Kettlebird Creations."
+>
+  <section class="about-page">
+
+    <header class="page-header">
+      <h1 class="page-title">About the Artist</h1>
+    </header>
+
+    <div class="about-layout">
+
+      <!-- Portrait -->
+      <aside class="portrait-col">
+        <div class="portrait-frame">
+          <!-- Replace src with actual portrait when available -->
+          <div class="portrait-placeholder" aria-label="Portrait of Star Goldberg">
+            <img
+              src="/assets/images/Postit.png"
+              alt=""
+              class="portrait-postit"
+              aria-hidden="true"
+            />
+            <span class="portrait-placeholder__label">[Portrait coming soon]</span>
+          </div>
+        </div>
+
+        <!-- Quick facts sidebar -->
+        <div class="quick-facts">
+          <h2 class="quick-facts__heading">At a glance</h2>
+          <ul class="quick-facts__list">
+            <li><span class="qf-label">Pronouns</span><span class="qf-value">they/them</span></li>
+            <li><span class="qf-label">Based in</span><span class="qf-value">Montreal, QC</span></li>
+            <li><span class="qf-label">Makes</span><span class="qf-value">Illustration, comics, fiction</span></li>
+            <li><span class="qf-label">Loves</span><span class="qf-value">Fantasy, found family, character design</span></li>
+          </ul>
+        </div>
+
+        <!-- Social links -->
+        <div class="about-social">
+          <a href="https://bsky.app/profile/kettlebird.bsky.social" target="_blank" rel="noopener noreferrer" class="social-btn">Bluesky</a>
+          <a href="https://kettle-bird.tumblr.com" target="_blank" rel="noopener noreferrer" class="social-btn">Tumblr</a>
+          <a href="https://www.instagram.com/kettlebirdart" target="_blank" rel="noopener noreferrer" class="social-btn">Instagram</a>
+          <a href="https://ko-fi.com/kettlebirdart" target="_blank" rel="noopener noreferrer" class="social-btn social-btn--highlight">Support on Ko-fi ☕</a>
+        </div>
+      </aside>
+
+      <!-- Bio -->
+      <div class="bio-col">
+        <div class="bio-section">
+          <h2 class="bio-heading">Hello!</h2>
+          <!-- Replace with real bio copy when Star provides it -->
+          <p class="bio-text bio-text--placeholder">
+            <em>Bio coming soon — Star is working on it!</em>
+          </p>
+        </div>
+
+        <div class="bio-section">
+          <h2 class="bio-heading">The Work</h2>
+          <p class="bio-text bio-text--placeholder">
+            <em>Artist statement coming soon.</em>
+          </p>
+        </div>
+
+        <!-- Contact -->
+        <div class="contact-block" id="contact">
+          <h2 class="contact-block__heading">Get in touch</h2>
+          <p class="contact-block__text">
+            For commission inquiries, collaboration ideas, or just to say hi:
+          </p>
+          <a href="mailto:kettlebirdillustration@gmail.com" class="contact-btn">
+            kettlebirdillustration@gmail.com
+          </a>
+          <p class="contact-block__note">
+            For commission details and pricing, see the <a href="/commissions">Commissions</a> page.
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </section>
+</BaseLayout>
+
+<style>
+  .about-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem 4rem;
+  }
+
+  .page-header {
+    margin-bottom: 2.5rem;
+  }
+
+  .page-title {
+    font-family: 'Nunito', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 700;
+    margin: 0;
+  }
+
+  /* ── Two-column layout ── */
+  .about-layout {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  /* ── Portrait ── */
+  .portrait-col {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    position: sticky;
+    top: 2rem;
+  }
+
+  .portrait-frame {
+    border: 3px solid var(--color-ink, #2b2b2b);
+    overflow: hidden;
+    background: var(--color-yellow, #f4ce6a);
+  }
+
+  .portrait-placeholder {
+    aspect-ratio: 3/4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background-image: url('/assets/images/Postit.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 2rem;
+  }
+
+  .portrait-postit {
+    display: none; /* background-image handles it */
+  }
+
+  .portrait-placeholder__label {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-ink, #2b2b2b);
+    text-align: center;
+  }
+
+  /* ── Quick facts ── */
+  .quick-facts {
+    border: 3px solid var(--color-ink, #2b2b2b);
+    padding: 1rem;
+    background: var(--color-green, #a8d5ba);
+  }
+
+  .quick-facts__heading {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0 0 0.75rem;
+  }
+
+  .quick-facts__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .quick-facts__list li {
+    display: flex;
+    gap: 0.5rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+
+  .qf-label {
+    font-weight: 700;
+    min-width: 80px;
+    flex-shrink: 0;
+  }
+
+  /* ── Social buttons ── */
+  .about-social {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .social-btn {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 0.6rem 1.25rem;
+    border: 2px solid var(--color-ink, #2b2b2b);
+    background: transparent;
+    color: var(--color-ink, #2b2b2b);
+    text-decoration: none;
+    text-align: center;
+    display: block;
+    transition: background 0.15s, color 0.15s, transform 0.15s;
+  }
+
+  .social-btn:hover {
+    background: var(--color-ink, #2b2b2b);
+    color: var(--color-beige, #f5f1e8);
+    transform: translate(-2px, -2px);
+  }
+
+  .social-btn--highlight {
+    background: var(--color-orange, #e89a5a);
+  }
+
+  .social-btn--highlight:hover {
+    background: var(--color-ink, #2b2b2b);
+  }
+
+  /* ── Bio ── */
+  .bio-col {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  .bio-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .bio-heading {
+    font-family: 'Nunito', sans-serif;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 700;
+    margin: 0;
+    padding-bottom: 0.4rem;
+    border-bottom: 3px solid var(--color-ink, #2b2b2b);
+  }
+
+  .bio-text {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.05rem;
+    line-height: 1.8;
+    margin: 0;
+  }
+
+  .bio-text--placeholder {
+    color: var(--color-dark-purple, #4a4063);
+  }
+
+  /* ── Contact block ── */
+  .contact-block {
+    border: 3px solid var(--color-ink, #2b2b2b);
+    padding: 1.5rem;
+    background: var(--color-yellow, #f4ce6a);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .contact-block__heading {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .contact-block__text {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    margin: 0;
+  }
+
+  .contact-btn {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 0.65rem 1.5rem;
+    border: 2px solid var(--color-ink, #2b2b2b);
+    background: var(--color-ink, #2b2b2b);
+    color: var(--color-beige, #f5f1e8);
+    text-decoration: none;
+    display: inline-block;
+    align-self: flex-start;
+    transition: background 0.15s, transform 0.15s;
+  }
+
+  .contact-btn:hover {
+    background: var(--color-dark-purple, #4a4063);
+    transform: translate(-2px, -2px);
+  }
+
+  .contact-block__note {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    margin: 0;
+  }
+
+  .contact-block__note a {
+    color: var(--color-ink, #2b2b2b);
+    font-weight: 700;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 860px) {
+    .about-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .portrait-col {
+      position: static;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .portrait-frame {
+      grid-column: 1 / -1;
+      max-width: 320px;
+      justify-self: center;
+      width: 100%;
+    }
+
+    .about-social {
+      grid-column: 1 / -1;
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+
+    .social-btn {
+      flex: 1 1 auto;
+    }
+  }
+
+  @media (max-width: 540px) {
+    .portrait-col {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,259 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getNewsFeed, type NewsPost } from '../lib/queries';
+import { urlFor } from '../lib/sanity';
+
+let posts: NewsPost[] = [];
+try {
+  posts = await getNewsFeed();
+} catch (e) {
+  console.warn('[news] Could not fetch news feed:', e);
+}
+
+const TYPE_LABELS: Record<string, string> = {
+  writtenWork: 'Writing',
+  galleryItem: 'Art',
+};
+
+const TYPE_COLORS: Record<string, string> = {
+  writtenWork: 'var(--color-green)',
+  galleryItem: 'var(--color-orange)',
+};
+
+function formatDate(dateStr?: string) {
+  if (!dateStr) return '';
+  return new Date(dateStr).toLocaleDateString('en-US', {
+    year: 'numeric', month: 'long', day: 'numeric'
+  });
+}
+---
+
+<BaseLayout
+  title="News • Kettlebird Creations"
+  description="Latest updates, new artwork, and writing from Kettlebird Creations."
+>
+  <section class="news-page">
+    <header class="page-header">
+      <h1 class="page-title">News</h1>
+      <p class="page-subtitle">What's new from the kettle</p>
+    </header>
+
+    {posts.length === 0 ? (
+      <div class="empty-state">
+        <p class="empty-state__text">Nothing posted yet — stay tuned!</p>
+        <div class="empty-state__doodle" aria-hidden="true">📰</div>
+      </div>
+    ) : (
+      <ol class="news-feed" reversed>
+        {posts.map((post) => {
+          const imgUrl = post.coverImage?.asset
+            ? urlFor(post.coverImage).width(300).height(300).fit('crop').auto('format').url()
+            : null;
+
+          const typeColor = TYPE_COLORS[post._type] ?? 'var(--color-yellow)';
+          const typeLabel = TYPE_LABELS[post._type] ?? post._type;
+
+          const href = post._type === 'writtenWork'
+            ? (post.externalLink ?? `/writing`)
+            : `/portfolio`;
+
+          const isExternal = post._type === 'writtenWork' && !!post.externalLink;
+
+          return (
+            <li class="news-item">
+              {imgUrl && (
+                <div class="news-item__thumb">
+                  <img src={imgUrl} alt="" aria-hidden="true" class="news-item__thumb-img" width={300} height={300} loading="lazy" />
+                </div>
+              )}
+              <div class="news-item__body">
+                <div class="news-item__meta">
+                  <span class="news-item__type" style={`background: ${typeColor}`}>{typeLabel}</span>
+                  {post.publishDate && (
+                    <time class="news-item__date" datetime={post.publishDate}>
+                      {formatDate(post.publishDate)}
+                    </time>
+                  )}
+                </div>
+                <h2 class="news-item__title">
+                  <a
+                    href={href}
+                    class="news-item__link"
+                    {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                  >
+                    {post.title}
+                    {isExternal && <span class="external-icon" aria-label="(opens externally)">↗</span>}
+                  </a>
+                </h2>
+                {post.excerpt && <p class="news-item__excerpt">{post.excerpt}</p>}
+              </div>
+            </li>
+          );
+        })}
+      </ol>
+    )}
+  </section>
+</BaseLayout>
+
+<style>
+  .news-page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1rem 4rem;
+  }
+
+  .page-header {
+    margin-bottom: 2.5rem;
+  }
+
+  .page-title {
+    font-family: 'Nunito', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 700;
+    margin: 0 0 0.25rem;
+  }
+
+  .page-subtitle {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.1rem;
+    color: var(--color-dark-purple, #4a4063);
+    margin: 0;
+  }
+
+  /* ── Empty state ── */
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 5rem 1rem;
+    border: 3px dashed var(--color-dark-purple, #4a4063);
+    text-align: center;
+  }
+
+  .empty-state__text {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-dark-purple, #4a4063);
+    margin: 0;
+  }
+
+  .empty-state__doodle { font-size: 3rem; }
+
+  /* ── Feed ── */
+  .news-feed {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .news-item {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.25rem;
+    padding: 1.5rem 0;
+    border-bottom: 3px solid var(--color-ink, #2b2b2b);
+    align-items: start;
+  }
+
+  .news-item:first-child {
+    border-top: 3px solid var(--color-ink, #2b2b2b);
+  }
+
+  /* When no thumbnail, span full width */
+  .news-item:not(:has(.news-item__thumb)) {
+    grid-template-columns: 1fr;
+  }
+
+  .news-item__thumb {
+    width: 100px;
+    height: 100px;
+    border: 2px solid var(--color-ink, #2b2b2b);
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .news-item__thumb-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .news-item__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .news-item__meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .news-item__type {
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 0.15rem 0.5rem;
+    border: 2px solid var(--color-ink, #2b2b2b);
+  }
+
+  .news-item__date {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    color: var(--color-dark-purple, #4a4063);
+  }
+
+  .news-item__title {
+    font-family: 'Nunito', sans-serif;
+    font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+    font-weight: 700;
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  .news-item__link {
+    color: var(--color-ink, #2b2b2b);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .news-item__link:hover {
+    color: var(--color-dark-purple, #4a4063);
+    text-decoration: underline;
+  }
+
+  .external-icon {
+    font-size: 0.85em;
+    margin-left: 0.25rem;
+    opacity: 0.7;
+  }
+
+  .news-item__excerpt {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  @media (max-width: 480px) {
+    .news-item__thumb {
+      width: 72px;
+      height: 72px;
+    }
+  }
+</style>
