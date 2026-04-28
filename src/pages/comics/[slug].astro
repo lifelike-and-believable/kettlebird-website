@@ -24,7 +24,7 @@ const { slug } = Astro.params;
         This series is on its way — the reader is still being built.
         Check back soon!
       </p>
-      <a href="/comics" class="placeholder-btn">← Back to Comics</a>
+      <a href="/comics" class="highlighter-btn">← Back to Comics</a>
     </div>
   </section>
 </BaseLayout>
@@ -71,20 +71,5 @@ const { slug } = Astro.params;
     max-width: 40ch;
   }
 
-  .placeholder-btn {
-    font-family: 'Nunito', sans-serif;
-    font-size: 1rem;
-    font-weight: 700;
-    padding: 0.6rem 1.5rem;
-    border: 2px solid var(--color-ink, #2b2b2b);
-    background: var(--color-ink, #2b2b2b);
-    color: var(--color-beige, #f5f1e8);
-    text-decoration: none;
-    transition: background 0.15s, transform 0.15s;
-  }
-
-  .placeholder-btn:hover {
-    background: var(--color-dark-purple, #4a4063);
-    transform: translate(-2px, -2px);
-  }
+  /* .highlighter-btn styles from global.css */
 </style>

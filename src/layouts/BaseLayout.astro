@@ -6,7 +6,6 @@ const {
   description = 'Writer & Illustrator • Star Goldberg'
 } = Astro.props;
 
-// Year is evaluated at build time
 const currentYear = new Date().getFullYear();
 ---
 
@@ -26,51 +25,46 @@ const currentYear = new Date().getFullYear();
   </head>
   <body class="page">
     <a class="skip-link" href="#main">Skip to main content</a>
+
+    <!-- Torn-paper header — matches homepage visual language -->
     <header class="site-header">
-      <div class="header-container">
-        <a href="/" class="site-logo" aria-label="Kettlebird Creations - Home">
-          <span class="logo-text">Kettlebird Creations</span>
-        </a>
-        <button class="menu-toggle" aria-expanded="false" aria-controls="main-nav" aria-label="Toggle menu">
-          <span class="menu-toggle-icon"></span>
-        </button>
+      <div class="header-inner">
+        <div class="header-top">
+          <a href="/" class="site-logo" aria-label="Kettlebird Creations - Home">
+            <span class="logo-text">Kettlebird Creations</span>
+          </a>
+          <button class="menu-toggle" aria-expanded="false" aria-controls="main-nav" aria-label="Toggle menu">
+            <span class="menu-toggle-icon"></span>
+          </button>
+        </div>
         <nav id="main-nav" class="main-nav">
           <ul class="nav-list">
-            <li><a href="/portfolio">Portfolio</a></li>
-            <li><a href="/comics">Comics</a></li>
-            <li><a href="/writing">Writing</a></li>
-            <li><a href="/shop">Shop</a></li>
-            <li><a href="/commissions">Commissions</a></li>
-            <li><a href="/news">News</a></li>
-            <li><a href="/about">About</a></li>
+            <li><a href="/portfolio" class="nav-btn">Portfolio</a></li>
+            <li><a href="/comics" class="nav-btn nav-btn--green">Comics</a></li>
+            <li><a href="/writing" class="nav-btn nav-btn--orange">Writing</a></li>
+            <li><a href="/shop" class="nav-btn">Shop</a></li>
+            <li><a href="/commissions" class="nav-btn nav-btn--green">Commissions</a></li>
+            <li><a href="/news" class="nav-btn nav-btn--orange">News</a></li>
+            <li><a href="/about" class="nav-btn">About</a></li>
           </ul>
         </nav>
       </div>
     </header>
+
     <main id="main" class="page__content">
       <slot />
     </main>
+
     <footer class="site-footer">
       <div class="footer-container">
         <div class="footer-section">
           <h3 class="footer-heading">Connect</h3>
-          <ul class="social-links">
-            <li>
-              <a href="https://kettle-bird.tumblr.com" target="_blank" rel="noopener noreferrer">
-                <span class="social-icon">🌐</span> Tumblr
-              </a>
-            </li>
-            <li>
-              <a href="https://ko-fi.com/kettlebirdart" target="_blank" rel="noopener noreferrer">
-                <span class="social-icon">☕</span> Ko-fi
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/kettlebird.bsky.social" target="_blank" rel="noopener noreferrer">
-                <span class="social-icon">🦋</span> Bluesky
-              </a>
-            </li>
-          </ul>
+          <div class="footer-social">
+            <a href="https://bsky.app/profile/kettlebird.bsky.social" target="_blank" rel="noopener noreferrer" class="highlighter-btn highlighter-btn--green">Bluesky</a>
+            <a href="https://kettle-bird.tumblr.com" target="_blank" rel="noopener noreferrer" class="highlighter-btn">Tumblr</a>
+            <a href="https://www.instagram.com/kettlebirdart" target="_blank" rel="noopener noreferrer" class="highlighter-btn highlighter-btn--orange">Instagram</a>
+            <a href="https://ko-fi.com/kettlebirdart" target="_blank" rel="noopener noreferrer" class="highlighter-btn highlighter-btn--pink">Ko-fi ☕</a>
+          </div>
         </div>
         <div class="footer-section">
           <h3 class="footer-heading">Contact</h3>
@@ -84,11 +78,11 @@ const currentYear = new Date().getFullYear();
         </div>
       </div>
     </footer>
+
     <script>
-      // Mobile menu toggle
       const menuToggle = document.querySelector('.menu-toggle');
       const mainNav = document.querySelector('.main-nav');
-      
+
       if (menuToggle && mainNav) {
         menuToggle.addEventListener('click', () => {
           const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
@@ -99,3 +93,281 @@ const currentYear = new Date().getFullYear();
     </script>
   </body>
 </html>
+
+<style>
+  /* ── Torn-paper header ── */
+  .site-header {
+    background-color: transparent;
+    background-image: url('/assets/images/Paper_1_Torn.png');
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-size: auto 100%;
+    min-height: 180px;
+    position: relative;
+    z-index: 100;
+    overflow: visible;
+  }
+
+  @media (min-width: 1600px) {
+    .site-header {
+      background-size: 100% auto;
+    }
+  }
+
+  .header-inner {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 1.25rem 1.5rem 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .site-logo {
+    text-decoration: none;
+    color: var(--color-ink);
+  }
+
+  .logo-text {
+    font-family: 'Nunito', sans-serif;
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    display: inline-block;
+    transition: transform var(--transition-fast) var(--ease-bounce);
+  }
+
+  .site-logo:hover .logo-text,
+  .site-logo:focus .logo-text {
+    transform: translate(-2px, -2px);
+  }
+
+  /* ── Nav buttons (highlighter style) ── */
+  .main-nav {
+    display: block;
+  }
+
+  .nav-list {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 0.25rem;
+    flex-wrap: wrap;
+  }
+
+  .nav-btn {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 0.4rem 1.1rem;
+    border: none;
+    background-image: url('/assets/images/Highlighter_Y.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    color: var(--color-ink);
+    text-decoration: none;
+    display: inline-block;
+    transition: transform 0.2s ease-out, filter 0.2s ease-out;
+  }
+
+  .nav-btn--green {
+    background-image: url('/assets/images/Highlighter_G.png');
+  }
+
+  .nav-btn--orange {
+    background-image: url('/assets/images/Highlighter_O.png');
+  }
+
+  .nav-btn:hover,
+  .nav-btn:focus {
+    transform: scale(1.05);
+    filter: brightness(1.1);
+    color: var(--color-ink);
+  }
+
+  /* ── Mobile menu toggle ── */
+  .menu-toggle {
+    display: none;
+    background: none;
+    border: 2px solid var(--color-ink);
+    border-radius: 4px;
+    padding: 0.5rem;
+    cursor: pointer;
+    width: 44px;
+    height: 44px;
+    position: relative;
+  }
+
+  .menu-toggle:focus {
+    outline: 2px solid var(--color-dark-purple);
+    outline-offset: 2px;
+  }
+
+  .menu-toggle-icon {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--color-ink);
+    position: relative;
+    transition: background var(--transition-fast);
+  }
+
+  .menu-toggle-icon::before,
+  .menu-toggle-icon::after {
+    content: '';
+    position: absolute;
+    width: 24px;
+    height: 2px;
+    background: var(--color-ink);
+    left: 0;
+    transition: transform var(--transition-fast) var(--ease-bounce);
+  }
+
+  .menu-toggle-icon::before { top: -8px; }
+  .menu-toggle-icon::after  { bottom: -8px; }
+
+  .menu-toggle[aria-expanded="true"] .menu-toggle-icon { background: transparent; }
+  .menu-toggle[aria-expanded="true"] .menu-toggle-icon::before { transform: translateY(8px) rotate(45deg); }
+  .menu-toggle[aria-expanded="true"] .menu-toggle-icon::after  { transform: translateY(-8px) rotate(-45deg); }
+
+  @media (max-width: 768px) {
+    .menu-toggle {
+      display: block;
+    }
+
+    .main-nav {
+      display: none;
+      background: var(--color-beige);
+      border-top: 2px solid var(--color-ink);
+      padding: 0.75rem 1rem;
+    }
+
+    .main-nav.is-open {
+      display: block;
+    }
+
+    .nav-list {
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .nav-btn {
+      display: block;
+      text-align: center;
+    }
+  }
+
+  /* ── Footer ── */
+  .site-footer {
+    background: var(--color-paper-dark);
+    border-top: 2px solid var(--color-ink);
+    margin-top: 4rem;
+    padding: 2rem var(--gutter-mobile) 1.5rem;
+    position: relative;
+  }
+
+  /* Deckled edge */
+  .site-footer::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 0;
+    right: 0;
+    height: 10px;
+    background:
+      linear-gradient(135deg, transparent 33.33%, var(--color-paper-dark) 33.33%, var(--color-paper-dark) 66.66%, transparent 66.66%),
+      linear-gradient(45deg, transparent 33.33%, var(--color-beige) 33.33%, var(--color-beige) 66.66%, transparent 66.66%);
+    background-size: 8px 20px;
+    background-position: 0 0, 4px 0;
+  }
+
+  .footer-container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+  }
+
+  .footer-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .footer-social {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .footer-social .highlighter-btn {
+    font-size: 0.95rem;
+    padding: 0.4rem 1rem;
+    text-align: center;
+  }
+
+  .footer-contact {
+    margin: 0;
+  }
+
+  .footer-contact a {
+    color: var(--color-ink);
+    overflow-wrap: break-word;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+  }
+
+  .footer-copyright {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-ink-light);
+    margin-top: 1rem;
+  }
+
+  .footer-copyright p {
+    margin: 0.25rem 0;
+    font-size: 0.9rem;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .footer-meta {
+    color: var(--color-ink-light);
+    font-size: 0.85rem !important;
+  }
+
+  @media (min-width: 768px) {
+    .site-footer {
+      padding: 3rem var(--gutter-tablet) 2rem;
+    }
+
+    .footer-social {
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .site-footer {
+      padding: 3rem var(--gutter-desktop) 2rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nav-btn:hover,
+    .nav-btn:focus,
+    .site-logo:hover .logo-text,
+    .site-logo:focus .logo-text {
+      transform: none;
+    }
+  }
+</style>

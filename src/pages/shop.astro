@@ -40,7 +40,7 @@ const sortedCategories = categoryOrder.filter((c) => grouped[c]?.length);
         href="https://ko-fi.com/kettlebirdart"
         target="_blank"
         rel="noopener noreferrer"
-        class="kofi-btn"
+        class="highlighter-btn highlighter-btn--orange"
       >
         Visit the Ko-fi Shop ☕
       </a>
@@ -49,7 +49,7 @@ const sortedCategories = categoryOrder.filter((c) => grouped[c]?.length);
     {products.length === 0 ? (
       <div class="empty-state">
         <p class="empty-state__text">Shop stocking up — check back soon!</p>
-        <a href="https://ko-fi.com/kettlebirdart" target="_blank" rel="noopener noreferrer" class="btn">
+        <a href="https://ko-fi.com/kettlebirdart" target="_blank" rel="noopener noreferrer" class="highlighter-btn highlighter-btn--orange">
           Browse Ko-fi in the meantime ☕
         </a>
       </div>
@@ -107,9 +107,6 @@ const sortedCategories = categoryOrder.filter((c) => grouped[c]?.length);
   }
 
   .page-title {
-    font-family: 'Nunito', sans-serif;
-    font-size: clamp(2.5rem, 6vw, 4rem);
-    font-weight: 700;
     margin: 0;
   }
 
@@ -120,22 +117,7 @@ const sortedCategories = categoryOrder.filter((c) => grouped[c]?.length);
     margin: 0;
   }
 
-  .kofi-btn {
-    font-family: 'Nunito', sans-serif;
-    font-size: 1rem;
-    font-weight: 700;
-    padding: 0.6rem 1.5rem;
-    border: 2px solid var(--color-ink, #2b2b2b);
-    background: var(--color-orange, #e89a5a);
-    color: var(--color-ink, #2b2b2b);
-    text-decoration: none;
-    transition: transform 0.15s, filter 0.15s;
-  }
-
-  .kofi-btn:hover {
-    transform: translate(-2px, -2px);
-    filter: brightness(1.05);
-  }
+  /* .kofi-btn replaced with .highlighter-btn from global.css */
 
   /* ── Empty state ── */
   .empty-state {

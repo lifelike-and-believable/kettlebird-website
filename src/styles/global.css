@@ -1,17 +1,24 @@
 :root {
-  --color-primary: #d95d39;
-  --color-secondary: #f4a261;
-  --color-accent-1: #2a9d8f;
-  --color-accent-2: #e76f51;
+  /* Homepage palette — single source of truth */
+  --color-beige: #f5f1e8;
+  --color-yellow: #f4ce6a;
+  --color-orange: #e89a5a;
+  --color-green: #a8d5ba;
+  --color-dark-purple: #4a4063;
   --color-ink: #2b2b2b;
-  --color-ink-light: #595959;
-  --color-ink-night: #264653;
+
+  /* Aliases kept for back-compat */
   --color-paper: #f5f1e8;
   --color-paper-dark: #e8e3d8;
+  --color-ink-light: #595959;
+
+  /* Status / splash colors */
   --color-splash-1: #e63946;
   --color-splash-2: #06ffa5;
   --color-splash-3: #ffbe0b;
+
   --shadow-paper: 2px 4px 8px rgba(0, 0, 0, 0.15);
+  --shadow-ink: 6px 6px 0 var(--color-ink);
   --shadow-paper-hover: 4px 8px 16px rgba(0, 0, 0, 0.2);
   --max-width: 1100px;
   --ease-bounce: cubic-bezier(0.22, 0.61, 0.36, 1);
@@ -31,13 +38,12 @@ body {
   margin: 0;
   min-height: 100vh;
   font-family: 'DM Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background-color: var(--color-paper);
+  background-color: var(--color-beige);
   color: var(--color-ink);
   line-height: 1.6;
-  background-image:
-    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, 0.03) 2px, rgba(0, 0, 0, 0.03) 4px),
-    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0, 0, 0, 0.03) 2px, rgba(0, 0, 0, 0.03) 4px);
-  background-size: 400px 400px, 400px 400px;
+  background-image: url('/assets/images/Paper_2_Tileable.png');
+  background-size: 400px 400px;
+  background-repeat: repeat;
 }
 
 h1,
@@ -53,17 +59,17 @@ p {
 }
 
 a {
-  color: var(--color-accent-1);
+  color: var(--color-dark-purple);
   text-decoration: none;
   transition: color var(--transition-fast) var(--ease-bounce);
 }
 
 a:hover {
-  color: var(--color-primary);
+  color: var(--color-ink);
 }
 
 a:focus {
-  outline: 2px solid var(--color-accent-1);
+  outline: 2px solid var(--color-dark-purple);
   outline-offset: 2px;
 }
 
@@ -110,7 +116,7 @@ a:focus {
   text-transform: uppercase;
   letter-spacing: 0.12em;
   font-size: 0.85rem;
-  color: var(--color-accent-2);
+  color: var(--color-dark-purple);
   margin-bottom: 0.25rem;
 }
 
@@ -145,8 +151,8 @@ a:focus {
   padding: 0.2rem 0.55rem;
   border-radius: 999px;
   font-size: 0.85rem;
-  background: var(--color-accent-1);
-  color: white;
+  background: var(--color-dark-purple);
+  color: var(--color-beige);
 }
 
 .checklist {
@@ -163,7 +169,7 @@ a:focus {
 }
 
 .checklist strong {
-  color: var(--color-accent-2);
+  color: var(--color-dark-purple);
 }
 
 .stack {
@@ -186,8 +192,8 @@ a:focus {
   position: absolute;
   left: -999px;
   top: 0;
-  background: var(--color-primary);
-  color: white;
+  background: var(--color-dark-purple);
+  color: var(--color-beige);
   padding: 0.5rem 1rem;
   border-radius: 4px;
   z-index: 1000;
@@ -242,7 +248,7 @@ a:focus {
   letter-spacing: 0.08em;
   font-size: 0.8rem;
   margin: 0;
-  color: var(--color-accent-2);
+  color: var(--color-dark-purple);
 }
 
 .pill__value {
@@ -319,7 +325,7 @@ a:focus {
 }
 
 .menu-toggle:focus {
-  outline: 2px solid var(--color-accent-1);
+  outline: 2px solid var(--color-dark-purple);
   outline-offset: 2px;
 }
 
@@ -390,8 +396,10 @@ a:focus {
 
 .nav-list a:hover,
 .nav-list a:focus {
-  background: var(--color-accent-1);
-  color: white;
+  background-image: url('/assets/images/Highlighter_Y.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  color: var(--color-ink);
   transform: translate(-2px, -2px);
 }
 
@@ -493,7 +501,7 @@ a:focus {
   font-family: 'Nunito', 'DM Sans', sans-serif;
   font-size: 1.25rem;
   margin: 0 0 0.5rem;
-  color: var(--color-primary);
+  color: var(--color-dark-purple);
 }
 
 .social-links {
@@ -577,30 +585,30 @@ a:focus {
 }
 
 .btn:focus {
-  outline: 2px solid var(--color-accent-1);
+  outline: 2px solid var(--color-dark-purple);
   outline-offset: 4px;
 }
 
 .btn-primary {
-  background: var(--color-primary);
-  color: white;
+  background: var(--color-orange);
+  color: var(--color-ink);
 }
 
 .btn-primary:hover,
 .btn-primary:focus {
-  background: var(--color-accent-2);
+  background: var(--color-yellow);
   transform: translate(-2px, -2px);
   box-shadow: var(--shadow-paper-hover);
 }
 
 .btn-secondary {
-  background: var(--color-accent-1);
-  color: white;
+  background: var(--color-dark-purple);
+  color: var(--color-beige);
 }
 
 .btn-secondary:hover,
 .btn-secondary:focus {
-  background: var(--color-ink-night);
+  background: var(--color-ink);
   transform: translate(-2px, -2px);
   box-shadow: var(--shadow-paper-hover);
 }
@@ -608,6 +616,70 @@ a:focus {
 @media (prefers-reduced-motion: reduce) {
   .btn:hover,
   .btn:focus {
+    transform: none;
+  }
+}
+
+/* ===========================================
+   SHARED PAGE ELEMENTS
+   =========================================== */
+
+.page-title {
+  font-family: 'Nunito', sans-serif;
+  font-size: clamp(3.5rem, 8vw, 5.5rem);
+  font-weight: 700;
+  margin: 0 0 0.25rem;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+}
+
+.page-subtitle {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1.1rem;
+  color: var(--color-dark-purple);
+  margin: 0;
+}
+
+/* Highlighter-image button — matches homepage nav/social style */
+.highlighter-btn {
+  font-family: 'Nunito', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 0.6rem 1.5rem;
+  border: none;
+  background-image: url('/assets/images/Highlighter_Y.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  color: var(--color-ink);
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  transition: transform 0.2s ease-out, filter 0.2s ease-out;
+}
+
+.highlighter-btn:hover,
+.highlighter-btn:focus {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+  color: var(--color-ink);
+}
+
+.highlighter-btn--green {
+  background-image: url('/assets/images/Highlighter_G.png');
+}
+
+.highlighter-btn--orange {
+  background-image: url('/assets/images/Highlighter_O.png');
+}
+
+.highlighter-btn--pink {
+  background-image: url('/assets/images/Highlighter_M.png');
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .highlighter-btn:hover,
+  .highlighter-btn:focus {
     transform: none;
   }
 }
@@ -662,7 +734,7 @@ a:focus {
   height: min(275px, 60vw);
   border-radius: 50%;
   border: 2px solid var(--color-ink);
-  background: var(--color-secondary);
+  background: var(--color-yellow);
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -732,8 +804,8 @@ a:focus {
 
 .radial-item a:hover,
 .radial-item a:focus {
-  background: var(--color-accent-1);
-  color: white;
+  background: var(--color-dark-purple);
+  color: var(--color-beige);
   box-shadow: var(--shadow-paper-hover);
 }
 
@@ -834,7 +906,7 @@ a:focus {
   left: 10%;
   right: 10%;
   height: 4px;
-  background: var(--color-accent-1);
+  background: var(--color-dark-purple);
   border-radius: 50%;
   opacity: 0.6;
 }
@@ -843,7 +915,7 @@ a:focus {
   display: inline-block;
   font-family: 'Nunito', sans-serif;
   font-size: 1.1rem;
-  color: var(--color-accent-1);
+  color: var(--color-dark-purple);
   text-decoration: none;
   margin-top: 1.5rem;
   padding: 0.5rem 1rem;
@@ -855,8 +927,8 @@ a:focus {
 
 .section-link:hover,
 .section-link:focus {
-  background: var(--color-accent-1);
-  color: white;
+  background: var(--color-dark-purple);
+  color: var(--color-beige);
   transform: translateX(5px);
 }
 
@@ -1043,8 +1115,8 @@ a:focus {
   font-family: 'Nunito', sans-serif;
   font-size: 0.9rem;
   padding: 0.25rem 0.75rem;
-  background: var(--color-accent-1);
-  color: white;
+  background: var(--color-dark-purple);
+  color: var(--color-beige);
   border-radius: 999px;
   border: 1px solid var(--color-ink);
 }

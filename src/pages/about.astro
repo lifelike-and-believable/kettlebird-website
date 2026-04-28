@@ -42,10 +42,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
         <!-- Social links -->
         <div class="about-social">
-          <a href="https://bsky.app/profile/kettlebird.bsky.social" target="_blank" rel="noopener noreferrer" class="social-btn">Bluesky</a>
-          <a href="https://kettle-bird.tumblr.com" target="_blank" rel="noopener noreferrer" class="social-btn">Tumblr</a>
-          <a href="https://www.instagram.com/kettlebirdart" target="_blank" rel="noopener noreferrer" class="social-btn">Instagram</a>
-          <a href="https://ko-fi.com/kettlebirdart" target="_blank" rel="noopener noreferrer" class="social-btn social-btn--highlight">Support on Ko-fi ☕</a>
+          <a href="https://bsky.app/profile/kettlebird.bsky.social" target="_blank" rel="noopener noreferrer" class="highlighter-btn highlighter-btn--green">Bluesky</a>
+          <a href="https://kettle-bird.tumblr.com" target="_blank" rel="noopener noreferrer" class="highlighter-btn">Tumblr</a>
+          <a href="https://www.instagram.com/kettlebirdart" target="_blank" rel="noopener noreferrer" class="highlighter-btn highlighter-btn--orange">Instagram</a>
+          <a href="https://ko-fi.com/kettlebirdart" target="_blank" rel="noopener noreferrer" class="highlighter-btn highlighter-btn--pink">Support on Ko-fi ☕</a>
         </div>
       </aside>
 
@@ -72,7 +72,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <p class="contact-block__text">
             For commission inquiries, collaboration ideas, or just to say hi:
           </p>
-          <a href="mailto:kettlebirdillustration@gmail.com" class="contact-btn">
+          <a href="mailto:kettlebirdillustration@gmail.com" class="highlighter-btn">
             kettlebirdillustration@gmail.com
           </a>
           <p class="contact-block__note">
@@ -96,12 +96,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     margin-bottom: 2.5rem;
   }
 
-  .page-title {
-    font-family: 'Nunito', sans-serif;
-    font-size: clamp(2.5rem, 6vw, 4rem);
-    font-weight: 700;
-    margin: 0;
-  }
+  /* .page-title sizing comes from global.css */
 
   /* ── Two-column layout ── */
   .about-layout {
@@ -191,39 +186,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     flex-shrink: 0;
   }
 
-  /* ── Social buttons ── */
+  /* ── Social buttons (use .highlighter-btn from global.css) ── */
   .about-social {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-  }
-
-  .social-btn {
-    font-family: 'Nunito', sans-serif;
-    font-size: 1rem;
-    font-weight: 700;
-    padding: 0.6rem 1.25rem;
-    border: 2px solid var(--color-ink, #2b2b2b);
-    background: transparent;
-    color: var(--color-ink, #2b2b2b);
-    text-decoration: none;
-    text-align: center;
-    display: block;
-    transition: background 0.15s, color 0.15s, transform 0.15s;
-  }
-
-  .social-btn:hover {
-    background: var(--color-ink, #2b2b2b);
-    color: var(--color-beige, #f5f1e8);
-    transform: translate(-2px, -2px);
-  }
-
-  .social-btn--highlight {
-    background: var(--color-orange, #e89a5a);
-  }
-
-  .social-btn--highlight:hover {
-    background: var(--color-ink, #2b2b2b);
   }
 
   /* ── Bio ── */
@@ -282,24 +249,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     margin: 0;
   }
 
-  .contact-btn {
-    font-family: 'Nunito', sans-serif;
-    font-size: 1rem;
-    font-weight: 700;
-    padding: 0.65rem 1.5rem;
-    border: 2px solid var(--color-ink, #2b2b2b);
-    background: var(--color-ink, #2b2b2b);
-    color: var(--color-beige, #f5f1e8);
-    text-decoration: none;
-    display: inline-block;
-    align-self: flex-start;
-    transition: background 0.15s, transform 0.15s;
-  }
-
-  .contact-btn:hover {
-    background: var(--color-dark-purple, #4a4063);
-    transform: translate(-2px, -2px);
-  }
+  /* .contact-btn replaced with .highlighter-btn from global.css */
 
   .contact-block__note {
     font-family: 'DM Sans', sans-serif;
@@ -338,7 +288,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       flex-wrap: wrap;
     }
 
-    .social-btn {
+    .about-social .highlighter-btn {
       flex: 1 1 auto;
     }
   }
