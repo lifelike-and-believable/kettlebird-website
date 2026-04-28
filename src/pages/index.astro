@@ -1,608 +1,310 @@
 ---
-// No need for currentYear in this standalone homepage
+import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Kettlebird Creations • Writer & Illustrator</title>
-    <meta
-      name="description"
-      content="Portfolio of Star Goldberg (they/them) - UPA-inspired illustrations, comics, and written works featuring fantasy characters and fanart."
-    />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Nunito:wght@400;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <style>
-      :root {
-        --color-beige: #f5f1e8;
-        --color-yellow: #f4ce6a;
-        --color-orange: #e89a5a;
-        --color-green: #a8d5ba;
-        --color-dark-purple: #4a4063;
-        --color-ink: #2b2b2b;
-
-        /* Paper image dimensions */
-        --paper-torn-width: 1600px;
-        --paper-torn-height: 300px;
-
-        /* Fixed overlap amount between paper edge and grid */
-        --paper-overlap: 24px;
-      }
-
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
-
-      body {
-        font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
-        background-color: var(--color-beige);
-        color: var(--color-ink);
-        line-height: 1.6;
-        background-image: url('/assets/images/Paper_2_Tileable.png');
-        background-size: 400px 400px;
-        background-repeat: repeat;
-      }
-
-      .homepage {
-        max-width: 1600px;
-        margin: 0 auto;
-        padding: 2rem 1rem;
-      }
-
-      /* Header */
-      .homepage-header {
-        background-color: transparent;
-        background-image: url('/assets/images/Paper_1_Torn.png');
-        background-repeat: no-repeat;
-        background-position: center top;
-
-        /* Narrow screens: scale by height (no vertical squish) */
-        background-size: auto 100%;
-
-        /* Allow content to grow if it wraps on mobile */
-        min-height: var(--paper-torn-height);
-
-        /* Full bleed horizontally */
-        margin: -2rem -1rem 0 -1rem;
-
-        position: relative;
-        z-index: 1;
-
-        /* Allow the torn edge to overlap the grid */
-        overflow: visible;
-
-        /* Keep header content inside the paper area */
-         padding: 2rem 1rem 0.25rem;
-      }
-
-      /* Wide screens: scale to full width without squish */
-      @media (min-width: 1600px) {
-        .homepage-header {
-          background-size: 100% auto;
-        }
-      }
-
-      .homepage-title {
-        font-family: 'Nunito', sans-serif;
-        font-size: clamp(3.5rem, 8vw, 5.5rem);
-        font-weight: 700;
-        margin: 0 0 0.25rem 0;
-        letter-spacing: 0.02em;
-      }
-
-      .subtitle-nav-container {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 1rem;
-        flex-wrap: wrap;
-      }
-
-      .homepage-subtitle {
-        font-family: 'Nunito', sans-serif;
-        font-size: clamp(1.5rem, 4vw, 2.5rem);
-        font-weight: 600;
-        margin: 0;
-      }
-
-      /* Navigation */
-      .homepage-nav {
-        display: flex;
-        gap: 0.5rem;
-        flex-wrap: wrap;
-      }
-
-      .nav-button {
-        font-family: 'Nunito', sans-serif;
-        font-size: 1rem;
-        padding: 0.5rem 1.25rem;
-        border: none;
-        background-image: url('/assets/images/Highlighter_Y.png');
-        background-size: 100% 100%;
-        background-repeat: no-repeat;
-        background-position: center;
-        color: var(--color-ink);
-        text-decoration: none;
-        display: inline-block;
-        font-weight: 700;
-        transition: all 0.2s ease-out;
-      }
-
-      .nav-button:hover {
-        transform: scale(1.05);
-        filter: brightness(1.1);
-      }
-
-      .nav-button.nav-button-highlight {
-        color: var(--color-ink);
-        font-weight: 700;
-      }
-
-      /* Main Grid */
-      .grid-container {
-        display: grid;
-        grid-template-columns: repeat(6, 1fr);
-        grid-template-rows: repeat(7, minmax(75px, auto));
-        gap: 1rem;
-
-        /* Fixed overlap: pull grid up by a small amount */
-        margin-top: calc(-1 * var(--paper-overlap));
-
-        margin-bottom: 2rem;
-      }
-
-      .grid-tile {
-        border: 3px solid var(--color-ink);
-        overflow: hidden;
-        position: relative;
-        min-height: 75px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-decoration: none;
-        transition: transform 0.2s;
-      }
-
-      .grid-tile:hover {
-        transform: translate(-2px, -2px);
-        box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.15);
-      }
-
-      .grid-tile-portfolio {
-        grid-column: span 2;
-        grid-row: span 2;
-        background: #8b7355;
-      }
-
-      .grid-tile-logo {
-        grid-column: span 2;
-        grid-row: span 4;
-        background: var(--color-yellow);
-      }
-
-      .grid-tile-merch {
-        grid-column: span 2;
-        grid-row: span 2;
-        background: var(--color-orange);
-      }
-
-      .grid-tile-comics {
-        grid-column: span 2;
-        grid-row: span 3;
-        background: #c8c8c8;
-      }
-
-      .grid-tile-commissions {
-        grid-column: span 2;
-        grid-row: span 2;
-        background: #a8a8a8;
-      }
-
-      .grid-tile-writing {
-        grid-column: 1 / span 2;
-        grid-row: 6 / span 2;
-        background: #d94f3d;
-      }
-
-      .grid-tile-contact {
-        grid-column: 3 / span 2;
-        grid-row: 5 / span 3;
-        background: #cc5544;
-      }
-
-      .grid-tile-about {
-        grid-column: 5 / span 1;
-        grid-row: 5 / span 3;
-        background: var(--color-green);
-      }
-
-      .grid-tile-about .tile-content {
-        justify-content: flex-start;
-      }
-
-      .grid-tile-news {
-        grid-column: 6 / span 1;
-        grid-row: 5 / span 3;
-        background: var(--color-yellow);
-      }
-
-      .grid-tile-news .tile-content {
-        justify-content: flex-end;
-      }
-
-      .tile-content {
-        text-align: center;
-        padding: 1rem;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        background: rgba(0, 0, 0, 0.2);
-      }
-
-      .tile-title {
-        font-family: 'Nunito', sans-serif;
-        font-size: clamp(1.5rem, 3vw, 2.5rem);
-        font-weight: 700;
-        color: white;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-      }
-
-      .tile-image {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-
-      /* Add subtle texture/pattern to tiles */
-      .grid-tile-portfolio {
-        background: #8b7355;
-        background-image: url('/assets/images/bkgd-artwork.jpg');
-        background-size: cover;
-        background-position: center;
-      }
-
-      .grid-tile-comics {
-        background: #c8c8c8;
-        background-image: url('/assets/images/bkgd-Comics.jpg');
-        background-size: cover;
-        background-position: center;
-      }
-
-      .grid-tile-writing {
-        background: #d94f3d;
-        background-image: url('/assets/images/bkgd-writing.jpg');
-        background-size: cover;
-        background-position: center;
-      }
-
-      .grid-tile-commissions {
-        background: #a8a8a8;
-        background-image: url('/assets/images/bkgd-commissions.jpeg');
-        background-size: cover;
-        background-position: center;
-      }
-
-      .grid-tile-contact {
-        background: linear-gradient(135deg, #cc5544 0%, #d94f3d 100%);
-      }
-
-      .logo-content {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        height: 100%;
-      }
-
-      .logo-shape {
-        width: clamp(150px, 50%, 250px);
-        height: clamp(180px, 60%, 300px);
-        background: var(--color-dark-purple);
-        border-radius: 50% 50% 0 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 1rem;
-        position: relative;
-      }
-
-      .logo-inner {
-        width: 35%;
-        height: 25%;
-        background: var(--color-beige);
-        border-radius: 50%;
-        position: absolute;
-        top: 30%;
-        left: 50%;
-        transform: translateX(-50%);
-      }
-
-      .logo-letters {
-        font-family: 'Nunito', sans-serif;
-        font-size: clamp(2rem, 5vw, 4rem);
-        font-weight: 700;
-        color: var(--color-ink);
-      }
-
-      /* Social Links */
-      .social-links {
-        display: flex;
-        gap: 0;
-        flex-wrap: wrap;
-        justify-content: center;
-        margin-bottom: 3rem;
-        max-width: 80%;
-        margin-left: auto;
-        margin-right: auto;
-      }
-
-      .social-link {
-        font-family: 'Nunito', sans-serif;
-        font-size: 1.5rem;
-        padding: 1.25rem 2.5rem;
-        text-decoration: none;
-        color: var(--color-ink);
-        font-weight: 700;
-        transition: all 0.2s ease-out;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        background-size: 100% 100%;
-        background-repeat: no-repeat;
-        background-position: center;
-        flex: 1 1 auto;
-        min-width: 180px;
-      }
-
-      .social-link:last-child {
-        border-right: none;
-      }
-
-      .social-link:nth-child(1) {
-        background-image: url('/assets/images/Highlighter_G.png');
-      }
-      .social-link:nth-child(2) {
-        background-image: url('/assets/images/Highlighter_Y.png');
-      }
-      .social-link:nth-child(3) {
-        background-image: url('/assets/images/Highlighter_O.png');
-      }
-      .social-link:nth-child(4) {
-        background-image: url('/assets/images/Highlighter_M.png');
-      }
-
-      .social-link:hover {
-        transform: scale(1.05);
-        filter: brightness(1.1);
-      }
-
-      .social-link:focus-visible {
-        outline: 3px solid var(--color-ink);
-        outline-offset: 4px;
-        transform: scale(1.05);
-      }
-
-      /* About Section */
-      .about-section {
-        display: grid;
-        grid-template-columns: 1fr 2fr;
-        gap: 2rem;
-        margin-bottom: 2rem;
-        align-items: start;
-      }
-
-      .about-text h2 {
-        font-family: 'Nunito', sans-serif;
-        font-size: clamp(2rem, 4vw, 3rem);
-        font-weight: 700;
-        margin-top: 0;
-        margin-bottom: 1rem;
-      }
-
-      .portrait-placeholder {
-        background-image: url('/assets/images/Postit.png');
-        background-size: contain;
-        background-position: center;
-        background-repeat: no-repeat;
-        border: none;
-        aspect-ratio: 3/4;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-family: 'Nunito', sans-serif;
-        font-size: 1.2rem;
-        text-align: center;
-        padding: 2rem;
-      }
-
-      .about-text {
-        font-size: 1rem;
-        line-height: 1.8;
-        color: var(--color-ink);
-      }
-
-      /* Responsive */
-      @media (max-width: 768px) {
-        .subtitle-nav-container {
-          flex-direction: column;
-          align-items: flex-start;
-        }
-
-        .grid-container {
-          grid-template-columns: repeat(2, 1fr);
-        }
-
-        .grid-tile-portfolio,
-        .grid-tile-logo,
-        .grid-tile-merch,
-        .grid-tile-comics,
-        .grid-tile-commissions,
-        .grid-tile-writing,
-        .grid-tile-contact {
-          grid-column: span 2;
-          grid-row: auto;
-        }
-
-        .grid-tile-about,
-        .grid-tile-news {
-          grid-column: span 1;
-          grid-row: auto;
-        }
-
-        /* Mobile panel ordering */
-        .grid-tile-logo {
-          order: -1;
-        } /* 1st - Logo/Hero */
-        .grid-tile-portfolio {
-          order: 0;
-        } /* 2nd - Portfolio */
-        .grid-tile-comics {
-          order: 1;
-        } /* 3rd - Comics */
-        .grid-tile-writing {
-          order: 2;
-        } /* 4th - Writing */
-        .grid-tile-commissions {
-          order: 3;
-        } /* 5th - Commissions */
-        .grid-tile-merch {
-          order: 4;
-        } /* 6th - Merch */
-        .grid-tile-about {
-          order: 5;
-        } /* 7th - About (left) */
-        .grid-tile-news {
-          order: 6;
-        } /* 7th - News (right) */
-        .grid-tile-contact {
-          order: 7;
-        } /* 8th - Contact */
-
-        .about-section {
-          grid-template-columns: 1fr;
-        }
-
-        .portrait-placeholder {
-          max-width: 300px;
-          margin: 0 auto;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <div class="homepage">
-      <!-- Header -->
-      <header class="homepage-header">
-        <h1 class="homepage-title">Kettlebird</h1>
-        <div class="subtitle-nav-container">
-          <p class="homepage-subtitle">Comics + Illustration</p>
-          <!-- Navigation -->
-          <nav class="homepage-nav">
-            <a href="/portfolio" class="nav-button">PORTFOLIO</a>
-            <a href="/comics" class="nav-button">COMICS</a>
-            <a href="/writing" class="nav-button">WRITING</a>
-            <a href="/about" class="nav-button">ABOUT</a>
-            <a href="/news" class="nav-button nav-button-highlight">NEWS</a>
-          </nav>
-        </div>
-      </header>
-
-      <!-- Main Grid -->
-      <div class="grid-container">
-        <!-- Portfolio Tile -->
-        <a href="/portfolio" class="grid-tile grid-tile-portfolio">
-          <div class="tile-content">
-            <span class="tile-title">PORTFOLIO</span>
-          </div>
-        </a>
-
-        <!-- Logo Tile -->
-        <div class="grid-tile grid-tile-logo">
-          <img src="/assets/images/kblogo.png" alt="Kettlebird Logo" class="tile-image" width="1600" height="1600" />
-        </div>
-
-        <!-- Merch Tile -->
-        <a href="/shop" class="grid-tile grid-tile-merch">
-          <div class="tile-content">
-            <span class="tile-title">SHOP</span>
-          </div>
-        </a>
-
-        <!-- Comics Tile -->
-        <a href="/comics" class="grid-tile grid-tile-comics">
-          <div class="tile-content">
-            <span class="tile-title">COMICS</span>
-          </div>
-        </a>
-
-        <!-- Commissions Tile -->
-        <a href="/commissions" class="grid-tile grid-tile-commissions">
-          <div class="tile-content">
-            <span class="tile-title">COMMISSIONS</span>
-          </div>
-        </a>
-
-        <!-- Writing Tile -->
-        <a href="/writing" class="grid-tile grid-tile-writing">
-          <div class="tile-content">
-            <span class="tile-title">WRITING</span>
-          </div>
-        </a>
-
-        <!-- Contact Tile -->
-        <a href="/about#contact" class="grid-tile grid-tile-contact">
-          <div class="tile-content">
-            <span class="tile-title">CONTACT ME!</span>
-          </div>
-        </a>
-
-        <!-- About Tile -->
-        <a href="/about" class="grid-tile grid-tile-about">
-          <div class="tile-content">
-            <span class="tile-title">ABOUT</span>
-          </div>
-        </a>
-
-        <!-- News Tile -->
-        <a href="/news" class="grid-tile grid-tile-news">
-          <div class="tile-content">
-            <span class="tile-title">NEWS</span>
-          </div>
-        </a>
-      </div>
-
-      <!-- Social Links -->
-      <div class="social-links">
-        <a href="https://bsky.app/profile/kettlebird.bsky.social" target="_blank" rel="noopener noreferrer" class="social-link">BLUESKY</a>
-        <a href="https://kettle-bird.tumblr.com" target="_blank" rel="noopener noreferrer" class="social-link">TUMBLR</a>
-        <a href="https://www.instagram.com/kettlebirdart" target="_blank" rel="noopener noreferrer" class="social-link">INSTAGRAM</a>
-        <a href="https://ko-fi.com/kettlebirdart" target="_blank" rel="noopener noreferrer" class="social-link">KO-FI</a>
-      </div>
-
-      <!-- About the Artist Section -->
-      <section class="about-section">
-        <div class="portrait-placeholder">[Insert<br />Portrait Here]</div>
-        <div class="about-text">
-          <h2>ABOUT THE ARTIST</h2>
-          <p>
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco lab[...]
-          </p>
-        </div>
-      </section>
+<BaseLayout
+  title="Kettlebird Creations • Writer & Illustrator"
+  description="Portfolio of Star Goldberg (they/them) - UPA-inspired illustrations, comics, and written works featuring fantasy characters and fanart."
+>
+  <!-- Main Grid -->
+  <div class="grid-container">
+    <a href="/portfolio" class="grid-tile grid-tile-portfolio">
+      <div class="tile-content"><span class="tile-title">PORTFOLIO</span></div>
+    </a>
+
+    <div class="grid-tile grid-tile-logo">
+      <img src="/assets/images/kblogo.png" alt="Kettlebird Logo" class="tile-image" width="1600" height="1600" />
     </div>
-  </body>
-</html>
+
+    <a href="/shop" class="grid-tile grid-tile-merch">
+      <div class="tile-content"><span class="tile-title">SHOP</span></div>
+    </a>
+
+    <a href="/comics" class="grid-tile grid-tile-comics">
+      <div class="tile-content"><span class="tile-title">COMICS</span></div>
+    </a>
+
+    <a href="/commissions" class="grid-tile grid-tile-commissions">
+      <div class="tile-content"><span class="tile-title">COMMISSIONS</span></div>
+    </a>
+
+    <a href="/writing" class="grid-tile grid-tile-writing">
+      <div class="tile-content"><span class="tile-title">WRITING</span></div>
+    </a>
+
+    <a href="/about#contact" class="grid-tile grid-tile-contact">
+      <div class="tile-content"><span class="tile-title">CONTACT ME!</span></div>
+    </a>
+
+    <a href="/about" class="grid-tile grid-tile-about">
+      <div class="tile-content"><span class="tile-title">ABOUT</span></div>
+    </a>
+
+    <a href="/news" class="grid-tile grid-tile-news">
+      <div class="tile-content"><span class="tile-title">NEWS</span></div>
+    </a>
+  </div>
+
+  <!-- Social Links -->
+  <div class="social-row">
+    <a href="https://bsky.app/profile/kettlebird.bsky.social" target="_blank" rel="noopener noreferrer" class="social-link highlighter-btn--green">BLUESKY</a>
+    <a href="https://kettle-bird.tumblr.com" target="_blank" rel="noopener noreferrer" class="social-link">TUMBLR</a>
+    <a href="https://www.instagram.com/kettlebirdart" target="_blank" rel="noopener noreferrer" class="social-link highlighter-btn--orange">INSTAGRAM</a>
+    <a href="https://ko-fi.com/kettlebirdart" target="_blank" rel="noopener noreferrer" class="social-link highlighter-btn--pink">KO-FI</a>
+  </div>
+
+  <!-- About the Artist -->
+  <section class="about-section">
+    <div class="portrait-placeholder">[Insert<br />Portrait Here]</div>
+    <div class="about-text">
+      <h2>ABOUT THE ARTIST</h2>
+      <p>
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+        dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+        ex ea commodo consequat."
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* ── Grid ── */
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(7, minmax(75px, auto));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .grid-tile {
+    border: 3px solid var(--color-ink);
+    overflow: hidden;
+    position: relative;
+    min-height: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: transform 0.2s;
+  }
+
+  .grid-tile:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--color-ink);
+  }
+
+  .grid-tile-portfolio {
+    grid-column: span 2;
+    grid-row: span 2;
+    background: #8b7355 url('/assets/images/bkgd-artwork.jpg') center / cover;
+  }
+
+  .grid-tile-logo {
+    grid-column: span 2;
+    grid-row: span 4;
+    background: var(--color-yellow);
+  }
+
+  .grid-tile-merch {
+    grid-column: span 2;
+    grid-row: span 2;
+    background: var(--color-orange);
+  }
+
+  .grid-tile-comics {
+    grid-column: span 2;
+    grid-row: span 3;
+    background: #c8c8c8 url('/assets/images/bkgd-Comics.jpg') center / cover;
+  }
+
+  .grid-tile-commissions {
+    grid-column: span 2;
+    grid-row: span 2;
+    background: #a8a8a8 url('/assets/images/bkgd-commissions.jpeg') center / cover;
+  }
+
+  .grid-tile-writing {
+    grid-column: 1 / span 2;
+    grid-row: 6 / span 2;
+    background: #d94f3d url('/assets/images/bkgd-writing.jpg') center / cover;
+  }
+
+  .grid-tile-contact {
+    grid-column: 3 / span 2;
+    grid-row: 5 / span 3;
+    background: linear-gradient(135deg, #cc5544 0%, #d94f3d 100%);
+  }
+
+  .grid-tile-about {
+    grid-column: 5 / span 1;
+    grid-row: 5 / span 3;
+    background: var(--color-green);
+  }
+
+  .grid-tile-about .tile-content { justify-content: flex-start; }
+
+  .grid-tile-news {
+    grid-column: 6 / span 1;
+    grid-row: 5 / span 3;
+    background: var(--color-yellow);
+  }
+
+  .grid-tile-news .tile-content { justify-content: flex-end; }
+
+  .tile-content {
+    text-align: center;
+    padding: 1rem;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.2);
+  }
+
+  .tile-title {
+    font-family: 'Nunito', sans-serif;
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    font-weight: 700;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  }
+
+  .tile-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* ── Social row ── */
+  .social-row {
+    display: flex;
+    gap: 0;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 3rem;
+    max-width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .social-link {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.5rem;
+    padding: 1.25rem 2.5rem;
+    text-decoration: none;
+    color: var(--color-ink);
+    font-weight: 700;
+    transition: transform 0.2s ease-out, filter 0.2s ease-out;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    /* Default: yellow highlighter */
+    background-image: url('/assets/images/Highlighter_Y.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    flex: 1 1 auto;
+    min-width: 180px;
+  }
+
+  .social-link.highlighter-btn--green  { background-image: url('/assets/images/Highlighter_G.png'); }
+  .social-link.highlighter-btn--orange { background-image: url('/assets/images/Highlighter_O.png'); }
+  .social-link.highlighter-btn--pink   { background-image: url('/assets/images/Highlighter_M.png'); }
+
+  .social-link:hover {
+    transform: scale(1.05);
+    filter: brightness(1.1);
+    color: var(--color-ink);
+  }
+
+  .social-link:focus-visible {
+    outline: 3px solid var(--color-ink);
+    outline-offset: 4px;
+  }
+
+  /* ── About section ── */
+  .about-section {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    align-items: start;
+  }
+
+  .about-text h2 {
+    font-family: 'Nunito', sans-serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    margin-top: 0;
+    margin-bottom: 1rem;
+  }
+
+  .portrait-placeholder {
+    background-image: url('/assets/images/Postit.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border: none;
+    aspect-ratio: 3/4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.2rem;
+    text-align: center;
+    padding: 2rem;
+  }
+
+  .about-text {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--color-ink);
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    .grid-container {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .grid-tile-portfolio,
+    .grid-tile-logo,
+    .grid-tile-merch,
+    .grid-tile-comics,
+    .grid-tile-commissions,
+    .grid-tile-writing,
+    .grid-tile-contact {
+      grid-column: span 2;
+      grid-row: auto;
+    }
+
+    .grid-tile-about,
+    .grid-tile-news {
+      grid-column: span 1;
+      grid-row: auto;
+    }
+
+    .grid-tile-logo       { order: -1; }
+    .grid-tile-portfolio  { order: 0; }
+    .grid-tile-comics     { order: 1; }
+    .grid-tile-writing    { order: 2; }
+    .grid-tile-commissions{ order: 3; }
+    .grid-tile-merch      { order: 4; }
+    .grid-tile-about      { order: 5; }
+    .grid-tile-news       { order: 6; }
+    .grid-tile-contact    { order: 7; }
+
+    .about-section {
+      grid-template-columns: 1fr;
+    }
+
+    .portrait-placeholder {
+      max-width: 300px;
+      margin: 0 auto;
+    }
+  }
+</style>
