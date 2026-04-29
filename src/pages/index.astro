@@ -54,10 +54,10 @@
       .homepage {
         max-width: 1600px;
         margin: 0 auto;
-        padding: 2rem 1rem;
+        padding: 0 1rem 2rem;
       }
 
-      /* Header */
+      /* Header — lives outside .homepage so it's naturally full viewport width */
       .homepage-header {
         background-color: transparent;
         background-image: url('/assets/images/Paper_1_Torn.png');
@@ -65,7 +65,6 @@
         background-position: center bottom;
         background-size: cover;
         min-height: var(--paper-torn-height);
-        margin: -2rem -1rem 0 -1rem;
         position: relative;
         z-index: 1;
         overflow: visible;
@@ -485,23 +484,22 @@
     </style>
   </head>
   <body>
-    <div class="homepage">
-      <!-- Header -->
-      <header class="homepage-header">
-        <h1 class="homepage-title">Kettlebird</h1>
-        <div class="subtitle-nav-container">
-          <p class="homepage-subtitle">Comics + Illustration</p>
-          <!-- Navigation -->
-          <nav class="homepage-nav">
-            <a href="/portfolio" class="nav-button">PORTFOLIO</a>
-            <a href="/comics" class="nav-button">COMICS</a>
-            <a href="/writing" class="nav-button">WRITING</a>
-            <a href="/about" class="nav-button">ABOUT</a>
-            <a href="/news" class="nav-button nav-button-highlight">NEWS</a>
-          </nav>
-        </div>
-      </header>
+    <!-- Header lives outside the max-width container so it's always full-viewport-width -->
+    <header class="homepage-header">
+      <h1 class="homepage-title">Kettlebird</h1>
+      <div class="subtitle-nav-container">
+        <p class="homepage-subtitle">Comics + Illustration</p>
+        <nav class="homepage-nav">
+          <a href="/portfolio" class="nav-button">PORTFOLIO</a>
+          <a href="/comics" class="nav-button">COMICS</a>
+          <a href="/writing" class="nav-button">WRITING</a>
+          <a href="/about" class="nav-button">ABOUT</a>
+          <a href="/news" class="nav-button nav-button-highlight">NEWS</a>
+        </nav>
+      </div>
+    </header>
 
+    <div class="homepage">
       <!-- Main Grid -->
       <div class="grid-container">
         <!-- Portfolio Tile -->
