@@ -100,18 +100,15 @@ const currentYear = new Date().getFullYear();
     background-color: transparent;
     background-image: url('/assets/images/Paper_1_Torn.png');
     background-repeat: no-repeat;
-    background-position: center top;
-    background-size: auto 100%;
+    background-position: center bottom;
+    background-size: cover;
     min-height: 300px;
     position: relative;
     z-index: 100;
     overflow: visible;
-  }
-
-  @media (min-width: 1600px) {
-    .site-header {
-      background-size: 100% auto;
-    }
+    /* Suppress the border + shadow that global.css adds to .site-header */
+    border-bottom: none;
+    box-shadow: none;
   }
 
   .header-inner {

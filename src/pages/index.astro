@@ -62,32 +62,14 @@
         background-color: transparent;
         background-image: url('/assets/images/Paper_1_Torn.png');
         background-repeat: no-repeat;
-        background-position: center top;
-
-        /* Narrow screens: scale by height (no vertical squish) */
-        background-size: auto 100%;
-
-        /* Allow content to grow if it wraps on mobile */
+        background-position: center bottom;
+        background-size: cover;
         min-height: var(--paper-torn-height);
-
-        /* Full bleed horizontally */
         margin: -2rem -1rem 0 -1rem;
-
         position: relative;
         z-index: 1;
-
-        /* Allow the torn edge to overlap the grid */
         overflow: visible;
-
-        /* Keep header content inside the paper area */
-         padding: 2rem 1rem 0.25rem;
-      }
-
-      /* Wide screens: scale to full width without squish */
-      @media (min-width: 1600px) {
-        .homepage-header {
-          background-size: 100% auto;
-        }
+        padding: 2rem 1rem 0.25rem;
       }
 
       .homepage-title {
