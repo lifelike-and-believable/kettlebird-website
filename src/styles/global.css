@@ -79,14 +79,7 @@ a:focus {
 }
 
 .page__content {
-  width: min(100%, calc(var(--max-width) + 2rem));
-  margin: 0 auto 4rem;
   padding: 0 1rem;
-}
-
-.site-header,
-.site-footer {
-  padding: 2rem 1rem 1rem;
 }
 
 .paper-shell {

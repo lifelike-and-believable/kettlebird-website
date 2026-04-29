@@ -6,74 +6,75 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   title="Kettlebird Creations • Writer & Illustrator"
   description="Portfolio of Star Goldberg (they/them) - UPA-inspired illustrations, comics, and written works featuring fantasy characters and fanart."
 >
-  <!-- Main Grid -->
-  <div class="grid-container">
-    <a href="/portfolio" class="grid-tile grid-tile-portfolio">
-      <div class="tile-content"><span class="tile-title">PORTFOLIO</span></div>
-    </a>
-
-    <div class="grid-tile grid-tile-logo">
-      <img src="/assets/images/kblogo.png" alt="Kettlebird Logo" class="tile-image" width="1600" height="1600" />
+  <div class="homepage">
+    <!-- Main Grid -->
+    <div class="grid-container">
+      <a href="/portfolio" class="grid-tile grid-tile-portfolio">
+        <div class="tile-content"><span class="tile-title">PORTFOLIO</span></div>
+      </a>
+      <div class="grid-tile grid-tile-logo">
+        <img src="/assets/images/kblogo.png" alt="Kettlebird Logo" class="tile-image" width="1600" height="1600" />
+      </div>
+      <a href="/shop" class="grid-tile grid-tile-merch">
+        <div class="tile-content"><span class="tile-title">SHOP</span></div>
+      </a>
+      <a href="/comics" class="grid-tile grid-tile-comics">
+        <div class="tile-content"><span class="tile-title">COMICS</span></div>
+      </a>
+      <a href="/commissions" class="grid-tile grid-tile-commissions">
+        <div class="tile-content"><span class="tile-title">COMMISSIONS</span></div>
+      </a>
+      <a href="/writing" class="grid-tile grid-tile-writing">
+        <div class="tile-content"><span class="tile-title">WRITING</span></div>
+      </a>
+      <a href="/about#contact" class="grid-tile grid-tile-contact">
+        <div class="tile-content"><span class="tile-title">CONTACT ME!</span></div>
+      </a>
+      <a href="/about" class="grid-tile grid-tile-about">
+        <div class="tile-content"><span class="tile-title">ABOUT</span></div>
+      </a>
+      <a href="/news" class="grid-tile grid-tile-news">
+        <div class="tile-content"><span class="tile-title">NEWS</span></div>
+      </a>
     </div>
 
-    <a href="/shop" class="grid-tile grid-tile-merch">
-      <div class="tile-content"><span class="tile-title">SHOP</span></div>
-    </a>
-
-    <a href="/comics" class="grid-tile grid-tile-comics">
-      <div class="tile-content"><span class="tile-title">COMICS</span></div>
-    </a>
-
-    <a href="/commissions" class="grid-tile grid-tile-commissions">
-      <div class="tile-content"><span class="tile-title">COMMISSIONS</span></div>
-    </a>
-
-    <a href="/writing" class="grid-tile grid-tile-writing">
-      <div class="tile-content"><span class="tile-title">WRITING</span></div>
-    </a>
-
-    <a href="/about#contact" class="grid-tile grid-tile-contact">
-      <div class="tile-content"><span class="tile-title">CONTACT ME!</span></div>
-    </a>
-
-    <a href="/about" class="grid-tile grid-tile-about">
-      <div class="tile-content"><span class="tile-title">ABOUT</span></div>
-    </a>
-
-    <a href="/news" class="grid-tile grid-tile-news">
-      <div class="tile-content"><span class="tile-title">NEWS</span></div>
-    </a>
-  </div>
-
-  <!-- Social Links -->
-  <div class="social-row">
-    <a href="https://bsky.app/profile/kettlebird.bsky.social" target="_blank" rel="noopener noreferrer" class="social-link highlighter-btn--green">BLUESKY</a>
-    <a href="https://kettle-bird.tumblr.com" target="_blank" rel="noopener noreferrer" class="social-link">TUMBLR</a>
-    <a href="https://www.instagram.com/kettlebirdart" target="_blank" rel="noopener noreferrer" class="social-link highlighter-btn--orange">INSTAGRAM</a>
-    <a href="https://ko-fi.com/kettlebirdart" target="_blank" rel="noopener noreferrer" class="social-link highlighter-btn--pink">KO-FI</a>
-  </div>
-
-  <!-- About the Artist -->
-  <section class="about-section">
-    <div class="portrait-placeholder">[Insert<br />Portrait Here]</div>
-    <div class="about-text">
-      <h2>ABOUT THE ARTIST</h2>
-      <p>
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-        dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-        ex ea commodo consequat."
-      </p>
+    <!-- Social Links -->
+    <div class="social-links">
+      <a href="https://bsky.app/profile/kettlebird.bsky.social" target="_blank" rel="noopener noreferrer" class="social-link">BLUESKY</a>
+      <a href="https://kettle-bird.tumblr.com" target="_blank" rel="noopener noreferrer" class="social-link">TUMBLR</a>
+      <a href="https://www.instagram.com/kettlebirdart" target="_blank" rel="noopener noreferrer" class="social-link">INSTAGRAM</a>
+      <a href="https://ko-fi.com/kettlebirdart" target="_blank" rel="noopener noreferrer" class="social-link">KO-FI</a>
     </div>
-  </section>
+
+    <!-- About the Artist -->
+    <section class="about-section">
+      <div class="portrait-placeholder">[Insert<br />Portrait Here]</div>
+      <div class="about-text">
+        <h2>ABOUT THE ARTIST</h2>
+        <p>
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+          dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+          ex ea commodo consequat."
+        </p>
+      </div>
+    </section>
+  </div>
 </BaseLayout>
 
 <style>
+  .homepage {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 0 1rem 2rem;
+  }
+
   /* ── Grid ── */
   .grid-container {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     grid-template-rows: repeat(7, minmax(75px, auto));
     gap: 1rem;
+    margin-top: -24px; /* overlap torn paper edge */
     margin-bottom: 2rem;
   }
 
@@ -91,7 +92,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   .grid-tile:hover {
     transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0 var(--color-ink);
+    box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.15);
   }
 
   .grid-tile-portfolio {
@@ -178,8 +179,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     object-fit: cover;
   }
 
-  /* ── Social row ── */
-  .social-row {
+  /* ── Social links ── */
+  .social-links {
     display: flex;
     gap: 0;
     flex-wrap: wrap;
@@ -202,8 +203,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     align-items: center;
     justify-content: center;
     text-align: center;
-    /* Default: yellow highlighter */
-    background-image: url('/assets/images/Highlighter_Y.png');
     background-size: 100% 100%;
     background-repeat: no-repeat;
     background-position: center;
@@ -211,19 +210,16 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     min-width: 180px;
   }
 
-  .social-link.highlighter-btn--green  { background-image: url('/assets/images/Highlighter_G.png'); }
-  .social-link.highlighter-btn--orange { background-image: url('/assets/images/Highlighter_O.png'); }
-  .social-link.highlighter-btn--pink   { background-image: url('/assets/images/Highlighter_M.png'); }
+  .social-link:nth-child(1) { background-image: url('/assets/images/Highlighter_G.png'); }
+  .social-link:nth-child(2) { background-image: url('/assets/images/Highlighter_Y.png'); }
+  .social-link:nth-child(3) { background-image: url('/assets/images/Highlighter_O.png'); }
+  .social-link:nth-child(4) { background-image: url('/assets/images/Highlighter_M.png'); }
 
-  .social-link:hover {
-    transform: scale(1.05);
-    filter: brightness(1.1);
-    color: var(--color-ink);
-  }
-
+  .social-link:hover { transform: scale(1.05); filter: brightness(1.1); }
   .social-link:focus-visible {
     outline: 3px solid var(--color-ink);
     outline-offset: 4px;
+    transform: scale(1.05);
   }
 
   /* ── About section ── */
