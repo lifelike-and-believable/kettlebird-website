@@ -68,6 +68,11 @@
         position: relative;
         z-index: 1;
         overflow: visible;
+      }
+
+      .homepage-header-inner {
+        max-width: 1600px;
+        margin: 0 auto;
         padding: 2rem 1rem 0.25rem;
       }
 
@@ -486,16 +491,20 @@
   <body>
     <!-- Header lives outside the max-width container so it's always full-viewport-width -->
     <header class="homepage-header">
-      <h1 class="homepage-title">Kettlebird</h1>
-      <div class="subtitle-nav-container">
-        <p class="homepage-subtitle">Comics + Illustration</p>
-        <nav class="homepage-nav">
-          <a href="/portfolio" class="nav-button">PORTFOLIO</a>
-          <a href="/comics" class="nav-button">COMICS</a>
-          <a href="/writing" class="nav-button">WRITING</a>
-          <a href="/about" class="nav-button">ABOUT</a>
-          <a href="/news" class="nav-button nav-button-highlight">NEWS</a>
-        </nav>
+      <div class="homepage-header-inner">
+        <h1 class="homepage-title">Kettlebird</h1>
+        <div class="subtitle-nav-container">
+          <p class="homepage-subtitle">Comics + Illustration</p>
+          <nav class="homepage-nav">
+            <a href="/portfolio" class="nav-button">PORTFOLIO</a>
+            <a href="/comics" class="nav-button">COMICS</a>
+            <a href="/writing" class="nav-button">WRITING</a>
+            <a href="/shop" class="nav-button">SHOP</a>
+            <a href="/commissions" class="nav-button">COMMISSIONS</a>
+            <a href="/about" class="nav-button">ABOUT</a>
+            <a href="/news" class="nav-button">NEWS</a>
+          </nav>
+        </div>
       </div>
     </header>
 
