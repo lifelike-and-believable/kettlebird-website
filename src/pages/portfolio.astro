@@ -3,6 +3,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import GalleryGrid from '../components/GalleryGrid';
 import { getAllGalleryItems, type GalleryItem } from '../lib/queries';
 
+type DisplayItem = GalleryItem & { placeholderSrc?: string };
+
 let items: GalleryItem[] = [];
 try {
   items = await getAllGalleryItems();
@@ -10,29 +12,41 @@ try {
   console.warn('[portfolio] Could not fetch gallery items:', e);
 }
 
-// Shown when Sanity isn't configured yet
-const PLACEHOLDER_ITEMS: GalleryItem[] = [
-  { _id: 'ph-o1', title: 'Original Character Study', slug: { current: 'oc-study' }, image: null as any, category: ['original'] },
-  { _id: 'ph-o2', title: 'Creature Design', slug: { current: 'creature' }, image: null as any, category: ['original'] },
-  { _id: 'ph-o3', title: 'Environment Concept', slug: { current: 'env-concept' }, image: null as any, category: ['original'] },
-  { _id: 'ph-o4', title: 'Character Lineup', slug: { current: 'char-lineup' }, image: null as any, category: ['original'] },
-  { _id: 'ph-o5', title: 'Illustration Series', slug: { current: 'illus-series' }, image: null as any, category: ['original'] },
-  { _id: 'ph-o6', title: 'Comic Page', slug: { current: 'comic-page' }, image: null as any, category: ['original'] },
-  { _id: 'ph-f1', title: 'Fan Art — Adventure Time', slug: { current: 'fan-at' }, image: null as any, category: ['fanart'] },
-  { _id: 'ph-f2', title: 'Fan Art — Gravity Falls', slug: { current: 'fan-gf' }, image: null as any, category: ['fanart'] },
-  { _id: 'ph-f3', title: 'Fan Art — Steven Universe', slug: { current: 'fan-su' }, image: null as any, category: ['fanart'] },
-  { _id: 'ph-f4', title: 'Fan Art — BNHA', slug: { current: 'fan-bnha' }, image: null as any, category: ['fanart'] },
-  { _id: 'ph-f5', title: 'Fan Art — She-Ra', slug: { current: 'fan-shera' }, image: null as any, category: ['fanart'] },
-  { _id: 'ph-f6', title: 'Fan Art — Tarot Series', slug: { current: 'fan-tarot' }, image: null as any, category: ['fanart'] },
-  { _id: 'ph-c1', title: 'Book Cover Illustration', slug: { current: 'client-book' }, image: null as any, category: ['commission'] },
-  { _id: 'ph-c2', title: 'Brand Character Design', slug: { current: 'client-brand' }, image: null as any, category: ['commission'] },
-  { _id: 'ph-c3', title: 'Editorial Illustration', slug: { current: 'client-editorial' }, image: null as any, category: ['commission'] },
-  { _id: 'ph-c4', title: 'Game Asset Pack', slug: { current: 'client-game' }, image: null as any, category: ['commission'] },
-  { _id: 'ph-c5', title: 'Poster Design', slug: { current: 'client-poster' }, image: null as any, category: ['commission'] },
-  { _id: 'ph-c6', title: 'Sticker Sheet', slug: { current: 'client-stickers' }, image: null as any, category: ['commission'] },
+// Real sample artwork stands in for thumbnails until Sanity is wired up.
+const SAMPLE_IMAGES = [
+  '/assets/images/bkgd-artwork.jpg',
+  '/assets/images/bkgd-commissions.jpeg',
+  '/assets/images/bkgd-Comics.jpg',
+  '/assets/images/bkgd-writing.jpg',
 ];
 
-const displayItems = items.length > 0 ? items : PLACEHOLDER_ITEMS;
+function placeholders(cat: string, titles: string[]): DisplayItem[] {
+  return titles.map((title, i) => ({
+    _id: `ph-${cat}-${i}`,
+    title,
+    slug: { current: `${cat}-${i}` },
+    image: null as any,
+    category: [cat],
+    placeholderSrc: SAMPLE_IMAGES[i % SAMPLE_IMAGES.length],
+  }));
+}
+
+const PLACEHOLDER_ITEMS: DisplayItem[] = [
+  ...placeholders('original', [
+    'Original Character Study', 'Creature Design', 'Environment Concept',
+    'Character Lineup', 'Illustration Series', 'Comic Page',
+  ]),
+  ...placeholders('fanart', [
+    'Adventure Time', 'Gravity Falls', 'Steven Universe',
+    'My Hero Academia', 'She-Ra', 'Tarot Series',
+  ]),
+  ...placeholders('commission', [
+    'Book Cover', 'Brand Character', 'Editorial Illustration',
+    'Game Asset Pack', 'Poster Design', 'Sticker Sheet',
+  ]),
+];
+
+const displayItems: DisplayItem[] = items.length > 0 ? items : PLACEHOLDER_ITEMS;
 ---
 
 <BaseLayout
@@ -51,13 +65,14 @@ const displayItems = items.length > 0 ? items : PLACEHOLDER_ITEMS;
 
 <style>
   .portfolio-page {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 2rem 1rem 4rem;
+    /* full-bleed bands handle their own width; no horizontal padding here */
+    padding: 0 0 4rem;
   }
 
   .portfolio-header {
-    margin-bottom: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem 1rem 0;
   }
 
   .portfolio-title {
@@ -73,23 +88,25 @@ const displayItems = items.length > 0 ? items : PLACEHOLDER_ITEMS;
 
   /* ── INDEX filter bar ─────────────────────────────────────── */
   :global(.gallery-index) {
+    max-width: 1400px;
+    margin: 0 auto 2rem;
+    padding: 1.5rem 1rem 0;
     display: flex;
     align-items: center;
     gap: 1rem;
     flex-wrap: wrap;
-    margin-bottom: 2.5rem;
   }
 
   :global(.gallery-index__label) {
-    font-family: 'Nunito', sans-serif;
-    font-size: 1.1rem;
-    font-weight: 900;
+    font-family: 'DM Mono', monospace;
+    font-size: 1.15rem;
+    font-weight: 500;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    padding: 0.35rem 1rem;
-    background: #e8a0a0;
-    border: 2.5px solid var(--color-ink, #2b2b2b);
+    letter-spacing: 0.06em;
+    padding: 0.3rem 1.1rem;
     color: var(--color-ink, #2b2b2b);
+    background: url('/assets/images/Highlighter_M.png') no-repeat center;
+    background-size: 100% 100%;
     flex-shrink: 0;
   }
 
@@ -100,63 +117,88 @@ const displayItems = items.length > 0 ? items : PLACEHOLDER_ITEMS;
   }
 
   :global(.filter-btn) {
-    font-family: 'Nunito', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 700;
-    padding: 0.4rem 1.1rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 0.35rem 1rem;
     border: 2px solid var(--color-ink, #2b2b2b);
-    background: var(--color-beige, #f5f1e8);
+    background: transparent;
     color: var(--color-ink, #2b2b2b);
     cursor: pointer;
-    transition: background 0.15s, color 0.15s, transform 0.15s;
+    transition: background 0.15s, color 0.15s;
   }
 
   :global(.filter-btn:hover),
   :global(.filter-btn--active) {
     background: var(--color-ink, #2b2b2b);
     color: var(--color-beige, #f5f1e8);
-    transform: translate(-1px, -1px);
   }
 
-  /* ── Stacked folder sections ──────────────────────────────── */
+  /* ── Stacked, edge-to-edge folder bands ───────────────────── */
   :global(.folder-stack) {
     display: flex;
     flex-direction: column;
-    gap: 3.5rem;
   }
 
+  /* Each band runs the full viewport width and butts against its
+     neighbours — no gaps, no drop shadows. Kraft tone now; ready to
+     swap background-image for a texture asset from Star later. */
   :global(.folder-section) {
-    background: #ede8dc;
-    border: 2.5px solid var(--color-ink, #2b2b2b);
-    /* hard offset shadow gives depth / stacking illusion */
-    box-shadow: 7px 7px 0 var(--color-ink, #2b2b2b);
+    width: 100%;
+    position: relative;
+    background-color: #c3a47d;
+    background-image: url('/assets/images/Paper_2_Tileable.png');
+    background-size: 420px;
+    background-blend-mode: multiply;
   }
 
-  :global(.folder-header) {
-    display: flex;
-    align-items: center;
-    padding: 0.55rem 1.25rem;
-    border-bottom: 2.5px solid var(--color-ink, #2b2b2b);
-    background: var(--color-yellow, #f4ce6a); /* default */
+  :global(.folder-section[data-cat='original'])   { background-color: #c9aa7e; }
+  :global(.folder-section[data-cat='fanart'])      { background-color: #bd9f76; }
+  :global(.folder-section[data-cat='commission'])  { background-color: #c2a06e; }
+  :global(.folder-section[data-cat='featured'])    { background-color: #c9a87c; }
+  :global(.folder-section[data-cat='wip'])         { background-color: #bfa884; }
+
+  /* Torn-paper seam at the top edge of each band */
+  :global(.folder-section::before) {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 16px;
+    background: url('/assets/images/Paper_1_Torn.png') repeat-x top center;
+    background-size: auto 16px;
+    pointer-events: none;
   }
 
-  :global(.folder-header[data-cat="original"])   { background: var(--color-yellow, #f4ce6a); }
-  :global(.folder-header[data-cat="fanart"])      { background: var(--color-green, #a8d5ba); }
-  :global(.folder-header[data-cat="commission"])  { background: var(--color-orange, #e89a5a); }
-  :global(.folder-header[data-cat="featured"])    { background: #e8a0a0; }
-  :global(.folder-header[data-cat="wip"])         { background: var(--color-beige, #f5f1e8); }
+  :global(.folder-inner) {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2.75rem 1rem 1.75rem;
+    position: relative;
+  }
 
-  :global(.folder-header__title) {
-    font-family: 'Nunito', sans-serif;
-    font-weight: 900;
-    font-size: 1.25rem;
-    color: var(--color-ink, #2b2b2b);
+  /* Section label as a monospace marker tab straddling the top edge */
+  :global(.folder-label) {
+    position: absolute;
+    top: -0.7rem;
+    left: 1rem;
+    font-family: 'DM Mono', monospace;
+    font-weight: 500;
+    font-size: 1.5rem;
     letter-spacing: 0.02em;
+    color: var(--color-ink, #2b2b2b);
+    padding: 0.2rem 1rem;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100% 100%;
   }
 
-  :global(.folder-body) {
-    padding: 1.25rem;
-  }
+  :global(.folder-label[data-cat='original'])   { background-image: url('/assets/images/Highlighter_Y.png'); }
+  :global(.folder-label[data-cat='fanart'])      { background-image: url('/assets/images/Highlighter_G.png'); }
+  :global(.folder-label[data-cat='commission'])  { background-image: url('/assets/images/Highlighter_O.png'); }
+  :global(.folder-label[data-cat='featured'])    { background-image: url('/assets/images/Highlighter_M.png'); }
+  :global(.folder-label[data-cat='wip'])         { background-image: url('/assets/images/Highlighter_Y.png'); }
 
   /* ── Carousel ─────────────────────────────────────────────── */
   :global(.carousel) {
@@ -167,12 +209,11 @@ const displayItems = items.length > 0 ? items : PLACEHOLDER_ITEMS;
 
   :global(.carousel__track) {
     display: flex;
-    gap: 0.75rem;
+    gap: 0.85rem;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
     flex: 1;
-    /* allow cards to slightly overflow so partial cards signal scroll */
     padding-bottom: 0.25rem;
   }
 
@@ -195,15 +236,14 @@ const displayItems = items.length > 0 ? items : PLACEHOLDER_ITEMS;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: transform 0.1s, box-shadow 0.1s;
+    transition: transform 0.1s;
   }
 
   :global(.carousel__arrow:hover) {
-    transform: translate(-2px, -2px);
-    box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.25);
+    transform: scale(1.12);
   }
 
-  /* ── Gallery card (used inside carousel) ─────────────────── */
+  /* ── Gallery card (thumbnail in carousel) ─────────────────── */
   :global(.gallery-card) {
     position: relative;
     border: 3px solid var(--color-ink, #2b2b2b);
@@ -211,17 +251,16 @@ const displayItems = items.length > 0 ? items : PLACEHOLDER_ITEMS;
     background: var(--color-beige, #f5f1e8);
     padding: 0;
     cursor: pointer;
-    /* fixed thumbnail size in carousel */
     flex-shrink: 0;
     width: 220px;
     height: 220px;
     scroll-snap-align: start;
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: transform 0.18s;
   }
 
   :global(.gallery-card:hover) {
-    transform: translate(-3px, -3px);
-    box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.2);
+    transform: scale(1.04);
+    z-index: 1;
   }
 
   :global(.gallery-card__img) {
@@ -246,7 +285,7 @@ const displayItems = items.length > 0 ? items : PLACEHOLDER_ITEMS;
     bottom: 0;
     left: 0;
     right: 0;
-    background: linear-gradient(transparent, rgba(0, 0, 0, 0.65));
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
     padding: 1.5rem 0.75rem 0.6rem;
     opacity: 0;
     transition: opacity 0.2s;
@@ -258,18 +297,17 @@ const displayItems = items.length > 0 ? items : PLACEHOLDER_ITEMS;
   }
 
   :global(.gallery-card__title) {
-    font-family: 'Nunito', sans-serif;
-    font-weight: 700;
-    font-size: 0.9rem;
+    font-family: 'DM Mono', monospace;
+    font-weight: 500;
+    font-size: 0.85rem;
     color: #fff;
   }
 
   :global(.gallery-empty) {
-    font-family: 'Nunito', sans-serif;
-    font-size: 1.1rem;
-    padding: 2rem 0;
-    text-align: center;
-    color: var(--color-dark-purple, #4a4063);
+    font-family: 'DM Mono', monospace;
+    font-size: 1rem;
+    padding: 1rem 0;
+    color: var(--color-ink, #2b2b2b);
   }
 
   /* ── Lightbox ─────────────────────────────────────────────── */
@@ -349,9 +387,9 @@ const displayItems = items.length > 0 ? items : PLACEHOLDER_ITEMS;
   }
 
   :global(.lightbox__tag) {
-    font-family: 'Nunito', sans-serif;
+    font-family: 'DM Mono', monospace;
     font-size: 0.8rem;
-    font-weight: 700;
+    font-weight: 500;
     padding: 0.2rem 0.6rem;
     border: 2px solid var(--color-ink, #2b2b2b);
     background: var(--color-yellow, #f4ce6a);

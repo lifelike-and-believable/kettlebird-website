@@ -13,14 +13,29 @@ const CATEGORY_LABELS: Record<string, string> = {
 // Preferred display order for folders
 const FOLDER_ORDER = ['original', 'fanart', 'commission', 'featured', 'wip'];
 
-interface GalleryGridProps {
-  items: GalleryItem[];
+// Allows placeholder items to point at a local asset before Sanity is wired up
+type DisplayItem = GalleryItem & { placeholderSrc?: string };
+
+function thumbUrl(item: DisplayItem): string | null {
+  if (item.placeholderSrc) return item.placeholderSrc;
+  if (item.image?.asset) {
+    return urlFor(item.image).width(500).height(500).fit('crop').auto('format').url();
+  }
+  return null;
 }
 
-function GalleryCard({ item, onClick }: { item: GalleryItem; onClick: () => void }) {
-  const imgUrl = item.image?.asset
-    ? urlFor(item.image).width(500).height(500).fit('crop').auto('format').url()
-    : null;
+function fullUrl(item: DisplayItem): string | null {
+  if (item.placeholderSrc) return item.placeholderSrc;
+  if (item.image?.asset) return urlFor(item.image).width(1200).auto('format').url();
+  return null;
+}
+
+interface GalleryGridProps {
+  items: DisplayItem[];
+}
+
+function GalleryCard({ item, onClick }: { item: DisplayItem; onClick: () => void }) {
+  const imgUrl = thumbUrl(item);
 
   return (
     <button className="gallery-card" onClick={onClick} aria-label={`View ${item.title}`}>
@@ -30,8 +45,6 @@ function GalleryCard({ item, onClick }: { item: GalleryItem; onClick: () => void
           alt={item.altText ?? item.title}
           className="gallery-card__img"
           loading="lazy"
-          width={500}
-          height={500}
         />
       ) : (
         <div className="gallery-card__placeholder" aria-hidden="true">🖼</div>
@@ -47,8 +60,8 @@ function FolderCarousel({
   items,
   onItemClick,
 }: {
-  items: GalleryItem[];
-  onItemClick: (item: GalleryItem) => void;
+  items: DisplayItem[];
+  onItemClick: (item: DisplayItem) => void;
 }) {
   const trackRef = useRef<HTMLDivElement>(null);
 
@@ -86,7 +99,7 @@ function FolderCarousel({
 
 export default function GalleryGrid({ items }: GalleryGridProps) {
   const [activeCategory, setActiveCategory] = useState<string>('all');
-  const [lightboxItem, setLightboxItem] = useState<GalleryItem | null>(null);
+  const [lightboxItem, setLightboxItem] = useState<DisplayItem | null>(null);
 
   // Derive available categories in preferred order
   const availableCategories = useMemo(() => {
@@ -107,6 +120,8 @@ export default function GalleryGrid({ items }: GalleryGridProps) {
       })),
     [availableCategories, items]
   );
+
+  const lightboxSrc = lightboxItem ? fullUrl(lightboxItem) : null;
 
   return (
     <div className="gallery-wrapper">
@@ -132,7 +147,7 @@ export default function GalleryGrid({ items }: GalleryGridProps) {
         </nav>
       </div>
 
-      {/* Stacked folder sections */}
+      {/* Stacked, edge-to-edge folder bands */}
       {folders.length === 0 ? (
         <p className="gallery-empty">No artwork yet — check back soon!</p>
       ) : (
@@ -143,14 +158,13 @@ export default function GalleryGrid({ items }: GalleryGridProps) {
               <section
                 key={cat}
                 className="folder-section"
+                data-cat={cat}
                 aria-label={CATEGORY_LABELS[cat] ?? cat}
               >
-                <div className="folder-header" data-cat={cat}>
-                  <span className="folder-header__title">
+                <div className="folder-inner">
+                  <span className="folder-label" data-cat={cat}>
                     {CATEGORY_LABELS[cat] ?? cat}
                   </span>
-                </div>
-                <div className="folder-body">
                   {folderItems.length === 0 ? (
                     <p className="gallery-empty">Nothing here yet — check back soon!</p>
                   ) : (
@@ -180,9 +194,9 @@ export default function GalleryGrid({ items }: GalleryGridProps) {
             >
               ✕
             </button>
-            {lightboxItem.image?.asset && (
+            {lightboxSrc && (
               <img
-                src={urlFor(lightboxItem.image).width(1200).auto('format').url()}
+                src={lightboxSrc}
                 alt={lightboxItem.altText ?? lightboxItem.title}
                 className="lightbox__img"
               />
