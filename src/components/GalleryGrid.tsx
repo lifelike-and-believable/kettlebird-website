@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef } from 'react';
 import type { GalleryItem } from '../lib/queries';
 import { urlFor } from '../lib/sanity';
 
@@ -10,29 +10,107 @@ const CATEGORY_LABELS: Record<string, string> = {
   wip: 'Work in Progress',
 };
 
+// Preferred display order for folders
+const FOLDER_ORDER = ['original', 'fanart', 'commission', 'featured', 'wip'];
+
 interface GalleryGridProps {
   items: GalleryItem[];
+}
+
+function GalleryCard({ item, onClick }: { item: GalleryItem; onClick: () => void }) {
+  const imgUrl = item.image?.asset
+    ? urlFor(item.image).width(500).height(500).fit('crop').auto('format').url()
+    : null;
+
+  return (
+    <button className="gallery-card" onClick={onClick} aria-label={`View ${item.title}`}>
+      {imgUrl ? (
+        <img
+          src={imgUrl}
+          alt={item.altText ?? item.title}
+          className="gallery-card__img"
+          loading="lazy"
+          width={500}
+          height={500}
+        />
+      ) : (
+        <div className="gallery-card__placeholder" aria-hidden="true">🖼</div>
+      )}
+      <div className="gallery-card__overlay">
+        <span className="gallery-card__title">{item.title}</span>
+      </div>
+    </button>
+  );
+}
+
+function FolderCarousel({
+  items,
+  onItemClick,
+}: {
+  items: GalleryItem[];
+  onItemClick: (item: GalleryItem) => void;
+}) {
+  const trackRef = useRef<HTMLDivElement>(null);
+
+  const scroll = (dir: 'left' | 'right') => {
+    const track = trackRef.current;
+    if (!track) return;
+    const amount = track.clientWidth * 0.75;
+    track.scrollBy({ left: dir === 'right' ? amount : -amount, behavior: 'smooth' });
+  };
+
+  return (
+    <div className="carousel">
+      <button
+        className="carousel__arrow carousel__arrow--left"
+        onClick={() => scroll('left')}
+        aria-label="Scroll left"
+      >
+        ‹
+      </button>
+      <div className="carousel__track" ref={trackRef}>
+        {items.map((item) => (
+          <GalleryCard key={item._id} item={item} onClick={() => onItemClick(item)} />
+        ))}
+      </div>
+      <button
+        className="carousel__arrow carousel__arrow--right"
+        onClick={() => scroll('right')}
+        aria-label="Scroll right"
+      >
+        ›
+      </button>
+    </div>
+  );
 }
 
 export default function GalleryGrid({ items }: GalleryGridProps) {
   const [activeCategory, setActiveCategory] = useState<string>('all');
   const [lightboxItem, setLightboxItem] = useState<GalleryItem | null>(null);
 
-  // Derive available categories from actual data
+  // Derive available categories in preferred order
   const availableCategories = useMemo(() => {
     const cats = new Set<string>();
     items.forEach((item) => item.category?.forEach((c) => cats.add(c)));
-    return Array.from(cats);
+    return [
+      ...FOLDER_ORDER.filter((c) => cats.has(c)),
+      ...Array.from(cats).filter((c) => !FOLDER_ORDER.includes(c)),
+    ];
   }, [items]);
 
-  const filtered = useMemo(() => {
-    if (activeCategory === 'all') return items;
-    return items.filter((item) => item.category?.includes(activeCategory));
-  }, [items, activeCategory]);
+  // Group items into folders; an item can appear in multiple folders
+  const folders = useMemo(
+    () =>
+      availableCategories.map((cat) => ({
+        cat,
+        items: items.filter((item) => item.category?.includes(cat)),
+      })),
+    [availableCategories, items]
+  );
 
   return (
     <div className="gallery-wrapper">
-      {/* Filter Bar */}
+      {/* INDEX filter bar */}
       <div className="gallery-index">
         <span className="gallery-index__label">Index</span>
         <nav className="gallery-filters" aria-label="Filter gallery by category">
@@ -54,39 +132,32 @@ export default function GalleryGrid({ items }: GalleryGridProps) {
         </nav>
       </div>
 
-      {/* Grid */}
-      {filtered.length === 0 ? (
-        <p className="gallery-empty">No artwork in this category yet — check back soon!</p>
+      {/* Stacked folder sections */}
+      {folders.length === 0 ? (
+        <p className="gallery-empty">No artwork yet — check back soon!</p>
       ) : (
-        <div className="gallery-grid">
-          {filtered.map((item) => {
-            const imgUrl = item.image?.asset
-              ? urlFor(item.image).width(600).height(600).fit('crop').auto('format').url()
-              : null;
-
+        <div className="folder-stack">
+          {folders.map(({ cat, items: folderItems }) => {
+            if (activeCategory !== 'all' && activeCategory !== cat) return null;
             return (
-              <button
-                key={item._id}
-                className="gallery-card"
-                onClick={() => setLightboxItem(item)}
-                aria-label={`View ${item.title}`}
+              <section
+                key={cat}
+                className="folder-section"
+                aria-label={CATEGORY_LABELS[cat] ?? cat}
               >
-                {imgUrl ? (
-                  <img
-                    src={imgUrl}
-                    alt={item.altText ?? item.title}
-                    className="gallery-card__img"
-                    loading="lazy"
-                    width={600}
-                    height={600}
-                  />
-                ) : (
-                  <div className="gallery-card__placeholder" aria-hidden="true">🖼</div>
-                )}
-                <div className="gallery-card__overlay">
-                  <span className="gallery-card__title">{item.title}</span>
+                <div className="folder-header" data-cat={cat}>
+                  <span className="folder-header__title">
+                    {CATEGORY_LABELS[cat] ?? cat}
+                  </span>
                 </div>
-              </button>
+                <div className="folder-body">
+                  {folderItems.length === 0 ? (
+                    <p className="gallery-empty">Nothing here yet — check back soon!</p>
+                  ) : (
+                    <FolderCarousel items={folderItems} onItemClick={setLightboxItem} />
+                  )}
+                </div>
+              </section>
             );
           })}
         </div>
@@ -124,7 +195,9 @@ export default function GalleryGrid({ items }: GalleryGridProps) {
               {lightboxItem.tags && lightboxItem.tags.length > 0 && (
                 <ul className="lightbox__tags" aria-label="Tags">
                   {lightboxItem.tags.map((tag) => (
-                    <li key={tag} className="lightbox__tag">{tag}</li>
+                    <li key={tag} className="lightbox__tag">
+                      {tag}
+                    </li>
                   ))}
                 </ul>
               )}

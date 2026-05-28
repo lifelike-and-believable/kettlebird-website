@@ -3,14 +3,36 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import GalleryGrid from '../components/GalleryGrid';
 import { getAllGalleryItems, type GalleryItem } from '../lib/queries';
 
-// Fetch at build time (or on-demand if SSR is enabled later)
 let items: GalleryItem[] = [];
 try {
   items = await getAllGalleryItems();
 } catch (e) {
-  // Sanity not yet configured — page will render with empty state
   console.warn('[portfolio] Could not fetch gallery items:', e);
 }
+
+// Shown when Sanity isn't configured yet
+const PLACEHOLDER_ITEMS: GalleryItem[] = [
+  { _id: 'ph-o1', title: 'Original Character Study', slug: { current: 'oc-study' }, image: null as any, category: ['original'] },
+  { _id: 'ph-o2', title: 'Creature Design', slug: { current: 'creature' }, image: null as any, category: ['original'] },
+  { _id: 'ph-o3', title: 'Environment Concept', slug: { current: 'env-concept' }, image: null as any, category: ['original'] },
+  { _id: 'ph-o4', title: 'Character Lineup', slug: { current: 'char-lineup' }, image: null as any, category: ['original'] },
+  { _id: 'ph-o5', title: 'Illustration Series', slug: { current: 'illus-series' }, image: null as any, category: ['original'] },
+  { _id: 'ph-o6', title: 'Comic Page', slug: { current: 'comic-page' }, image: null as any, category: ['original'] },
+  { _id: 'ph-f1', title: 'Fan Art — Adventure Time', slug: { current: 'fan-at' }, image: null as any, category: ['fanart'] },
+  { _id: 'ph-f2', title: 'Fan Art — Gravity Falls', slug: { current: 'fan-gf' }, image: null as any, category: ['fanart'] },
+  { _id: 'ph-f3', title: 'Fan Art — Steven Universe', slug: { current: 'fan-su' }, image: null as any, category: ['fanart'] },
+  { _id: 'ph-f4', title: 'Fan Art — BNHA', slug: { current: 'fan-bnha' }, image: null as any, category: ['fanart'] },
+  { _id: 'ph-f5', title: 'Fan Art — She-Ra', slug: { current: 'fan-shera' }, image: null as any, category: ['fanart'] },
+  { _id: 'ph-f6', title: 'Fan Art — Tarot Series', slug: { current: 'fan-tarot' }, image: null as any, category: ['fanart'] },
+  { _id: 'ph-c1', title: 'Book Cover Illustration', slug: { current: 'client-book' }, image: null as any, category: ['commission'] },
+  { _id: 'ph-c2', title: 'Brand Character Design', slug: { current: 'client-brand' }, image: null as any, category: ['commission'] },
+  { _id: 'ph-c3', title: 'Editorial Illustration', slug: { current: 'client-editorial' }, image: null as any, category: ['commission'] },
+  { _id: 'ph-c4', title: 'Game Asset Pack', slug: { current: 'client-game' }, image: null as any, category: ['commission'] },
+  { _id: 'ph-c5', title: 'Poster Design', slug: { current: 'client-poster' }, image: null as any, category: ['commission'] },
+  { _id: 'ph-c6', title: 'Sticker Sheet', slug: { current: 'client-stickers' }, image: null as any, category: ['commission'] },
+];
+
+const displayItems = items.length > 0 ? items : PLACEHOLDER_ITEMS;
 ---
 
 <BaseLayout
@@ -23,8 +45,7 @@ try {
       <p class="portfolio-subtitle">Illustrations, fanart, and original characters</p>
     </header>
 
-    <!-- GalleryGrid is a React island: filtering + lightbox run client-side -->
-    <GalleryGrid items={items} client:load />
+    <GalleryGrid items={displayItems} client:load />
   </section>
 </BaseLayout>
 
@@ -39,7 +60,6 @@ try {
     margin-bottom: 2rem;
   }
 
-  /* .portfolio-title sizing comes from .page-title in global.css */
   .portfolio-title {
     margin: 0 0 0.25rem;
   }
@@ -51,13 +71,13 @@ try {
     margin: 0;
   }
 
-  /* ── Filter bar ───────────────────────────────────────────── */
+  /* ── INDEX filter bar ─────────────────────────────────────── */
   :global(.gallery-index) {
     display: flex;
     align-items: center;
     gap: 1rem;
     flex-wrap: wrap;
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
   }
 
   :global(.gallery-index__label) {
@@ -98,13 +118,92 @@ try {
     transform: translate(-1px, -1px);
   }
 
-  /* ── Grid ─────────────────────────────────────────────────── */
-  :global(.gallery-grid) {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 1rem;
+  /* ── Stacked folder sections ──────────────────────────────── */
+  :global(.folder-stack) {
+    display: flex;
+    flex-direction: column;
+    gap: 3.5rem;
   }
 
+  :global(.folder-section) {
+    background: #ede8dc;
+    border: 2.5px solid var(--color-ink, #2b2b2b);
+    /* hard offset shadow gives depth / stacking illusion */
+    box-shadow: 7px 7px 0 var(--color-ink, #2b2b2b);
+  }
+
+  :global(.folder-header) {
+    display: flex;
+    align-items: center;
+    padding: 0.55rem 1.25rem;
+    border-bottom: 2.5px solid var(--color-ink, #2b2b2b);
+    background: var(--color-yellow, #f4ce6a); /* default */
+  }
+
+  :global(.folder-header[data-cat="original"])   { background: var(--color-yellow, #f4ce6a); }
+  :global(.folder-header[data-cat="fanart"])      { background: var(--color-green, #a8d5ba); }
+  :global(.folder-header[data-cat="commission"])  { background: var(--color-orange, #e89a5a); }
+  :global(.folder-header[data-cat="featured"])    { background: #e8a0a0; }
+  :global(.folder-header[data-cat="wip"])         { background: var(--color-beige, #f5f1e8); }
+
+  :global(.folder-header__title) {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 900;
+    font-size: 1.25rem;
+    color: var(--color-ink, #2b2b2b);
+    letter-spacing: 0.02em;
+  }
+
+  :global(.folder-body) {
+    padding: 1.25rem;
+  }
+
+  /* ── Carousel ─────────────────────────────────────────────── */
+  :global(.carousel) {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  :global(.carousel__track) {
+    display: flex;
+    gap: 0.75rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    flex: 1;
+    /* allow cards to slightly overflow so partial cards signal scroll */
+    padding-bottom: 0.25rem;
+  }
+
+  :global(.carousel__track::-webkit-scrollbar) {
+    display: none;
+  }
+
+  :global(.carousel__arrow) {
+    flex-shrink: 0;
+    width: 2.5rem;
+    height: 2.5rem;
+    background: var(--color-ink, #2b2b2b);
+    color: var(--color-beige, #f5f1e8);
+    border: none;
+    font-size: 1.6rem;
+    line-height: 1;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.1s, box-shadow 0.1s;
+  }
+
+  :global(.carousel__arrow:hover) {
+    transform: translate(-2px, -2px);
+    box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.25);
+  }
+
+  /* ── Gallery card (used inside carousel) ─────────────────── */
   :global(.gallery-card) {
     position: relative;
     border: 3px solid var(--color-ink, #2b2b2b);
@@ -112,13 +211,17 @@ try {
     background: var(--color-beige, #f5f1e8);
     padding: 0;
     cursor: pointer;
-    aspect-ratio: 1;
+    /* fixed thumbnail size in carousel */
+    flex-shrink: 0;
+    width: 220px;
+    height: 220px;
+    scroll-snap-align: start;
     transition: transform 0.2s, box-shadow 0.2s;
   }
 
   :global(.gallery-card:hover) {
     transform: translate(-3px, -3px);
-    box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.15);
+    box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.2);
   }
 
   :global(.gallery-card__img) {
@@ -157,14 +260,14 @@ try {
   :global(.gallery-card__title) {
     font-family: 'Nunito', sans-serif;
     font-weight: 700;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     color: #fff;
   }
 
   :global(.gallery-empty) {
     font-family: 'Nunito', sans-serif;
     font-size: 1.1rem;
-    padding: 3rem 0;
+    padding: 2rem 0;
     text-align: center;
     color: var(--color-dark-purple, #4a4063);
   }
