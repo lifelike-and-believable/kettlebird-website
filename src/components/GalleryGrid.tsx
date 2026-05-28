@@ -4,9 +4,9 @@ import { urlFor } from '../lib/sanity';
 
 const CATEGORY_LABELS: Record<string, string> = {
   featured: 'Featured',
-  commission: 'Commissions',
-  fanart: 'Fanart',
-  original: 'Original Characters',
+  commission: 'Past Clients',
+  fanart: 'Fan Work',
+  original: 'Original Work',
   wip: 'Work in Progress',
 };
 
@@ -33,23 +33,26 @@ export default function GalleryGrid({ items }: GalleryGridProps) {
   return (
     <div className="gallery-wrapper">
       {/* Filter Bar */}
-      <nav className="gallery-filters" aria-label="Filter gallery by category">
-        <button
-          className={`filter-btn${activeCategory === 'all' ? ' filter-btn--active' : ''}`}
-          onClick={() => setActiveCategory('all')}
-        >
-          All
-        </button>
-        {availableCategories.map((cat) => (
+      <div className="gallery-index">
+        <span className="gallery-index__label">Index</span>
+        <nav className="gallery-filters" aria-label="Filter gallery by category">
           <button
-            key={cat}
-            className={`filter-btn${activeCategory === cat ? ' filter-btn--active' : ''}`}
-            onClick={() => setActiveCategory(cat)}
+            className={`filter-btn${activeCategory === 'all' ? ' filter-btn--active' : ''}`}
+            onClick={() => setActiveCategory('all')}
           >
-            {CATEGORY_LABELS[cat] ?? cat}
+            All
           </button>
-        ))}
-      </nav>
+          {availableCategories.map((cat) => (
+            <button
+              key={cat}
+              className={`filter-btn${activeCategory === cat ? ' filter-btn--active' : ''}`}
+              onClick={() => setActiveCategory(cat)}
+            >
+              {CATEGORY_LABELS[cat] ?? cat}
+            </button>
+          ))}
+        </nav>
+      </div>
 
       {/* Grid */}
       {filtered.length === 0 ? (
