@@ -52,11 +52,31 @@ try {
   }
 
   /* ── Filter bar ───────────────────────────────────────────── */
+  :global(.gallery-index) {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+  }
+
+  :global(.gallery-index__label) {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.35rem 1rem;
+    background: #e8a0a0;
+    border: 2.5px solid var(--color-ink, #2b2b2b);
+    color: var(--color-ink, #2b2b2b);
+    flex-shrink: 0;
+  }
+
   :global(.gallery-filters) {
     display: flex;
     gap: 0.5rem;
     flex-wrap: wrap;
-    margin-bottom: 2rem;
   }
 
   :global(.filter-btn) {
@@ -65,7 +85,7 @@ try {
     font-weight: 700;
     padding: 0.4rem 1.1rem;
     border: 2px solid var(--color-ink, #2b2b2b);
-    background: transparent;
+    background: var(--color-beige, #f5f1e8);
     color: var(--color-ink, #2b2b2b);
     cursor: pointer;
     transition: background 0.15s, color 0.15s, transform 0.15s;
