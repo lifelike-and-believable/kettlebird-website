@@ -2,7 +2,7 @@
 id: docs-reading-comics
 status: approved
 derived-from:
-  - design-comic-start-reading: 4e380c6efc9a
+  - design-comic-start-reading: 829c750345ab
   - design-comic-turn-pages: 7a603d6d8f84
   - story-comic-reader-start-reading: f51774d257cd
   - story-comic-reader-turn-pages: 8d3e174e5578

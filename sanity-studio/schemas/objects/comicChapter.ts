@@ -17,9 +17,9 @@ export default defineType({
     }),
     defineField({
       name: 'number',
-      title: 'Number',
+      title: 'Chapter',
       type: 'number',
-      description: 'Chapter 1, 2, 3… Use 0 for a prologue. Changing a published number changes the links people have shared.',
+      description: 'The chapter number: 1, 2, 3… Use 0 for a prologue. Changing a published number changes the links people have shared.',
       validation: (Rule) => Rule.required().integer().min(0),
     }),
     defineField({
@@ -73,7 +73,7 @@ export default defineType({
       ],
     }),
   ],
-  orderings: [{ title: 'Number', name: 'number', by: [{ field: 'number', direction: 'asc' }] }],
+  orderings: [{ title: 'Chapter', name: 'number', by: [{ field: 'number', direction: 'asc' }] }],
   preview: {
     select: { number: 'number', title: 'title', series: 'series.title' },
     prepare: ({ number, title, series }) => ({

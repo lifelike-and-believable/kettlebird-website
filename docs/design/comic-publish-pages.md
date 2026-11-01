@@ -3,7 +3,7 @@ id: design-comic-publish-pages
 status: approved
 derived-from:
   - story-comic-reader-publish-pages: c43f60cc7f9f
-  - design-comic-start-reading#what-star-enters: 2f65668809e2
+  - design-comic-start-reading#what-star-enters: f8ef076087b9
   - design-cms#decision: 889c200357ba
   - persona-artist#skills-and-tools: 4e28d5374320
   - persona-artist#frustrations: ef88538c418e
@@ -20,7 +20,7 @@ publish status come from the content-editing epic and are shown here as they wil
 
 1. Star opens **Comics** in the editor's menu and chooses a series, or **New series**, which asks for the **Title** and fills in the **Web address** from it (mock-ups 1 and 6).
 2. The series shows its details and a **Chapters** list in number order, each marked **On the site** or **Not published yet**. Star chooses a chapter, or **Add chapter** (mock-up 1).
-3. A new chapter opens with the next **Number** already filled in. Star types the **Title**, or leaves it empty for a comic without chapters (mock-up 6).
+3. A new chapter opens with the next chapter number already filled in, in its **Chapter** field. Star types the **Title**, or leaves it empty for a comic without chapters (mock-up 6).
 4. Star chooses **Upload pages** at the top of **Pages**, or drags a batch of files anywhere onto the page grid. Each file becomes a page; the new pages go after any pages already there, in file-name order (mock-up 2).
 5. While files upload, **Publish** waits: it reads "Uploading 4 of 20…" and can't be pressed until every upload has finished or failed. If Star tries to close the tab, the browser asks whether to leave while uploads are in progress.
 6. Star drags pages to reorder them if needed (mock-up 2 shows one being moved). Each page shows its number, a thumbnail, and its file name.
@@ -48,13 +48,13 @@ Low-fidelity: the real screens are Sanity Studio's own components, arranged and 
 ## Layout
 
 - **Comics (mock-up 1):** the editor's three columns: the menu (Comics, Art, Writing, Shop, Commissions, Site settings), the list of series, and the open series. The top bar holds the publish status and the open item's **Preview** and **Publish**. The open series shows **Title**, **Web address**, **Cover**, **Description**, **Status**, and **Type**, then **Chapters**: one row per chapter, "Chapter 2: The Long Road · 24 pages · On the site", with **Add chapter** under the list.
-- **Chapter (mock-up 2):** **Number** and **Title** at the top, with their help text; then **Pages**, with **Upload pages** and the alt text count in its header, and the page grid, six thumbnails across on a laptop, each with its page number and file name. The whole grid accepts dropped files; a dashed box at the end says "Drop page files anywhere here".
+- **Chapter (mock-up 2):** **Chapter** (the chapter's number) and **Title** at the top, with their help text; then **Pages**, with **Upload pages** and the alt text count in its header, and the page grid, six thumbnails across on a laptop, each with its page number and file name. The whole grid accepts dropped files; a dashed box at the end says "Drop page files anywhere here".
 - **Page (mock-up 3):** a panel over the chapter: the page image, large, with **Alt text** beside it and its help text, "What happens on this page, for people using screen readers." **Panels** appears below, collapsed, labelled "Filled in automatically later". **Previous page**, **Next page**, and **Done** at the bottom.
 
 ## Ordering and addresses
 
 - **Pages** are ordered as they appear in the grid. New uploads go after existing pages, sorted by file name with numbers compared as numbers, so `page-2.png` comes before `page-10.png`.
-- **Chapters** are ordered by **Number**, which Star sets; this is how Star reorders chapters (story criterion 1). Dragging isn't used for chapters, because a chapter's number is part of its pages' addresses. Changing a published chapter's number shows the shared-link warning (mock-up 9), worded so it reads as a reminder, not an error.
+- **Chapters** are ordered by the number in their **Chapter** field, which Star sets; this is how Star reorders chapters (story criterion 1). Dragging isn't used for chapters, because a chapter's number is part of its pages' addresses. Changing a published chapter's number shows the shared-link warning (mock-up 9), worded so it reads as a reminder, not an error.
 - Adding pages at the end of a chapter, or adding a new chapter, never changes the address of a published page.
 - **Moving, removing, or inserting a page before published pages, or changing a published chapter's number,** changes the addresses of later pages. When Star publishes such a change, the editor first shows the warning (mock-ups 4 and 9), for example "You moved page 3 of Chapter 2: The Long Road. Links people have shared to pages 3 to 24 of Chapter 2 will point to different pages." with **Publish anyway** and **Cancel**. Nothing is blocked.
 
@@ -77,7 +77,7 @@ Low-fidelity: the real screens are Sanity Studio's own components, arranged and 
 
 ## Persona walkthrough
 
-A walkthrough for persona-artist (2026-11-01), which opened each mock-up, found one blocking problem and others. Addressed here: Star is never asked to resize a print file (the editor makes a copy itself if needed); what **Publish** publishes, with published state shown on chapters; **Publish** waits for uploads; a **Preview** step tied to the preview story; **Previous page** and **Next page** in the page panel and an alt text count; **View on site** once live; failure wording without "the lead"; **Upload pages** as a button at the top; and mock-ups for every screen and state the design describes (6 to 9 added, 1 to 5 corrected to match the text).
+A walkthrough for persona-artist (2026-11-01), which opened each mock-up, found one blocking problem and others. Addressed here, along with the lead's renaming of the chapter's number field to **Chapter**: Star is never asked to resize a print file (the editor makes a copy itself if needed); what **Publish** publishes, with published state shown on chapters; **Publish** waits for uploads; a **Preview** step tied to the preview story; **Previous page** and **Next page** in the page panel and an alt text count; **View on site** once live; failure wording without "the lead"; **Upload pages** as a button at the top; and mock-ups for every screen and state the design describes (6 to 9 added, 1 to 5 corrected to match the text).
 
 ## Open questions
 
