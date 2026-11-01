@@ -20,7 +20,7 @@ render.mjs). Star's getting-started guide is written from this. -->
 
 ## How the editor is served
 
-The editor (Sanity Studio) is built as part of the site and served at `/studio` on the site's own address, today `https://kettlebird-website.vercel.app/studio`.
+The editor (Sanity Studio) is built as part of the site and served at `/studio` on the site's own address: `https://kettlebird.com/studio` once the site moves to its domain (lead, 2026-11-01), and `https://kettlebird-website.vercel.app/studio` until then.
 
 - Each site build also builds the editor and places it under `/studio`. Any address under `/studio` opens the editor, so a bookmark of a particular chapter keeps working.
 - Sanity's own hosted address isn't used. The site's address is the only place to edit.
@@ -67,7 +67,7 @@ Low-fidelity. Screens 1 to 5 are Sanity's (the email, its project page, the sign
 - **Signed out on its own** (a cleared browser, a private window, or Sanity ending the session): `/studio` shows the sign-in screen again, and Star signs in the same way. Work already saved stays saved.
 - **Someone else finds `/studio`:** they see the sign-in screen, and if they sign in, the "no access" screen.
 - **Pull request previews:** previews build the editor too, but sign-in isn't allowed from preview addresses, so `/studio` on a preview shows Sanity's "this address isn't allowed" screen. Editing happens only on the live site.
-- **The site gets a custom domain:** the lead adds the new address to the allowed sign-in addresses the same day, and the old `vercel.app` address redirects to it, `/studio` included, so bookmarks still work. Sign-in is kept per address, so Star signs in once more after the change; the lead tells Star beforehand.
+- **The site moves to kettlebird.com:** the lead adds `https://kettlebird.com` to the allowed sign-in addresses the same day, and the `vercel.app` address redirects to it, `/studio` included, so bookmarks still work. Sign-in is kept per address, so if Star is invited before the move, Star signs in once more after it; the lead tells Star beforehand. Inviting Star after the move avoids this, and the guide then names only `kettlebird.com/studio`.
 - **The old editor address (`kettlebird.sanity.studio`):** abandoned; see "The old editor address".
 
 ## The old editor address
@@ -95,9 +95,10 @@ Sanity behaviour this design assumes:
 - Invitation expiry, and what an expired invitation shows.
 - Every address under `/studio` opens the editor on Vercel.
 
-## Open questions
+## Decisions
 
-1. **Custom domain.** The site has no custom domain yet. Is one planned soon? If so, Star's guide can name it from the start, and the domain change's extra sign-in never happens.
+- **Domain:** the site will be at `kettlebird.com` (lead, 2026-11-01). Star's guide names `kettlebird.com/studio`.
+- **Old editor address:** abandoned (see "The old editor address").
 
 ## Persona walkthrough
 
