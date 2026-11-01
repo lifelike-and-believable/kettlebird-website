@@ -7,7 +7,7 @@ export default {
   // The Sanity loaders (queries.ts, source.ts) are covered by the end-to-end tests over fixtures.
   // Astro pages and Studio components are checked by the end-to-end tests and tutorials, which
   // Stryker doesn't run, so their mutants would all survive and hide the useful ones.
-  mutate: ['src/lib/**/*.ts', 'sanity-studio/lib/**/*.ts', '!**/*.d.ts', '!src/lib/sanity.ts', '!src/lib/queries.ts', '!src/lib/comics/source.ts'],
+  mutate: ['src/lib/**/*.ts', 'sanity-studio/lib/**/*.ts', '!**/*.d.ts', '!src/lib/sanity.ts', '!src/lib/queries.ts', '!src/lib/comics/source.ts', '!sanity-studio/lib/upload-store.ts'],
   reporters: ['json', 'html', 'clear-text', 'progress'],
   jsonReporter: { fileName: 'reports/mutation/mutation.json' },
   htmlReporter: { fileName: 'reports/mutation/mutation.html' },
