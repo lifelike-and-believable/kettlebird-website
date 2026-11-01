@@ -45,19 +45,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <a href="https://www.instagram.com/kettlebirdart" target="_blank" rel="noopener noreferrer" class="social-link">INSTAGRAM</a>
       <a href="https://ko-fi.com/kettlebirdart" target="_blank" rel="noopener noreferrer" class="social-link">KO-FI</a>
     </div>
-
-    <!-- About the Artist -->
-    <section class="about-section">
-      <div class="portrait-placeholder">[Insert<br />Portrait Here]</div>
-      <div class="about-text">
-        <h2>ABOUT THE ARTIST</h2>
-        <p>
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-          dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-          ex ea commodo consequat."
-        </p>
-      </div>
-    </section>
   </div>
 </BaseLayout>
 
@@ -232,35 +219,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     align-items: start;
   }
 
-  .about-text h2 {
-    font-family: 'Nunito', sans-serif;
-    font-size: clamp(2rem, 4vw, 3rem);
-    font-weight: 700;
-    margin-top: 0;
-    margin-bottom: 1rem;
-  }
 
-  .portrait-placeholder {
-    background-image: url('/assets/images/Postit.png');
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
-    border: none;
-    aspect-ratio: 3/4;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Nunito', sans-serif;
-    font-size: 1.2rem;
-    text-align: center;
-    padding: 2rem;
-  }
 
-  .about-text {
-    font-size: 1rem;
-    line-height: 1.8;
-    color: var(--color-ink);
-  }
 
   /* ── Responsive ── */
   @media (max-width: 768px) {
@@ -295,13 +255,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     .grid-tile-news       { order: 6; }
     .grid-tile-contact    { order: 7; }
 
-    .about-section {
-      grid-template-columns: 1fr;
-    }
 
-    .portrait-placeholder {
-      max-width: 300px;
-      margin: 0 auto;
-    }
   }
 </style>

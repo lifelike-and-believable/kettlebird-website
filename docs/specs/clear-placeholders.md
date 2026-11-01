@@ -1,6 +1,7 @@
 ---
-status: draft
-# tests-commit: recorded when the failing tests are committed
+status: implemented
+tests-commit:
+  - d909a8dca5854ada4b74a1e465c78760ae73346e
 ---
 
 # Clear the placeholders

@@ -55,11 +55,12 @@ jobs:
       - name: Install Chromium for Playwright
         run: npx playwright install --with-deps chromium
 
-      - name: Unit tests
-        run: npm run test:unit
-
       - name: End-to-end tests (fixture build)
         run: npm run test:e2e
+
+      # After the end-to-end tests, so the unit tests can also scan the fixture build in dist/.
+      - name: Unit tests
+        run: npm run test:unit
 
       - name: Checkout rules-for-robots (tutorial runner)
         uses: actions/checkout@v4

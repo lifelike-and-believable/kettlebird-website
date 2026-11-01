@@ -10,7 +10,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "test": "vitest run && playwright test",
+    "test": "playwright test && vitest run",
     "build:fixtures": "KETTLEBIRD_FIXTURES=1 astro build",
     "test:unit": "vitest run",
     "test:e2e": "playwright test"
