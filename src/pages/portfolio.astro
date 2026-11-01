@@ -3,8 +3,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import GalleryGrid from '../components/GalleryGrid';
 import { getAllGalleryItems, type GalleryItem } from '../lib/queries';
 
-type DisplayItem = GalleryItem & { placeholderSrc?: string };
-
 let items: GalleryItem[] = [];
 try {
   items = await getAllGalleryItems();
@@ -12,41 +10,6 @@ try {
   console.warn('[portfolio] Could not fetch gallery items:', e);
 }
 
-// Real sample artwork stands in for thumbnails until Sanity is wired up.
-const SAMPLE_IMAGES = [
-  '/assets/images/bkgd-artwork.jpg',
-  '/assets/images/bkgd-commissions.jpeg',
-  '/assets/images/bkgd-Comics.jpg',
-  '/assets/images/bkgd-writing.jpg',
-];
-
-function placeholders(cat: string, titles: string[]): DisplayItem[] {
-  return titles.map((title, i) => ({
-    _id: `ph-${cat}-${i}`,
-    title,
-    slug: { current: `${cat}-${i}` },
-    image: null as any,
-    category: [cat],
-    placeholderSrc: SAMPLE_IMAGES[i % SAMPLE_IMAGES.length],
-  }));
-}
-
-const PLACEHOLDER_ITEMS: DisplayItem[] = [
-  ...placeholders('original', [
-    'Original Character Study', 'Creature Design', 'Environment Concept',
-    'Character Lineup', 'Illustration Series', 'Comic Page',
-  ]),
-  ...placeholders('fanart', [
-    'Adventure Time', 'Gravity Falls', 'Steven Universe',
-    'My Hero Academia', 'She-Ra', 'Tarot Series',
-  ]),
-  ...placeholders('commission', [
-    'Book Cover', 'Brand Character', 'Editorial Illustration',
-    'Game Asset Pack', 'Poster Design', 'Sticker Sheet',
-  ]),
-];
-
-const displayItems: DisplayItem[] = items.length > 0 ? items : PLACEHOLDER_ITEMS;
 ---
 
 <BaseLayout
@@ -59,7 +22,7 @@ const displayItems: DisplayItem[] = items.length > 0 ? items : PLACEHOLDER_ITEMS
       <p class="portfolio-subtitle">Illustrations, fanart, and original characters</p>
     </header>
 
-    <GalleryGrid items={displayItems} client:load />
+    <GalleryGrid items={items} client:load />
   </section>
 </BaseLayout>
 
@@ -308,6 +271,23 @@ const displayItems: DisplayItem[] = items.length > 0 ? items : PLACEHOLDER_ITEMS
     font-size: 1rem;
     padding: 1rem 0;
     color: var(--color-ink, #2b2b2b);
+  }
+
+  /* Empty portfolio: the message and a way on to Star's social profiles (design-clear-placeholders). */
+  :global(.gallery-empty-state) {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+
+  :global(.gallery-empty__more) {
+    margin: 0;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  :global(.gallery-empty__more a) {
+    color: var(--color-ink, #2b2b2b);
+    font-weight: 700;
   }
 
   /* ── Lightbox ─────────────────────────────────────────────── */

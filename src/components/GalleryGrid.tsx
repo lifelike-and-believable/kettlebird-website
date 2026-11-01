@@ -13,11 +13,9 @@ const CATEGORY_LABELS: Record<string, string> = {
 // Preferred display order for folders
 const FOLDER_ORDER = ['original', 'fanart', 'commission', 'featured', 'wip'];
 
-// Allows placeholder items to point at a local asset before Sanity is wired up
-type DisplayItem = GalleryItem & { placeholderSrc?: string };
+type DisplayItem = GalleryItem;
 
 function thumbUrl(item: DisplayItem): string | null {
-  if (item.placeholderSrc) return item.placeholderSrc;
   if (item.image?.asset) {
     return urlFor(item.image).width(500).height(500).fit('crop').auto('format').url();
   }
@@ -25,7 +23,6 @@ function thumbUrl(item: DisplayItem): string | null {
 }
 
 function fullUrl(item: DisplayItem): string | null {
-  if (item.placeholderSrc) return item.placeholderSrc;
   if (item.image?.asset) return urlFor(item.image).width(1200).auto('format').url();
   return null;
 }
@@ -125,7 +122,8 @@ export default function GalleryGrid({ items }: GalleryGridProps) {
 
   return (
     <div className="gallery-wrapper">
-      {/* INDEX filter bar */}
+      {/* INDEX filter bar, hidden when there is nothing to filter */}
+      {items.length > 0 && (
       <div className="gallery-index">
         <span className="gallery-index__label">Index</span>
         <nav className="gallery-filters" aria-label="Filter gallery by category">
@@ -146,10 +144,19 @@ export default function GalleryGrid({ items }: GalleryGridProps) {
           ))}
         </nav>
       </div>
+      )}
 
       {/* Stacked, edge-to-edge folder bands */}
       {folders.length === 0 ? (
-        <p className="gallery-empty">No artwork yet — check back soon!</p>
+        <div className="gallery-empty-state">
+          <p className="gallery-empty">No artwork yet — check back soon!</p>
+          <p className="gallery-empty__more">
+            Until then, see Star&apos;s newest work on{' '}
+            <a href="https://bsky.app/profile/kettlebird.bsky.social" target="_blank" rel="noopener noreferrer">Bluesky</a>,{' '}
+            <a href="https://kettle-bird.tumblr.com" target="_blank" rel="noopener noreferrer">Tumblr</a>, or{' '}
+            <a href="https://www.instagram.com/kettlebirdart" target="_blank" rel="noopener noreferrer">Instagram</a>.
+          </p>
+        </div>
       ) : (
         <div className="folder-stack">
           {folders.map(({ cat, items: folderItems }) => {
