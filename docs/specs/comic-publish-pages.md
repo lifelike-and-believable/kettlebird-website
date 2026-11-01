@@ -35,16 +35,17 @@ Source: S5.n is the story's nth criterion; design and docs sections as named.
 | AC-11 | A series shows its chapters in number order, each "Chapter N: Title · P pages · On the site / Not published yet", with **Add chapter**, which opens a new chapter for that series with the next number filled in. | test: unit "chapter rows and next number"; manual | S5.1; design-comic-publish-pages#layout |
 | AC-12 | In an open page, **Previous page** and **Next page** move to the neighbouring page without closing the panel. | manual: tutorial step in the Studio | design-comic-publish-pages#layout |
 | AC-13 | Published pages and chapters appear in the reader, in Star's order, after the site's next build. | test: e2e (existing reader tests over fixtures that mirror the CMS shape); command: build | S5.5 |
+| AC-15 | Publishing the first chapter of a series that isn't on the site yet publishes the series too, after a dialog saying so ("Kettle Tales isn't on the site yet, so publishing this chapter publishes it too.", **Publish both**), or as a line in the other dialogs. A series without a web address blocks it with the AC-10 message. | test: unit "publishing a new series with its chapter"; manual | design-comic-publish-pages#flow (step 9); docs-publishing-comics#start-a-new-comic |
 | AC-14 | A Studio tutorial (`runner: manual`) walks Star's guide end to end in the real editor, and the Studio builds. | command: `npm run build` in `sanity-studio/`; manual: the tutorial | process stage 12 |
 
 ## Scope
 
 - In:
-  - `sanity-studio/lib/comic-pages.ts` (new): pure functions for AC-1, 3, 4, 5, 6, 7, 8, 9, 11; no `sanity` imports, so the site's Vitest can test them.
+  - `sanity-studio/lib/comic-pages.ts` (new): pure functions for AC-1, 3, 4, 5, 6, 7, 8, 9, 11, 15; no `sanity` imports, so the site's Vitest can test them.
   - `sanity-studio/components/PagesInput.tsx` (new): the **Pages** array input: header with count and **Upload pages**, drop zone, upload queue with progress and errors, natural-order append; renders Sanity's default grid for reordering and editing.
   - `sanity-studio/components/PageItemNav.tsx` (new): **Previous page** / **Next page** in the page panel.
   - `sanity-studio/components/ChaptersList.tsx` (new): the series' chapter rows and **Add chapter**.
-  - `sanity-studio/actions/publishChapter.tsx` (new): wraps Publish for chapters: upload wait, link-change and alt text dialogs.
+  - `sanity-studio/actions/publishChapter.tsx` (new): wraps Publish for chapters: upload wait, link-change and alt text dialogs, publishing a new series with it.
   - `sanity-studio/schemas/objects/comicChapter.ts`, `comicSeries.ts`: wire the components, validation messages, initial value template for **Add chapter**.
   - `sanity-studio/sanity.config.ts`: register the action and template.
   - Tests: `tests/unit/comic-pages.test.ts`; `docs/tutorials/publishing-comics.md` (`runner: manual`).

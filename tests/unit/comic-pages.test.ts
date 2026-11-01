@@ -131,3 +131,25 @@ describe('comic-publish-pages#AC-11 chapter rows and next number', () => {
     expect(nextChapterNumber([0])).toBe(1);
   });
 });
+
+describe('comic-publish-pages#AC-15 publishing a new series with its chapter', () => {
+  const draft = ch(1, ['a'], 'The Kettle');
+  it('asks to publish both when nothing else needs saying', () => {
+    expect(publishDialog({ kind: 'none' }, draft, { newSeriesTitle: 'Kettle Tales' })).toEqual({
+      title: 'Publish the series too',
+      lines: ["Kettle Tales isn't on the site yet, so publishing this chapter publishes it too."],
+      confirm: 'Publish both',
+    });
+  });
+  it('adds the line to the other dialogs', () => {
+    const noAlt = { ...draft, pages: [{ _key: 'a' }] };
+    const dialog = publishDialog({ kind: 'none' }, noAlt, { newSeriesTitle: 'Kettle Tales' })!;
+    expect(dialog.title).toBe('Some pages have no alt text');
+    expect(dialog.lines[1]).toBe("Kettle Tales isn't on the site yet, so publishing this chapter publishes it too.");
+    expect(dialog.confirm).toBeUndefined(); // the action's default, Publish anyway
+  });
+  it('leaves the dialogs unchanged for a series already on the site', () => {
+    expect(publishDialog({ kind: 'none' }, draft)).toBeNull();
+    expect(publishDialog({ kind: 'none' }, draft, {})).toBeNull();
+  });
+});
