@@ -1,6 +1,6 @@
 ---
 id: design-sign-in
-status: draft
+status: approved
 derived-from:
   - story-content-editing-sign-in: b9687632b3e1
   - design-cms#decision: 889c200357ba
