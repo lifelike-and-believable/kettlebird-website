@@ -2,7 +2,7 @@
 id: design-sign-in
 status: draft
 derived-from:
-  - story-content-editing-sign-in: afc64c7e2139
+  - story-content-editing-sign-in: b9687632b3e1
   - design-cms#decision: 889c200357ba
   - persona-artist#skills-and-tools: 4e28d5374320
   - persona-artist#frustrations: ef88538c418e
@@ -68,18 +68,14 @@ Low-fidelity. Screens 1 to 5 are Sanity's (the email, its project page, the sign
 - **Someone else finds `/studio`:** they see the sign-in screen, and if they sign in, the "no access" screen.
 - **Pull request previews:** previews build the editor too, but sign-in isn't allowed from preview addresses, so `/studio` on a preview shows Sanity's "this address isn't allowed" screen. Editing happens only on the live site.
 - **The site gets a custom domain:** the lead adds the new address to the allowed sign-in addresses the same day, and the old `vercel.app` address redirects to it, `/studio` included, so bookmarks still work. Sign-in is kept per address, so Star signs in once more after the change; the lead tells Star beforehand.
-- **The old editor address (`kettlebird.sanity.studio`):** see "Before Star is invited".
+- **The old editor address (`kettlebird.sanity.studio`):** abandoned; see "The old editor address".
 
-## Before Star is invited
+## The old editor address
 
-The story asks that the old editor address send people to `/studio` or be taken down. `kettlebird.sanity.studio` is the old project's (`gtopiz2h`) hosted editor, in a Sanity organisation nobody here can sign in to today. It edits a project the site doesn't read, so anything published there appears nowhere. That makes it harmless to the site, but a trap for Star if they ever land on it.
-
-So Star isn't invited until it's gone:
-
-1. The lead checks every account they have ever used with Sanity (sanity.io/manage) for the old project. If one has it, the lead deletes that project, which removes the address.
-2. If none has it, the lead asks Sanity support to remove it, giving the address and the Studio id in `sanity-studio/sanity.cli.ts`'s history (`my9jvnttk0b7y0j14d6rec7i`).
-
-If neither works, the story's criterion needs the lead's decision: whether to invite Star anyway, with the guide naming only `/studio`.
+`kettlebird.sanity.studio` is the old project's (`gtopiz2h`) hosted editor, in a Sanity organisation nobody here can sign in to. It's abandoned, not taken down (lead's decision, 2026-11-01, and the story's amended criterion):
+- It edits a project the site doesn't read, so nothing published there can appear on the site.
+- Only that old project's members can sign in to it. Star is invited only to the new project, so if Star ever opened it, Sanity would show its "no access" screen and no content.
+- Star's guide names only `/studio`, and Star never needs a Sanity address: the invitation email links to Sanity once, and everything after that happens at `/studio` on the site.
 
 ## Accessibility
 
@@ -106,7 +102,7 @@ Sanity behaviour this design assumes:
 ## Persona walkthrough
 
 A walkthrough for persona-artist (2026-11-01) opened each mock-up and checked the story's criteria. It found one blocking problem and ten others, all addressed above:
-- **Blocking:** the old editor address had no decided path ("Before Star is invited").
+- **Blocking:** the old editor address had no decided path (now abandoned by the lead's decision; see "The old editor address").
 - **Others:**
   - what Star does after accepting (mock-up 2);
   - a GitHub option the text didn't mention (turned off);
