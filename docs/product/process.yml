@@ -1,0 +1,8 @@
+# rfr-process configuration (docs/specs/project-process.md in lifelike-and-believable/rules-for-robots).
+# Approvers are GitHub logins or teams (@org/team). A list means any one of them can approve.
+mode: solo                 # solo: approval is the approver merging the pull request
+default: [atgoldberg]      # used for every stage without its own entry
+# stages:
+#   specs: [atgoldberg]    # optional: adds a human gate to technical specifications
+# public-api: []           # paths a tier:trivial pull request may not change
+adoption-until: 2027-01-30 # existing project: unlinked artifacts only warn until this date
