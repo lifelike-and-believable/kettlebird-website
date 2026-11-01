@@ -6,7 +6,7 @@ Milestone 2 locks the visual system: UPA-inspired palette, hand-drawn typography
 
 - 🚀 **Astro 5.x + React islands** scaffolded with Base layout and global UPA-inspired tokens.
 - 🗂️ **Sanity Studio** schemas for gallery items, comic series/pages, written works, merch, and commission tiers.
-- 🔒 **Deployment ready** configs for Vercel (`vercel.json`) and Netlify (`netlify.toml`) with security headers.
+- 🔒 **Deployment ready** config for Vercel (`vercel.json`) with security headers.
 - 🧭 **Documentation + style guide** updated with palette, typography, texture, motion, and component treatments.
 
 ## Quick start
@@ -45,10 +45,7 @@ Sanity (inside `sanity-studio/`):
 
 ## Deployment
 
-- **Vercel:** Uses `vercel.json`, build `npm run build`, output `dist`.
-- **Netlify:** Uses `netlify.toml`, build `npm run build`, publish `dist`.
-
-Add the Sanity project ID/dataset as environment variables in your hosting provider before enabling previews.
+- **Vercel** (production): uses `vercel.json`, build `npm run build`, output `dist`. Preview builds set `KETTLEBIRD_FIXTURES=1`, so they show the test comics.
 
 ## Documentation
 
