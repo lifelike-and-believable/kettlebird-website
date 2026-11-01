@@ -90,6 +90,7 @@ export function readerPages(series: ComicSeries): ReaderPage[] {
   const slug = series.slug;
   if (!slug) return [];
   const entries: ReaderPage[] = [];
+  const total = pageCountOf(series);
   for (const chapter of visibleChapters(series)) {
     chapter.pages.forEach((page, i) => {
       entries.push({
@@ -99,14 +100,13 @@ export function readerPages(series: ComicSeries): ReaderPage[] {
         pageNumber: i + 1,
         pageCount: chapter.pages.length,
         path: pagePath(slug, chapter.number, i + 1),
-        isLast: false,
+        isLast: entries.length === total - 1,
       });
     });
   }
   entries.forEach((entry, i) => {
     entry.previousPath = entries[i - 1]?.path;
     entry.nextPath = entries[i + 1]?.path;
-    entry.isLast = i === entries.length - 1;
   });
   return entries;
 }
