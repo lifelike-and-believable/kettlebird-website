@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Know when it's live: mock-ups</title>
+<!-- Source for the PNG mock-ups beside this file (docs/design/know-when-live.md). Low-fidelity: the
+     editor is Sanity Studio; this design adds the status at the top of it and a short note after Publish. Render: node render.mjs -->
+<style>
+  :root { --ink:#1f2328; --muted:#6b7280; --line:#d8dce2; --bg:#f6f7f9; --panel:#fff; --accent:#2563eb; --ok:#15803d; --okbg:#dcfce7; --err:#b91c1c; --errbg:#fee2e2; }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 24px; background: #e5e7eb; font: 14px/1.4 system-ui, sans-serif; color: var(--ink); }
+  .frame { width: 960px; background: var(--bg); border: 1px solid var(--line); margin-bottom: 32px; }
+  .frame h6 { margin: 0; padding: 6px 12px; background: #111827; color: #fff; font: 600 12px/1.6 system-ui; }
+  .top { display: flex; align-items: center; justify-content: space-between; padding: 8px 16px; background: var(--panel); border-bottom: 1px solid var(--line); }
+  .right { display: flex; gap: 10px; align-items: center; }
+  .status { display: inline-flex; gap: 6px; align-items: center; padding: 3px 10px; border-radius: 999px; font-size: 13px; }
+  .ok { background: var(--okbg); color: var(--ok); } .busy { background: #dbeafe; color: var(--accent); } .err { background: var(--errbg); color: var(--err); } .idle { background: #eef0f3; color: var(--muted); }
+  .btn { display: inline-block; padding: 5px 12px; border-radius: 4px; border: 1px solid var(--line); background: var(--panel); font-weight: 600; font-size: 13px; }
+  .btn.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .avatar { width: 26px; height: 26px; border-radius: 50%; background: #c7d2fe; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px; }
+  .body { padding: 18px 24px; min-height: 120px; color: var(--muted); }
+  .pop { margin: 0 16px 0 auto; width: 380px; background: #fff; border: 1px solid var(--line); border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,.08); padding: 12px 14px; color: var(--ink); }
+  .pop p { margin: 0 0 8px; }
+  .pop .meta { color: var(--muted); font-size: 13px; }
+</style>
+</head>
+<body>
+
+<div class="frame" id="m1">
+  <h6>1 · Straight after Publish: updating</h6>
+  <div class="top"><strong>Kettlebird Creations</strong><span class="right"><span class="status busy">◌ Updating the site…</span><span class="avatar">S</span></span></div>
+  <div class="body" style="display:flex;justify-content:flex-end"><div class="pop" style="margin:0"><p><strong>Published.</strong> Updating the site; the status at the top right says when it's live.</p></div></div>
+</div>
+
+<div class="frame" id="m2">
+  <h6>2 · Live, with the time the site finished updating</h6>
+  <div class="top"><strong>Kettlebird Creations</strong><span class="right"><span class="status ok">● Live · 2:41 pm</span><span class="btn">View on site</span><span class="avatar">S</span></span></div>
+  <div class="body">Stays like this, on every visit, until the next change. View on site opens the page the last change appears on.</div>
+</div>
+
+<div class="frame" id="m3">
+  <h6>3 · Several changes in a row</h6>
+  <div class="top"><strong>Kettlebird Creations</strong><span class="right"><span class="status busy">◌ Updating the site… (3 changes)</span><span class="avatar">S</span></span></div>
+  <div class="body">One Publish is one change, whatever it contains: a whole chapter with its pages is one.</div>
+</div>
+
+<div class="frame" id="m4">
+  <h6>4 · Taking longer than usual (after 5 minutes)</h6>
+  <div class="top"><strong>Kettlebird Creations</strong><span class="right"><span class="status busy">◌ Still updating, taking longer than usual…</span><span class="avatar">S</span></span></div>
+  <div class="body">Nothing to do yet; most updates take a minute or two.</div>
+</div>
+
+<div class="frame" id="m5">
+  <h6>5 · Didn't go live (after 15 minutes), opened</h6>
+  <div class="top"><strong>Kettlebird Creations</strong><span class="right"><span class="status err">✕ Didn't go live</span><span class="avatar">S</span></span></div>
+  <div class="body" style="display:flex">
+    <div class="pop">
+      <p><strong>Your change is saved, but the site didn't update.</strong></p>
+      <p>The person who looks after the site is told automatically and will fix it. You don't need to do anything, and you can keep working; publishing more is fine.</p>
+      <p>Wait until this says Live before telling people it's up.</p>
+      <p class="meta">Published at 2:38 pm</p>
+      <span class="btn">Close</span>
+    </div>
+  </div>
+</div>
+
+<div class="frame" id="m6">
+  <h6>6 · After unpublishing or deleting something</h6>
+  <div class="top"><strong>Kettlebird Creations</strong><span class="right"><span class="status ok">● Removed from the site · 2:41 pm</span><span class="avatar">S</span></span></div>
+  <div class="body">No View on site: there's nothing to view.</div>
+</div>
+
+<div class="frame" id="m7">
+  <h6>7 · Can't check (no connection)</h6>
+  <div class="top"><strong>Kettlebird Creations</strong><span class="right"><span class="status idle">? Can't check the site right now</span><span class="avatar">S</span></span></div>
+  <div class="body">Tries again every 15 seconds. Never shows Live without seeing it.</div>
+</div>
+
+</body>
+</html>
