@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Site settings: mock-ups</title>
+<!-- Source for the PNG mock-ups beside this file (docs/design/site-settings.md). Low-fidelity.
+     Editor screens are Sanity Studio's; site screens use the site's paper colours and highlighter
+     buttons, simplified. Render: node render.mjs -->
+<style>
+  :root { --ink:#1f2328; --muted:#6b7280; --line:#d8dce2; --bg:#f6f7f9; --panel:#fff; --accent:#2563eb; --err:#b91c1c; --errbg:#fee2e2; --ok:#15803d; --okbg:#dcfce7; --paper:#f5f1e8; --site:#2b2b2b; }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 24px; background: #e5e7eb; font: 14px/1.4 system-ui, sans-serif; color: var(--ink); }
+  .frame { width: 1180px; background: var(--bg); border: 1px solid var(--line); margin-bottom: 32px; }
+  .frame h6 { margin: 0; padding: 6px 12px; background: #111827; color: #fff; font: 600 12px/1.6 system-ui; }
+  .top { display: flex; align-items: center; justify-content: space-between; padding: 8px 16px; background: var(--panel); border-bottom: 1px solid var(--line); }
+  .status { display: inline-flex; padding: 3px 10px; border-radius: 999px; font-size: 13px; background: var(--okbg); color: var(--ok); }
+  .avatar { width: 26px; height: 26px; border-radius: 50%; background: #c7d2fe; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px; margin-left: 10px; }
+  .cols { display: grid; grid-template-columns: 200px 1fr; min-height: 480px; }
+  .col { border-right: 1px solid var(--line); background: var(--panel); }
+  .col h3 { margin: 0; padding: 12px 14px; font-size: 13px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; border-bottom: 1px solid var(--line); }
+  .item { padding: 10px 14px; border-bottom: 1px solid #f0f1f3; }
+  .item.sel { background: #eef2ff; font-weight: 600; }
+  .doc { padding: 18px 24px; }
+  .tabs { display: flex; gap: 4px; margin-bottom: 18px; border-bottom: 1px solid var(--line); }
+  .tabs span { padding: 8px 14px; border-bottom: 2px solid transparent; }
+  .tabs span.on { border-color: var(--accent); font-weight: 600; }
+  .field { margin-bottom: 16px; max-width: 620px; }
+  .field label { display: block; font-weight: 600; margin-bottom: 2px; }
+  .help { color: var(--muted); font-size: 13px; margin: 0 0 6px; }
+  .input { background: var(--panel); border: 1px solid var(--line); border-radius: 4px; padding: 8px 10px; min-height: 36px; }
+  .input.tall { min-height: 90px; }
+  .input.bad { border-color: var(--err); }
+  .msg { color: var(--err); font-size: 13px; margin-top: 4px; }
+  .radio span { margin-right: 18px; }
+  .row { display: flex; gap: 10px; align-items: center; background: #fff; border: 1px solid var(--line); border-top: 0; padding: 8px 10px; }
+  .row:first-child { border-top: 1px solid var(--line); }
+  .row .grip { color: var(--muted); cursor: grab; }
+  .row .grow { flex: 1; }
+  .bar { display: flex; justify-content: flex-end; gap: 10px; padding: 10px 24px; border-top: 1px solid var(--line); background: var(--panel); }
+  .btn { padding: 6px 12px; border-radius: 4px; border: 1px solid var(--line); background: #fff; font-weight: 600; font-size: 13px; }
+  .btn.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .btn.off { opacity: .45; }
+  /* site */
+  .site { background: var(--paper); color: var(--site); padding: 20px 28px; font-family: Georgia, serif; }
+  .site h1 { font: 800 30px/1.1 system-ui; margin: 0 0 14px; }
+  .site .nav { font: 600 12px ui-monospace, monospace; margin-bottom: 18px; }
+  .site .nav span { margin-right: 12px; }
+  .banner { display: flex; align-items: center; gap: 14px; border: 3px solid var(--site); padding: 12px 16px; background: #fff; font-family: system-ui; }
+  .banner .dot { width: 14px; height: 14px; border-radius: 50%; background: #3a9d5d; }
+  .banner.closed { background:#fde8d7; } .banner.closed .dot { background: #d9822b; } .banner.open { background:#e3f3e5; }
+  .modal { border:1px solid var(--line); border-radius:6px; background:#fff; padding:14px; box-shadow:0 6px 16px rgba(0,0,0,.12); max-width:420px; }
+  .errbox { background: var(--errbg); color: var(--err); border-radius: 4px; padding: 10px 12px; margin-bottom: 14px; max-width: 620px; }
+  .req { color: var(--err); font-weight: 400; font-size: 12px; margin-left: 6px; }
+  .phone { width: 360px; border: 8px solid #222; border-radius: 22px; overflow: hidden; display:inline-block; vertical-align: top; margin-right: 24px; }
+  .grid3 { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; max-width:520px; }
+  .grid3 span { border:3px solid var(--site); padding:16px 4px; text-align:center; font:700 11px system-ui; background:#fff; }
+  .soc span { display:inline-block; margin:8px 6px 0 0; }
+  .hl { display: inline-block; padding: 4px 12px; background: #f4ce6a; font: 600 13px system-ui; color: var(--site); }
+  .hl.g { background: #a8d5a2; } .hl.o { background: #f2b880; } .hl.p { background: #f2a7c3; }
+  .split { display: grid; grid-template-columns: 280px 1fr; gap: 28px; }
+  .facts { border: 3px solid var(--site); padding: 12px; background: #fff; font-family: system-ui; font-size: 13px; }
+  .facts div { display: flex; justify-content: space-between; border-bottom: 1px dashed #ccc; padding: 4px 0; }
+  .portrait { width: 100%; height: 200px; background: #e8dcc6; border: 3px solid var(--site); display: flex; align-items: center; justify-content: center; font-family: system-ui; color: #6b5b3e; margin-bottom: 12px; }
+  .tiles { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 18px; }
+  .tiles span { border: 3px solid var(--site); padding: 18px 6px; text-align: center; font: 700 12px system-ui; background: #fff; }
+  .note { font: 12px system-ui; color: #6b5b3e; margin-top: 10px; }
+  .foot { background: #2b2b2b; color: #f5f1e8; padding: 14px 28px; font-family: system-ui; }
+</style>
+</head>
+<body>
+
+<div class="frame" id="m1">
+  <h6>1 · Site settings: four items, each published on its own. Commissions open.</h6>
+  <div class="top"><strong>Kettlebird Creations</strong><span><span class="status">● Live · 2:41 pm</span><span class="avatar">S</span></span></div>
+  <div class="cols" style="grid-template-columns:200px 220px 1fr"><div class="col"><h3>Menu</h3><div class="item">Comics</div><div class="item">Art</div><div class="item">Writing</div><div class="item">Shop</div><div class="item">Commissions</div><div class="item sel">Site settings</div></div><div class="col"><h3>Site settings</h3><div class="item sel">Commissions</div><div class="item">About page</div><div class="item">Home page</div><div class="item">Contact and social links</div></div><div><div class="doc"><div class="field"><label>Commissions are…<span class="req">Required</span></label><p class="help">Changes the banner at the top of your Commissions page, and whether it shows how to order.</p><div class="radio"><span>◉ Open</span><span>○ Closed</span></div></div><div class="field"><label>Note when closed</label><p class="help">Shown after "Commissions are closed." exactly as you write it, like "Back in March." Leave empty for no note.</p><div class="input "></div></div></div><div class="bar"><span class="btn primary">Publish</span></div></div></div>
+</div>
+
+<div class="frame" id="m2">
+  <h6>2 · About page, with a fact being edited</h6>
+  <div class="top"><strong>Kettlebird Creations</strong><span><span class="status">● Live · 2:41 pm</span><span class="avatar">S</span></span></div>
+  <div class="cols" style="grid-template-columns:200px 220px 1fr"><div class="col"><h3>Menu</h3><div class="item">Comics</div><div class="item">Art</div><div class="item">Writing</div><div class="item">Shop</div><div class="item">Commissions</div><div class="item sel">Site settings</div></div><div class="col"><h3>Site settings</h3><div class="item">Commissions</div><div class="item sel">About page</div><div class="item">Home page</div><div class="item">Contact and social links</div></div><div><div class="doc"><div class="field"><label>Portrait</label><p class="help">A picture of you, or a self-portrait. Shown at the top of the about page, and beside the home page&#39;s artist text. To choose what stays in view when it&#39;s cropped, choose the picture&#39;s Edit button.</p><div class="input ">[picture]</div></div><div class="field"><label>Portrait&#39;s alt text</label><p class="help">What the portrait shows, for people using screen readers. If it&#39;s empty, screen readers skip the portrait.</p><div class="input ">Star, drawn as a bird with a teapot.</div></div><div class="field"><label>Hello! (your bio)</label><p class="help">A few paragraphs about you, under the heading Hello! Leave a blank line between paragraphs. Leave empty to leave the section out.</p><div class="input tall">I&#39;m Star, a writer and illustrator in Vancouver…</div></div><div class="field"><label>The Work (your artist statement)</label><p class="help">What your work is about, under the heading The Work. Leave a blank line between paragraphs. Leave empty to leave the section out.</p><div class="input tall"></div></div><div class="field"><label>At a glance</label><p class="help">Short facts in the about page&#39;s side box, in this order. Choose a fact to change it; drag to reorder.</p><div><div class="row"><span class="grip">⠿</span><span class="grow">Pronouns · they/them</span><span class="btn">Remove</span></div><div class="row"><span class="grip">⠿</span><span class="grow">Based in · Vancouver, BC</span><span class="btn">Remove</span></div><div class="row"><span class="grip">⠿</span><span class="grow">Makes · Illustration, comics, fiction</span><span class="btn">Remove</span></div><div class="row"><span class="grip">⠿</span><span class="grow">Loves · Fantasy, found family, character design</span><span class="btn">Remove</span></div></div><p style="margin:8px 0 12px"><span class="btn">+ Add a fact</span></p><div class="modal"><strong>Edit fact</strong><div class="field"><label>Label<span class="req">Required</span></label><p class="help">Like "Based in".</p><div class="input ">Based in</div></div><div class="field"><label>Value<span class="req">Required</span></label><p class="help">Like "Vancouver, BC".</p><div class="input ">Vancouver, BC</div></div><span class="btn">Done</span></div></div></div><div class="bar"><span class="btn primary">Publish</span></div></div></div>
+</div>
+
+<div class="frame" id="m3">
+  <h6>3 · Home page</h6>
+  <div class="top"><strong>Kettlebird Creations</strong><span><span class="status">● Live · 2:41 pm</span><span class="avatar">S</span></span></div>
+  <div class="cols" style="grid-template-columns:200px 220px 1fr"><div class="col"><h3>Menu</h3><div class="item">Comics</div><div class="item">Art</div><div class="item">Writing</div><div class="item">Shop</div><div class="item">Commissions</div><div class="item sel">Site settings</div></div><div class="col"><h3>Site settings</h3><div class="item">Commissions</div><div class="item">About page</div><div class="item sel">Home page</div><div class="item">Contact and social links</div></div><div><div class="doc"><div class="field"><label>Artist text</label><p class="help">A sentence or two about you, under the home page&#39;s social links, beside your portrait (from About page). Leave a blank line between paragraphs. Don&#39;t mention whether commissions are open: the Commissions page says that, and changes when you do. Leave empty to leave the block out.</p><div class="input tall">Hi, I&#39;m Star. I draw fantasy comics about found family.</div></div></div><div class="bar"><span class="btn primary">Publish</span></div></div></div>
+</div>
+
+<div class="frame" id="m4">
+  <h6>4 · Contact and social links, with a link being edited and one that isn&#39;t a web address</h6>
+  <div class="top"><strong>Kettlebird Creations</strong><span><span class="status">● Live · 2:41 pm</span><span class="avatar">S</span></span></div>
+  <div class="cols" style="grid-template-columns:200px 220px 1fr"><div class="col"><h3>Menu</h3><div class="item">Comics</div><div class="item">Art</div><div class="item">Writing</div><div class="item">Shop</div><div class="item">Commissions</div><div class="item sel">Site settings</div></div><div class="col"><h3>Site settings</h3><div class="item">Commissions</div><div class="item">About page</div><div class="item">Home page</div><div class="item sel">Contact and social links</div></div><div><div class="doc"><div class="errbox"><strong>Fix this before publishing:</strong><br>· Instagram: the link isn&#39;t a web address</div><div class="field"><label>Contact email<span class="req">Required</span></label><p class="help">Where every email button on the site sends people: the footer&#39;s Contact, the about page&#39;s Get in touch, and the Commissions page&#39;s buttons.</p><div class="input ">kettlebirdillustration@gmail.com</div></div><div class="field"><label>Social links</label><p class="help">Shown in this order on the home page, in every page&#39;s footer, and on the about page. Choose a link to change it; drag to reorder; Remove to take one away.</p><div><div class="row"><span class="grip">⠿</span><span class="grow">Bluesky · https://bsky.app/profile/kettlebird.bsky.social</span><span class="btn">Remove</span></div><div class="row"><span class="grip">⠿</span><span class="grow">Tumblr · https://kettle-bird.tumblr.com</span><span class="btn">Remove</span></div><div class="row" style="border-color:var(--err)"><span class="grip">⠿</span><span class="grow">Instagram · instagram kettlebirdart</span><span class="btn">Remove</span></div><div class="row"><span class="grip">⠿</span><span class="grow">Ko-fi · https://ko-fi.com/kettlebirdart</span><span class="btn">Remove</span></div></div><p style="margin:8px 0 12px"><span class="btn">+ Add a link</span></p><div class="modal"><strong>Edit link</strong><div class="field"><label>Name<span class="req">Required</span></label><p class="help">As it shows on the button, like "Instagram".</p><div class="input ">Instagram</div></div><div class="field"><label>Link<span class="req">Required</span></label><p class="help">The page it opens. Copy it from your browser&#39;s address bar.</p><div class="input bad">instagram kettlebirdart</div><div class="msg">This isn&#39;t a web address. Copy the link from your browser&#39;s address bar; it starts with https:// (or http://).</div></div><span class="btn">Done</span></div></div></div><div class="bar"><span style="color:var(--muted);font-size:13px">1 thing to fix before publishing</span><span class="btn primary off">Publish</span></div></div></div>
+</div>
+
+<div class="frame" id="m5">
+  <h6>5 · The Commissions page: open, and closed (whole page)</h6>
+  
+  <div class="site"><h1>Commissions</h1><div class="banner open"><span class="dot"></span><span style="flex:1"><strong>Commissions are open.</strong> Email me to get started.</span><span class="hl g">Contact me</span></div><p class="note">Open: then the commission types, How it works, and Ready to order? with Email me to get started, as now.</p><hr style="margin:18px 0;border:0;border-top:2px dashed #b9ac90"><h1>Commissions</h1><div class="banner closed"><span class="dot"></span><span style="flex:1"><strong>Commissions are closed.</strong> Back in March.</span></div><p style="font-family:system-ui;margin:14px 0 6px">These are the kinds of commission I take, for when they open again.</p><div style="display:flex;gap:10px;font-family:system-ui"><div class="facts" style="flex:1"><strong>Full colour illustration</strong><br>$80–150 · Est. delivery 2–3 weeks</div><div class="facts" style="flex:1"><strong>Sketch</strong><br>$30–50 · Est. delivery 1 week</div></div><p style="font-family:system-ui;margin-top:14px">Commissions are closed for now. To hear when they open, follow me on the social links at the bottom of the page.</p><p class="note">Closed: no Contact me, no How it works, no Ready to order? and no commission email button.</p></div>
+</div>
+
+<div class="frame" id="m6">
+  <h6>6 · The about page: everything filled in, and with only the facts</h6>
+  
+  <div class="site"><div class="split"><div><div class="portrait">portrait</div><div class="facts"><strong>At a glance</strong><div><span>Pronouns</span><span>they/them</span></div><div><span>Based in</span><span>Vancouver, BC</span></div><div><span>Makes</span><span>Illustration, comics, fiction</span></div><div><span>Loves</span><span>Fantasy, found family…</span></div></div><p class="soc"><span class="hl g">Bluesky</span><span class="hl">Tumblr</span><span class="hl o">Instagram</span><span class="hl p">Ko-fi</span></p></div><div><h1>About the Artist</h1><h2 style="font:700 18px system-ui">Hello!</h2><p>I&#39;m Star, a writer and illustrator in Vancouver…</p><h2 style="font:700 18px system-ui">The Work</h2><p>My work is about found family…</p><h2 style="font:700 18px system-ui">Get in touch</h2><p style="font-family:system-ui">For commission inquiries, collaboration ideas, or just to say hi:</p><span class="hl">kettlebirdillustration@gmail.com</span></div></div><hr style="margin:18px 0;border:0;border-top:2px dashed #b9ac90"><div class="split"><div><div class="facts"><strong>At a glance</strong><div><span>Pronouns</span><span>they/them</span></div><div><span>Based in</span><span>Vancouver, BC</span></div></div><p class="soc"><span class="hl g">Bluesky</span><span class="hl">Tumblr</span></div></div><div><h1>About the Artist</h1><h2 style="font:700 18px system-ui">Get in touch</h2><p style="font-family:system-ui">To ask about collaborations, or just to say hi:</p><span class="hl">kettlebirdillustration@gmail.com</span></div></div><p class="note">Second panel: only facts filled in, and commissions closed (so Get in touch doesn&#39;t mention commissions). No portrait frame, no Hello! or The Work headings.</p></div>
+</div>
+
+<div class="frame" id="m7">
+  <h6>7 · The home page: with the artist text and portrait, and without; and the footer</h6>
+  
+  <div class="site" style="display:flex;gap:30px"><div><div class="grid3"><span>PORTFOLIO</span><span>[logo]</span><span>SHOP</span><span>COMICS</span><span>COMMISSIONS</span><span>WRITING</span><span>CONTACT ME!</span><span>ABOUT</span><span>NEWS</span></div><p class="soc"><span class="hl g">BLUESKY</span><span class="hl">TUMBLR</span><span class="hl o">INSTAGRAM</span><span class="hl p">KO-FI</span></p><div style="display:flex;gap:14px;margin-top:14px;max-width:520px"><div class="portrait" style="width:110px;height:110px;margin:0">portrait</div><p>Hi, I&#39;m Star. I draw fantasy comics about found family.</p></div></div><div><p class="note" style="margin-top:0">Without artist text: the page ends after the social links, as now. With text but no portrait: the text alone.<br><br>The home page&#39;s social row and the footer follow the same list, in the same order. Colours go green, yellow, orange, pink, then repeat.</p></div></div><div class="foot">Connect &nbsp; <span class="hl g">Bluesky</span> <span class="hl">Tumblr</span> <span class="hl o">Instagram</span> <span class="hl p">Ko-fi</span> &nbsp; Contact &nbsp; kettlebirdillustration@gmail.com</div>
+</div>
+
+<div class="frame" id="m8">
+  <h6>8 · On a phone: the closed Commissions banner with a long note, and the about page</h6>
+  
+  <div style="padding:16px"><div class="phone"><div class="site" style="padding:14px"><h1 style="font-size:24px">Commissions</h1><div class="banner closed" style="flex-wrap:wrap"><span class="dot"></span><span style="flex:1"><strong>Commissions are closed.</strong> Full until the spring while I finish chapter three. Thank you for waiting!</span></div></div></div><div class="phone"><div class="site" style="padding:14px"><h1 style="font-size:24px">About the Artist</h1><div class="portrait" style="height:160px">portrait</div><h2 style="font:700 16px system-ui">Hello!</h2><p style="font-size:14px">I&#39;m Star, a writer and illustrator…</p><div class="facts"><strong>At a glance</strong><div><span>Pronouns</span><span>they/them</span></div></div></div></div><p class="note">On a phone, the about page is one column: heading, portrait, Hello!, The Work, At a glance, links, Get in touch. A note of up to 120 characters wraps under the heading; the editor stops longer notes.</p></div>
+</div>
+
+</body>
+</html>

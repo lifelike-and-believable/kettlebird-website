@@ -71,7 +71,6 @@ Sanity (inside `sanity-studio/`):
 │   └── styles/           # Global tokens/styles
 ├── public/               # Static assets (place images/fonts here)
 ├── sanity-studio/        # Sanity CMS workspace + schemas
-├── netlify.toml          # Netlify build/publish config
 ├── vercel.json           # Vercel build output + headers
 └── package.json          # Astro workspace scripts/deps
 ```
