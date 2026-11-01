@@ -1,6 +1,6 @@
 ---
 id: design-site-settings
-status: draft
+status: approved
 derived-from:
   - story-content-editing-site-settings: bf5491c1a296
   - design-organised-editor: c014dfe64fbc
