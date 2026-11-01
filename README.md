@@ -26,8 +26,9 @@ npm run dev           # http://localhost:3333/studio
 
 Environment variables (see `.env.example`):
 
-- `SANITY_PROJECT_ID`
-- `SANITY_DATASET`
+- `SANITY_PROJECT_ID` (the site; defaults to `1p6w5n0l`)
+- `SANITY_DATASET` (the site; defaults to `production`)
+- `SANITY_STUDIO_DATASET` (the editor; defaults to `production`, set it to `test` to try things out)
 
 ## Scripts
 
