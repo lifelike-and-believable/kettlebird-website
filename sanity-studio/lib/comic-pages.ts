@@ -74,7 +74,6 @@ export function chapterLabel(c: { number: number; title?: string }): string {
 export function linkChange(published: ChapterLike | null, draft: ChapterLike): LinkChange {
   if (!published) return { kind: 'none' };
   const before = published.pages.map((p) => p._key);
-  if (before.length === 0) return { kind: 'none' };
   if (published.number !== draft.number) return { kind: 'renumbered', from: published.number, to: draft.number };
   const after = draft.pages.map((p) => p._key);
   const first = before.findIndex((key, i) => after[i] !== key);
@@ -108,15 +107,17 @@ function changeDialog(change: LinkChange, chapter: ChapterLike): PublishDialog |
     if (!missing) return null;
     const pagesWord = missing === 1 ? '1 page' : `${missing} pages`;
     const has = missing === 1 ? 'has' : 'have';
+    const them = missing === 1 ? 'it' : 'them';
     return {
       title: 'Some pages have no alt text',
-      lines: [`${pagesWord} in ${label} ${has} no alt text, so people using screen readers won't be able to follow them.`],
+      lines: [`${pagesWord} in ${label} ${has} no alt text, so people using screen readers won't be able to follow ${them}.`],
     };
   }
   let line: string;
   if (change.kind === 'renumbered') {
-    const name = chapter.title?.trim() || `chapter ${change.from}`;
-    line = `You changed ${name} from chapter ${change.from} to chapter ${change.to}. Links people have shared to its pages use chapter ${change.from}'s addresses, so they'll stop working, or open a different chapter if you later add a new chapter ${change.from}.`;
+    const title = chapter.title?.trim();
+    const what = title ? `${title} from chapter ${change.from}` : `chapter ${change.from}`;
+    line = `You changed ${what} to chapter ${change.to}. Links people have shared to its pages use chapter ${change.from}'s addresses, so they'll stop working, or open a different chapter if you later add a new chapter ${change.from}.`;
   } else {
     const what = change.kind === 'moved' ? `You moved page ${change.page} of`
       : change.kind === 'removed' ? `You removed page ${change.page} of`
