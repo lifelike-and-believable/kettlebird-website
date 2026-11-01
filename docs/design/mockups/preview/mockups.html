@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Preview before publishing: mock-ups</title>
+<!-- Source for the PNG mock-ups beside this file (docs/design/preview.md). Low-fidelity: the editor is
+     Sanity Studio; the right-hand side is the site's real page, simplified here. Render: node render.mjs -->
+<style>
+  :root { --ink:#1f2328; --muted:#6b7280; --line:#d8dce2; --bg:#f6f7f9; --panel:#fff; --accent:#2563eb; --ok:#15803d; --okbg:#dcfce7; --prev:#7c3aed; --prevbg:#ede9fe; --paper:#f5f1e8; --site:#2b2b2b; }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 24px; background: #e5e7eb; font: 14px/1.4 system-ui, sans-serif; color: var(--ink); }
+  .frame { width: 1280px; background: var(--bg); border: 1px solid var(--line); margin-bottom: 32px; }
+  .frame h6 { margin: 0; padding: 6px 12px; background: #111827; color: #fff; font: 600 12px/1.6 system-ui; }
+  .top { display: flex; align-items: center; justify-content: space-between; padding: 8px 16px; background: var(--panel); border-bottom: 1px solid var(--line); }
+  .status { display: inline-flex; padding: 3px 10px; border-radius: 999px; font-size: 13px; background: var(--okbg); color: var(--ok); }
+  .avatar { width: 26px; height: 26px; border-radius: 50%; background: #c7d2fe; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px; margin-left: 10px; }
+  .split { display: grid; grid-template-columns: 420px 1fr; min-height: 560px; }
+  .form { background: var(--panel); border-right: 1px solid var(--line); display: flex; flex-direction: column; }
+  .form .doc { padding: 16px 20px; flex: 1; }
+  .field { margin-bottom: 14px; }
+  .field label { display: block; font-weight: 600; margin-bottom: 2px; }
+  .input { background: var(--panel); border: 1px solid var(--line); border-radius: 4px; padding: 7px 10px; min-height: 34px; }
+  .bar { display: flex; justify-content: space-between; gap: 10px; padding: 10px 20px; border-top: 1px solid var(--line); }
+  .btn { padding: 6px 12px; border-radius: 4px; border: 1px solid var(--line); background: #fff; font-weight: 600; font-size: 13px; }
+  .btn.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .btn.on { background: #eef2ff; border-color: var(--accent); }
+  .pv { display: flex; flex-direction: column; background: #d1d5db; }
+  .pvbar { display: flex; justify-content: space-between; align-items: center; padding: 8px 14px; background: var(--panel); border-bottom: 1px solid var(--line); }
+  .stage { flex: 1; display: flex; justify-content: center; padding: 16px; }
+  .page { background: var(--paper); width: 100%; border: 1px solid #bbb; color: var(--site); }
+  .page.phone { width: 375px; }
+  .ribbon { background: var(--prevbg); color: var(--prev); font: 600 13px system-ui; padding: 6px 12px; border-bottom: 2px solid var(--prev); }
+  .site { padding: 16px 20px; font-family: Georgia, serif; }
+  .site h1 { font: 800 26px/1.1 system-ui; margin: 0 0 10px; }
+  .card { width: 150px; height: 150px; border: 3px solid var(--site); background: #e8dcc6; display: inline-flex; align-items: flex-end; margin: 0 8px 8px 0; font: 12px system-ui; padding: 4px; }
+  .light { margin-top: 10px; border: 3px solid var(--site); background: #fff; padding: 10px; font-family: system-ui; }
+  .light .img { height: 180px; background: #e8dcc6; display: flex; align-items: center; justify-content: center; }
+  .note { font: 12px system-ui; color: #6b5b3e; margin-top: 8px; }
+  .msg { padding: 40px; text-align: center; color: var(--muted); font: 15px system-ui; }
+  .banner { display: flex; align-items: center; gap: 10px; border: 3px solid var(--site); padding: 10px 14px; background: #fde8d7; font-family: system-ui; }
+  .dot { width: 12px; height: 12px; border-radius: 50%; background: #d9822b; }
+  .chg { outline: 3px dashed var(--prev); outline-offset: 3px; }
+  .hint { background: #fff7d6; color: #7a5b00; font: 13px system-ui; padding: 6px 12px; border-bottom: 1px solid #ecd889; }
+  .help { color: var(--muted); font-size: 12px; margin: 0 0 4px; }
+  .req { color: #b91c1c; font-weight: 400; font-size: 11px; margin-left: 6px; }
+  .tag { display:inline-block; border:2px solid var(--site); padding:1px 8px; font:12px ui-monospace,monospace; background:#a8d5a2; margin-right:6px; }
+  .carousel { display:flex; gap:8px; overflow:hidden; }
+  .band { background:#c9aa7e; padding:20px 12px 12px; position:relative; margin-bottom:6px; }
+  .band .lab { position:absolute; top:-8px; left:10px; background:#f4ce6a; padding:1px 8px; font:600 12px ui-monospace,monospace; }
+  .modal { position:absolute; inset:0; background:rgba(43,43,43,.85); display:flex; align-items:center; justify-content:center; }
+  .modal .box { background:#f5f1e8; border:3px solid #2b2b2b; width:80%; padding:10px; font-family:system-ui; }
+</style>
+</head>
+<body>
+<div class="frame" id="m1">
+<h6>1 · An art piece: the preview at computer width, scrolled to the piece in its first portfolio section</h6>
+<div class="top"><strong>Kettlebird Creations</strong><span><span class="status">● Live · 2:41 pm</span><span class="avatar">S</span></span></div>
+<div class="split"><div class="form"><div class="doc"><div class="field"><label>Title<span class="req">Required</span></label><p class="help">Shown under the picture on your portfolio.</p><div class="input">Fox at Dawn</div></div><div class="field"><label>Picture<span class="req">Required</span></label><p class="help">Choose Edit to mark what stays in view in square thumbnails.</p><div class="input">[picture]</div></div><div class="field"><label>Alt text</label><p class="help">What the picture shows, for screen readers.</p><div class="input">A fox sits on a hill as the sun comes up.</div></div><div class="field"><label>Portfolio sections<span class="req">Choose at least one</span></label><div class="input">☑ Original Work ☑ Featured</div></div><div class="field"><label>Description</label><p class="help">Shown when someone opens the picture.</p><div class="input"></div></div><div class="field"><label>Tags</label><div class="input"></div></div><div class="field"><label>Date</label><div class="input">12 Oct 2026</div></div></div><div class="bar"><span class="btn on">Hide preview</span><span class="btn primary">Publish</span></div></div><div class="pv"><div class="pvbar"><span>Preview of <strong>the Portfolio</strong> · <span style="color:var(--muted)">Updated just now</span></span><span> <span class="btn">Show it opened</span> <span><span class="btn on">Computer</span> <span class="btn">Phone</span></span></span></div><div class="ribbon">Preview: not on the site yet. This item&#39;s unpublished changes are shown, outlined; everything else is as published.</div><div class="hint">Not visible on the page: <strong>alt text</strong> (read by screen readers). Also in: Featured.</div><div class="stage"><div class="page" style="position:relative"><div class="site"><h1>Portfolio</h1><p class="note">Index: All · Original Work · Fan Work · Featured</p><div class="band"><span class="lab">Original Work</span><div class="carousel"><span class="card">&nbsp;</span><span class="card chg">&nbsp;</span><span class="card">&nbsp;</span><span class="card">&nbsp;</span></div></div><p class="note">Scrolled to Original Work, the first of its sections, with the carousel moved to the piece. Titles show on hover, as on the site.</p></div></div></div></div></div>
+</div>
+
+<div class="frame" id="m2">
+<h6>2 · Show it opened, at phone width: the piece as fans see it when they tap it</h6>
+<div class="top"><strong>Kettlebird Creations</strong><span><span class="status">● Live · 2:41 pm</span><span class="avatar">S</span></span></div>
+<div class="split"><div class="form"><div class="doc"><div class="field"><label>Title<span class="req">Required</span></label><p class="help">Shown under the picture on your portfolio.</p><div class="input">Fox at Dawn</div></div><div class="field"><label>Picture<span class="req">Required</span></label><p class="help">Choose Edit to mark what stays in view in square thumbnails.</p><div class="input">[picture]</div></div><div class="field"><label>Alt text</label><p class="help">What the picture shows, for screen readers.</p><div class="input">A fox sits on a hill as the sun comes up.</div></div><div class="field"><label>Portfolio sections<span class="req">Choose at least one</span></label><div class="input">☑ Original Work ☑ Featured</div></div><div class="field"><label>Description</label><p class="help">Shown when someone opens the picture.</p><div class="input"></div></div><div class="field"><label>Tags</label><div class="input"></div></div><div class="field"><label>Date</label><div class="input">12 Oct 2026</div></div></div><div class="bar"><span class="btn on">Hide preview</span><span class="btn primary">Publish</span></div></div><div class="pv"><div class="pvbar"><span>Preview of <strong>the Portfolio, with this piece opened</strong> · <span style="color:var(--muted)">Updated just now</span></span><span> <span class="btn on">Show it opened</span> <span><span class="btn">Computer</span> <span class="btn on">Phone</span></span></span></div><div class="ribbon">Preview: not on the site yet. This item&#39;s unpublished changes are shown, outlined; everything else is as published.</div><div class="stage"><div class="page phone" style="position:relative"><div class="site" style="min-height:420px"><h1>Portfolio</h1><div class="band"><span class="lab">Original Work</span><div class="carousel"><span class="card">&nbsp;</span><span class="card chg">&nbsp;</span><span class="card">&nbsp;</span><span class="card">&nbsp;</span></div></div><div class="modal"><div class="box chg"><div style="height:160px;background:#e8dcc6;display:flex;align-items:center;justify-content:center">Fox at Dawn, whole picture</div><strong>Fox at Dawn</strong></div></div></div></div></div></div></div>
+</div>
+
+<div class="frame" id="m3">
+<h6>3 · A chapter: the preview follows the page open in the page panel</h6>
+<div class="top"><strong>Kettlebird Creations</strong><span><span class="status">● Live · 2:41 pm</span><span class="avatar">S</span></span></div>
+<div class="split"><div class="form"><div class="doc"><div class="field"><label>Chapter<span class="req">Required</span></label><div class="input">2</div></div><div class="field"><label>Title</label><div class="input">The Long Road</div></div><div class="field"><label>Pages</label><div class="input">[24 thumbnails] · page 3 open</div></div><div class="field" style="border:1px solid var(--line);border-radius:6px;padding:10px;background:#fafafa"><label>Page 3</label><div class="input" style="height:70px">[page image]</div><div class="field"><label>Alt text</label><div class="input">Fox and Kettle cross the river at dusk.</div></div><span class="btn">Previous page</span> <span class="btn">Next page</span> <span class="btn">Done</span></div></div><div class="bar"><span class="btn on">Hide preview</span><span class="btn primary">Publish</span></div></div><div class="pv"><div class="pvbar"><span>Preview of <strong>Chapter 2, page 3 in the reader</strong> · <span style="color:var(--muted)">Updated just now</span></span><span> <span><span class="btn on">Computer</span> <span class="btn">Phone</span></span></span></div><div class="ribbon">Preview: not on the site yet. This item&#39;s unpublished changes are shown, outlined; everything else is as published.</div><div class="hint">Not visible on the page: <strong>alt text</strong>. Links in the preview don&#39;t go anywhere; choose another page in the chapter to preview it.</div><div class="stage"><div class="page" style="position:relative"><div class="site"><div class="note">← Back to series &nbsp;&nbsp; <strong>Chapter 2: The Long Road · Page 3 of 24</strong></div><div class="light chg" style="text-align:center"><div class="img" style="height:260px">page 3</div></div><div class="note">Previous page &nbsp; Next page</div></div></div></div></div></div>
+</div>
+
+<div class="frame" id="m4">
+<h6>4 · A series</h6>
+<div class="top"><strong>Kettlebird Creations</strong><span><span class="status">● Live · 2:41 pm</span><span class="avatar">S</span></span></div>
+<div class="split"><div class="form"><div class="doc"><div class="field"><label>Title<span class="req">Required</span></label><div class="input">Kettle Tales</div></div><div class="field"><label>Web address<span class="req">Required</span></label><div class="input">kettle-tales</div></div><div class="field"><label>Cover</label><div class="input">[picture]</div></div><div class="field"><label>Description</label><div class="input">A fox and a kettle set out across the hills, and keep going.</div></div><div class="field"><label>Status</label><div class="input">Ongoing</div></div><div class="field"><label>Kind</label><div class="input">Original</div></div><div class="field"><label>Chapters</label><div class="input">Chapter 1 · Chapter 2</div></div></div><div class="bar"><span class="btn on">Hide preview</span><span class="btn primary">Publish</span></div></div><div class="pv"><div class="pvbar"><span>Preview of <strong>the Kettle Tales series page</strong> · <span style="color:var(--muted)">Updated just now</span></span><span> <span><span class="btn on">Computer</span> <span class="btn">Phone</span></span></span></div><div class="ribbon">Preview: not on the site yet. This item&#39;s unpublished changes are shown, outlined; everything else is as published.</div><div class="stage"><div class="page" style="position:relative"><div class="site"><div style="display:grid;grid-template-columns:150px 1fr;gap:16px"><div class="card" style="width:140px;height:200px">cover</div><div><h1>Kettle Tales</h1><p><span class="tag">Ongoing</span><span class="tag" style="background:#f5f1e8">Original</span></p><p class="chg">A fox and a kettle set out across the hills, and keep going.</p><span class="btn">Start reading</span></div></div><h2 style="font:700 16px system-ui;margin-top:12px">Chapters</h2><p class="note">Chapter 1: The Kettle · 3 pages<br>Chapter 2: The Long Road · 24 pages</p></div></div></div></div></div>
+</div>
+
+<div class="frame" id="m5">
+<h6>5 · Site settings, Commissions: closing them</h6>
+<div class="top"><strong>Kettlebird Creations</strong><span><span class="status">● Live · 2:41 pm</span><span class="avatar">S</span></span></div>
+<div class="split"><div class="form"><div class="doc"><div class="field"><label>Commissions are…<span class="req">Required</span></label><div class="input">○ Open &nbsp; ◉ Closed</div></div><div class="field"><label>Note when closed</label><div class="input">Back in March.</div></div></div><div class="bar"><span class="btn on">Hide preview</span><span class="btn primary">Publish</span></div></div><div class="pv"><div class="pvbar"><span>Preview of <strong>the Commissions page</strong> · <span style="color:var(--muted)">Updated just now</span></span><span> <span><span class="btn on">Computer</span> <span class="btn">Phone</span></span></span></div><div class="ribbon">Preview: not on the site yet. This item&#39;s unpublished changes are shown, outlined; everything else is as published.</div><div class="hint">Removed from the page: <strong>How it works</strong>, <strong>Ready to order?</strong> and the commission email buttons.</div><div class="stage"><div class="page" style="position:relative"><div class="site"><h1>Commissions</h1><div class="banner chg"><span class="dot"></span><span><strong>Commissions are closed.</strong> Back in March.</span></div><p style="font-family:system-ui">These are the kinds of commission I take, for when they open again.</p></div></div></div></div></div>
+</div>
+
+<div class="frame" id="m6">
+<h6>6 · Site settings, Contact and social links: scrolled to the change</h6>
+<div class="top"><strong>Kettlebird Creations</strong><span><span class="status">● Live · 2:41 pm</span><span class="avatar">S</span></span></div>
+<div class="split"><div class="form"><div class="doc"><div class="field"><label>Contact email<span class="req">Required</span></label><div class="input">star@kettlebird.com</div></div><div class="field"><label>Social links</label><div class="input">Bluesky · Tumblr · Ko-fi</div></div></div><div class="bar"><span class="btn on">Hide preview</span><span class="btn primary">Publish</span></div></div><div class="pv"><div class="pvbar"><span>Preview of <strong>the home page, scrolled to the social links and footer</strong> · <span style="color:var(--muted)">Updated just now</span></span><span> <span><span class="btn on">Computer</span> <span class="btn">Phone</span></span></span></div><div class="ribbon">Preview: not on the site yet. This item&#39;s unpublished changes are shown, outlined; everything else is as published.</div><div class="hint">Removed: <strong>Instagram</strong> link. Not visible on the page: where the email buttons send people (now star@kettlebird.com).</div><div class="stage"><div class="page" style="position:relative"><div class="site"><p class="note">… home page, scrolled to the bottom …</p><p class="soc chg"><span class="btn">BLUESKY</span> <span class="btn">TUMBLR</span> <span class="btn">KO-FI</span></p></div><div style="background:#2b2b2b;color:#f5f1e8;padding:12px;font-family:system-ui" class="chg">Connect · Bluesky · Tumblr · Ko-fi &nbsp; Contact · star@kettlebird.com</div></div></div></div></div>
+</div>
+
+<div class="frame" id="m7">
+<h6>7 · After Publish: the preview says so, and stops outlining once the site has it</h6>
+<div class="top"><strong>Kettlebird Creations</strong><span><span class="status">● Live · 2:41 pm</span><span class="avatar">S</span></span></div>
+<div class="split"><div class="form"><div class="doc"><div class="field"><label>Commissions are…<span class="req">Required</span></label><div class="input">○ Open &nbsp; ◉ Closed</div></div><div class="field"><label>Note when closed</label><div class="input">Back in March.</div></div></div><div class="bar"><span class="btn on">Hide preview</span><span class="btn primary">Publish</span></div></div><div class="pv"><div class="pvbar"><span>Preview of <strong>the Commissions page</strong> · <span style="color:var(--muted)">Updated just now</span></span><span> <span><span class="btn on">Computer</span> <span class="btn">Phone</span></span></span></div><div class="ribbon" style="background:#dcfce7;color:#15803d;border-color:#15803d">Published. The site matches this preview once the status at the top right says Live.</div><div class="stage"><div class="page" style="position:relative"><div class="site"><h1>Commissions</h1><div class="banner"><span class="dot"></span><span><strong>Commissions are closed.</strong> Back in March.</span></div></div></div></div></div></div>
+</div>
+
+<div class="frame" id="m8">
+<h6>8 · Before the preview is open: Preview beside Publish</h6>
+<div class="top"><strong>Kettlebird Creations</strong><span><span class="status">● Live · 2:41 pm</span><span class="avatar">S</span></span></div>
+<div class="split" style="grid-template-columns:520px 1fr"><div class="form"><div class="doc"><div class="field"><label>Title<span class="req">Required</span></label><div class="input">Fox at Dawn</div></div><div class="field"><label>Picture<span class="req">Required</span></label><div class="input">[picture]</div></div></div><div class="bar"><span class="btn">Preview</span><span class="btn primary">Publish</span></div></div><div class="msg" style="background:#eef0f3">The item takes the full width until Preview is chosen. While the preview is open, the menu and the list fold away, and come back with Hide preview.</div></div>
+</div>
+
+<div class="frame" id="m9">
+<h6>9 · When the preview can&#39;t show the page</h6>
+<div class="top"><strong>Kettlebird Creations</strong><span><span class="status">● Live · 2:41 pm</span><span class="avatar">S</span></span></div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;padding:12px"><div class="pv" style="min-height:220px"><div class="pvbar"><span>Preview</span><span><span class="btn on">Computer</span> <span class="btn">Phone</span></span></div><div class="stage"><div class="page" style="background:#fff"><div class="msg">Choose a <strong>portfolio section</strong> to see where this piece goes.</div></div></div></div><div class="pv" style="min-height:220px"><div class="pvbar"><span>Preview</span><span><span class="btn on">Computer</span> <span class="btn">Phone</span></span></div><div class="stage"><div class="page" style="background:#fff"><div class="msg">Add a <strong>web address</strong> so readers can find this series. The preview needs it too.</div></div></div></div><div class="pv" style="min-height:220px"><div class="pvbar"><span>Preview</span><span><span class="btn on">Computer</span> <span class="btn">Phone</span></span></div><div class="stage"><div class="page" style="background:#fff"><div class="msg">Can&#39;t show the preview right now.<br><span class="btn" style="display:inline-block;margin-top:10px">Try again</span><br><span style="font-size:13px">Your changes are saved. You can still publish.</span></div></div></div></div></div>
+</div>
+</body>
+</html>
