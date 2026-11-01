@@ -1,6 +1,6 @@
 ---
 id: design-organised-editor
-status: draft
+status: approved
 derived-from:
   - story-content-editing-organised-editor: 854514008232
   - design-cms#decision: 889c200357ba
