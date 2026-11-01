@@ -21,6 +21,8 @@ publishing, panel correction) build on it. Checked 2026-11-01. -->
 
 **Keep Sanity**, and make it easier for Star: a simpler Studio layout, publishing that deploys the site on its own, and custom editors where the defaults are not enough (chapters, panels, site text).
 
+**One site for Star.** Star should not have to know how the site is put together. The editor lives at `/studio` on the site itself, and nothing Star does involves a second service's address, account page, or settings.
+
 Merging this note records the decision. If the lead prefers another option, it changes here before any story design builds on it.
 
 ## What we found
@@ -69,11 +71,13 @@ A walkthrough of this note for persona-artist (2026-11-01) found no blocking pro
 
 - **Before Star starts:** remove the placeholder content from the code (stock images, other studios' titles, lorem ipsum), so that Star's first published piece is never shown beside it. Empty sections show their empty states until Star fills them.
 - **New editing work** (one or more stories under the content-editing requirements, before or alongside the comic reader's publishing story):
-  - **getting in:** Star is invited to the Sanity project by email and signs in at one bookmarked address; the user documentation covers this first;
+  - **getting in:** the editor moves from its separate `*.sanity.studio` address to `/studio` on the site (lead, 2026-11-01). Star is invited by email once and then signs in at the site's `/studio`; the user documentation covers this first. How the editor is served from the site is decided in that story's spec;
   - **a Studio layout** organised around Star's work (Comics, Art, Writing, Shop, Commissions, Site settings), not around document types;
   - **a "Site settings" document** for commission status, the whole about page (bio, artist statement, portrait, quick facts), the home page text, and the social links (REQ-content-editing-3);
   - **preview before publishing:** Sanity's preview tools (included on the free plan) show a piece or comic page as it will look on the site, so Star can check crops and layout first;
   - **publish status:** publishing starts a site deploy, and the Studio shows the status of the change Star just published (building, live, or failed, with the usual delay of a minute or two), not only the time of the last update. A failed deploy says so in the Studio, so Star never believes a change is live when it is not;
+  - **large originals:** some of Star's originals are at print resolution (lead, 2026-11-01). Star uploads the original file as it is, with no resizing or exporting step, and the site serves smaller versions. Before Star starts, a print-resolution sample page is uploaded to confirm the upload and image service handle it, and the result sets the guidance in Star's documentation;
+  - **trying it early:** Star has not used the editor yet, so the first editing story ends with Star trying the reorganised editor on a few real pieces, and what they find feeds the rest of the editing work;
   - **alt text:** whether alt text becomes required before publishing is an open question in the content-editing requirements; this note does not decide it.
 - **Comic schema and editing changes** for the comic reader epics:
   - a chapter type, and pages ordered within chapters, with a way to add many pages at once (upload several files, ordered by file name, then reorder by dragging) instead of one page at a time;
@@ -83,9 +87,10 @@ A walkthrough of this note for persona-artist (2026-11-01) found no blocking pro
 
 ## Open questions
 
-1. Has Star used the deployed Studio? Their first-hand reaction is the best test of whether the simpler layout is enough.
-2. What resolution and file format are the comic page originals? This sets the upload guidance in Star's documentation and checks the 100 GB allowance.
-3. Should the Studio live at a `*.sanity.studio` address (as now) or at `/studio` on the site?
+1. Do print-resolution originals upload and resize reliably? Answered by the sample upload above.
+2. At print resolution, how many pages fit in the free plan's 100 GB? Rough check: 1,000 pages at 50 MB each is 50 GB, so the allowance holds for years at Star's pace, but the sample upload gives a real figure.
+
+Answered by the lead on 2026-11-01: Star has not used the editor yet (so it is tried early, above); originals vary and some are at print resolution; the editor moves to `/studio` on the site.
 
 ## Sources
 
