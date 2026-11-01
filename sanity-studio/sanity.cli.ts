@@ -1,11 +1,10 @@
 import { defineCliConfig } from 'sanity/cli';
 
+// Project "Kettlebird Website" in the Kettlebird Creations organisation (created 2026-11-01).
+// SANITY_STUDIO_DATASET picks another dataset, for example `test`, without editing this file.
 export default defineCliConfig({
   api: {
-    projectId: 'gtopiz2h',
-    dataset: 'production',
-  },
-  deployment: {
-    appId: 'my9jvnttk0b7y0j14d6rec7i',
+    projectId: '1p6w5n0l',
+    dataset: process.env.SANITY_STUDIO_DATASET || 'production',
   },
 });
