@@ -27,9 +27,9 @@ Fans can read any of Star's comics on the site, chapter by chapter, from the fir
 
 ## Stories
 
-Proposed; each is written as its own story file, and approved, before work on it starts.
+Each is written as its own story file, and approved, before work on it starts. Written stories show their id.
 
-1. **Start reading a series.** As a fan, I want to open a series from the comics page, see its chapters, and start at the first page of any chapter, so that I can read from the beginning or pick up a chapter I haven't read.
+1. **Start reading a series** (`story-comic-reader-start-reading`). As a fan, I want to open a series from the comics page, see its chapters, and start at the first page of any chapter, so that I can read from the beginning or pick up a chapter I haven't read.
 2. **Turn pages.** As a fan, I want to go to the next and previous page by tapping, swiping, clicking, or using the arrow keys, moving into the next chapter at the end of one, so that I can read at my own pace on any device.
 3. **Jump to the newest page and share a page.** As a fan, I want each page to have its own address and a way to go straight to the newest page, so that I can follow a link from a social post to the right page, and pick up where a new update starts.
 4. **Read with assistive technology.** As a fan using a screen reader, I want each page announced with its chapter, page number, and alt text, and focus kept in the reader as I turn pages, so that I can follow the story.
