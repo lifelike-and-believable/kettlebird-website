@@ -25,14 +25,14 @@ Star signs in at `/studio` on the site and finds their work organised the way th
 
 ## Stories
 
-Each is written as its own story file, and approved, before work on it starts.
+Each is written as its own story file, and approved, before work on it starts. Written stories show their id.
 
-1. **Clear the placeholders.** As Star, I want the site to show only my own work, with honest empty states where I haven't added anything yet, so that nothing I publish appears beside stock art or other studios' titles. (Done before Star starts.)
-2. **Sign in at the site.** As Star, I want to open `/studio` on my own site and sign in, after one email invitation, so that I have one place to go and nothing else to learn.
-3. **An editor organised around my work.** As Star, I want the editor's sections to be Comics, Art, Writing, Shop, Commissions, and Site settings, with plain help text on every field, so that I find what I want to change without knowing how the site is built. Ends with Star trying it on a few real pieces.
-4. **Site settings.** As Star, I want to change whether commissions are open, my about page (bio, statement, portrait, quick facts), the home page's artist text, and my social links, so that I can keep the site current myself (REQ-content-editing-3).
-5. **Preview before publishing.** As Star, I want to see a piece, page, or text change as it will look on the site before I publish it, so that I catch crops and mistakes first.
-6. **Know when it's live.** As Star, I want publishing to update the site on its own and the editor to tell me when my change is live, or that it failed, so that I never wonder whether fans can see it.
+1. **Clear the placeholders** (`story-content-editing-clear-placeholders`). As Star, I want the site to show only my own work, with honest empty states where I haven't added anything yet, so that nothing I publish appears beside stock art or other studios' titles. (Done before Star starts.)
+2. **Sign in at the site** (`story-content-editing-sign-in`). As Star, I want to open `/studio` on my own site and sign in, after one email invitation, so that I have one place to go and nothing else to learn.
+3. **An editor organised around my work** (`story-content-editing-organised-editor`). As Star, I want the editor's sections to be Comics, Art, Writing, Shop, Commissions, and Site settings, with plain help text on every field, so that I find what I want to change without knowing how the site is built. Ends with Star trying it on a few real pieces.
+4. **Site settings** (`story-content-editing-site-settings`). As Star, I want to change whether commissions are open, my about page (bio, statement, portrait, quick facts), the home page's artist text, and my social links, so that I can keep the site current myself (REQ-content-editing-3).
+5. **Preview before publishing** (`story-content-editing-preview`). As Star, I want to see a piece, page, or text change as it will look on the site before I publish it, so that I catch crops and mistakes first.
+6. **Know when it's live** (`story-content-editing-know-when-live`). As Star, I want publishing to update the site on its own and the editor to tell me when my change is live, or that it failed, so that I never wonder whether fans can see it.
 
 ## Dependencies
 
