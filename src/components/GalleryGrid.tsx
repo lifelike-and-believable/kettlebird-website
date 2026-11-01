@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import type { GalleryItem } from '../lib/queries';
 import { urlFor } from '../lib/sanity';
 
@@ -120,6 +120,51 @@ export default function GalleryGrid({ items }: GalleryGridProps) {
 
   const lightboxSrc = lightboxItem ? fullUrl(lightboxItem) : null;
 
+  // The lightbox is a modal dialog: focus moves into it, stays inside it, Escape closes it, and
+  // focus returns to the piece that opened it.
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
+  const openerRef = useRef<HTMLElement | null>(null);
+  const isOpen = lightboxItem !== null;
+
+  const openLightbox = (item: DisplayItem) => {
+    openerRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    setLightboxItem(item);
+  };
+  const closeLightbox = () => setLightboxItem(null);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    closeRef.current?.focus();
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        closeLightbox();
+        return;
+      }
+      if (event.key !== 'Tab' || !dialogRef.current) return;
+      const focusable = Array.from(
+        dialogRef.current.querySelectorAll<HTMLElement>('button, a[href], [tabindex]:not([tabindex="-1"])'),
+      );
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      const active = document.activeElement;
+      if (event.shiftKey && (active === first || !dialogRef.current.contains(active))) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && (active === last || !dialogRef.current.contains(active))) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.removeEventListener('keydown', onKeyDown);
+      openerRef.current?.focus();
+    };
+  }, [isOpen]);
+
   return (
     <div className="gallery-wrapper">
       {/* INDEX filter bar, hidden when there is nothing to filter */}
@@ -175,7 +220,7 @@ export default function GalleryGrid({ items }: GalleryGridProps) {
                   {folderItems.length === 0 ? (
                     <p className="gallery-empty">Nothing here yet — check back soon!</p>
                   ) : (
-                    <FolderCarousel items={folderItems} onItemClick={setLightboxItem} />
+                    <FolderCarousel items={folderItems} onItemClick={openLightbox} />
                   )}
                 </div>
               </section>
@@ -187,16 +232,18 @@ export default function GalleryGrid({ items }: GalleryGridProps) {
       {/* Lightbox */}
       {lightboxItem && (
         <div
+          ref={dialogRef}
           className="lightbox"
           role="dialog"
           aria-modal="true"
           aria-label={lightboxItem.title}
-          onClick={() => setLightboxItem(null)}
+          onClick={closeLightbox}
         >
           <div className="lightbox__inner" onClick={(e) => e.stopPropagation()}>
             <button
+              ref={closeRef}
               className="lightbox__close"
-              onClick={() => setLightboxItem(null)}
+              onClick={closeLightbox}
               aria-label="Close"
             >
               ✕
