@@ -26,7 +26,7 @@ publish status come from the content-editing epic and are shown here as they wil
 6. Star drags pages to reorder them if needed (mock-up 2 shows one being moved). Each page shows its number, a thumbnail, and its file name.
 7. The chapter header shows how many pages still need alt text ("3 pages need alt text"). Star opens a page to add its **Alt text**, and moves through pages with **Previous page** and **Next page** in the page panel without closing it (mock-up 3). Pages without alt text show a yellow "Alt text" mark in the grid; Star can still publish.
 8. Star chooses **Preview** to see the chapter in the reader before publishing (from story-content-editing-preview, once that story is built; until then this button isn't shown).
-9. Star chooses **Publish**. Publishing a chapter publishes the chapter and all its pages; a new series must be published once too, and the editor offers to publish it along with its first chapter. If published pages have moved, been removed, or a published chapter's number changed, the editor first shows the shared-link warning (mock-ups 4 and 9). If pages still need alt text, the same dialog lists how many, as a reminder.
+9. Star chooses **Publish**. Publishing a chapter publishes the chapter and all its pages; a new series must be published once too, and the editor offers to publish it along with its first chapter. If published pages have moved, been removed, or a published chapter's number changed, the editor first shows the shared-link warning (mock-ups 4 and 9). If pages still need alt text, the editor shows a reminder before publishing (mock-up 10), in the same dialog when there is also a link warning (mock-up 4).
 10. The status at the top of the editor shows **Updating the site…**, then **Live** with the time and **View on site**, which opens the chapter's first page in the reader (mock-up 5; from story-content-editing-know-when-live).
 
 ## Mock-ups
@@ -44,6 +44,7 @@ Low-fidelity: the real screens are Sanity Studio's own components, arranged and 
 | 7 | Upload problems: didn't upload, not an image | `mockups/comic-publish-pages/7-upload-problems.png` |
 | 8 | Problems that stop publishing: duplicate chapter number, missing web address | `mockups/comic-publish-pages/8-cant-publish.png` |
 | 9 | The shared-link warning for a removed page, an inserted page, and a changed chapter number | `mockups/comic-publish-pages/9-link-warnings.png` |
+| 10 | Publishing with pages missing alt text (no link changes): the reminder | `mockups/comic-publish-pages/10-alt-text-reminder.png` |
 
 ## Layout
 
