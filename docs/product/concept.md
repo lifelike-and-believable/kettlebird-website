@@ -28,7 +28,7 @@ One home for everything Star makes, in a hand-drawn, textured style that feels l
 
 ## Non-goals
 
-- **Accounts, comments, or a client portal.** Listed only as "Phase 2 possibilities" in docs/TECHNICAL_ARCHITECTURE.md.
+- **Visitor accounts or a client portal.** Listed only as "Phase 2 possibilities" in docs/TECHNICAL_ARCHITECTURE.md.
 - **Content outside Star's commission limits** (NSFW, hateful content, and others listed in docs/CONTENT_STRATEGY.md).
 
 ## Decisions
@@ -42,3 +42,4 @@ Answered by the lead on 2026-11-01.
 5. **Editing:** Star can change the commission status, the about page, the home page's artist text, and the social links without a developer.
 6. **CMS:** Sanity is compared with alternatives before more is built on it.
 7. **Hosting:** Vercel is production.
+8. **Later plans** (decided 2026-11-01, not yet scheduled): comments on comics, paid comic pages, and remembering a reader's place between visits.

@@ -2,7 +2,7 @@
 id: persona-commission-client
 status: approved
 derived-from:
-  - concept: 1ee760877f50
+  - concept: 71f8899f4b90
 ---
 
 # Commission client
