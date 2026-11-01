@@ -32,3 +32,6 @@ logs/
 tmp/
 temp/
 *.tmp
+
+# rules-for-robots checkout used by the process checks (CI checks it out itself)
+.rfr/
