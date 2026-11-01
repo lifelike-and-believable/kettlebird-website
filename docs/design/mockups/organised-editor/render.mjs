@@ -3,7 +3,7 @@ import { chromium } from 'playwright';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 const dir = path.dirname(fileURLToPath(import.meta.url));
-const names = { m1: '1-comics', m2: '2-art-piece', m3: '3-missing-fields', m4: '4-writing-shop-commissions', m5: '5-site-settings' };
+const names = { m1: '1-comics', m2: '2-art-piece', m3: '3-missing-fields', m4: '4-writing', m5: '5-shop', m6: '6-commissions', m7: '7-empty-section', m8: '8-site-settings' };
 const browser = await chromium.launch();
 const page = await browser.newPage();
 await page.goto('file://' + path.join(dir, 'mockups.html'));
