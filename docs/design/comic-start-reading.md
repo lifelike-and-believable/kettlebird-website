@@ -52,7 +52,7 @@ The **Comics** listing links only to series that have a web address, so no card 
 The comic schema changes (design-cms, "Consequences") so that the site can show chapters. No content exists yet, so nothing is migrated.
 
 - A **Series** has its title, cover, description, type, and status, as now.
-- A **Chapter** belongs to one series and has a **Number**, a **Title** (optional), and its **Pages**, in order. The editor fills in the next number for a new chapter; Star can change it, and reordering never renumbers published chapters. A chapter numbered 0 shows its title alone, for a "Prologue". The title field's help text says: "Just the name, for example The Long Road. The site adds 'Chapter 2' for you."
+- A **Chapter** belongs to one series and has a **Chapter** field holding its number (labelled **Chapter** at the lead's request, 2026-11-01), a **Title** (optional), and its **Pages**, in order. The editor fills in the next number for a new chapter; Star can change it, and reordering never renumbers published chapters. A chapter numbered 0 shows its title alone, for a "Prologue". The title field's help text says: "Just the name, for example The Long Road. The site adds 'Chapter 2' for you."
 - Each page in a chapter is an image with its **Alt text** and its panel regions (used by the second comic epic).
 - **A series without visible chapters** is a series with a single chapter that has no title. The site shows no chapter list for it. The editor's help text on a series says: "If your comic doesn't have chapters, add one chapter and leave its title empty. You can add more chapters later, and links people have shared keep working."
 

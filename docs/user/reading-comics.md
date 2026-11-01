@@ -2,7 +2,7 @@
 id: docs-reading-comics
 status: approved
 derived-from:
-  - design-comic-start-reading: 4e380c6efc9a
+  - design-comic-start-reading: 829c750345ab
   - design-comic-turn-pages: 7a603d6d8f84
   - story-comic-reader-start-reading: f51774d257cd
   - story-comic-reader-turn-pages: 8d3e174e5578
@@ -24,9 +24,9 @@ If a comic says **Pages coming soon**, Star hasn't posted any pages yet. Check b
 
 ## Turn pages
 
-- **Tap or click** **Next page** and **Previous page** under the page.
-- **On a phone or tablet,** you can also swipe left for the next page and right for the previous one. Nothing on the screen shows this; it just works.
-- **With a keyboard,** press the right and left arrow keys, or use Tab to reach **Next page** and **Previous page** and press Enter.
+- Tap or click **Next page** and **Previous page** under the page.
+- On a phone or tablet, you can also swipe left for the next page and right for the previous one. Nothing on the screen shows this; it just works.
+- With a keyboard, press the right and left arrow keys, or use Tab to reach **Next page** and **Previous page** and press Enter.
 
 The line above the page always tells you where you are, for example "Chapter 2: The Long Road · Page 4 of 24". At the end of a chapter, **Next page** takes you straight into the next one, and **Previous page** on a chapter's first page takes you back to the end of the chapter before. The first page of a comic has no **Previous page**.
 
