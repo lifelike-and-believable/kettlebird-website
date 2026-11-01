@@ -1,6 +1,6 @@
 ---
 id: design-preview
-status: draft
+status: approved
 derived-from:
   - story-content-editing-preview: be2784e6f165
   - design-cms#decision: 889c200357ba
