@@ -9,8 +9,9 @@ import schemaTypes from './schemas';
 export default defineConfig({
   name: 'kettlebirdStudio',
   title: 'Kettlebird Creations Studio',
-  projectId: process.env.SANITY_PROJECT_ID || 'gtopiz2h',
-  dataset: process.env.SANITY_DATASET || 'production',
+  // Only SANITY_STUDIO_* settings reach the editor in the browser.
+  projectId: process.env.SANITY_STUDIO_PROJECT_ID || '1p6w5n0l',
+  dataset: process.env.SANITY_STUDIO_DATASET || 'production',
   basePath: '/studio',
   plugins: [structureTool(), visionTool()],
   schema: {
