@@ -40,3 +40,7 @@ temp/
 test-results/
 playwright-report/
 tutorial-recordings/
+
+# Stryker
+reports/
+.stryker-tmp/

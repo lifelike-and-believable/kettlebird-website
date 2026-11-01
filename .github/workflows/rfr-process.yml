@@ -1,7 +1,7 @@
 # Copy to .github/workflows/rfr-process.yml in a repository that uses the rfr-process plugin
 # (docs/specs/project-process.md in rules-for-robots). Runs the process check, approvals, tier,
-# CODEOWNERS, and issue sync jobs. Change `main` if your default branch has another name. In team
-# mode, make the `process / approvals` and `process / tier` checks required in branch protection.
+# CODEOWNERS, issue sync, docs lint (Vale, advisory), and mutation testing (Stryker, advisory, on
+# tier:story and tier:epic pull requests). Change `main` if your default branch has another name.
 name: process
 
 on:
@@ -14,8 +14,15 @@ on:
 
 jobs:
   process:
+    # @main follows rules-for-robots as it changes. For stable CI, pin this and rules-ref below to
+    # the same release tag or commit.
     uses: lifelike-and-believable/rules-for-robots/.github/workflows/rfr-process.yml@main
+    with:
+      # Stryker on the unit-tested logic (stryker.config.mjs).
+      mutation: true
     permissions:
       contents: read
       pull-requests: read
       issues: write
+    # Passes RFR_PROJECT_TOKEN, if you have set it, for the Project board (see process.yml's project).
+    secrets: inherit
