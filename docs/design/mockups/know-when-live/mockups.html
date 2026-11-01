@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Know when it's live: mock-ups</title>
+<!-- Source for the PNG mock-ups beside this file (docs/design/know-when-live.md). Low-fidelity: the
+     editor is Sanity Studio; this design adds the status at the top of it. Render: node render.mjs -->
+<style>
+  :root { --ink:#1f2328; --muted:#6b7280; --line:#d8dce2; --bg:#f6f7f9; --panel:#fff; --accent:#2563eb; --ok:#15803d; --okbg:#dcfce7; --err:#b91c1c; --errbg:#fee2e2; }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 24px; background: #e5e7eb; font: 14px/1.4 system-ui, sans-serif; color: var(--ink); }
+  .frame { width: 960px; background: var(--bg); border: 1px solid var(--line); margin-bottom: 32px; }
+  .frame h6 { margin: 0; padding: 6px 12px; background: #111827; color: #fff; font: 600 12px/1.6 system-ui; }
+  .top { display: flex; align-items: center; justify-content: space-between; padding: 8px 16px; background: var(--panel); border-bottom: 1px solid var(--line); }
+  .right { display: flex; gap: 10px; align-items: center; }
+  .status { display: inline-flex; gap: 6px; align-items: center; padding: 3px 10px; border-radius: 999px; font-size: 13px; }
+  .ok { background: var(--okbg); color: var(--ok); } .busy { background: #dbeafe; color: var(--accent); } .err { background: var(--errbg); color: var(--err); } .idle { background: #eef0f3; color: var(--muted); }
+  .btn { display: inline-block; padding: 5px 12px; border-radius: 4px; border: 1px solid var(--line); background: var(--panel); font-weight: 600; font-size: 13px; }
+  .btn.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .avatar { width: 26px; height: 26px; border-radius: 50%; background: #c7d2fe; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px; }
+  .body { padding: 18px 24px; min-height: 120px; color: var(--muted); }
+  .pop { margin: 0 16px 0 auto; width: 380px; background: #fff; border: 1px solid var(--line); border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,.08); padding: 12px 14px; color: var(--ink); }
+  .pop p { margin: 0 0 8px; }
+  .pop .meta { color: var(--muted); font-size: 13px; }
+</style>
+</head>
+<body>
+
+<div class="frame" id="m1">
+  <h6>1 · Nothing published this visit: when the site last updated</h6>
+  <div class="top"><strong>Kettlebird Creations</strong><span class="right"><span class="status idle">Site updated today, 9:12 am</span><span class="avatar">S</span></span></div>
+  <div class="body">The editor, as usual. The status sits at the top right on every screen of the editor.</div>
+</div>
+
+<div class="frame" id="m2">
+  <h6>2 · Straight after Publish: updating</h6>
+  <div class="top"><strong>Kettlebird Creations</strong><span class="right"><span class="status busy">◌ Updating the site…</span><span class="avatar">S</span></span></div>
+  <div class="body">Usually a minute or two. Star can keep working, publish more, or close the editor; the update carries on.</div>
+</div>
+
+<div class="frame" id="m3">
+  <h6>3 · Live: the change can be seen on the site</h6>
+  <div class="top"><strong>Kettlebird Creations</strong><span class="right"><span class="status ok">● Live · 2:41 pm</span><span class="btn">View on site</span><span class="avatar">S</span></span></div>
+  <div class="body">View on site opens the page the last published change appears on (a chapter's first page, a gallery piece's portfolio, the home page for site text).</div>
+</div>
+
+<div class="frame" id="m4">
+  <h6>4 · Several changes in a row</h6>
+  <div class="top"><strong>Kettlebird Creations</strong><span class="right"><span class="status busy">◌ Updating the site… (3 changes)</span><span class="avatar">S</span></span></div>
+  <div class="body">Star doesn't wait between them. The status turns Live once the site shows all of them; if one update was still running when the next was published, the site updates again and the status waits for that.</div>
+</div>
+
+<div class="frame" id="m5">
+  <h6>5 · Didn't go live (opened)</h6>
+  <div class="top"><strong>Kettlebird Creations</strong><span class="right"><span class="status err">✕ Didn't go live</span><span class="avatar">S</span></span></div>
+  <div class="body" style="display:flex">
+    <div class="pop">
+      <p><strong>Your change is saved, but the site didn't update.</strong></p>
+      <p>The person who looks after the site has been told and will fix it. You don't need to do anything, and you can keep working.</p>
+      <p class="meta">Published 2:38 pm · checked until 2:53 pm</p>
+      <span class="btn">Close</span>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
