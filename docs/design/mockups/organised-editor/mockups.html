@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>An editor organised around Star's work: mock-ups</title>
+<!-- Source for the PNG mock-ups beside this file (docs/design/organised-editor.md). Low-fidelity:
+     the editor is Sanity Studio; this design sets its menu, labels, help text and messages.
+     Render: node render.mjs -->
+<style>
+  :root { --ink:#1f2328; --muted:#6b7280; --line:#d8dce2; --bg:#f6f7f9; --panel:#fff; --accent:#2563eb; --err:#b91c1c; --errbg:#fee2e2; --ok:#15803d; --okbg:#dcfce7; }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 24px; background: #e5e7eb; font: 14px/1.4 system-ui, sans-serif; color: var(--ink); }
+  .frame { width: 1180px; background: var(--bg); border: 1px solid var(--line); margin-bottom: 32px; }
+  .frame h6 { margin: 0; padding: 6px 12px; background: #111827; color: #fff; font: 600 12px/1.6 system-ui; }
+  .top { display: flex; align-items: center; justify-content: space-between; padding: 8px 16px; background: var(--panel); border-bottom: 1px solid var(--line); }
+  .status { display: inline-flex; padding: 3px 10px; border-radius: 999px; font-size: 13px; background: var(--okbg); color: var(--ok); }
+  .avatar { width: 26px; height: 26px; border-radius: 50%; background: #c7d2fe; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px; margin-left: 10px; }
+  .cols { display: grid; grid-template-columns: 200px 260px 1fr; min-height: 520px; }
+  .cols.two { grid-template-columns: 200px 1fr; }
+  .col { border-right: 1px solid var(--line); background: var(--panel); }
+  .col h3 { margin: 0; padding: 12px 14px; font-size: 13px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; border-bottom: 1px solid var(--line); }
+  .item { padding: 10px 14px; border-bottom: 1px solid #f0f1f3; display: flex; justify-content: space-between; }
+  .item.sel { background: #eef2ff; font-weight: 600; }
+  .item small { color: var(--muted); font-weight: 400; }
+  .doc { padding: 18px 24px; }
+  .field { margin-bottom: 16px; max-width: 560px; }
+  .field label { display: block; font-weight: 600; margin-bottom: 2px; }
+  .req { color: var(--err); font-weight: 400; font-size: 12px; margin-left: 6px; }
+  .help { color: var(--muted); font-size: 13px; margin: 0 0 6px; }
+  .input { background: var(--panel); border: 1px solid var(--line); border-radius: 4px; padding: 8px 10px; min-height: 36px; }
+  .input.bad { border-color: var(--err); }
+  .msg { color: var(--err); font-size: 13px; margin-top: 4px; }
+  .chips span { display: inline-block; padding: 3px 10px; border: 1px solid var(--line); border-radius: 999px; margin: 0 6px 6px 0; background: #fff; }
+  .chips span.on { background: #eef2ff; border-color: var(--accent); }
+  .bar { display: flex; justify-content: flex-end; gap: 10px; align-items: center; padding: 10px 24px; border-top: 1px solid var(--line); background: var(--panel); }
+  .btn { padding: 7px 14px; border-radius: 4px; border: 1px solid var(--line); background: #fff; font-weight: 600; }
+  .btn.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .btn.off { opacity: .45; }
+  .errbox { background: var(--errbg); color: var(--err); border-radius: 4px; padding: 10px 12px; margin-bottom: 14px; max-width: 560px; }
+  .empty { padding: 32px; color: var(--muted); max-width: 520px; }
+  .thumb { width: 160px; height: 120px; background: #e8e3d8; border: 1px dashed var(--line); display: flex; align-items: center; justify-content: center; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<div class="frame" id="m1">
+  <h6>1 · The menu, and Comics open: a series and its chapters in number order</h6>
+  <div class="top"><strong>Kettlebird Creations</strong><span><span class="status">● Live · 2:41 pm</span><span class="avatar">S</span></span></div>
+  <div class="cols">
+    <div class="col"><h3>Menu</h3>
+      <div class="item sel">Comics</div><div class="item">Art</div><div class="item">Writing</div><div class="item">Shop</div><div class="item">Commissions</div><div class="item">Site settings</div>
+    </div>
+    <div class="col"><h3>Comics</h3>
+      <div class="item sel">Kettle Tales <small>Ongoing</small></div><div class="item">Moonlit Errands <small>Complete</small></div>
+      <div class="item" style="color:var(--accent)">+ New comic</div>
+    </div>
+    <div class="doc">
+      <div class="field"><label>Title</label><div class="input">Kettle Tales</div></div>
+      <div class="field"><label>Chapters</label>
+        <div class="item" style="background:#fff;border:1px solid var(--line)">Chapter 1: The Kettle · 3 pages · On the site</div>
+        <div class="item" style="background:#fff;border:1px solid var(--line);border-top:0">Chapter 2: The Long Road · 2 pages · On the site</div>
+        <div class="item" style="background:#fff;border:1px solid var(--line);border-top:0">Chapter 3: Homeward · 0 pages · hidden from readers · Not published yet</div>
+        <p style="margin:8px 0 0"><span class="btn">+ Add chapter</span></p>
+      </div>
+      <p class="help">Choosing a chapter opens it, with its pages (design-comic-publish-pages).</p>
+    </div>
+  </div>
+</div>
+
+<div class="frame" id="m2">
+  <h6>2 · Art: a piece, with plain labels and help text</h6>
+  <div class="top"><strong>Kettlebird Creations</strong><span><span class="status">● Live · 2:41 pm</span><span class="avatar">S</span></span></div>
+  <div class="cols">
+    <div class="col"><h3>Menu</h3>
+      <div class="item">Comics</div><div class="item sel">Art</div><div class="item">Writing</div><div class="item">Shop</div><div class="item">Commissions</div><div class="item">Site settings</div>
+    </div>
+    <div class="col"><h3>Art</h3>
+      <div class="item sel">Fox at Dawn <small>Original Work</small></div><div class="item">Kettle Study <small>Fan Work</small></div>
+      <div class="item" style="color:var(--accent)">+ New piece</div>
+    </div>
+    <div class="doc">
+      <div class="field"><label>Title<span class="req">Required</span></label><p class="help">Shown under the picture on your portfolio.</p><div class="input">Fox at Dawn</div></div>
+      <div class="field"><label>Picture<span class="req">Required</span></label><p class="help">Upload the original file; the site makes smaller copies. Drag the circle to the part that matters most, so square thumbnails keep it in view.</p><div class="thumb">image</div></div>
+      <div class="field"><label>Alt text</label><p class="help">What the picture shows, for people using screen readers. One or two sentences.</p><div class="input">A fox sits on a hill as the sun comes up.</div></div>
+      <div class="field"><label>Where it appears on your portfolio<span class="req">Choose at least one</span></label><p class="help">The portfolio's sections. A piece can be in more than one.</p>
+        <div class="chips"><span class="on">Original Work</span><span>Fan Work</span><span>Past Clients</span><span>Work in Progress</span><span>Featured</span></div></div>
+      <div class="field"><label>On the home page</label><p class="help">Also show it in the home page's gallery.</p><div class="input">☐</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="frame" id="m3">
+  <h6>3 · Something required is missing: Publish says what, and where</h6>
+  <div class="top"><strong>Kettlebird Creations</strong><span><span class="status">● Live · 2:41 pm</span><span class="avatar">S</span></span></div>
+  <div class="cols">
+    <div class="col"><h3>Menu</h3>
+      <div class="item">Comics</div><div class="item sel">Art</div><div class="item">Writing</div><div class="item">Shop</div><div class="item">Commissions</div><div class="item">Site settings</div>
+    </div>
+    <div class="col"><h3>Art</h3>
+      <div class="item sel">Untitled piece <small>Not published yet</small></div><div class="item">Fox at Dawn <small>Original Work</small></div>
+    </div>
+    <div>
+      <div class="doc">
+        <div class="errbox"><strong>Add these before publishing:</strong><br>· a title<br>· which portfolio section it goes in</div>
+        <div class="field"><label>Title<span class="req">Required</span></label><div class="input bad"></div><div class="msg">Give the piece a title. It's shown under the picture.</div></div>
+        <div class="field"><label>Picture<span class="req">Required</span></label><div class="thumb">image</div></div>
+        <div class="field"><label>Where it appears on your portfolio<span class="req">Choose at least one</span></label><div class="chips"><span>Original Work</span><span>Fan Work</span><span>Past Clients</span><span>Work in Progress</span><span>Featured</span></div><div class="msg">Choose a section, or the piece won't appear on your portfolio.</div></div>
+      </div>
+      <div class="bar"><span style="color:var(--muted);font-size:13px">2 things to add before publishing</span><span class="btn primary off">Publish</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="frame" id="m4">
+  <h6>4 · Writing, Shop and Commissions: what each holds</h6>
+  <div class="top"><strong>Kettlebird Creations</strong><span><span class="status">● Live · 2:41 pm</span><span class="avatar">S</span></span></div>
+  <div class="cols" style="grid-template-columns:200px 1fr 1fr 1fr">
+    <div class="col"><h3>Menu</h3>
+      <div class="item">Comics</div><div class="item">Art</div><div class="item sel">Writing</div><div class="item">Shop</div><div class="item">Commissions</div><div class="item">Site settings</div>
+    </div>
+    <div class="col"><h3>Writing</h3><div class="item">The Kettle Who Wandered <small>Short story</small></div><div class="item" style="color:var(--accent)">+ New story</div>
+      <div class="doc"><p class="help">Fields: Title, Cover, Short description, Read on AO3 (link), Genres, Date posted, Story text (shown on the site once reading on the site is added).</p></div></div>
+    <div class="col"><h3>Shop</h3><div class="item">Fox Sticker <small>Sticker</small></div><div class="item" style="color:var(--accent)">+ New product</div>
+      <div class="doc"><p class="help">Fields: Name, Pictures, Price, Description, Kind, How many are left, Ko-fi link (until the site has its own checkout), Tags.</p></div></div>
+    <div class="col"><h3>Commissions</h3><div class="item">Full colour illustration <small>$80–150</small></div><div class="item" style="color:var(--accent)">+ New commission type</div>
+      <div class="doc"><p class="help">Fields: Name, Price range, What's included, Examples, How long it takes, Order on the page. Whether commissions are open is in Site settings.</p></div></div>
+  </div>
+</div>
+
+<div class="frame" id="m5">
+  <h6>5 · Site settings, before the site-settings update arrives</h6>
+  <div class="top"><strong>Kettlebird Creations</strong><span><span class="status">● Live · 2:41 pm</span><span class="avatar">S</span></span></div>
+  <div class="cols two">
+    <div class="col"><h3>Menu</h3>
+      <div class="item">Comics</div><div class="item">Art</div><div class="item">Writing</div><div class="item">Shop</div><div class="item">Commissions</div><div class="item sel">Site settings</div>
+    </div>
+    <div class="empty"><strong>Site settings is coming in the next update.</strong><br>It's where you'll open or close commissions, and change your about page, the home page's artist text, and your social links. Until then, ask the person who looks after the site.</div>
+  </div>
+</div>
+
+</body>
+</html>
