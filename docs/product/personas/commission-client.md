@@ -1,8 +1,8 @@
 ---
 id: persona-commission-client
-status: draft
+status: approved
 derived-from:
-  - concept:
+  - concept: 1ee760877f50
 ---
 
 # Commission client

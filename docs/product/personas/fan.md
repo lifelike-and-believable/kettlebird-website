@@ -1,8 +1,8 @@
 ---
 id: persona-fan
-status: draft
+status: approved
 derived-from:
-  - concept:
+  - concept: 1ee760877f50
 ---
 
 # Fan and reader

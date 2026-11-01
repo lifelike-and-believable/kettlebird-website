@@ -1,8 +1,8 @@
 ---
 id: requirements-portfolio
-status: draft
+status: approved
 derived-from:
-  - concept:
+  - concept: 1ee760877f50
 ---
 
 # Portfolio requirements

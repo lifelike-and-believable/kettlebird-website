@@ -1,8 +1,8 @@
 ---
 id: requirements-comics
-status: draft
+status: approved
 derived-from:
-  - concept:
+  - concept: 1ee760877f50
 ---
 
 # Comics requirements
@@ -11,7 +11,11 @@ derived-from:
 
 ## REQ-comics-1: Series list
 
-The comics page lists every comic series in the CMS with its cover, title, description, type (original or fan comic), status (ongoing, complete, or hiatus), and page count. With no series it shows "Comics in progress — pages coming soon!"
+The comics page lists every comic series with its cover, title, description, type (original or fan comic), status (ongoing, complete, or hiatus), and page count. With no series it shows "Comics in progress — pages coming soon!"
+
+## REQ-comics-2: Reading a comic
+
+Choosing a series opens a reader on the site that shows its pages in order, starting at the first page. The reader works on phone and desktop, can be operated by keyboard and touch, and gives each page its alt text.
 
 ## Constraints
 
@@ -19,7 +23,7 @@ The comics page lists every comic series in the CMS with its cover, title, descr
 
 ## Open questions
 
-1. **The reader does not exist.** Each series card links to `/comics/<slug>`, but that route builds no pages, so every link is broken. What should reading a comic be like: one page at a time, panel by panel (as `comicPage.panels` allows), or a vertical scroll?
-2. Until a reader exists, should series cards stop linking anywhere, or link to an external host?
+1. Today each series card links to `/comics/<slug>`, which builds no pages, so REQ-comics-2 is unmet and every link is broken. The comic reader epic fixes this.
+2. One page at a time, panel by panel (as `comicPage.panels` allows), or a vertical scroll? A design question for the epic.
 3. Should readers be able to bookmark or resume where they left off?
-4. Build the reader in-house, or use an existing webcomic reader or host? Nothing planned earlier (react-pageflip, panzoom) was installed, so there is no sunk cost.
+4. Build the reader in-house, or use an existing webcomic reader? Nothing planned earlier (react-pageflip, panzoom) was installed, so there is no sunk cost.
