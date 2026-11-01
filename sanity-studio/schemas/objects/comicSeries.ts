@@ -13,9 +13,11 @@ export default defineType({
     }),
     defineField({
       name: 'slug',
-      title: 'Slug',
       type: 'slug',
-      options: { source: 'title', maxLength: 120 }
+      title: 'Web address',
+      description: 'Fills in from the title when you create the series. Changing it later breaks links people have shared.',
+      options: { source: 'title', maxLength: 120 },
+      validation: (Rule) => Rule.required()
     }),
     defineField({
       name: 'coverImage',
@@ -50,13 +52,6 @@ export default defineType({
           { title: 'Hiatus', value: 'hiatus' }
         ]
       }
-    }),
-    defineField({
-      name: 'pages',
-      title: 'Pages',
-      type: 'array',
-      of: [{ type: 'reference', to: [{ type: 'comicPage' }] }],
-      validation: (Rule) => Rule.min(1)
     })
   ]
 });

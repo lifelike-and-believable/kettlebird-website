@@ -35,3 +35,8 @@ temp/
 
 # rules-for-robots checkout used by the process checks (CI checks it out itself)
 .rfr/
+
+# Test output
+test-results/
+playwright-report/
+tutorial-recordings/

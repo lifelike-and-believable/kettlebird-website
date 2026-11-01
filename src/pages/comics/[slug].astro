@@ -1,75 +1,154 @@
 ---
+// Series page: cover, details, Start reading, and the chapter list.
+// Design: docs/design/comic-start-reading.md. Spec: docs/specs/comic-reader-start-and-turn.md.
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getComicSeries } from '../../lib/comics/source';
+import {
+  chapterLabel,
+  firstPagePath,
+  pagePath,
+  showsChapterList,
+  STATUS_LABELS,
+  TYPE_LABELS,
+  visibleChapters,
+  type ComicSeries,
+} from '../../lib/comics/model';
 
-// Dynamic route — full comic reader coming soon.
-// For now, return a static placeholder for any slug.
 export async function getStaticPaths() {
-  // No pre-rendered paths yet; will be populated from Sanity once
-  // comic series and pages are added.
-  return [];
+  const series = await getComicSeries();
+  return series.filter((s) => s.slug).map((s) => ({ params: { slug: s.slug! }, props: { series: s } }));
 }
 
-const { slug } = Astro.params;
+const { series } = Astro.props as { series: ComicSeries };
+const start = firstPagePath(series);
+const chapters = visibleChapters(series);
+const listChapters = showsChapterList(series);
 ---
 
 <BaseLayout
-  title="Comics • Kettlebird Creations"
-  description="Comic reader coming soon."
+  title={`${series.title} · Comics · Kettlebird Creations`}
+  description={series.description ?? `${series.title}, a comic by Star Goldberg.`}
 >
-  <section class="placeholder-page">
-    <div class="placeholder-inner">
-      <div class="placeholder-icon" aria-hidden="true">🖊️</div>
-      <h1 class="placeholder-title">Comic Reader</h1>
-      <p class="placeholder-text">
-        This series is on its way — the reader is still being built.
-        Check back soon!
-      </p>
-      <a href="/comics" class="highlighter-btn">← Back to Comics</a>
+  <article class="series">
+    <div class="series__cover">
+      {series.cover
+        ? <img src={series.cover.src} srcset={series.cover.srcset} sizes="(max-width: 700px) 60vw, 33vw" alt="" width={series.cover.width} height={series.cover.height} />
+        : <div class="series__cover-placeholder" aria-hidden="true"><span>{series.title}</span></div>}
     </div>
-  </section>
+
+    <div class="series__details">
+      <h1 class="series__title">{series.title}</h1>
+      <p class="series__tags">
+        {series.status && (
+          <span class="tag tag--status" data-status={series.status}>
+            <span class="visually-hidden">Status: </span>{STATUS_LABELS[series.status]}
+          </span>
+        )}
+        {series.type && (
+          <span class="tag"><span class="visually-hidden">Type: </span>{TYPE_LABELS[series.type]}</span>
+        )}
+      </p>
+      {start
+        ? <p class="series__start"><a class="highlighter-btn" href={start}>Start reading</a></p>
+        : <p class="series__coming-soon">Pages coming soon.</p>}
+      {series.description && <p class="series__description">{series.description}</p>}
+    </div>
+
+    {start && listChapters && (
+      <section class="series__chapters" aria-labelledby="chapters-heading">
+        <h2 id="chapters-heading">Chapters</h2>
+        <ol aria-labelledby="chapters-heading" class="chapter-list">
+          {chapters.map((c) => (
+            <li>
+              <a href={pagePath(series.slug!, c.number, 1)}>{chapterLabel(c)}</a>
+              <span class="chapter-list__count">{c.pages.length} page{c.pages.length === 1 ? '' : 's'}</span>
+            </li>
+          ))}
+        </ol>
+      </section>
+    )}
+  </article>
 </BaseLayout>
 
 <style>
-  .placeholder-page {
-    max-width: 700px;
+  .series {
+    max-width: 1100px;
     margin: 0 auto;
-    padding: 4rem 1rem;
+    padding: 1.5rem 1rem 4rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem 2rem;
+  }
+
+  /* Phones: title first, cover capped at a fifth of the screen height (the design allows up to a third),
+     so Start reading shows without scrolling below the site's tall phone header. */
+  .series__details { display: contents; }
+  .series__title { order: 1; margin: 0; }
+  .series__cover { order: 2; }
+  .series__tags { order: 3; }
+  .series__start, .series__coming-soon { order: 4; }
+  .series__description { order: 5; }
+  .series__chapters { order: 6; }
+
+  .series__cover img,
+  .series__cover-placeholder {
+    display: block;
+    max-height: 20vh;
+    width: auto;
+    max-width: 100%;
+    aspect-ratio: 5 / 7;
+    object-fit: cover;
+    border: 3px solid var(--color-ink);
+  }
+
+  .series__cover-placeholder {
+    height: 20vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 50vh;
+    padding: 1rem;
+    text-align: center;
+    background: var(--color-paper-dark);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
   }
 
-  .placeholder-inner {
+  .series__tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin: 0; }
+
+  .tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.85rem;
+    padding: 0.15rem 0.6rem;
+    border: 2px solid var(--color-ink);
+    background: var(--color-beige);
+  }
+  .tag--status[data-status='ongoing'] { background: var(--color-green); }
+  .tag--status[data-status='complete'] { background: var(--color-yellow); }
+  .tag--status[data-status='hiatus'] { background: var(--color-orange); }
+
+  .series__start, .series__coming-soon, .series__description { margin: 0; }
+  .series__coming-soon { font-family: 'Nunito', sans-serif; font-weight: 600; color: var(--color-dark-purple); }
+
+  .series__chapters h2 { margin: 1rem 0 0.5rem; }
+
+  .chapter-list { padding-left: 0; list-style: none; margin: 0; border-top: 2px solid var(--color-ink); }
+  .chapter-list li {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 1.25rem;
-    text-align: center;
-    padding: 3rem 2rem;
-    border: 3px dashed var(--color-dark-purple, #4a4063);
-    width: 100%;
+    padding: 0.75rem 0;
+    border-bottom: 2px solid var(--color-ink);
   }
+  .chapter-list a { font-family: 'Nunito', sans-serif; font-weight: 700; color: var(--color-ink); }
+  .chapter-list__count { font-size: 0.9rem; color: var(--color-ink-light); }
 
-  .placeholder-icon {
-    font-size: 3.5rem;
+  /* Wide screens: cover on the left third, details on the right, chapters full width beneath. */
+  @media (min-width: 700px) {
+    .series { grid-template-columns: 1fr 2fr; align-items: start; }
+    .series__details { display: flex; flex-direction: column; gap: 1rem; grid-column: 2; grid-row: 1; }
+    .series__cover { grid-column: 1; grid-row: 1; }
+    .series__cover img, .series__cover-placeholder { max-height: none; width: 100%; height: auto; }
+    .series__description { order: 4; }
+    .series__start, .series__coming-soon { order: 5; }
+    .series__chapters { grid-column: 1 / -1; }
   }
-
-  .placeholder-title {
-    font-family: 'Nunito', sans-serif;
-    font-size: clamp(1.75rem, 4vw, 2.5rem);
-    font-weight: 700;
-    margin: 0;
-  }
-
-  .placeholder-text {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 1.05rem;
-    line-height: 1.6;
-    color: var(--color-dark-purple, #4a4063);
-    margin: 0;
-    max-width: 40ch;
-  }
-
-  /* .highlighter-btn styles from global.css */
 </style>

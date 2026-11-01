@@ -32,3 +32,52 @@ jobs:
 
       - name: Build website
         run: npm run build
+
+  test:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Chromium for Playwright
+        run: npx playwright install --with-deps chromium
+
+      - name: Unit tests
+        run: npm run test:unit
+
+      - name: End-to-end tests (fixture build)
+        run: npm run test:e2e
+
+      - name: Checkout rules-for-robots (tutorial runner)
+        uses: actions/checkout@v4
+        with:
+          repository: lifelike-and-believable/rules-for-robots
+          path: .rfr
+
+      - name: Run tutorials against the fixture build
+        # The end-to-end step leaves a fixture build in dist/.
+        run: |
+          npx astro preview --port 4325 &
+          for i in $(seq 1 30); do curl -sf http://localhost:4325/comics > /dev/null && break; sleep 2; done
+          node .rfr/checks/tutorial-run.mjs . --base-url http://localhost:4325 --record tutorial-recordings
+
+      - name: Upload tutorial recordings
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tutorial-recordings
+          path: tutorial-recordings
+          if-no-files-found: ignore
