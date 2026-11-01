@@ -23,7 +23,7 @@ Star can change, without a developer, whether commissions are open, the about pa
 
 ## Constraints
 
-- Current implementation, not a commitment: Sanity Studio, project `1p6w5n0l` ("Kettlebird Website", in the Kettlebird Creations organisation, created 2026-11-01 to replace `gtopiz2h`, which had no content and no known owner), dataset `production` (sanity-studio/sanity.config.ts). Content will live there, so a later change of CMS needs a migration.
+- Current implementation, not a commitment: Sanity Studio, project `gtopiz2h`, dataset `production` (sanity-studio/sanity.config.ts). Content currently lives there, so a change of CMS needs a migration.
 
 ## Open questions
 
