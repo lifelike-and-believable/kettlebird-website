@@ -1,6 +1,6 @@
 ---
 id: design-know-when-live
-status: draft
+status: approved
 derived-from:
   - story-content-editing-know-when-live: 709ddfb00d36
   - design-cms#decision: 889c200357ba
