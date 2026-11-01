@@ -1,0 +1,23 @@
+# From rfr-process 0.9.0 (templates/workflows/rfr-tutorials-preview.yml). When a Vercel preview
+# deployment succeeds, runs the `runner: web` tutorials against it and uploads the recording as the
+# `tutorials` build artifact. GitHub runs deployment_status workflows from the default branch, so this
+# takes effect once merged to main.
+#
+# Preview builds show the test comics (Vercel sets KETTLEBIRD_FIXTURES=1 for Preview only), which is
+# what the reading tutorial follows. Previews are protected, so the RFR_PREVIEW_BYPASS repository
+# secret holds Vercel's Protection Bypass for Automation token.
+name: tutorials on preview
+
+on:
+  deployment_status:
+
+jobs:
+  tutorials:
+    # Successful deployments that are not production.
+    if: github.event.deployment_status.state == 'success' && !contains(github.event.deployment.environment, 'Production') && !contains(github.event.deployment.environment, 'production')
+    uses: lifelike-and-believable/rules-for-robots/.github/workflows/rfr-tutorials-preview.yml@main
+    with:
+      base-url: ${{ github.event.deployment_status.environment_url }}
+    permissions:
+      contents: read
+    secrets: inherit
