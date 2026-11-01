@@ -1,6 +1,9 @@
 ---
-status: draft
-# tests-commit: (recorded when the failing tests are committed)
+status: implemented
+tests-commit:
+  - 4e70ad5d411bb3d576ec41284cc64269aadc964d
+unlocks:
+  - tests/e2e/comic-reader.spec.ts: the AC-1 test checked for the "No Address" card after navigating away from /comics, so it could never pass; the checks now run on /comics before the click. The criterion is unchanged.
 ---
 
 # Comic reader: start reading and turn pages

@@ -133,23 +133,4 @@ export async function getAllCommissionTypes(): Promise<CommissionType[]> {
 
 // ── Comics ─────────────────────────────────────────────────────────────────
 
-export interface ComicSeries {
-  _id: string;
-  title: string;
-  slug: { current: string };
-  coverImage?: { asset: { _ref: string }; hotspot?: { x: number; y: number } };
-  description?: string;
-  type?: 'original' | 'fancomic';
-  status?: 'ongoing' | 'complete' | 'hiatus';
-  pageCount?: number;
-}
-
-export const COMIC_SERIES_QUERY = `*[_type == "comicSeries"] | order(title asc) {
-  _id, title, slug, coverImage { asset, hotspot },
-  description, type, status,
-  "pageCount": count(pages)
-}`;
-
-export async function getAllComicSeries(): Promise<ComicSeries[]> {
-  return sanityClient.fetch(COMIC_SERIES_QUERY);
-}
+// Comic series, chapters, and pages: see src/lib/comics/source.ts.

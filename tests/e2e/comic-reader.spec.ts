@@ -5,11 +5,11 @@ import AxeBuilder from '@axe-core/playwright';
 
 test('comic-reader-start-and-turn#AC-1 series cards open series pages', async ({ page }) => {
   await page.goto('/comics');
+  await expect(page.getByRole('link', { name: /No Address/ })).toHaveCount(0);
+  await expect(page.getByText('No Address')).toBeVisible();
   await page.getByRole('link', { name: /Kettle Tales/ }).click();
   await expect(page).toHaveURL(/\/comics\/kettle-tales$/);
   await expect(page.getByRole('heading', { level: 1, name: 'Kettle Tales' })).toBeVisible();
-  await expect(page.getByRole('link', { name: /No Address/ })).toHaveCount(0);
-  await expect(page.getByText('No Address')).toBeVisible();
 });
 
 test('comic-reader-start-and-turn#AC-2 series page shows details', async ({ page }) => {

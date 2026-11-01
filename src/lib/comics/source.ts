@@ -1,0 +1,87 @@
+// Loads comic series with their chapters and pages at build time.
+// From Sanity normally; from tests/fixtures/comics.ts when KETTLEBIRD_FIXTURES=1 (tests and tutorials).
+// Spec: docs/specs/comic-reader-start-and-turn.md.
+import { sanityClient, urlFor } from '../sanity';
+import type { ComicImage, ComicSeries, SeriesStatus, SeriesType } from './model';
+
+// Widths the reader requests from the image service; never the print-resolution original.
+const PAGE_WIDTHS = [480, 800, 1200, 1600];
+const COVER_WIDTHS = [300, 500, 800];
+
+interface SanityImage {
+  asset?: { _ref: string };
+  hotspot?: { x: number; y: number };
+  dimensions?: { width: number; height: number };
+}
+
+interface SanitySeries {
+  title: string;
+  slug?: { current?: string };
+  description?: string;
+  status?: SeriesStatus;
+  type?: SeriesType;
+  coverImage?: SanityImage;
+  chapters?: { number?: number; title?: string; pages?: (SanityImage & { altText?: string })[] }[];
+}
+
+export const COMIC_SERIES_WITH_CHAPTERS_QUERY = `*[_type == "comicSeries"] | order(title asc) {
+  title, slug, description, status, type,
+  coverImage { asset, hotspot, "dimensions": asset->metadata.dimensions },
+  "chapters": *[_type == "comicChapter" && series._ref == ^._id] | order(number asc) {
+    number, title,
+    "pages": pages[] { asset, altText, "dimensions": asset->metadata.dimensions }
+  }
+}`;
+
+function sanityImage(image: SanityImage | undefined, widths: number[]): ComicImage | undefined {
+  if (!image?.asset) return undefined;
+  const width = image.dimensions?.width ?? 800;
+  const height = image.dimensions?.height ?? 1200;
+  const at = (w: number) => urlFor(image).width(w).auto('format').url();
+  return {
+    src: at(widths[1] ?? widths[0]),
+    srcset: widths.map((w) => `${at(w)} ${w}w`).join(', '),
+    width,
+    height,
+  };
+}
+
+export function fromSanity(raw: SanitySeries): ComicSeries {
+  return {
+    title: raw.title,
+    slug: raw.slug?.current || undefined,
+    description: raw.description,
+    status: raw.status,
+    type: raw.type,
+    cover: sanityImage(raw.coverImage, COVER_WIDTHS),
+    chapters: (raw.chapters ?? []).map((c) => ({
+      number: c.number ?? 0,
+      title: c.title || undefined,
+      pages: (c.pages ?? []).flatMap((p) => {
+        const image = sanityImage(p, PAGE_WIDTHS);
+        return image ? [{ image, altText: p.altText }] : [];
+      }),
+    })),
+  };
+}
+
+let cache: Promise<ComicSeries[]> | undefined;
+
+export function getComicSeries(): Promise<ComicSeries[]> {
+  cache ??= load();
+  return cache;
+}
+
+async function load(): Promise<ComicSeries[]> {
+  if (import.meta.env.KETTLEBIRD_FIXTURES === '1' || process.env.KETTLEBIRD_FIXTURES === '1') {
+    const { FIXTURE_SERIES } = await import('../../../tests/fixtures/comics');
+    return FIXTURE_SERIES;
+  }
+  try {
+    const raw: SanitySeries[] = await sanityClient.fetch(COMIC_SERIES_WITH_CHAPTERS_QUERY);
+    return raw.map(fromSanity);
+  } catch (e) {
+    console.warn('[comics] Could not fetch comic series:', e);
+    return [];
+  }
+}

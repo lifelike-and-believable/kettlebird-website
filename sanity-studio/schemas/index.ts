@@ -1,8 +1,8 @@
 import galleryItem from './objects/galleryItem';
-import comicPage from './objects/comicPage';
+import comicChapter from './objects/comicChapter';
 import comicSeries from './objects/comicSeries';
 import writtenWork from './objects/writtenWork';
 import product from './objects/product';
 import commissionType from './objects/commissionType';
 
-export default [galleryItem, comicPage, comicSeries, writtenWork, product, commissionType];
+export default [galleryItem, comicChapter, comicSeries, writtenWork, product, commissionType];
