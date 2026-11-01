@@ -2,7 +2,7 @@
 id: requirements-portfolio
 status: approved
 derived-from:
-  - concept: 1ee760877f50
+  - concept: 71f8899f4b90
 ---
 
 # Portfolio requirements
