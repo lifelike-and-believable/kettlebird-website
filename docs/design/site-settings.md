@@ -124,9 +124,9 @@ All text is plain text: no bold or italics. Blank lines make new paragraphs. Tex
 - Plain text fields keep blank lines as paragraphs; whitespace-only counts as empty.
 - Publishing any of the four triggers the update, and **View on site** opens the page named in the Flow (design-know-when-live).
 
-## Open questions
+## Decisions
 
-1. When commissions are closed, should the commission types and prices still show, with the "for when they open again" line (as designed), or be hidden too?
+- **Closed commissions keep the types and prices** (lead, 2026-11-01), under "These are the kinds of commission I take, for when they open again.", so people can plan ahead.
 
 ## Persona walkthrough
 
