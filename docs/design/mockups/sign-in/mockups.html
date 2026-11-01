@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sign in at the site: mock-ups</title>
+<!-- Source for the PNG mock-ups beside this file (docs/design/sign-in.md). Low-fidelity. Screens 1
+     to 5 are Sanity's (the email, its accept page, the sign-in screen, the editor and the no-access
+     screen): their wording is Sanity's and may differ slightly. This design settles where they
+     appear, the editor's title, which sign-in options are offered, and what Star does on each.
+     Screen 6 is the site. Render: node render.mjs -->
+<style>
+  :root { --ink:#1f2328; --muted:#6b7280; --line:#d8dce2; --bg:#f6f7f9; --panel:#fff; --accent:#2563eb; --err:#b91c1c; --errbg:#fee2e2; }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 24px; background: #e5e7eb; font: 14px/1.4 system-ui, sans-serif; color: var(--ink); }
+  .frame { width: 900px; background: var(--bg); border: 1px solid var(--line); margin-bottom: 32px; }
+  .frame h6 { margin: 0; padding: 6px 12px; background: #111827; color: #fff; font: 600 12px/1.6 system-ui; }
+  .url { padding: 6px 12px; background: #fff; border-bottom: 1px solid var(--line); font: 13px ui-monospace, monospace; color: var(--muted); }
+  .center { min-height: 420px; display: flex; align-items: center; justify-content: center; }
+  .card { width: 360px; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 24px; }
+  .card h2 { margin: 0 0 4px; font-size: 18px; }
+  .card p { margin: 0 0 16px; color: var(--muted); }
+  .btn { display: block; width: 100%; text-align: center; padding: 9px 14px; margin-bottom: 8px; border-radius: 4px; border: 1px solid var(--line); background: var(--panel); font-weight: 600; }
+  .btn.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .note { font-size: 12px; color: var(--muted); border-top: 1px dashed var(--line); margin-top: 12px; padding-top: 8px; }
+  .top { display: flex; align-items: center; justify-content: space-between; padding: 8px 16px; background: var(--panel); border-bottom: 1px solid var(--line); }
+  .avatar { width: 28px; height: 28px; border-radius: 50%; background: #c7d2fe; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; }
+  .menu { position: absolute; right: 16px; top: 44px; width: 220px; background: #fff; border: 1px solid var(--line); border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,.08); }
+  .menu div { padding: 8px 12px; border-bottom: 1px solid #f0f1f3; }
+  .cols { display: grid; grid-template-columns: 200px 1fr; min-height: 360px; position: relative; }
+  .col { border-right: 1px solid var(--line); background: var(--panel); }
+  .item { padding: 10px 14px; border-bottom: 1px solid #f0f1f3; }
+  .empty { padding: 40px; color: var(--muted); }
+  .mail { background: #fff; margin: 24px; border: 1px solid var(--line); border-radius: 6px; padding: 20px 24px; }
+  .mail .meta { color: var(--muted); font-size: 13px; margin-bottom: 12px; }
+  .site { background: #f5f1e8; padding: 16px 24px; }
+  .site nav span { display: inline-block; margin-right: 14px; font: 600 13px ui-monospace, monospace; }
+  .err { background: var(--errbg); color: var(--err); padding: 10px 12px; border-radius: 4px; margin-bottom: 12px; }
+</style>
+</head>
+<body>
+
+<div class="frame" id="m1">
+  <h6>1 · The invitation email (sent by Sanity when the lead invites Star)</h6>
+  <div class="mail">
+    <div class="meta">From: Sanity &lt;noreply@sanity.io&gt; · Subject: You've been invited to Kettlebird Creations</div>
+    <p><strong>You've been invited to join Kettlebird Creations.</strong></p>
+    <p>Accept the invitation to start editing.</p>
+    <span class="btn primary" style="width:220px">Accept invitation</span>
+    <div class="note">Sanity's email. The lead tells Star beforehand that it's coming, and sends the /studio link at the same time. Accepting asks Star to choose how to sign in (Google, or email and password); whatever Star chooses here is how they sign in at /studio from then on.</div>
+  </div>
+</div>
+
+<div class="frame" id="m1b">
+  <h6>2 · After accepting: Sanity's own page (Star doesn't edit here)</h6>
+  <div class="url">www.sanity.io/manage/project/1p6w5n0l</div>
+  <div class="center"><div class="card">
+    <h2>Kettlebird Creations</h2>
+    <p>You're now a member of this project.</p>
+    <span class="btn">Members</span><span class="btn">Settings</span>
+    <div class="note">Sanity's project page. Star needs nothing here: they close it and open the /studio link the lead sent (and bookmark it). The guide says this in one line.</div>
+  </div></div>
+</div>
+
+<div class="frame" id="m2">
+  <h6>3 · Opening /studio on the site, not signed in yet</h6>
+  <div class="url">kettlebird-website.vercel.app/studio</div>
+  <div class="center"><div class="card">
+    <h2>Kettlebird Creations</h2>
+    <p>Choose how to sign in</p>
+    <span class="btn">Google</span>
+    <span class="btn">E-mail / password</span>
+    <div class="note">Sanity's sign-in screen, at the site's own address, offering only the two options the invitation offered (GitHub is turned off). Star picks the same one they chose when accepting. E-mail / password has Sanity's own "Forgot password?" link.</div>
+  </div></div>
+</div>
+
+<div class="frame" id="m3">
+  <h6>4 · Signed in: the editor, with Star's account menu opened (menu as it is today; story 3 reorganises it)</h6>
+  <div class="url">kettlebird-website.vercel.app/studio</div>
+  <div class="top"><strong>Kettlebird Creations</strong><span class="avatar">S</span></div>
+  <div class="cols">
+    <div class="col">
+      <div class="item">Comic Series</div><div class="item">Chapter</div><div class="item">Gallery Item</div>
+      <div class="item">Written Work</div><div class="item">Product</div><div class="item">Commission Type</div>
+    </div>
+    <div class="empty">Choose a type on the left to see your content.</div>
+    <div class="menu">
+      <div><strong>Star</strong><br><span style="color:var(--muted)">star@example.com</span></div>
+      <div>Sign out</div>
+    </div>
+  </div>
+</div>
+
+<div class="frame" id="m4">
+  <h6>5 · Signed in with an account that wasn't invited</h6>
+  <div class="url">kettlebird-website.vercel.app/studio</div>
+  <div class="center"><div class="card">
+    <div class="err">You don't have access to this project.</div>
+    <p>You're signed in as star.other@gmail.com, which isn't a member of Kettlebird Creations.</p>
+    <span class="btn">Sign out</span>
+    <div class="note">Sanity's screen; no content is shown. For Star it means one of two things: they signed in a different way than they accepted with, or with a different Google account. Sign out, then sign in with the way and the email address the invitation went to.</div>
+  </div></div>
+</div>
+
+<div class="frame" id="m5">
+  <h6>6 · The public site: no link to the editor anywhere</h6>
+  <div class="site">
+    <nav><span>PORTFOLIO</span><span>COMICS</span><span>WRITING</span><span>SHOP</span><span>COMMISSIONS</span><span>ABOUT</span><span>NEWS</span></nav>
+    <p style="margin:14px 0 0;color:#4a4063">Header, footer and pages unchanged (a test checks that no built page links to /studio). /studio is reached from Star's bookmark or by typing it, and search engines are told not to list it.</p>
+  </div>
+</div>
+
+</body>
+</html>
