@@ -36,7 +36,7 @@ The **Comics** listing links only to series that have a web address, so no card 
 
 **Series page**
 
-- Wide screens: the cover on the left (about a third of the width), and on the right the title (main heading), then the status and type as labelled tags ("Ongoing", "Original"), the description, and **Start reading**. The **Chapters** list runs under both, full width.
+- Wide screens: the cover on the left (about a third of the width), and on the right the title (main heading), then the status and type as labelled tags: status is **Ongoing**, **Complete**, or **On Hiatus**, and type is **Original** or **Fancomic** (the labels the comics page already uses), the description, and **Start reading**. The **Chapters** list runs under both, full width.
 - Phones: everything in one column: title, cover (no taller than a third of the screen), tags, **Start reading**, description, then **Chapters**. On a small phone (360 by 640 pixels) **Start reading** is visible without scrolling; the tests check this size.
 - **Chapters** is a numbered list. Each item is one link: "Chapter 2: The Long Road", with "24 pages" beneath in smaller text. A chapter without a title reads "Chapter 2".
 - The page uses the site's existing header, footer, paper texture, and series-card colours, so it reads as part of the comics section.
@@ -65,7 +65,7 @@ How Star adds chapters and many pages at once is designed with story 5 (publishi
 - **Series without a cover:** the cover area shows a paper-textured panel with the series title, matching the comics page's card.
 - **Page without alt text:** the editor shows a warning on the page ("Add alt text so people using screen readers can follow the story") but still lets Star publish; whether to require it is an open question in the content-editing requirements. On the site, the image's alternative text falls back to "Chapter 2, page 1", so a screen reader still says where the reader is.
 - **Page still loading, or failed to load:** the space the page will fill shows the paper texture and the words "Loading page… If it doesn't appear, try refreshing." The page image covers these words once it has loaded, so this needs no script and works on a slow connection. If the image fails, the words stay visible with **Back to series** above.
-- **Address that does not exist** (an unknown series, chapter, or page number): the site's "page not found" page, with a link to **Comics**.
+- **Address that does not exist** (an unknown series, chapter, or page number): the site's not-found page, headed **Page not found**, saying "There's nothing at this address. It may be an old or mistyped link." with a link to **Comics**.
 - **Layout while loading:** the page image reserves its space, so the layout does not jump while it loads.
 
 ## Accessibility
