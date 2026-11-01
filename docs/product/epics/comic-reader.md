@@ -44,4 +44,5 @@ Each is written as its own story file, and approved, before work on it starts. W
 
 - Page-flip, two-page spreads, and panel-by-panel reading: the next epic, epic-comic-reader-flip-and-panels, builds on this one.
 - **Later plans** (concept decision 8), each a future epic or story: comments on comics, paid comic pages, and remembering a reader's place between visits.
+- **For future consideration** (lead, 2026-11-01): a thumbnail of each chapter's first page in the series page's chapter list.
 - Selling printed comics through the shop (the shop epic covers products).
