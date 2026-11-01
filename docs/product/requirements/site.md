@@ -1,8 +1,8 @@
 ---
 id: requirements-site
-status: draft
+status: approved
 derived-from:
-  - concept:
+  - concept: 1ee760877f50
 ---
 
 # Site-wide requirements
@@ -34,6 +34,7 @@ The site builds and every page renders when the content source is unreachable or
 
 - Current implementation, not a commitment: a static Astro build (astro.config.mjs) that reads content from Sanity at build time, so new content appears after a rebuild.
 - WCAG 2.1 AA is the stated accessibility target (docs/PROJECT_PLAN.md).
+- Vercel is the production host (concept, decision 7).
 
 ## Success measures
 
@@ -42,5 +43,4 @@ The site builds and every page renders when the content source is unreachable or
 ## Open questions
 
 1. Is WCAG 2.1 AA still the target, or 2.2 AA?
-2. Which host is production? vercel.json sets security headers; netlify.toml sets none and rewrites every unknown path to the home page, which hides 404s.
-3. Should pages have social sharing previews (Open Graph), a sitemap, and a favicon? None exist today.
+2. Should pages have social sharing previews (Open Graph), a sitemap, and a favicon? None exist today.

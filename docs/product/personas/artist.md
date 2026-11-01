@@ -1,8 +1,8 @@
 ---
 id: persona-artist
-status: draft
+status: approved
 derived-from:
-  - concept:
+  - concept: 1ee760877f50
 ---
 
 # Star, the artist and site editor

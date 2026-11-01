@@ -1,8 +1,8 @@
 ---
 id: requirements-shop
-status: draft
+status: approved
 derived-from:
-  - concept:
+  - concept: 1ee760877f50
 ---
 
 # Shop requirements
@@ -11,13 +11,14 @@ derived-from:
 
 ## REQ-shop-1: Products by category
 
-The shop lists every product in the CMS, grouped by category (print, sticker, digital, commission), with its image, name, price, and description. With no products it shows an empty-state message.
+The shop lists every product, grouped by category (print, sticker, digital, commission), with its image, name, price, and description. With no products it shows an empty-state message.
 
-## REQ-shop-2: A way to buy
+## REQ-shop-2: Buying on the site
 
-Each product with a purchase link shows a button that opens where it can be bought, and the page links to Star's whole shop. (Today: "Buy on Ko-fi ↗" links, and nothing is paid for on this site.)
+A visitor can add products to a cart, review it, and pay without leaving the site, and receives a confirmation of the order. (Today products link out to Ko-fi and nothing is paid for on this site, so this is unmet.)
 
 ## Open questions
 
-1. Should stock (`inventory` in the schema) be shown, for example "sold out"?
-2. Ko-fi, another storefront (for example a print-on-demand service), or an on-site cart and checkout? The concept's open question 1 decides this.
+1. Should stock (`inventory` in the schema) be shown, for example "sold out", and stop sales at zero?
+2. Which payment provider, and who handles sales tax, shipping rates, and fulfilment (Star, or a print-on-demand service)?
+3. Do Ko-fi links stay for tips or for some products?

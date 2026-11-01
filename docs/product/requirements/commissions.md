@@ -1,8 +1,8 @@
 ---
 id: requirements-commissions
-status: draft
+status: approved
 derived-from:
-  - concept:
+  - concept: 1ee760877f50
 ---
 
 # Commissions requirements
@@ -15,14 +15,17 @@ The commissions page states at the top whether commissions are open, with a way 
 
 ## REQ-commissions-2: Types and prices
 
-The page lists each commission type from the CMS, in Star's chosen order, with its name, price range, description, example images, and delivery time. The section is hidden when there are none.
+The page lists each commission type, in Star's chosen order, with its name, price range, description, example images, and delivery time. The section is hidden when there are none.
 
 ## REQ-commissions-3: How ordering works
 
 The page explains the steps of a commission (email, invoice and deposit, sketch approval, delivery) and ends with an email link to start one.
 
+## REQ-commissions-4: Requesting a commission
+
+A client can request a commission through a form on the site that asks for the commission type, a description, a deadline if any, and reference images, and Star receives the request. The email link stays available. The form says so when commissions are closed. (Unmet today.)
+
 ## Open questions
 
-1. The open/closed banner is hardcoded and says "open". Should Star be able to change it without a code change?
-2. Terms of service say "coming soon". Who writes them, and are they a launch blocker?
-3. Should a request form (type, size, deadline, references) replace or supplement email?
+1. Terms of service say "coming soon". Who writes them, and are they a launch blocker?
+2. When commissions are closed, should the form be hidden, or take waitlist requests?
