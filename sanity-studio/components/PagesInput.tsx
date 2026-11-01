@@ -1,0 +1,168 @@
+// The chapter's Pages input: Upload pages, drop anywhere on the grid, natural file-name order,
+// upload progress and errors, and the alt text count. Spec: docs/specs/comic-publish-pages.md
+// (AC-1 to AC-6); design: docs/design/comic-publish-pages.md (mock-ups 2 and 7).
+import { UploadIcon, WarningOutlineIcon } from '@sanity/icons';
+import { Box, Button, Card, Flex, Stack, Text } from '@sanity/ui';
+import { createContext, useCallback, useEffect, useMemo, useRef, useState, type DragEvent } from 'react';
+import { insert, setIfMissing, useClient, useFormValue, type ArrayOfObjectsInputProps, type Path } from 'sanity';
+import {
+  altTextMessage, DID_NOT_UPLOAD, isAcceptedImage, MAX_PARALLEL_UPLOADS, missingAltCount, NOT_AN_IMAGE,
+  retryable, sortByFileName, type PageLike, type QueueItem,
+} from '../lib/comic-pages';
+import { setQueue } from '../lib/upload-store';
+
+interface Entry extends QueueItem { id: string; file: File; assetId?: string; flushed?: boolean }
+
+/** Lets the page panel open its neighbours (AC-12). */
+export const PagesContext = createContext<{ keys: string[]; open: (path: Path) => void; close: () => void } | null>(null);
+
+const ACCEPT = 'image/png,image/jpeg,image/tiff,image/webp,image/gif,.tif,.tiff';
+let counter = 0;
+const newKey = () => `${Date.now().toString(36)}${(counter++).toString(36)}${Math.random().toString(36).slice(2, 6)}`;
+
+export function PagesInput(props: ArrayOfObjectsInputProps) {
+  const { onChange, onItemClose, onItemOpen, readOnly } = props;
+  const value = (props.value ?? []) as unknown as PageLike[];
+  const docId = useFormValue(['_id']) as string | undefined;
+  const client = useClient({ apiVersion: '2024-01-01' });
+  const [entries, setEntries] = useState<Entry[]>([]);
+  const [dragging, setDragging] = useState(false);
+  const fileInput = useRef<HTMLInputElement>(null);
+  const entriesRef = useRef(entries);
+  entriesRef.current = entries;
+
+  const update = useCallback((id: string, change: Partial<Entry>) => {
+    setEntries((all) => all.map((e) => (e.id === id ? { ...e, ...change } : e)));
+  }, []);
+
+  // Share progress with the Publish action, and ask before leaving while uploads run (AC-5).
+  const busy = entries.some((e) => e.state === 'waiting' || e.state === 'uploading');
+  useEffect(() => {
+    if (docId) setQueue(docId, entries);
+  }, [docId, entries]);
+  useEffect(() => () => { if (docId) setQueue(docId, []); }, [docId]);
+  useEffect(() => {
+    if (!busy) return;
+    const warn = (event: BeforeUnloadEvent) => { event.preventDefault(); event.returnValue = ''; };
+    window.addEventListener('beforeunload', warn);
+    return () => window.removeEventListener('beforeunload', warn);
+  }, [busy]);
+
+  // Start waiting uploads, at most MAX_PARALLEL_UPLOADS at a time.
+  useEffect(() => {
+    const running = entries.filter((e) => e.state === 'uploading').length;
+    const next = entries.filter((e) => e.state === 'waiting').slice(0, Math.max(0, MAX_PARALLEL_UPLOADS - running));
+    for (const entry of next) {
+      update(entry.id, { state: 'uploading' });
+      client.assets
+        .upload('image', entry.file, { filename: entry.file.name })
+        .then((asset) => update(entry.id, { state: 'done', assetId: asset._id }))
+        .catch(() => update(entry.id, { state: 'failed' }));
+    }
+  }, [entries, client, update]);
+
+  // Append finished uploads in file-name order: only the leading run of settled files is added, so
+  // a fast later file never jumps ahead of a slow earlier one (AC-1, AC-2).
+  useEffect(() => {
+    const ready: Entry[] = [];
+    for (const e of entries) {
+      if (e.flushed || e.state === 'rejected' || e.state === 'failed') continue;
+      if (e.state !== 'done') break;
+      ready.push(e);
+    }
+    if (!ready.length) return;
+    const items = ready.map((e) => ({ _type: 'image', _key: newKey(), asset: { _type: 'reference', _ref: e.assetId } }));
+    onChange([setIfMissing([]), insert(items, 'after', [-1])]);
+    const ids = new Set(ready.map((e) => e.id));
+    setEntries((all) => all.map((e) => (ids.has(e.id) ? { ...e, flushed: true } : e)));
+  }, [entries, onChange]);
+
+  // Once nothing is waiting or uploading, forget the added pages, so the next batch counts from zero.
+  useEffect(() => {
+    if (!busy && entries.some((e) => e.flushed)) setEntries((all) => all.filter((e) => !e.flushed));
+  }, [busy, entries]);
+
+  const addFiles = useCallback((files: File[]) => {
+    const sorted = sortByFileName(files);
+    setEntries((all) => [
+      ...all,
+      ...sorted.map((file): Entry => ({
+        id: newKey(), file, name: file.name, state: isAcceptedImage(file) ? 'waiting' : 'rejected',
+      })),
+    ]);
+  }, []);
+
+  const onDrop = (event: DragEvent) => {
+    if (!event.dataTransfer?.files?.length) return;
+    // Handle the drop here, so files go in name order rather than the Studio's own order.
+    event.preventDefault();
+    event.stopPropagation();
+    setDragging(false);
+    if (!readOnly) addFiles(Array.from(event.dataTransfer.files));
+  };
+  const onDragOver = (event: DragEvent) => {
+    if (!Array.from(event.dataTransfer?.types ?? []).includes('Files')) return;
+    event.preventDefault();
+    setDragging(true);
+  };
+
+  const altMessage = altTextMessage(missingAltCount(value));
+  const pending = entries.filter((e) => !e.flushed);
+  const context = useMemo(() => ({ keys: value.map((p) => p._key), open: onItemOpen, close: onItemClose }), [value, onItemOpen, onItemClose]);
+
+  return (
+    <PagesContext.Provider value={context}>
+      <Stack space={3} onDropCapture={onDrop} onDragOverCapture={onDragOver} onDragLeave={() => setDragging(false)}>
+        <Flex align="center" gap={3} wrap="wrap">
+          <Button icon={UploadIcon} text="Upload pages" mode="ghost" disabled={readOnly} onClick={() => fileInput.current?.click()} />
+          <input
+            ref={fileInput} type="file" multiple accept={ACCEPT} hidden
+            aria-label="Upload pages"
+            onChange={(event) => { addFiles(Array.from(event.currentTarget.files ?? [])); event.currentTarget.value = ''; }}
+          />
+          <Text size={1} muted>{value.length === 1 ? '1 page' : `${value.length} pages`}</Text>
+          {altMessage && (
+            <Card tone="caution" padding={2} radius={2}>
+              <Flex align="center" gap={2}>
+                <Text size={1}><WarningOutlineIcon /></Text>
+                <Text size={1}>{altMessage}</Text>
+              </Flex>
+            </Card>
+          )}
+        </Flex>
+
+        {pending.length > 0 && (
+          <Stack space={2} as="ul" aria-label="Uploads" style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+            {pending.map((entry) => (
+              <Card as="li" key={entry.id} padding={2} radius={2} border tone={entry.state === 'failed' || entry.state === 'rejected' ? 'critical' : 'default'}>
+                <Flex align="center" gap={3}>
+                  <Box flex={1}><Text size={1} textOverflow="ellipsis">{entry.name}</Text></Box>
+                  {entry.state === 'waiting' && <Text size={1} muted>Waiting…</Text>}
+                  {entry.state === 'uploading' && <Text size={1} muted>Uploading…</Text>}
+                  {entry.state === 'done' && <Text size={1} muted>Uploaded</Text>}
+                  {entry.state === 'failed' && <Text size={1}><WarningOutlineIcon /> {DID_NOT_UPLOAD}</Text>}
+                  {entry.state === 'rejected' && <Text size={1}><WarningOutlineIcon /> {NOT_AN_IMAGE}</Text>}
+                  {retryable(entry) && (
+                    <Button text="Try again" mode="ghost" fontSize={1} padding={2}
+                      onClick={() => setEntries((all) => [...all.filter((e) => e.id !== entry.id), { ...entry, state: 'waiting' }])} />
+                  )}
+                  {(entry.state === 'failed' || entry.state === 'rejected') && (
+                    <Button text="Remove" mode="bleed" fontSize={1} padding={2}
+                      onClick={() => setEntries((all) => all.filter((e) => e.id !== entry.id))} />
+                  )}
+                </Flex>
+              </Card>
+            ))}
+          </Stack>
+        )}
+
+        <Card radius={2} tone={dragging ? 'primary' : 'default'}>
+          {props.renderDefault(props)}
+          <Card marginTop={2} padding={4} radius={2} border style={{ borderStyle: 'dashed' }}>
+            <Text size={1} muted align="center">Drop page files anywhere here</Text>
+          </Card>
+        </Card>
+      </Stack>
+    </PagesContext.Provider>
+  );
+}

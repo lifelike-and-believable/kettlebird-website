@@ -33,6 +33,34 @@ jobs:
       - name: Build website
         run: npm run build
 
+  studio:
+    # The editor (Sanity Studio) builds with its custom inputs and actions (comic-publish-pages#AC-14).
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    defaults:
+      run:
+        working-directory: sanity-studio
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: sanity-studio/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build the editor
+        run: npm run build
+
   test:
     runs-on: ubuntu-latest
 

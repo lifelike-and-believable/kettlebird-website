@@ -1,6 +1,8 @@
 ---
-status: draft
-# tests-commit: recorded when the failing tests are committed
+status: implemented
+tests-commit:
+  - 7888cf0320d6d947ba5643c6d0afb923c8ea2a3a
+  - 3f6d28337bfd44d659fabbc12551e9f483a13328
 ---
 
 # Publish comic pages and chapters
@@ -67,6 +69,7 @@ Source: S5.n is the story's nth criterion; design and docs sections as named.
 ## Delivery
 
 - Plan item: epic-comic-reader, story 5.
+- AC-15 was added after the first tests commit, when the code was checked against Star's guide ("Start a new comic", step 4); its test was committed failing in the second tests commit.
 
 ## Risks and decisions
 

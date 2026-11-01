@@ -1,8 +1,11 @@
 import { defineArrayMember, defineField, defineType } from 'sanity';
+import { PageItemNav } from '../../components/PageItemNav';
+import { PagesInput } from '../../components/PagesInput';
+import { duplicateChapterMessage } from '../../lib/comic-pages';
 
 // A chapter of a comic series and its pages, in reading order.
-// Design: docs/design/comic-start-reading.md ("What Star enters"). Bulk upload and publish status
-// come with story-comic-reader-publish-pages.
+// Design: docs/design/comic-start-reading.md ("What Star enters") and
+// docs/design/comic-publish-pages.md (uploading, page panel, publish checks).
 export default defineType({
   name: 'comicChapter',
   title: 'Chapter',
@@ -20,7 +23,23 @@ export default defineType({
       title: 'Chapter',
       type: 'number',
       description: 'The chapter number: 1, 2, 3… Use 0 for a prologue. Changing a published number changes the links people have shared.',
-      validation: (Rule) => Rule.required().integer().min(0),
+      validation: (Rule) => [
+        Rule.required().integer().min(0),
+        // AC-9: two chapters of one series can't share a number.
+        Rule.custom(async (value, context) => {
+          const series = (context.document?.series as { _ref?: string } | undefined)?._ref;
+          if (typeof value !== 'number' || !series || !context.document) return true;
+          const id = context.document._id.replace(/^drafts\./, '');
+          const others = await context
+            .getClient({ apiVersion: '2024-01-01' })
+            .fetch<number[]>(
+              `*[_type == "comicChapter" && series._ref == $series && !(_id in [$id, $draft])].number`,
+              { series, id, draft: `drafts.${id}` },
+              { perspective: 'raw' },
+            );
+          return duplicateChapterMessage(value, others) ?? true;
+        }),
+      ],
     }),
     defineField({
       name: 'title',
@@ -33,9 +52,21 @@ export default defineType({
       title: 'Pages',
       type: 'array',
       description: 'In reading order. Upload the original files; the site shows them at screen size.',
+      components: { input: PagesInput },
+      options: { layout: 'grid' },
       of: [
         defineArrayMember({
           type: 'image',
+          components: { input: PageItemNav },
+          // Pages without alt text are marked in the grid (design: "Missing alt text").
+          preview: {
+            select: { media: 'asset', altText: 'altText', filename: 'asset.originalFilename' },
+            prepare: ({ media, altText, filename }) => ({
+              media,
+              title: filename,
+              subtitle: altText && String(altText).trim() ? undefined : '⚠ Alt text',
+            }),
+          },
           fields: [
             defineField({
               name: 'altText',
@@ -54,7 +85,7 @@ export default defineType({
               name: 'panels',
               title: 'Panels',
               type: 'array',
-              description: 'Panel regions in reading order, for panel-by-panel reading (filled in later).',
+              description: 'Filled in automatically later.',
               of: [
                 defineArrayMember({
                   type: 'object',
