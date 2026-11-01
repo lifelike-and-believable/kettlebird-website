@@ -82,6 +82,6 @@ How Star adds chapters and many pages at once is designed with story 5 (publishi
 
 A walkthrough for persona-fan, and for persona-artist on "What Star enters" (2026-11-01), found no blocking problems and eleven others. All were addressed above: one address shape for every series, so adding chapters never breaks shared links; stories 1 and 2 going live together; required, stable web addresses; a loading message that needs no script; fitting the page below the header; a checked phone layout; reader-page headings and labelled tags; chapter numbers Star sets, with help text so titles aren't doubled; clearer help text for series without chapters; a warning for missing alt text; and hiding empty chapters.
 
-## Open questions
+## Later
 
-1. Should the chapter list show a thumbnail of each chapter's first page? It helps fans find a chapter by memory, at the cost of loading more images on the series page. Proposed: not in this story.
+- Chapter thumbnails (a thumbnail of each chapter's first page in the list) are not in this story; the lead added them to the epic's plans for future consideration (2026-11-01).
