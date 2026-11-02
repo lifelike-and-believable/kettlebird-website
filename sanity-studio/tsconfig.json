@@ -8,5 +8,5 @@
     "esModuleInterop": true,
     "types": ["sanity"]
   },
-  "include": ["./sanity.config.ts", "./schemas/**/*"]
+  "include": ["./sanity.config.ts", "./schemas/**/*", "./components/**/*", "./actions/**/*", "./lib/**/*"]
 }

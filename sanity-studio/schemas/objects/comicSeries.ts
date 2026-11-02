@@ -1,4 +1,6 @@
 import { defineField, defineType } from 'sanity';
+import { ChaptersList } from '../../components/ChaptersList';
+import { SERIES_SLUG_MESSAGE } from '../../lib/comic-pages';
 
 export default defineType({
   name: 'comicSeries',
@@ -17,7 +19,7 @@ export default defineType({
       title: 'Web address',
       description: 'Fills in from the title when you create the series. Changing it later breaks links people have shared.',
       options: { source: 'title', maxLength: 120 },
-      validation: (Rule) => Rule.required()
+      validation: (Rule) => Rule.required().error(SERIES_SLUG_MESSAGE)
     }),
     defineField({
       name: 'coverImage',
@@ -52,6 +54,14 @@ export default defineType({
           { title: 'Hiatus', value: 'hiatus' }
         ]
       }
+    }),
+    // Not stored: shows this series' chapters and Add chapter (AC-11).
+    defineField({
+      name: 'chapters',
+      title: 'Chapters',
+      type: 'string',
+      readOnly: true,
+      components: { input: ChaptersList }
     })
   ]
 });
