@@ -31,6 +31,9 @@ const end = entry.isLast ? endNote(entry.series.status) : undefined;
 ---
 
 <BaseLayout title={tabTitle(entry)} description={`${entry.series.title}, a comic by Star Goldberg.`}>
+  <!-- Don't draw the page until the scroll below has run, so the site header never flashes on a
+       turn, even when the page arrives in pieces. Browsers without render-blocking ignore it. -->
+  <link slot="head" rel="expect" href="#reader-scrolled" {...{ blocking: 'render' }} />
   <div class="reader">
     <div class="reader__bar">
       <a href={back} class="reader__back">Back to series</a>
@@ -75,11 +78,12 @@ const end = entry.isLast ? endNote(entry.series.status) : undefined;
   <script is:inline>
     // Open with the reader bar at the top of the window, past the site header, so the whole page
     // shows and the next page appears without scrolling back up (design-comic-turn-pages). Inline,
-    // right after the reader, so it runs before the page is first drawn: a bundled script runs
-    // later, and the header would flash on screen at each turn. Skipped if the fan has already
-    // scrolled; without a script the page simply starts at the top.
+    // right after the reader, and the page isn't drawn until the marker after it is parsed (the
+    // render-blocking link above): otherwise the header can flash on screen at a turn. Skipped if
+    // the fan has already scrolled; without a script the page simply starts at the top.
     if (window.scrollY === 0) document.querySelector('.reader')?.scrollIntoView({ block: 'start' });
   </script>
+  <span id="reader-scrolled" hidden></span>
 
   {nextImage && <meta name="kb-next-image" content={nextImage.src} data-srcset={nextImage.srcset ?? ''} />}
 
