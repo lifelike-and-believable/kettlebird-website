@@ -621,9 +621,13 @@ a:focus-visible {
    SHARED PAGE ELEMENTS
    =========================================== */
 
+/* Capped at 15vw so a page heading never runs off a phone with enlarged text (WCAG 1.4.10); a long
+   word that still doesn't fit breaks with a hyphen. At normal text size on phones it's unchanged. */
 .page-title {
   font-family: 'Nunito', sans-serif;
-  font-size: clamp(3.5rem, 8vw, 5.5rem);
+  font-size: min(clamp(3.5rem, 8vw, 5.5rem), 15vw);
+  overflow-wrap: break-word;
+  hyphens: auto;
   font-weight: 700;
   margin: 0 0 0.25rem;
   letter-spacing: 0.02em;
