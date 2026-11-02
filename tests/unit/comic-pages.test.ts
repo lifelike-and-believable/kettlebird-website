@@ -159,6 +159,8 @@ describe('comic-publish-pages#AC-16 deleting a series with its chapters', () => 
   it('names each chapter once, without draft prefixes', () => {
     expect(publishedIds(['c1', 'drafts.c1', 'drafts.c2', 'c3'])).toEqual(['c1', 'c2', 'c3']);
     expect(publishedIds([])).toEqual([]);
+    // Only a leading drafts. prefix is a draft; the same text later in an ID is part of the name.
+    expect(publishedIds(['old-drafts.c4'])).toEqual(['old-drafts.c4']);
   });
   it('deletes every chapter and the series, published and draft', () => {
     expect(idsToDelete('s1', ['c1', 'drafts.c1', 'drafts.c2'])).toEqual(['c1', 'drafts.c1', 'c2', 'drafts.c2', 's1', 'drafts.s1']);
