@@ -110,9 +110,9 @@ test('site-header#AC-6 paper layer', async ({ page }) => {
     expect(style.own, `${width}`).toBe('none');
     expect(style.image, `${width}`).toContain('Paper_1_Torn.png');
     expect(style.position, `${width}`).toBe('50% 100%');
-    expect(style.size, `${width}`).toBe('cover');
+    expect(style.size, `${width}`).toBe(`auto max(${0.3 * width}px, 100%)`);
     expect(style.top, `${width}`).toBe('0px');
-    expect(parseFloat(style.bottom), `${width}`).toBeCloseTo(-0.015 * width, 0);
+    expect(parseFloat(style.bottom), `${width}`).toBeCloseTo(-0.022 * width, 0);
     expect(style.events, `${width}`).toBe('none');
     expect(style.z, `${width}`).toBe('-1');
   }

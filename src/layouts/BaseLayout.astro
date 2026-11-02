@@ -99,9 +99,10 @@ const currentYear = new Date().getFullYear();
 
 <style>
   /* ── Torn-paper header (design-phone-header) ──
-     As tall as its content at every width. The paper is drawn on a layer that reaches 1.5vw below the
-     header, so the image's transparent bottom strip (23 of its 300 rows) falls outside it and the tear
-     is the header's bottom edge. */
+     As tall as its content at every width. The paper is drawn on a layer that reaches 2.2vw below the
+     header, so the image's transparent bottom strip falls outside it and the tear is the header's
+     bottom edge. The image is at least 160% of the screen's width, so every screen shows its middle
+     slice, where the tear dips at both edges (wide screens used to show its high ends). */
   .site-header {
     background: none;
     position: relative;
@@ -115,10 +116,10 @@ const currentYear = new Date().getFullYear();
   .site-header::before {
     content: '';
     position: absolute;
-    inset: 0 0 -1.5vw 0;
+    inset: 0 0 -2.2vw 0;
     z-index: -1;
     pointer-events: none;
-    background: url('/assets/images/Paper_1_Torn.png') no-repeat center bottom / cover;
+    background: url('/assets/images/Paper_1_Torn.png') no-repeat center bottom / auto max(30vw, 100%);
   }
 
   /* Wider screens: the title, then the subtitle with the links beside it, as before. */

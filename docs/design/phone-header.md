@@ -53,7 +53,8 @@ On screens up to and including 768 px wide, the width at which the navigation al
 ## At every width
 
 - **No minimum height.** Under the content there's `max(2.25rem, 3.5vw)` of paper on phones, and 5 px more above 768 px, so the tear doesn't crowd the links on a laptop. That's enough for the whole tear at any width.
-- **No transparent strip.** The paper is drawn on a layer that reaches 1.5vw below the header, so the image's transparent bottom strip falls outside the header and the tear is the header's bottom edge. The layer lets clicks through, and the menu panel still opens directly under the header.
+- **No transparent strip.** The paper is drawn on a layer that reaches 2.2vw below the header, so the image's transparent bottom strip falls outside the header and the tear is the header's bottom edge. The layer lets clicks through, and the menu panel still opens directly under the header.
+- **The tear dips toward both edges on every screen.** The image is shown at least 160% of the screen's width, so every screen shows its middle slice. Phones always showed that slice; laptops showed the whole image, whose tear rises at both ends, which looked less balanced (the lead's review of the built pages, 2026-11-02).
 
 **Option B** (mock-up 5) drops the subtitle on phones too, for an 88 px header (10%). It isn't recommended: the subtitle tells a new visitor what the site is, and option A already saves most of the space.
 

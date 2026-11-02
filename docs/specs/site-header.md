@@ -3,6 +3,7 @@ status: implemented
 tests-commit:
   - 3a9b98404db3819c9b4c0a2f3d3fce8273bccead
 unlocks:
+  - tests/e2e/site-header.spec.ts: AC-6 expected the paper image at `cover` size on a layer 1.5vw below the header. At the lead's review of the built pages, laptops showed the high ends of the tear, angling it up toward the edges, while phones showed its dipping middle. The image is now at least 160% of the screen's width (`auto max(30vw, 100%)`), on a layer 2.2vw below the header, so every screen shows the middle; the test checks the new values. The design records the change.
   - tests/e2e/site-header.spec.ts: AC-5 checked that the whole page doesn't scroll sideways with text at 200%. The comics page's own "Comics" heading (page content, outside this change) is wider than a 390 px screen at that size, so the test now checks that nothing in the header reaches past the screen, which is what this change controls. The heading is reported separately.
 ---
 
@@ -30,7 +31,7 @@ Source: design-phone-header sections as named.
 | AC-3 | Up to 768 px wide, the title and the menu button are on the same row, the subtitle is under the title, the title links to `/`, and the button is 44 × 44 px. | test: e2e "phone layout" | #the-change-option-a-recommended, #layout |
 | AC-4 | The menu button opens and closes the menu, setting `aria-expanded`, and the menu panel starts directly under the header. | test: e2e "menu" | #the-change-option-a-recommended; REQ-site-1 |
 | AC-5 | With the root font size at 200%, on 390 px and 320 px wide screens, nothing in the header reaches past the screen (so the header causes no sideways scrolling) and the menu button is fully on screen. | test: e2e "enlarged text" | #accessibility |
-| AC-6 | At every width the header has no background of its own; the torn paper is drawn on a layer that reaches 1.5vw below the header, bottom-aligned, and lets clicks through, so the paper reaches the header's top edge and the tear is its bottom edge. | test: e2e "paper layer"; manual: look at a phone and a laptop | #at-every-width |
+| AC-6 | At every width the header has no background of its own; the torn paper is drawn on a layer that reaches 2.2vw below the header, bottom-aligned and centred, at least 160% of the screen's width (`auto max(30vw, 100%)`), and lets clicks through, so the paper reaches the header's top edge, the tear is its bottom edge, and the tear dips toward both edges on every screen. | test: e2e "paper layer"; manual: look at a phone and a laptop | #at-every-width |
 | AC-7 | On a 360 × 640 screen, a series page's cover is no taller than a third of the screen and taller than a fifth, and **Start reading** is visible without scrolling. | test: e2e "series cover"; the existing comic-reader AC-15 test | #layout; design-comic-start-reading#layout |
 
 ## Scope
@@ -43,7 +44,7 @@ Source: design-phone-header sections as named.
 - Up to 768 px: header padding `0.875rem 1rem` above, and `max(2.25rem, 3.5vw)` below the content; title `min(2.5rem, 13vw)`; subtitle `1.0625rem`; the title and subtitle grouped, with the button after them in a wrapping row.
 - At every width: the subtitle's line height is 1.25 (it inherited the body's 1.6, which added empty space under it).
 - Above 768 px: today's layout and sizes; `calc(max(2.25rem, 3.5vw) + 5px)` below the content.
-- Paper layer: `::before`, `inset: 0 0 -1.5vw 0`, `background: url(Paper_1_Torn.png) no-repeat center bottom / cover`, `z-index: -1`, `pointer-events: none`.
+- Paper layer: `::before`, `inset: 0 0 -2.2vw 0`, `background: url(Paper_1_Torn.png) no-repeat center bottom / auto max(30vw, 100%)`, `z-index: -1`, `pointer-events: none`.
 
 ## Delivery
 
@@ -52,4 +53,4 @@ Source: design-phone-header sections as named.
 ## Risks and decisions
 
 - The header's markup changes (title and subtitle grouped), but the tab order is the same: title, menu button, links.
-- The image's transparent strip is 23 of its 300 rows; at laptop widths the image is scaled to the screen's width, so 1.5vw moves it just outside the header. On phones the image is scaled to the header's height, so a few pixels of the strip may remain; it's under the tear and not noticeable.
+- The tear in the image is high at both ends and dips about a fifth of the way in from each side. At 160% of the screen's width, a screen shows the middle 1,000 of its 1,600 columns, where the tear runs from about row 250 to row 278 of 300 and dips toward both edges. The 22 rows below are transparent: 2.2vw at that size, so the layer reaches 2.2vw below the header. On phones the image is sized by the header's height instead (the `100%` in `max`), which shows a similar slice.
