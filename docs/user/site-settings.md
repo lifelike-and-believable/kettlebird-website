@@ -1,6 +1,6 @@
 ---
 id: docs-site-settings
-status: draft
+status: approved
 derived-from:
   - design-site-settings#flow: 057431850691
   - design-site-settings#fields: a8158ed2c5ad
