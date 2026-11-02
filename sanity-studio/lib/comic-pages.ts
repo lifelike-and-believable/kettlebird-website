@@ -180,5 +180,5 @@ export interface RuleLike<R> { custom(fn: (value: unknown) => true | string): R;
  * ignores a `level` returned from a custom check; only `.warning()` on the rule makes it a warning.
  */
 export function altTextRule<R extends RuleLike<R>>(rule: R): R {
-  return rule.custom((value) => (value && String(value).trim() ? true : ALT_TEXT_WARNING));
+  return rule.custom((value) => (value && String(value).trim() ? true : ALT_TEXT_WARNING)).warning();
 }
