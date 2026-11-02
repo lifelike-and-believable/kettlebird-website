@@ -42,7 +42,7 @@ This design covers the rest: **Share this page**, **Read the newest page**, remo
 2. On a phone or tablet (a touch screen as its main pointer) whose browser has a share menu, it opens that menu with the page's address and its title, "Kettle Tales · Chapter 2, page 4", so the fan can post it straight to an app. Laptop browsers that also have a share menu copy instead, which is what laptop readers expect.
 3. Elsewhere (laptops, and phones without a share menu), it copies the address. The button then reads **Link copied** for four seconds, and a screen reader hears "Link copied" (mock-up 2).
 4. If the share menu fails for any reason other than the fan closing it, the link is copied instead. If the browser won't let the site copy, a box appears under the button: "Copy this link:" and the address, already selected, to copy by hand (mock-up 3).
-5. The address shared is always the page's own address on the site (`https://kettlebird-website.vercel.app/comics/kettle-tales/2/4`), never one with `#` or anything after it.
+5. The address shared is always the page's own address on the site (`https://newsite.kettlebird.com/comics/kettle-tales/2/4`), never one with `#` or anything after it.
 
 **Catching up from the series page** (story 3)
 
@@ -73,7 +73,7 @@ This design covers the rest: **Share this page**, **Read the newest page**, remo
 
 ## Addresses
 
-- The site's address is one setting (the site address in the site's configuration, added by this work; now `https://kettlebird-website.vercel.app`). Shared links, link previews and the page's canonical address all use it, so moving to a custom domain later changes them all at once.
+- The site's address is one setting (the site address in the site's configuration, added by this work; now the staging address `https://newsite.kettlebird.com`, later `https://kettlebird.com`). Shared links, link previews and the page's canonical address all use it, so moving to a custom domain later changes them all at once.
 - A reader page's canonical address is its own address, and a series page's is its own. The contact sheets stay unlisted (design-comic-sheet-and-controls).
 
 ## Mock-ups
