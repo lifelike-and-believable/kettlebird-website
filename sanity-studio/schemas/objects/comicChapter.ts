@@ -1,7 +1,7 @@
 import { defineArrayMember, defineField, defineType } from 'sanity';
 import { PageItemNav } from '../../components/PageItemNav';
 import { PagesInput } from '../../components/PagesInput';
-import { duplicateChapterMessage } from '../../lib/comic-pages';
+import { altTextRule, duplicateChapterMessage } from '../../lib/comic-pages';
 
 // A chapter of a comic series and its pages, in reading order.
 // Design: docs/design/comic-start-reading.md ("What Star enters") and
@@ -74,12 +74,8 @@ export default defineType({
               type: 'text',
               rows: 2,
               description: 'What happens on this page, for people using screen readers.',
-              validation: (Rule) =>
-                Rule.custom((value) =>
-                  value && String(value).trim()
-                    ? true
-                    : { message: 'Add alt text so people using screen readers can follow the story', level: 'warning' },
-                ),
+              // A warning, so Publish stays available (AC-8).
+              validation: (Rule) => altTextRule(Rule),
             }),
             defineField({
               name: 'panels',

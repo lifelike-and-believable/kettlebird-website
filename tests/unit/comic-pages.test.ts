@@ -4,7 +4,7 @@ import {
   altTextMessage, chapterLabel, chapterRow, DID_NOT_UPLOAD, duplicateChapterMessage, isAcceptedImage,
   linkChange, missingAltCount, naturalCompare, nextChapterNumber, NOT_AN_IMAGE, publishDialog,
   publishLabel, retryable, SERIES_SLUG_MESSAGE, sortByFileName, type ChapterLike,
-  deleteSeriesDialog, idsToDelete, publishedIds,
+  deleteSeriesDialog, idsToDelete, publishedIds, altTextRule, ALT_TEXT_WARNING, type RuleLike,
 } from '../../sanity-studio/lib/comic-pages';
 
 const pages = (...keys: string[]) => keys.map((k) => ({ _key: k, altText: `alt ${k}` }));
@@ -184,5 +184,24 @@ describe('comic-publish-pages#AC-16 deleting a series with its chapters', () => 
   it('names an untitled comic "this comic"', () => {
     expect(deleteSeriesDialog('  ', 2).title).toBe('Delete this comic and its 2 chapters?');
     expect(deleteSeriesDialog(undefined, 0).title).toBe('Delete this comic?');
+  });
+});
+
+describe('comic-publish-pages#AC-8 missing alt text never blocks Publish', () => {
+  // Records what the schema asks of Sanity's Rule, as Sanity's own Rule would.
+  class FakeRule implements RuleLike<FakeRule> {
+    level = 'error';
+    check?: (value: unknown) => true | string;
+    custom(fn: (value: unknown) => true | string) { this.check = fn; return this; }
+    warning() { this.level = 'warning'; return this; }
+  }
+  it('is a warning, not an error', () => {
+    expect(altTextRule(new FakeRule()).level).toBe('warning');
+  });
+  it('asks for alt text only when it is empty', () => {
+    const rule = altTextRule(new FakeRule());
+    expect(rule.check!('Fox looks at the kettle.')).toBe(true);
+    expect(rule.check!('   ')).toBe(ALT_TEXT_WARNING);
+    expect(rule.check!(undefined)).toBe(ALT_TEXT_WARNING);
   });
 });

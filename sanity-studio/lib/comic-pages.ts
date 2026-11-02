@@ -169,3 +169,16 @@ export function deleteSeriesDialog(title: string | undefined, chapterCount: numb
     confirm: 'Delete comic and chapters',
   };
 }
+
+export const ALT_TEXT_WARNING = 'Add alt text so people using screen readers can follow the story';
+
+/** The parts of Sanity's validation Rule that altTextRule uses. */
+export interface RuleLike<R> { custom(fn: (value: unknown) => true | string): R; warning(): R }
+
+/**
+ * AC-8: a page without alt text is a warning, never an error, so Publish stays available. Sanity
+ * ignores a `level` returned from a custom check; only `.warning()` on the rule makes it a warning.
+ */
+export function altTextRule<R extends RuleLike<R>>(rule: R): R {
+  return rule.custom((value) => (value && String(value).trim() ? true : ALT_TEXT_WARNING));
+}
