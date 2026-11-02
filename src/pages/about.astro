@@ -47,7 +47,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             For commission inquiries, collaboration ideas, or just to say hi:
           </p>
           <a href="mailto:kettlebirdillustration@gmail.com" class="highlighter-btn">
-            kettlebirdillustration@gmail.com
+            kettlebirdillustration@<wbr />gmail.com
           </a>
           <p class="contact-block__note">
             For commission details and pricing, see the <a href="/commissions">Commissions</a> page.
@@ -188,8 +188,15 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   /* ── Responsive ── */
   @media (max-width: 860px) {
+    /* minmax(0, 1fr): the column fits the screen even when something in it (an email address with
+       enlarged text) is wider; long words break instead (WCAG 1.4.10 reflow). */
     .about-layout {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .about-layout > * {
+      min-width: 0;
+      overflow-wrap: anywhere;
     }
 
     .portrait-col {
