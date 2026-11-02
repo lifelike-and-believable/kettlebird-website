@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Phone header: mock-ups</title>
+<!-- Source for the PNG mock-ups beside this file (docs/design/phone-header.md). Each frame is a phone
+     screen built to match the site's header (simplified markup, the site's fonts, colours and torn-paper
+     image), with the start of the comics page below it. Render: node render.mjs -->
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --ink:#2b2b2b; --ink-light:#595959; --beige:#f5f1e8; }
+  body { margin: 0; padding: 24px; background: #9ca3af; font-family: 'DM Sans', sans-serif; display: flex; flex-wrap: wrap; gap: 32px; align-items: flex-start; }
+  .wrap h6 { margin: 0 0 6px; font: 600 13px/1.4 system-ui; color: #111827; max-width: 390px; }
+  .screen { width: 390px; height: 844px; overflow: hidden; position: relative; color: var(--ink); container-type: inline-size;
+    background: var(--beige) url('../../../../public/assets/images/Paper_2_Tileable.png'); background-size: 400px 400px; }
+  .screen.narrow { width: 360px; height: 740px; }
+  .fold { position: absolute; left: 0; right: 0; border-top: 2px dashed #b91c1c; z-index: 5; }
+  .fold span { position: absolute; right: 6px; top: 2px; font: 600 11px system-ui; color: #b91c1c; background: #fff8; padding: 0 4px; }
+
+  /* Header, as in src/layouts/BaseLayout.astro */
+  .site-header { background: url('../../../../public/assets/images/Paper_1_Torn.png') no-repeat center bottom / cover; position: relative; z-index: 2; }
+  .title { font-family: 'Nunito', sans-serif; font-weight: 700; letter-spacing: .02em; line-height: 1.1; display: block; color: var(--ink); text-decoration: none; }
+  .subtitle { font-family: 'Nunito', sans-serif; font-weight: 600; margin: 0; }
+  .menu { width: 44px; height: 44px; border: 2px solid var(--ink); background: none; display: flex; align-items: center; justify-content: center; flex-shrink: 0; padding: 0; }
+  .menu i, .menu i::before, .menu i::after { display: block; width: 24px; height: 2px; background: var(--ink); position: relative; content: ''; }
+  .menu i::before { position: absolute; top: -8px; } .menu i::after { position: absolute; top: 8px; }
+  .menu.open i { background: transparent; } .menu.open i::before { top: 0; transform: rotate(45deg); } .menu.open i::after { top: 0; transform: rotate(-45deg); }
+
+  /* Today */
+  .today .site-header { min-height: 300px; }
+  .today .inner { padding: 2rem 1rem .25rem; }
+  .today .title { font-size: 3.5rem; margin-bottom: .25rem; }
+  .today .row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+  .today .subtitle { font-size: 1.5rem; }
+
+  /* Option A: title and menu on one row, subtitle kept, smaller */
+  .a .inner { padding: .875rem 1rem 2.25rem; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .5rem .75rem; }
+  .a .titles { min-width: 0; }
+  .a .title { font-size: min(2.5rem, 13cqw); }  /* 13vw on the site; cqw here, because each frame is narrower than this page */
+  .a .subtitle { font-size: 1.0625rem; margin-top: .125rem; }
+
+  /* Option B: title and menu only */
+  .b .inner { padding: .75rem 1rem 2rem; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .5rem .75rem; }
+  .b .title { font-size: 2.25rem; }
+
+  /* Open menu, as today: a panel under the header */
+  .nav { position: absolute; left: 0; right: 0; background: var(--beige); border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink); padding: .75rem 1rem; z-index: 3; }
+  .nav a { display: block; text-align: center; font: 700 1rem 'Nunito', sans-serif; padding: .5rem 1.25rem; margin-bottom: .4rem; color: var(--ink); text-decoration: none;
+    background: url('../../../../public/assets/images/Highlighter_Y.png') center / 100% 100% no-repeat; }
+
+  /* The start of the comics page, as built */
+  .content { padding: 0 2rem; }
+  .content h1 { font: 700 3rem/1.1 'Nunito', sans-serif; margin: 2.5rem 0 .5rem; }
+  .content p { margin: 0 0 1.5rem; color: var(--ink-light); font-size: 1rem; }
+  .card { border: 3px solid var(--ink); background: #fff; padding: 6px; }
+  .cover { height: 420px; background: radial-gradient(circle at 50% 45%, #fff 0, #f9a8d4 55%, #ec4899 100%); display: flex; align-items: center; justify-content: center;
+    font: 700 2.4rem/1.1 monospace; color: #ec4899; text-align: center; letter-spacing: .1em; }
+  .card b { display: block; font: 700 1.4rem 'Nunito', sans-serif; padding: 10px 4px 2px; }
+</style>
+</head>
+<body>
+
+<div class="wrap"><h6>1 · Today, 390 px wide: the header is 300 px, 36% of the screen</h6>
+<div class="screen today" id="m1">
+  <header class="site-header"><div class="inner">
+    <a class="title" href="#">Kettlebird</a>
+    <div class="row"><p class="subtitle">Comics + Illustration</p><button class="menu" aria-label="Toggle menu"><i></i></button></div>
+  </div></header>
+  <main class="content"><h1>Comics</h1><p>Original stories and fancomics</p><div class="card"><div class="cover">ALIEN<br>KARAOKE</div><b>Alien Karaoke</b></div></main>
+</div></div>
+
+<div class="wrap"><h6>2 · Option A (recommended): title and menu on one row, the subtitle kept</h6>
+<div class="screen a" id="m2">
+  <header class="site-header"><div class="inner">
+    <div class="titles"><a class="title" href="#">Kettlebird</a><p class="subtitle">Comics + Illustration</p></div><button class="menu" aria-label="Toggle menu"><i></i></button>
+  </div></header>
+  <main class="content"><h1>Comics</h1><p>Original stories and fancomics</p><div class="card"><div class="cover">ALIEN<br>KARAOKE</div><b>Alien Karaoke</b></div></main>
+</div></div>
+
+<div class="wrap"><h6>3 · Option A with the menu open</h6>
+<div class="screen a" id="m3">
+  <header class="site-header"><div class="inner">
+    <div class="titles"><a class="title" href="#">Kettlebird</a><p class="subtitle">Comics + Illustration</p></div><button class="menu open" aria-label="Toggle menu"><i></i></button>
+  </div>
+  <nav class="nav"><a>PORTFOLIO</a><a>COMICS</a><a>WRITING</a><a>SHOP</a><a>COMMISSIONS</a><a>ABOUT</a><a>NEWS</a></nav></header>
+  <main class="content"><h1>Comics</h1><p>Original stories and fancomics</p><div class="card"><div class="cover">ALIEN<br>KARAOKE</div><b>Alien Karaoke</b></div></main>
+</div></div>
+
+<div class="wrap"><h6>4 · Option A on a small phone, 360 px wide</h6>
+<div class="screen a narrow" id="m4">
+  <header class="site-header"><div class="inner">
+    <div class="titles"><a class="title" href="#">Kettlebird</a><p class="subtitle">Comics + Illustration</p></div><button class="menu" aria-label="Toggle menu"><i></i></button>
+  </div></header>
+  <main class="content"><h1>Comics</h1><p>Original stories and fancomics</p><div class="card"><div class="cover">ALIEN<br>KARAOKE</div><b>Alien Karaoke</b></div></main>
+</div></div>
+
+<div class="wrap"><h6>5 · Option B: title and menu only, no subtitle</h6>
+<div class="screen b" id="m5">
+  <header class="site-header"><div class="inner">
+    <a class="title" href="#">Kettlebird</a><button class="menu" aria-label="Toggle menu"><i></i></button>
+  </div></header>
+  <main class="content"><h1>Comics</h1><p>Original stories and fancomics</p><div class="card"><div class="cover">ALIEN<br>KARAOKE</div><b>Alien Karaoke</b></div></main>
+</div></div>
+
+<div class="wrap"><h6>6 · Option A with text enlarged to 200%: the menu button moves under the title, still on screen</h6>
+<!-- render.mjs sets the page's root font size to 200% before taking this one, as enlarged text does. -->
+<div class="screen a" id="m6"><div>
+  <header class="site-header"><div class="inner">
+    <div class="titles"><a class="title" href="#">Kettlebird</a><p class="subtitle">Comics + Illustration</p></div><button class="menu" aria-label="Toggle menu"><i></i></button>
+  </div></header>
+  <main class="content"><h1>Comics</h1><p>Original stories and fancomics</p></main>
+</div></div></div>
+
+<script>
+  // Mark each header's height on its frame, once the fonts have loaded, so the mock-ups show the number.
+  window.markFolds = () => { document.querySelectorAll('.fold').forEach((f) => f.remove()); for (const s of document.querySelectorAll('.screen')) {
+    const h = Math.round(s.querySelector('.site-header').getBoundingClientRect().height);
+    const pct = Math.round(100 * h / s.clientHeight);
+    const f = document.createElement('div'); f.className = 'fold'; f.style.top = h + 'px';
+    f.innerHTML = '<span>header ' + h + ' px · ' + pct + '% of the screen</span>'; s.appendChild(f);
+  } document.body.dataset.ready = 'yes'; };
+  document.fonts.ready.then(() => window.markFolds());
+</script>
+</body>
+</html>
