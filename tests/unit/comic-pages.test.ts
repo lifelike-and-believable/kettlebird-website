@@ -4,6 +4,7 @@ import {
   altTextMessage, chapterLabel, chapterRow, DID_NOT_UPLOAD, duplicateChapterMessage, isAcceptedImage,
   linkChange, missingAltCount, naturalCompare, nextChapterNumber, NOT_AN_IMAGE, publishDialog,
   publishLabel, retryable, SERIES_SLUG_MESSAGE, sortByFileName, type ChapterLike,
+  deleteSeriesDialog, idsToDelete, publishedIds,
 } from '../../sanity-studio/lib/comic-pages';
 
 const pages = (...keys: string[]) => keys.map((k) => ({ _key: k, altText: `alt ${k}` }));
@@ -151,5 +152,35 @@ describe('comic-publish-pages#AC-15 publishing a new series with its chapter', (
   it('leaves the dialogs unchanged for a series already on the site', () => {
     expect(publishDialog({ kind: 'none' }, draft)).toBeNull();
     expect(publishDialog({ kind: 'none' }, draft, {})).toBeNull();
+  });
+});
+
+describe('comic-publish-pages#AC-16 deleting a series with its chapters', () => {
+  it('names each chapter once, without draft prefixes', () => {
+    expect(publishedIds(['c1', 'drafts.c1', 'drafts.c2', 'c3'])).toEqual(['c1', 'c2', 'c3']);
+    expect(publishedIds([])).toEqual([]);
+  });
+  it('deletes every chapter and the series, published and draft', () => {
+    expect(idsToDelete('s1', ['c1', 'drafts.c1', 'drafts.c2'])).toEqual(['c1', 'drafts.c1', 'c2', 'drafts.c2', 's1', 'drafts.s1']);
+    expect(idsToDelete('drafts.s1', [])).toEqual(['s1', 'drafts.s1']);
+  });
+  it('says how many chapters go with the comic', () => {
+    expect(deleteSeriesDialog('Kettle Tales', 3)).toEqual({
+      title: 'Delete Kettle Tales and its 3 chapters?',
+      lines: ["The comic, its chapters and their pages come off the site with the next update. This can't be undone."],
+      confirm: 'Delete comic and chapters',
+    });
+    expect(deleteSeriesDialog('Kettle Tales', 1).title).toBe('Delete Kettle Tales and its chapter?');
+  });
+  it('asks plainly when the comic has no chapters', () => {
+    expect(deleteSeriesDialog('Kettle Tales', 0)).toEqual({
+      title: 'Delete Kettle Tales?',
+      lines: ["It comes off the site with the next update. This can't be undone."],
+      confirm: 'Delete',
+    });
+  });
+  it('names an untitled comic "this comic"', () => {
+    expect(deleteSeriesDialog('  ', 2).title).toBe('Delete this comic and its 2 chapters?');
+    expect(deleteSeriesDialog(undefined, 0).title).toBe('Delete this comic?');
   });
 });

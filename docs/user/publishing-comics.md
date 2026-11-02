@@ -74,6 +74,16 @@ Readers share links to single pages. Adding pages at the end of a chapter, or ad
 
 When you publish one of these, the editor tells you which pages' links will change. Choose **Publish anyway** if that's what you meant, or **Cancel** to go back. The same message reminds you of any pages without alt text.
 
+## Remove a comic
+
+1. Open the comic under **Comics**.
+2. Choose the menu (**⋯**) next to **Publish**, then **Delete**.
+3. The editor asks, for example, "Delete Kettle Tales and its 3 chapters?". Choose **Delete comic and chapters**, or **Cancel** to keep it.
+
+The comic, its chapters and their pages come off the site with the next update, and links people have shared to them stop working. This can't be undone.
+
+To remove just one chapter, open it and choose **Delete** from the same menu.
+
 ## If something goes wrong
 
 | What you see | What it means | What to do |

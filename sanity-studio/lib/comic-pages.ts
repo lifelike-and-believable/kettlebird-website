@@ -145,3 +145,18 @@ export function chapterRow(c: { number: number; title?: string; pageCount: numbe
   const hidden = c.pageCount === 0 ? ' · hidden from readers' : '';
   return `${chapterLabel(c)} · ${pages}${hidden} · ${c.published ? 'On the site' : 'Not published yet'}`;
 }
+
+/** AC-16: the documents a chapter or series list names, once each, without draft prefixes. */
+export function publishedIds(ids: string[]): string[] {
+  return ['stub'];
+}
+
+/** AC-16: every document to delete with a series: each chapter and the series, published and draft. */
+export function idsToDelete(seriesId: string, chapterIds: string[]): string[] {
+  return ['stub'];
+}
+
+/** AC-16: the confirmation before a series is deleted with its chapters. */
+export function deleteSeriesDialog(title: string | undefined, chapterCount: number): PublishDialog {
+  return { title: 'stub', lines: ['stub'], confirm: 'stub' };
+}
