@@ -1,0 +1,44 @@
+name: Site is live
+
+# Every 15 minutes: is the live site more than 15 minutes behind the latest change in Sanity? If so,
+# open one site-not-live issue (GitHub emails the people watching the repository); when the site
+# catches up, close it (content-editing-know-when-live AC-9).
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: site-live
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Compare the latest change with the live site
+        id: check
+        run: node scripts/live-check.mjs
+      - name: Open or close the site-not-live issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BEHIND: ${{ steps.check.outputs.behind }}
+          BODY: ${{ steps.check.outputs.body }}
+        run: |
+          open=$(gh issue list --label site-not-live --state open --json number --jq '.[0].number')
+          if [ "$BEHIND" -gt 15 ]; then
+            if [ -z "$open" ]; then
+              gh label create site-not-live --color B60205 --description "The live site is behind Sanity" 2>/dev/null || true
+              gh issue create --title "The site didn't go live" --label site-not-live --body "$BODY"
+            fi
+          elif [ -n "$open" ]; then
+            gh issue close "$open" --comment "The site has caught up with the latest change."
+          fi

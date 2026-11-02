@@ -1,5 +1,9 @@
 ---
-status: draft
+status: implemented
+tests-commit:
+  - 487c4b0486ec2cb6f5fc8131012edb836cbdfb76
+unlocks:
+  - tests/unit/know-when-live.test.ts: the AC-3 and AC-4 wiring checks looked for a `withRemovalRecord` action wrapper in sanity.config.ts. Sanity runs Delete and Unpublish inside their own dialogs and closes the pane straight after, so a wrapper can't reliably see them finish; removals are recorded by a listener in the top bar instead (see Risks and decisions). The checks now look for that listener. The criterion is unchanged.
 ---
 
 # Know when it's live
@@ -39,7 +43,7 @@ Source: S6.n is the story's nth criterion; design and docs sections as named.
   - `src/integrations/build-info.ts` (new): an Astro integration that asks Sanity for `now()` when the build starts and writes `dist/build-info.json` when it ends (AC-2).
   - `vercel.json`: `Cache-Control: no-store` for `/build-info.json` (AC-2).
   - `sanity-studio/lib/live-status.ts` (new): the pure logic: status from the latest change and the build info, the labels, the times, and the View on site path; no `sanity` imports (AC-4 to AC-8).
-  - `sanity-studio/schemas/objects/siteStatus.ts` (new, not in the menu) and `sanity-studio/actions/recordRemoval.tsx` (new): Delete and Unpublish record `lastRemoval` (AC-3).
+  - `sanity-studio/schemas/objects/siteStatus.ts` (new, not in the menu) and `sanity-studio/actions/recordRemoval.tsx` (new): when a published item disappears (Delete or Unpublish), the editor records `lastRemoval` (AC-3).
   - `sanity-studio/components/LiveStatus.tsx` (new): the top bar status, **View on site**, and the explanation; `sanity-studio/actions/publishNote.tsx` (new): the note after Publish; `sanity.config.ts` wiring (AC-4 to AC-8).
   - `scripts/live-check.mjs` and `.github/workflows/site-live.yml` (new): the 15-minute check (AC-9).
   - Tests: `tests/unit/know-when-live.test.ts`; `docs/tutorials/going-live.md` (`runner: manual`).
@@ -56,7 +60,7 @@ Source: S6.n is the story's nth criterion; design and docs sections as named.
 - Sanity webhooks (GROQ-powered) fire on create, update and delete of published documents, skip drafts unless asked, and can POST to any URL; the free plan includes them.
 - Vercel deploy hooks start a production build of the branch's latest commit; a hook called during a build queues another build, so the last change is never lost.
 - GROQ `now()` returns Sanity's server time; a published document's `_updatedAt` is its last publish.
-- The Studio's `studio.components.navbar` renders on every screen; document actions can be wrapped to run code after Publish, Delete and Unpublish.
+- The Studio's `studio.components.navbar` renders on every screen; `useDocumentOperationEvent` reports a successful Publish while the item's pane is open; a listener on published items reports a `disappear` transition for each Delete or Unpublish.
 - The editor is served from the site, so it reads `/build-info.json` from its own origin.
 - Assumptions that could be wrong:
   - Studio asset hashes stay the same across content-only builds (so an open editor carries on). Vite names files by content, so they should.
@@ -73,6 +77,6 @@ Source: S6.n is the story's nth criterion; design and docs sections as named.
 
 ## Risks and decisions
 
-- **Deletions are recorded, not looked up.** The design has the editor ask Sanity for the latest change, deletions included. A deleted document leaves nothing to query, and Sanity's history API needs a token the scheduled check doesn't have. So the editor's Delete and Unpublish write the time to a hidden `siteStatus` item, which the public dataset, the editor and the check can all read. A deletion made outside the editor (for example from Sanity's API) isn't recorded; only the editor is used.
+- **Deletions are recorded, not looked up.** The design has the editor ask Sanity for the latest change, deletions included. A deleted document leaves nothing to query, and Sanity's history API needs a token the scheduled check doesn't have. So the editor writes the time to a hidden `siteStatus` item, which the public dataset, the editor and the check can all read; the status uses that item's `_updatedAt`, Sanity's clock, so Star's computer clock doesn't matter. The top bar listens for published items disappearing rather than wrapping Delete and Unpublish, because Sanity runs those inside their own dialogs and closes the pane straight after. A removal made while no editor is open (for example from Sanity's API) isn't recorded; only the editor is used. Two open editors record the same removal twice, which starts one extra build.
 - `useCdn: false` makes builds slightly slower to read; builds are small.
 - `contentReadAt` is taken before the first page reads content, so a change published during a build counts as not yet live, and the queued build picks it up: the status can be late, never early.

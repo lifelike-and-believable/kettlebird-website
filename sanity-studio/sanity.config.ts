@@ -2,6 +2,9 @@ import { defineConfig, defineLocaleResourceBundle } from 'sanity';
 import { structureTool } from 'sanity/structure';
 
 import { withChapters } from './actions/deleteSeries';
+import { withPublishNote } from './actions/publishNote';
+import { LiveStatus } from './components/LiveStatus';
+import { CONTENT_TYPES } from './lib/live-status';
 import { ThingsToAddBadge } from './badges/thingsToAdd';
 import { withChapterChecks } from './actions/publishChapter';
 import { CHAPTER_TEMPLATE } from './components/ChaptersList';
@@ -21,6 +24,9 @@ export default defineConfig({
   // Only the content editor, organised as Comics, Art, Writing, Shop, Commissions and Site settings
   // (content-editing-organised-editor AC-1); no query tool (sign-in AC-8).
   plugins: [structureTool({ structure })],
+  // The state of the latest change at the top right of every screen; it also records removals
+  // (content-editing-know-when-live AC-3, AC-4).
+  studio: { components: { navbar: LiveStatus } },
   // An empty list, in Star's words; Sanity has one message for every list (organised-editor AC-12).
   i18n: {
     bundles: [
@@ -64,10 +70,13 @@ export default defineConfig({
     badges: (prev, context) => (isItemType(context.schemaType) ? [...prev, ThingsToAddBadge] : prev),
     // A chapter's Publish waits for uploads and warns about changed links and missing alt text.
     // A series' Delete deletes its chapters too (AC-16).
+    // Every Publish is followed by a note that the site is updating (know-when-live AC-8).
     actions: (prev, context) => {
-      if (context.schemaType === 'comicChapter') return prev.map((action) => (action.action === 'publish' ? withChapterChecks(action) : action));
-      if (context.schemaType === 'comicSeries') return prev.map((action) => (action.action === 'delete' ? withChapters(action) : action));
-      return prev;
+      let actions = prev;
+      if (context.schemaType === 'comicChapter') actions = actions.map((action) => (action.action === 'publish' ? withChapterChecks(action) : action));
+      if (context.schemaType === 'comicSeries') actions = actions.map((action) => (action.action === 'delete' ? withChapters(action) : action));
+      if (CONTENT_TYPES.includes(context.schemaType)) actions = actions.map((action) => (action.action === 'publish' ? withPublishNote(action) : action));
+      return actions;
     }
   }
 });
