@@ -92,17 +92,41 @@ export function PagesInput(props: ArrayOfObjectsInputProps) {
     ]);
   }, []);
 
-  const onDrop = (event: DragEvent) => {
-    if (!event.dataTransfer?.files?.length) return;
-    // Handle the drop here, so files go in name order rather than the Studio's own order.
-    event.preventDefault();
-    event.stopPropagation();
+  // Dropped files go through Sanity's own drop target, which closes its "drop files here" overlay
+  // when the drop reaches it, and hands each image it accepts to onSelectFile, one call per file in
+  // the same tick. Collect them and add the batch together, so it goes in file-name order (AC-1, AC-2).
+  const dropped = useRef<File[]>([]);
+  const onSelectFile = useCallback(({ file }: { file: File }) => {
+    if (readOnly) return;
+    dropped.current.push(file);
+    if (dropped.current.length > 1) return;
+    queueMicrotask(() => {
+      const batch = dropped.current;
+      dropped.current = [];
+      addFiles(batch);
+    });
+  }, [addFiles, readOnly]);
+
+  // Sanity's drop target only passes on image files, so files that aren't images are caught here and
+  // listed as "This isn't an image file" (AC-3). A drop inside Sanity's target isn't stopped: Sanity
+  // still needs it to close its overlay. A drop outside it (the "Drop page files" box) is ours.
+  const onDropCapture = (event: DragEvent) => {
     setDragging(false);
-    if (!readOnly) addFiles(Array.from(event.dataTransfer.files));
+    const files = Array.from(event.dataTransfer?.files ?? []);
+    if (!files.length) return;
+    const insideSanityTarget = (event.target as HTMLElement).closest?.('[data-test-id="file-target"]');
+    if (!insideSanityTarget) {
+      event.preventDefault();
+      event.stopPropagation();
+      if (!readOnly) addFiles(files);
+      return;
+    }
+    const notImages = files.filter((file) => !file.type.startsWith('image/'));
+    if (!readOnly && notImages.length) addFiles(notImages);
   };
   const onDragOver = (event: DragEvent) => {
     if (!Array.from(event.dataTransfer?.types ?? []).includes('Files')) return;
-    event.preventDefault();
+    event.preventDefault(); // allows a drop outside Sanity's target; Sanity's own handler does the same inside it
     setDragging(true);
   };
 
@@ -112,7 +136,7 @@ export function PagesInput(props: ArrayOfObjectsInputProps) {
 
   return (
     <PagesContext.Provider value={context}>
-      <Stack space={3} onDropCapture={onDrop} onDragOverCapture={onDragOver} onDragLeave={() => setDragging(false)}>
+      <Stack space={3} onDropCapture={onDropCapture} onDragOverCapture={onDragOver} onDragLeave={() => setDragging(false)}>
         <Flex align="center" gap={3} wrap="wrap">
           <Button icon={UploadIcon} text="Upload pages" mode="ghost" disabled={readOnly} onClick={() => fileInput.current?.click()} />
           <input
@@ -157,7 +181,7 @@ export function PagesInput(props: ArrayOfObjectsInputProps) {
         )}
 
         <Card radius={2} tone={dragging ? 'primary' : 'default'}>
-          {props.renderDefault(props)}
+          {props.renderDefault({ ...props, onSelectFile })}
           <Card marginTop={2} padding={4} radius={2} border style={{ borderStyle: 'dashed' }}>
             <Text size={1} muted align="center">Drop page files anywhere here</Text>
           </Card>
