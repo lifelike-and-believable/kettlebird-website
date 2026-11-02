@@ -1,6 +1,6 @@
 ---
 id: design-comic-sheet-and-controls
-status: draft
+status: approved
 derived-from:
   - story-comic-reader-contact-sheet: b81881d28d35
   - story-comic-reader-play-controls: 62a27f4a8594
