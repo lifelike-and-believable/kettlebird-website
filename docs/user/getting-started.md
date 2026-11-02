@@ -1,6 +1,6 @@
 ---
 id: docs-getting-started
-status: draft
+status: approved
 derived-from:
   - design-sign-in#flow: 47aae9f612b2
   - design-sign-in#layout: 5c5debd13966
