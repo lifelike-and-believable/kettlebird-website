@@ -9,6 +9,8 @@ export interface ComicImage {
   srcset?: string;
   width: number;
   height: number;
+  /** A small version for the contact sheet (about 300 px wide); the full image when missing. */
+  thumb?: { src: string; srcset?: string };
 }
 
 export interface ComicPage {
@@ -77,7 +79,7 @@ export function chapterLabel(chapter: ComicChapter): string {
   return chapter.title ? `Chapter ${chapter.number}: ${chapter.title}` : `Chapter ${chapter.number}`;
 }
 
-function chapterShortLabel(chapter: ComicChapter): string {
+export function chapterShortLabel(chapter: ComicChapter): string {
   return chapter.number === 0 ? chapter.title || 'Chapter 0' : `Chapter ${chapter.number}`;
 }
 
