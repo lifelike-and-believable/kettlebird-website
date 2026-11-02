@@ -3,7 +3,7 @@ id: tutorial-publishing-comics
 status: draft
 runner: manual
 derived-from:
-  - docs-publishing-comics#start-a-new-comic: 2fd0efa2b68a
+  - docs-publishing-comics#start-a-new-comic: f013c43de03b
   - docs-publishing-comics#add-a-chapter: 6b9730bd5db8
   - docs-publishing-comics#add-pages: 2d60428bf922
   - docs-publishing-comics#describe-each-page: c096de4c45a0
