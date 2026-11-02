@@ -1,20 +1,22 @@
-import { visionTool } from '@sanity/vision';
 import { defineConfig } from 'sanity';
 import { structureTool } from 'sanity/structure';
 
 import { withChapters } from './actions/deleteSeries';
 import { withChapterChecks } from './actions/publishChapter';
 import { CHAPTER_TEMPLATE } from './components/ChaptersList';
+import { signInProviders, STUDIO_TITLE } from './lib/studio-settings';
 import schemaTypes from './schemas';
 
 export default defineConfig({
   name: 'kettlebirdStudio',
-  title: 'Kettlebird Creations Studio',
+  // Served at /studio on the site (design-sign-in). Only Google and E-mail / password (AC-3, AC-4).
+  title: STUDIO_TITLE,
   // Only SANITY_STUDIO_* settings reach the editor in the browser.
   projectId: process.env.SANITY_STUDIO_PROJECT_ID || '1p6w5n0l',
   dataset: process.env.SANITY_STUDIO_DATASET || 'production',
-  basePath: '/studio',
-  plugins: [structureTool(), visionTool()],
+  auth: { providers: signInProviders },
+  // Only the content editor: no query tool (AC-8).
+  plugins: [structureTool()],
   schema: {
     types: schemaTypes,
     // Add chapter on a series opens a chapter for that series with the next number (AC-11).

@@ -8,6 +8,8 @@
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build",
+    "build:studio": "npm ci --prefix sanity-studio --no-audit --no-fund && npm run build --prefix sanity-studio -- ../dist/studio --yes && node scripts/studio-page.mjs dist/studio/index.html",
+    "build:site": "npm run build && npm run build:studio",
     "preview": "astro preview",
     "check": "astro check",
     "test": "playwright test && vitest run",
