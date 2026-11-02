@@ -29,26 +29,28 @@ const currentYear = new Date().getFullYear();
 
     <header class="site-header">
       <div class="header-inner">
-        <a href="/" class="site-title-link" aria-label="Kettlebird Creations — Home">
-          <span class="site-title">Kettlebird</span>
-        </a>
-        <div class="subtitle-nav-row">
+        <!-- The title and subtitle are grouped so phones can put the menu button beside both; wider
+             screens lay them out as before, with the links beside the subtitle (design-phone-header). -->
+        <div class="header-brand">
+          <a href="/" class="site-title-link" aria-label="Kettlebird Creations — Home">
+            <span class="site-title">Kettlebird</span>
+          </a>
           <p class="site-subtitle">Comics + Illustration</p>
-          <button class="menu-toggle" aria-expanded="false" aria-controls="main-nav" aria-label="Toggle menu">
-            <span class="menu-toggle-icon"></span>
-          </button>
-          <nav id="main-nav" class="main-nav">
-            <ul class="nav-list">
-              <li><a href="/portfolio" class="nav-btn">PORTFOLIO</a></li>
-              <li><a href="/comics" class="nav-btn">COMICS</a></li>
-              <li><a href="/writing" class="nav-btn">WRITING</a></li>
-              <li><a href="/shop" class="nav-btn">SHOP</a></li>
-              <li><a href="/commissions" class="nav-btn">COMMISSIONS</a></li>
-              <li><a href="/about" class="nav-btn">ABOUT</a></li>
-              <li><a href="/news" class="nav-btn">NEWS</a></li>
-            </ul>
-          </nav>
         </div>
+        <button class="menu-toggle" aria-expanded="false" aria-controls="main-nav" aria-label="Toggle menu">
+          <span class="menu-toggle-icon"></span>
+        </button>
+        <nav id="main-nav" class="main-nav">
+          <ul class="nav-list">
+            <li><a href="/portfolio" class="nav-btn">PORTFOLIO</a></li>
+            <li><a href="/comics" class="nav-btn">COMICS</a></li>
+            <li><a href="/writing" class="nav-btn">WRITING</a></li>
+            <li><a href="/shop" class="nav-btn">SHOP</a></li>
+            <li><a href="/commissions" class="nav-btn">COMMISSIONS</a></li>
+            <li><a href="/about" class="nav-btn">ABOUT</a></li>
+            <li><a href="/news" class="nav-btn">NEWS</a></li>
+          </ul>
+        </nav>
       </div>
     </header>
 
@@ -96,14 +98,13 @@ const currentYear = new Date().getFullYear();
 </html>
 
 <style>
-  /* ── Torn-paper header — matches homepage ── */
+  /* ── Torn-paper header (design-phone-header) ──
+     As tall as its content at every width. The paper is drawn on a layer that reaches 2.2vw below the
+     header, so the image's transparent bottom strip falls outside it and the tear is the header's
+     bottom edge. The image is at least 160% of the screen's width, so every screen shows its middle
+     slice, where the tear dips at both edges (wide screens used to show its high ends). */
   .site-header {
-    background-color: transparent;
-    background-image: url('/assets/images/Paper_1_Torn.png');
-    background-repeat: no-repeat;
-    background-position: center bottom;
-    background-size: cover;
-    min-height: 300px;
+    background: none;
     position: relative;
     z-index: 100;
     overflow: visible;
@@ -112,11 +113,35 @@ const currentYear = new Date().getFullYear();
     box-shadow: none;
   }
 
+  .site-header::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 -2.2vw 0;
+    z-index: -1;
+    pointer-events: none;
+    background: url('/assets/images/Paper_1_Torn.png') no-repeat center bottom / auto max(30vw, 100%);
+  }
+
+  /* Wider screens: the title, then the subtitle with the links beside it, as before. */
   .header-inner {
     max-width: 1600px;
     margin: 0 auto;
-    padding: 2rem 1rem 0.25rem;
+    /* 22 px between the text and the highest point of the tear, as on phones: the tear's own height
+       is about 3.1vw at this image size (design-phone-header). */
+    padding: 2rem 1rem max(2.25rem, calc(22px + 3.1vw));
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+      'title title'
+      'subtitle nav';
+    align-items: center;
+    column-gap: 1rem;
   }
+
+  .header-brand { display: contents; }
+  .site-title-link { grid-area: title; }
+  .site-subtitle { grid-area: subtitle; }
+  .main-nav { grid-area: nav; justify-self: end; }
 
   .site-title-link {
     text-decoration: none;
@@ -134,18 +159,11 @@ const currentYear = new Date().getFullYear();
     display: block;
   }
 
-  .subtitle-nav-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-
   .site-subtitle {
     font-family: 'Nunito', sans-serif;
     font-size: clamp(1.5rem, 4vw, 2.5rem);
     font-weight: 600;
+    line-height: 1.25;
     margin: 0;
     color: var(--color-ink);
   }
@@ -162,6 +180,7 @@ const currentYear = new Date().getFullYear();
     padding: 0;
     gap: 0.5rem;
     flex-wrap: wrap;
+    justify-content: flex-end;
   }
 
   .nav-btn {
@@ -236,9 +255,27 @@ const currentYear = new Date().getFullYear();
       display: block;
     }
 
-    .subtitle-nav-row {
-      flex-wrap: nowrap;
+    /* Phones and small tablets: the title and subtitle on the left, the menu button beside both; with
+       enlarged text the button wraps under them. The links open as a panel under the header. */
+    .header-inner {
+      display: flex;
+      flex-wrap: wrap;
       align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem 0.75rem;
+      padding: 0.875rem 1rem max(2.25rem, calc(22px + 3.1vw));
+    }
+
+    .header-brand { display: block; min-width: 0; }
+
+    .site-title {
+      font-size: min(2.5rem, 13vw);
+      margin: 0;
+    }
+
+    .site-subtitle {
+      font-size: 1.0625rem;
+      margin-top: 0.125rem;
     }
 
     .main-nav {

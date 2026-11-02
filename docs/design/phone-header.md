@@ -31,9 +31,9 @@ The site header has a fixed minimum height of 300 px at every screen width, so t
 |---|---|---|---|
 | Phone, 360 × 740 | 300 px | 41% | about 119 px, 16% |
 | Phone, 390 × 844 | 300 px | 36% | about 119 px, 14% |
-| Tablet, 768 × 1024 (for example an iPad mini) | 300 px | 29% | about 119 px, 12% |
+| Tablet, 768 × 1024 (for example an iPad mini) | 300 px | 29% | about 127 px, 12% |
 | Tablet, 820 × 1180 | 300 px | 25% | the laptop layout, as tall as its content |
-| Laptop, 1280 × 800 | 300 px | 38% | about 237 px, 30% |
+| Laptop, 1280 × 800 | 300 px | 38% | about 244 px, 31% |
 
 ## The change (option A, recommended)
 
@@ -48,12 +48,13 @@ On screens up to and including 768 px wide, the width at which the navigation al
 ## Laptops and wider (above 768 px)
 
 - **The same layout as today:** the title, then the subtitle with the row of links beside it, at today's sizes.
-- **No blank space:** the header is as tall as its content, with just enough paper below the links for the tear. On a 1280 × 800 laptop it's about 237 px (30%), from 300 px (38%), and the tear sits right under the links (mock-up 8).
+- **No blank space:** the header is as tall as its content, with just enough paper below the links for the tear. On a 1280 × 800 laptop it's about 244 px (31%), from 300 px (38%), and the tear sits right under the links (mock-up 8).
 
 ## At every width
 
-- **No minimum height.** Under the content there's `max(2.25rem, 3.5vw)` of paper on phones, and 5 px more above 768 px, so the tear doesn't crowd the links on a laptop. That's enough for the whole tear at any width.
-- **No transparent strip.** The paper is drawn on a layer that reaches 1.5vw below the header, so the image's transparent bottom strip falls outside the header and the tear is the header's bottom edge. The layer lets clicks through, and the menu panel still opens directly under the header.
+- **No minimum height, and the same room above the tear everywhere.** Under the content there's `max(2.25rem, calc(22px + 3.1vw))` of paper: the tear's own height plus about 22 px between the text and the tear's highest point, the gap phones have. (This replaces the earlier 5 px addition for laptops; at the lead's review of the built pages, the tear on a laptop still sat about 10 px from the links.)
+- **No transparent strip.** The paper is drawn on a layer that reaches 2.2vw below the header, so the image's transparent bottom strip falls outside the header and the tear is the header's bottom edge. The layer lets clicks through, and the menu panel still opens directly under the header.
+- **The tear dips toward both edges on every screen.** The image is shown at least 160% of the screen's width, so every screen shows its middle slice. Phones always showed that slice; laptops showed the whole image, whose tear rises at both ends, which looked less balanced (the lead's review of the built pages, 2026-11-02).
 
 **Option B** (mock-up 5) drops the subtitle on phones too, for an 88 px header (10%). It isn't recommended: the subtitle tells a new visitor what the site is, and option A already saves most of the space.
 
@@ -70,7 +71,7 @@ Each mock-up is a phone screen built to match the site's header, with its fonts,
 | 5 | Option B, no subtitle: 88 px, 10% | `mockups/phone-header/5-option-b.png` |
 | 6 | Option A with text enlarged to 200%: the button moves under the title, and nothing runs off the screen | `mockups/phone-header/6-option-a-text-200.png` |
 | 7 | Today on a laptop, 1280 × 800: 300 px, 38% | `mockups/phone-header/7-laptop-today.png` |
-| 8 | After, on a laptop: about 237 px, 30% | `mockups/phone-header/8-laptop-after.png` |
+| 8 | After, on a laptop, at the design stage (the built header, with the same room above the tear as phones, is about 244 px, 31%) | `mockups/phone-header/8-laptop-after.png` |
 
 ## Layout
 
@@ -90,7 +91,7 @@ Each mock-up is a phone screen built to match the site's header, with its fonts,
 ## For the spec to check
 
 - On 360 × 740, 390 × 844 and 768 × 1024 screens, every page's header is no taller than 130 px.
-- On a 1280 × 800 screen, every page's header is no taller than 245 px, with the title at today's size (`clamp(3.5rem, 8vw, 5.5rem)`) and the subtitle and links on one row.
+- On a 1280 × 800 screen, every page's header is no taller than 250 px, with the title at today's size (`clamp(3.5rem, 8vw, 5.5rem)`) and the subtitle and links on one row.
 - At every width, nothing transparent shows inside the header: the paper reaches its top edge, and its bottom edge is the tear.
 - Up to 768 px wide, the title and the menu button are on the same row, the subtitle is shown under the title, the title links to the home page, and the button is 44 × 44 px.
 - The menu still opens and closes with `aria-expanded`, and its panel starts directly under the header.
