@@ -1,6 +1,6 @@
 ---
 id: docs-editing-your-site
-status: draft
+status: approved
 derived-from:
   - design-organised-editor#flow: f3f8c92099eb
   - design-organised-editor#sections-and-fields: e4b9d4c6ba10
