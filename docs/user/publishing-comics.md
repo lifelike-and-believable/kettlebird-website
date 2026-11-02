@@ -5,6 +5,7 @@ derived-from:
   - design-comic-publish-pages: 9225936f631c
   - story-comic-reader-publish-pages: c43f60cc7f9f
   - design-comic-start-reading#what-star-enters: f8ef076087b9
+  - design-organised-editor#sections-and-fields: e4b9d4c6ba10
 ---
 
 # Publishing comic pages and chapters
@@ -12,7 +13,7 @@ derived-from:
 <!-- docs/user/publishing-comics.md. For Star (persona-artist): how to put comic pages on the site
 with the editor at /studio. Written from design-comic-publish-pages. -->
 
-Everything here happens in the editor: add `/studio` to the end of your site's address and sign in (your getting-started guide covers signing in the first time). **Preview**, **Publish**, and the update status are at the top right of the editor.
+Everything here happens in the editor, at `kettlebird.com/studio` (signing in is in [Getting started](getting-started.md)). **Publish** is at the bottom of the open item, and the update status is at the top right.
 
 When you publish, the site updates on its own, usually within a minute or two. You never need to resize or export your pages for the site; the only thing to check is that their file names sort in reading order (see "Add pages").
 
@@ -20,7 +21,7 @@ When you publish, the site updates on its own, usually within a minute or two. Y
 
 1. In the editor's menu, choose **Comics**, then **New series**.
 2. Type the comic's **Title**. The **Web address** fills itself in from the title; that's the end of the comic's link, like `/comics/moonlit-errands` after your site's address. You can change it now, but once people have shared links, leave it alone.
-3. Add a **Cover**, a **Description**, the **Status** (**Ongoing**, **Complete**, or **On Hiatus**), and the **Type** (**Original** or **Fancomic**).
+3. Add a **Cover**, a **Description**, the **Status** (**Ongoing**, **Complete**, or **On Hiatus**), and the **Kind** (**Original** or **Fancomic**).
 4. Choose **Add chapter** to add the first chapter (below). When you publish, the editor publishes the new comic along with it.
 
 If your comic doesn't have chapters, add one chapter and leave its **Title** empty. Readers won't see a chapter list, and you can add chapters later without breaking anyone's links.
