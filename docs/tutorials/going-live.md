@@ -15,7 +15,7 @@ derived-from:
 it needs a signed-in editor, the Sanity webhook and the Vercel deploy hook, which CI doesn't have.
 Before you start: the lead has done the setup in docs/specs/content-editing-know-when-live.md (the
 deploy hook "Sanity publish" and the webhook "Rebuild site"), and this change is deployed. Use the
-live address, https://kettlebird-website.vercel.app until the move to kettlebird.com. Use a test
+live address, https://newsite.kettlebird.com until the move to kettlebird.com. Use a test
 item you can delete afterwards, such as a portfolio piece called "Live test". -->
 
 You'll publish a change, watch the status at the top right until it says Live, open the page, publish several changes in a row, remove an item, and see what Didn't go live looks like.

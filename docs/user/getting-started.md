@@ -16,7 +16,7 @@ in to the editor at /studio for the first time. Written from design-sign-in. The
 
 Everything on your site (comics, art, writing, the shop, commissions) is changed in one place: the editor, at **kettlebird.com/studio**. You need nothing else installed, and you never need to visit Sanity, the service the editor runs on, except once to accept your invitation.
 
-Until the site moves to kettlebird.com, the editor is at **kettlebird-website.vercel.app/studio** instead. Everything below works the same there. After the move, that address takes you to the new one, and you sign in once more, the same way.
+Until the site moves to kettlebird.com, the site is at **newsite.kettlebird.com**, and the editor at **newsite.kettlebird.com/studio**. Everything below works the same there. After the move, that address takes you to the new one, and you sign in once more, the same way.
 
 ## Accept your invitation
 

@@ -8,7 +8,7 @@ derived-from:
   - design-comic-publish-pages: 9225936f631c
   - design-site-settings: 156335124dd1
   - design-know-when-live: b7f62b452b90
-  - design-sign-in: 8a54c1540982
+  - design-sign-in: e414f49976a1
   - persona-fan#goals: 2b047e4cae5d
   - persona-artist#frustrations: ef88538c418e
 ---
