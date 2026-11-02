@@ -86,6 +86,8 @@ This is where you open or close commissions, and change your about page, the hom
 
 **Publish** is at the bottom of the open item. Until you publish, your changes are saved as a draft: visitors don't see it, and the site doesn't change. After you choose **Publish**, the site updates on its own, usually within a minute or two, and the status at the top right says when your change is live: see [When your change is live](going-live.md).
 
+To check your change on its page before you publish it, read [See it before you publish](previewing.md).
+
 ## Remove something
 
 1. Open the item.

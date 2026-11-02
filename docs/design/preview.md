@@ -82,7 +82,7 @@ Low-fidelity. The left side is the editor (Sanity Studio), with the forms from d
 
 Mock-up 9 shows the first three:
 - **No portfolio section:** "Choose a portfolio section to see where this piece goes."
-- **No web address on a series** (or the chapter's series has none): "Add a web address so readers can find this series. The preview needs it too."
+- **No web address on a series** (or the chapter's series has none): "Add a web address so readers can find this comic. The preview needs it too." (the same words as the series form's message, lead 2026-11-02)
 - **Can't load** (no connection, or the site doesn't answer): "Can't show the preview right now." with **Try again**, and "Your changes are saved. You can still publish."
 
 Also:
