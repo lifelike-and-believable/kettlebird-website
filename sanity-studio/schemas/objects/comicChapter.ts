@@ -2,13 +2,14 @@ import { defineArrayMember, defineField, defineType } from 'sanity';
 import { PageItemNav } from '../../components/PageItemNav';
 import { PagesInput } from '../../components/PagesInput';
 import { altTextRule, duplicateChapterMessage } from '../../lib/comic-pages';
+import { ITEM_NAMES } from '../../lib/editor-content';
 
 // A chapter of a comic series and its pages, in reading order.
 // Design: docs/design/comic-start-reading.md ("What Star enters") and
 // docs/design/comic-publish-pages.md (uploading, page panel, publish checks).
 export default defineType({
   name: 'comicChapter',
-  title: 'Chapter',
+  title: ITEM_NAMES.comicChapter,
   type: 'document',
   fields: [
     defineField({

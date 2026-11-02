@@ -1,5 +1,7 @@
 ---
-status: draft
+status: implemented
+tests-commit:
+  - 5f3cf5ff6e58723c7fd7791c3c8f8fa0ed201fe7
 ---
 
 # An editor organised around Star's work
@@ -41,7 +43,7 @@ Source: S3.n is the story's nth criterion; design and docs sections as named.
   - `sanity-studio/lib/editor-content.ts` (new): every section, label, help text, option label, message and list detail, with no `sanity` imports, so the site's Vitest can test them (AC-1 to AC-12).
   - `sanity-studio/structure.ts` (new): the menu from those sections, with each list's ordering and **New …** template (AC-1, AC-2, AC-10).
   - `sanity-studio/components/MissingSummary.tsx` (new): the box at the top of an item; `sanity-studio/badges/thingsToAdd.tsx` (new): the badge beside **Publish**; `sanity-studio/components/SiteSettingsNote.tsx` (new) (AC-6, AC-10).
-  - The schemas: labels, help text, required rules and messages, hidden fields, option labels, list previews (AC-2 to AC-8).
+  - The schemas: labels, help text, required rules and messages, hidden fields, option labels, list previews (AC-2 to AC-8). `lib/comic-pages.ts`'s `altTextRule` takes the warning's wording, so pieces use their own (AC-7).
   - `sanity-studio/sanity.config.ts`: the structure, the create menu, the badge, and Sanity's empty-list text (AC-1, AC-6, AC-11, AC-12).
   - `src/lib/shop.ts` (new) and `src/pages/shop.astro`: the shop's sections and headings (AC-9).
   - Tests: `tests/unit/organised-editor.test.ts`; `docs/tutorials/editing-your-site.md` (`runner: manual`).
@@ -54,12 +56,15 @@ Source: S3.n is the story's nth criterion; design and docs sections as named.
   - Sanity shows a field's validation message when it's empty and the item can't be published, and keeps hidden fields' stored values (both documented behaviour).
   - The **New …** template title is what the list's create button and menu show.
   - Ordering by date descending puts items with no date last.
+  - `useValidationStatus` (for the badge) is exported but marked internal in Sanity's types; Sanity's own validation panel uses it. If a Sanity update changes it, the badge stops showing and the box at the top still works (it reads the form's own validation).
 
 ## Non-functional requirements
 
 - No new controls of Sanity's own kinds: the box and badge are text, so screen readers read them in place.
 
 ## Delivery
+
+- Edge cases for the list details and the missing-fields helper were added after mutation testing (`tests/unit/organised-editor-edges.test.ts`), which also removed two checks no input could reach.
 
 - Plan item: epic-content-editing, story 3. Ships before Star is invited (design-sign-in).
 

@@ -1,67 +1,69 @@
 import { defineField, defineType } from 'sanity';
+import { MissingSummary } from '../../components/MissingSummary';
+import { fieldText, ITEM_NAMES, listDetail, requiredMessage, SHOP_SECTION_OPTIONS } from '../../lib/editor-content';
 
+// A product (Shop). Labels and help: design-organised-editor (Shop).
 export default defineType({
   name: 'product',
-  title: 'Product',
+  title: ITEM_NAMES.product,
   type: 'document',
+  components: { input: MissingSummary },
   fields: [
     defineField({
       name: 'name',
-      title: 'Name',
       type: 'string',
-      validation: (Rule) => Rule.required()
-    }),
-    defineField({
-      name: 'slug',
-      title: 'Slug',
-      type: 'slug',
-      options: { source: 'name', maxLength: 120 }
-    }),
-    defineField({
-      name: 'price',
-      title: 'Price',
-      type: 'string'
-    }),
-    defineField({
-      name: 'description',
-      title: 'Description',
-      type: 'text'
+      ...fieldText('product', 'name'),
+      validation: (Rule) => Rule.required().error(requiredMessage('product', 'name')),
     }),
     defineField({
       name: 'category',
-      title: 'Category',
       type: 'string',
-      options: {
-        list: [
-          { title: 'Print', value: 'print' },
-          { title: 'Sticker', value: 'sticker' },
-          { title: 'Digital', value: 'digital' },
-          { title: 'Commission', value: 'commission' }
-        ]
-      }
+      ...fieldText('product', 'category'),
+      options: { list: SHOP_SECTION_OPTIONS, layout: 'radio' },
+      validation: (Rule) => Rule.required().error(requiredMessage('product', 'category')),
+    }),
+    defineField({
+      name: 'price',
+      type: 'string',
+      ...fieldText('product', 'price'),
     }),
     defineField({
       name: 'images',
-      title: 'Images',
       type: 'array',
-      of: [{ type: 'image', options: { hotspot: true } }]
+      of: [{ type: 'image', options: { hotspot: true } }],
+      ...fieldText('product', 'images'),
     }),
     defineField({
-      name: 'inventory',
-      title: 'Inventory (optional)',
-      type: 'number'
+      name: 'description',
+      type: 'text',
+      ...fieldText('product', 'description'),
     }),
     defineField({
       name: 'kofiLink',
-      title: 'Ko-fi Link',
-      type: 'url'
+      type: 'url',
+      ...fieldText('product', 'kofiLink'),
+    }),
+    // Hidden, values kept: the shop doesn't use them yet (the shop epic).
+    defineField({
+      name: 'slug',
+      type: 'slug',
+      hidden: true,
+      options: { source: 'name', maxLength: 120 },
     }),
     defineField({
       name: 'tags',
-      title: 'Tags',
       type: 'array',
+      hidden: true,
       of: [{ type: 'string' }],
-      options: { layout: 'tags' }
-    })
-  ]
+    }),
+    defineField({
+      name: 'inventory',
+      type: 'number',
+      hidden: true,
+    }),
+  ],
+  preview: {
+    select: { title: 'name', media: 'images.0', category: 'category' },
+    prepare: ({ title, media, category }) => ({ title, media, subtitle: listDetail('product', { category }) }),
+  },
 });

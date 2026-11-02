@@ -179,6 +179,6 @@ export interface RuleLike<R> { custom(fn: (value: unknown) => true | string): R;
  * AC-8: a page without alt text is a warning, never an error, so Publish stays available. Sanity
  * ignores a `level` returned from a custom check; only `.warning()` on the rule makes it a warning.
  */
-export function altTextRule<R extends RuleLike<R>>(rule: R): R {
-  return rule.custom((value) => (value && String(value).trim() ? true : ALT_TEXT_WARNING)).warning();
+export function altTextRule<R extends RuleLike<R>>(rule: R, message: string = ALT_TEXT_WARNING): R {
+  return rule.custom((value) => (value && String(value).trim() ? true : message)).warning();
 }
