@@ -1,6 +1,6 @@
 ---
 id: design-comic-share-and-announce
-status: draft
+status: approved
 derived-from:
   - story-comic-reader-newest-and-share: 2900c6fe8f4e
   - story-comic-reader-assistive-technology: 1db666e12004
