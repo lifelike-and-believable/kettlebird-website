@@ -5,7 +5,7 @@ runner: manual
 derived-from:
   - docs-publishing-comics#start-a-new-comic: f013c43de03b
   - docs-publishing-comics#add-a-chapter: 6b9730bd5db8
-  - docs-publishing-comics#add-pages: 2d60428bf922
+  - docs-publishing-comics#add-pages: 0114dfedb96c
   - docs-publishing-comics#describe-each-page: c096de4c45a0
   - docs-publishing-comics#publish: ea852ae62524
   - docs-publishing-comics#if-links-will-change: 9488ad00a0a3
@@ -26,7 +26,7 @@ You'll start a comic, add a chapter, upload its pages, describe them, and publis
 
 1. Open the editor at `/studio` and sign in. Choose **Comic Series**, then create a new one.
 2. Type `Tutorial Comic` into **Title**. Choose **Generate** next to **Web address**. You see `tutorial-comic`.
-3. Under **Chapters**, you see "No chapters yet." Choose **Add chapter**. A new chapter opens, and its **Chapter** field shows 1.
+3. Under **Chapters**, you see "No chapters yet." Choose **Add chapter**. A new chapter opens beside the series, headed "Tutorial Comic · New chapter", and its **Chapter** field shows 1.
 4. Type `The Kettle` into **Title**.
 5. Choose **Upload pages** and pick page-10.png, page-2.png, page-1.png and notes.txt together. While they upload, **Publish** reads "Uploading 1 of 3…" (or similar) and can't be pressed.
 6. When the uploads finish, the pages are in the order page-1, page-2, page-10. notes.txt is listed with "This isn't an image file" and **Remove**. Choose **Remove**.

@@ -29,7 +29,7 @@ design-comic-publish-pages; this design places them in the menu. -->
    - a product's shop section;
    - a commission type's price range.
 3. Star chooses an item, or a **New …** button. The item opens beside the list, with every field's label and help text, and **Publish** at the bottom, where Sanity puts it (mock-ups 1, 2, 4, 5 and 6).
-4. In **Comics**, a series shows its **Chapters** in number order. Choosing one opens the chapter and its pages (mock-up 1; the chapter itself is in design-comic-publish-pages). **Add chapter** starts a chapter that already belongs to the series.
+4. In **Comics**, a series shows its **Chapters** in number order. Choosing one opens the chapter and its pages beside the series, so the series stays in view (mock-ups 1 and 9; the chapter itself is in design-comic-publish-pages). **Add chapter** starts a chapter that already belongs to the series, in the same place. See "Series and chapters".
 5. If something required is missing, **Publish** can't be pressed. The item lists what to add, and each field shows its own message (mock-up 3).
 
 ## Mock-ups
@@ -46,6 +46,7 @@ Low-fidelity. The editor is Sanity Studio; this design sets its menu, the labels
 | 6 | **Commissions**: a commission type | `mockups/organised-editor/6-commissions.png` |
 | 7 | An empty section | `mockups/organised-editor/7-empty-section.png` |
 | 8 | **Site settings** before the site-settings update | `mockups/organised-editor/8-site-settings.png` |
+| 9 | A chapter open beside its series: Comics › Kettle Tales › Chapter 2 | `mockups/organised-editor/9-chapter-beside-series.png` |
 
 ## Sections and fields
 
@@ -61,7 +62,7 @@ Each table is the whole form, in order: the label as Star sees it, its help text
 | Description | A sentence or two about the series, shown on its page. | |
 | Status | Ongoing, Complete, or On Hiatus. Shown as a tag, and in the message at the end of the newest page. | |
 | Kind | Original or Fancomic, shown as a tag. | |
-| Chapters | In number order. Choose one to open it and its pages. | |
+| Chapters | In number order. Choose one to open it beside the series. | |
 
 **Art** (a piece in the portfolio) (mock-up 2)
 
@@ -127,6 +128,15 @@ Whether commissions are open is in **Site settings** (story-content-editing-site
 - Help text sits under each label, always visible.
 - No label or help text uses a developer's word: not "slug", "reference", "document", "schema", "array", "category", or "boolean". The words for things are series, chapter, page, piece, story, product, and commission type, and "Kind" for a series' Original or Fancomic.
 - Sanity's own menus that create or find items ("Create new", search) offer only the same six kinds of item, with the same names.
+
+## Series and chapters
+
+Added after the lead's look at the editor (2026-11-02): with Sanity's default menu, Chapter appeared as its own entry above Comic Series, as if chapters were separate from their series. The organised menu (above) already removes the Chapter entry. This keeps the link between a chapter and its series in view while Star works on it (mock-up 9):
+
+- A chapter is opened from its series: choosing a chapter in the series' **Chapters**, or **Add chapter**, opens it in a pane to the right of the series. The panes read, left to right, **Comics**, the series, then the chapter, so the series stays on screen.
+- The chapter's pane is headed with the series' name and the chapter: "Kettle Tales · Chapter 2: The Long Road" (a new chapter: "Kettle Tales · New chapter").
+- Choosing another chapter replaces the one on the right; closing it leaves the series open.
+- A chapter is still never listed on its own in the menu or in "Create new". If Star finds a chapter through Sanity's search, it opens on its own, headed "Chapter 2: The Long Road" with the series' name under it, as Sanity opens search results.
 
 ## States and errors
 

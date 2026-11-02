@@ -4,7 +4,7 @@ status: approved
 derived-from:
   - story-content-editing-preview: be2784e6f165
   - design-cms#decision: 889c200357ba
-  - design-organised-editor: c014dfe64fbc
+  - design-organised-editor: 0648b68b6320
   - design-comic-publish-pages: 9225936f631c
   - design-site-settings: 156335124dd1
   - design-know-when-live: b7f62b452b90

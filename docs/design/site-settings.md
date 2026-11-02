@@ -3,7 +3,7 @@ id: design-site-settings
 status: approved
 derived-from:
   - story-content-editing-site-settings: bf5491c1a296
-  - design-organised-editor: c014dfe64fbc
+  - design-organised-editor: 0648b68b6320
   - persona-artist#goals: f3044c738f84
   - persona-artist#frustrations: ef88538c418e
 ---
