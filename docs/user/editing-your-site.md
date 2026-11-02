@@ -2,8 +2,8 @@
 id: docs-editing-your-site
 status: approved
 derived-from:
-  - design-organised-editor#flow: f3f8c92099eb
-  - design-organised-editor#sections-and-fields: e4b9d4c6ba10
+  - design-organised-editor#flow: c41806ea6111
+  - design-organised-editor#sections-and-fields: 20d25885468d
   - design-organised-editor#layout: 39a5a7b648dc
   - design-organised-editor#states-and-errors: 1685ced558b7
   - story-content-editing-organised-editor: 854514008232
@@ -21,7 +21,7 @@ Every field has a short note under its name saying what it does on the site. Fie
 
 ## Comics
 
-Your series, newest first, each with its status. Choose a series to see its details and its **Chapters**, in number order; choose a chapter to open it and its pages. Everything about comics, from starting a series to uploading pages, is in [Publishing comic pages and chapters](publishing-comics.md).
+Your series, newest first, each with its status. Choose a series to see its details and its **Chapters**, in number order; choose a chapter to open it and its pages beside the series, headed with both names, like "Kettle Tales · Chapter 2: The Long Road". The series stays open on the left. Everything about comics, from starting a series to uploading pages, is in [Publishing comic pages and chapters](publishing-comics.md).
 
 ## Art
 

@@ -5,7 +5,7 @@ derived-from:
   - design-comic-publish-pages: 9225936f631c
   - story-comic-reader-publish-pages: c43f60cc7f9f
   - design-comic-start-reading#what-star-enters: f8ef076087b9
-  - design-organised-editor#sections-and-fields: e4b9d4c6ba10
+  - design-organised-editor#sections-and-fields: 20d25885468d
 ---
 
 # Publishing comic pages and chapters
@@ -38,7 +38,7 @@ To move a chapter, change its **Chapter** number. If readers may have shared lin
 
 ## Add pages
 
-1. In the chapter (a new chapter opens straight away; otherwise choose it in the comic's **Chapters** list), choose **Upload pages** and pick your page files, or drag them from your computer anywhere onto the pages.
+1. In the chapter (a new chapter opens straight away beside the comic; otherwise choose it in the comic's **Chapters** list), choose **Upload pages** and pick your page files, or drag them from your computer anywhere onto the pages.
 2. Upload your original files, as they are, even at print resolution: PNG, JPEG, and TIFF files all work. The site makes smaller copies for readers' screens. Photoshop (PSD) and PDF files aren't page images; save those as PNG first.
 3. New pages go after the pages already there, in file-name order: name your files so they sort in reading order, like `page-01`, `page-02`. (Numbers sort as numbers, so `page-2` comes before `page-10`.)
 4. To change the order, drag a page to its new place.
