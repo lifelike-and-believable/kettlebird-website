@@ -80,8 +80,8 @@ const listChapters = showsChapterList(series);
     gap: 1rem 2rem;
   }
 
-  /* Phones: title first, cover capped at a fifth of the screen height (the design allows up to a third),
-     so Start reading shows without scrolling below the site's tall phone header. */
+  /* Phones: title first, cover no taller than a third of the screen (design-comic-start-reading), with
+     Start reading still on the first screen of a 360 x 640 phone. */
   .series__details { display: contents; }
   .series__title { order: 1; margin: 0; }
   .series__cover { order: 2; }
@@ -93,7 +93,7 @@ const listChapters = showsChapterList(series);
   .series__cover img,
   .series__cover-placeholder {
     display: block;
-    max-height: 20vh;
+    max-height: calc(100vh / 3);
     width: auto;
     max-width: 100%;
     aspect-ratio: 5 / 7;
@@ -102,7 +102,7 @@ const listChapters = showsChapterList(series);
   }
 
   .series__cover-placeholder {
-    height: 20vh;
+    height: calc(100vh / 3);
     display: flex;
     align-items: center;
     justify-content: center;

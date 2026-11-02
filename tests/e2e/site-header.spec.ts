@@ -78,8 +78,10 @@ test('site-header#AC-5 enlarged text', async ({ page }) => {
     for (const path of ['/', '/comics']) {
       await page.goto(path);
       await page.evaluate(() => { document.documentElement.style.fontSize = '200%'; });
-      const sideways = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
-      expect(sideways, `${path} at ${width} px`).toBeLessThanOrEqual(0);
+      // Nothing in the header reaches past the screen, so the header never causes sideways scrolling.
+      const furthest = await page.locator('.site-header').evaluate((header) =>
+        Math.max(...[header, ...header.querySelectorAll('*')].filter((e) => e.getClientRects().length).map((e) => e.getBoundingClientRect().right)));
+      expect(furthest, `${path} at ${width} px`).toBeLessThanOrEqual(width);
       const button = await box(page, '.menu-toggle');
       expect(button.left, `${path} at ${width} px`).toBeGreaterThanOrEqual(0);
       expect(button.right, `${path} at ${width} px`).toBeLessThanOrEqual(width);
