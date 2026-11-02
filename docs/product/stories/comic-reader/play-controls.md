@@ -1,6 +1,6 @@
 ---
 id: story-comic-reader-play-controls
-status: draft
+status: approved
 derived-from:
   - epic-comic-reader#outcome: b4076be3edb8
   - story-comic-reader-turn-pages: 8d3e174e5578

@@ -1,6 +1,6 @@
 ---
 id: story-comic-reader-contact-sheet
-status: draft
+status: approved
 derived-from:
   - epic-comic-reader#outcome: b4076be3edb8
   - persona-fan#goals: 2b047e4cae5d
