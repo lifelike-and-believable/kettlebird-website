@@ -7,6 +7,8 @@ import type { ComicImage, ComicSeries, SeriesStatus, SeriesType } from './model'
 // Widths the reader requests from the image service; never the print-resolution original.
 const PAGE_WIDTHS = [480, 800, 1200, 1600];
 const COVER_WIDTHS = [300, 500, 800];
+// The contact sheet's small pictures (design-comic-sheet-and-controls): never the full pages.
+const THUMB_WIDTHS = [150, 300];
 
 interface SanityImage {
   asset?: { _ref: string };
@@ -59,7 +61,8 @@ export function fromSanity(raw: SanitySeries): ComicSeries {
       title: c.title || undefined,
       pages: (c.pages ?? []).flatMap((p) => {
         const image = sanityImage(p, PAGE_WIDTHS);
-        return image ? [{ image, altText: p.altText }] : [];
+        const thumb = sanityImage(p, THUMB_WIDTHS);
+        return image ? [{ image: { ...image, thumb: thumb && { src: thumb.src, srcset: thumb.srcset } }, altText: p.altText }] : [];
       }),
     })),
   };

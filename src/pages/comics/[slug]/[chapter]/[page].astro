@@ -1,7 +1,8 @@
 ---
-// Reader page: one comic page, with Back to series, the location line, and page-turn links.
-// Designs: docs/design/comic-start-reading.md, docs/design/comic-turn-pages.md.
-// Spec: docs/specs/comic-reader-start-and-turn.md.
+// Reader page: one comic page, with Back to series, All pages, the location line, and the
+// player-style controls. Designs: docs/design/comic-start-reading.md, docs/design/comic-turn-pages.md,
+// docs/design/comic-sheet-and-controls.md (which replaces the Previous page / Next page pair).
+// Specs: docs/specs/comic-reader-start-and-turn.md, docs/specs/comic-reader-sheet-and-controls.md.
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import { getComicSeries } from '../../../../lib/comics/source';
 import {
@@ -13,6 +14,7 @@ import {
   tabTitle,
   type ReaderPage,
 } from '../../../../lib/comics/model';
+import { allPagesHref, playControls, type ControlKind } from '../../../../lib/comics/navigation';
 
 export async function getStaticPaths() {
   const series = await getComicSeries();
@@ -28,6 +30,16 @@ const { entry, nextImage } = Astro.props as { entry: ReaderPage; nextImage?: Rea
 const back = seriesPath(entry.series.slug!);
 const image = entry.page.image;
 const end = entry.isLast ? endNote(entry.series.status) : undefined;
+const controls = playControls(entry);
+const allPages = allPagesHref(entry);
+// Drawn arrowheads: phones draw characters like ⏭ as emoji of their own (design, Layout).
+const ICONS: Record<ControlKind, { viewBox: string; d: string }> = {
+  first: { viewBox: '0 0 32 24', d: 'M30 4 L18 12 L30 20 Z M16 4 L4 12 L16 20 Z' },
+  previous: { viewBox: '0 0 24 24', d: 'M17 4 L5 12 L17 20 Z' },
+  next: { viewBox: '0 0 24 24', d: 'M7 4 L19 12 L7 20 Z' },
+  newest: { viewBox: '0 0 32 24', d: 'M2 4 L14 12 L2 20 Z M16 4 L28 12 L16 20 Z' },
+};
+const TURNS: Partial<Record<ControlKind, string>> = { previous: 'previous', next: 'next' };
 ---
 
 <BaseLayout title={tabTitle(entry)} description={`${entry.series.title}, a comic by Star Goldberg.`}>
@@ -37,6 +49,12 @@ const end = entry.isLast ? endNote(entry.series.status) : undefined;
   <div class="reader">
     <div class="reader__bar">
       <a href={back} class="reader__back">Back to series</a>
+      {allPages && (
+        <a href={allPages} class="reader__all" aria-label="All pages in this chapter">
+          <span class="reader__grid" aria-hidden="true">{Array.from({ length: 9 }, () => <i></i>)}</span>
+          All pages
+        </a>
+      )}
       <h1 class="reader__location">{locationLine(entry)}</h1>
     </div>
 
@@ -59,20 +77,42 @@ const end = entry.isLast ? endNote(entry.series.status) : undefined;
       )}
     </div>
 
-    <nav class="reader__turns" aria-label="Page navigation">
-      {entry.previousPath
-        ? <a href={entry.previousPath} rel="prev" class="reader__turn" data-turn="previous">Previous page</a>
-        : <span></span>}
-      {entry.nextPath
-        ? <a href={entry.nextPath} rel="next" class="reader__turn reader__turn--next" data-turn="next">Next page</a>
-        : (
-          <div class="reader__end">
-            <p class="reader__end-heading">{end!.heading}</p>
-            <p>{end!.line}</p>
-            <a href={back}>Back to series</a>
-          </div>
-        )}
-    </nav>
+    {controls.length > 0 && (
+      <div class="reader__controls-box">
+        <nav class="reader__controls" aria-label="Page navigation">
+          {controls.map((c) => {
+            const icon = ICONS[c.kind];
+            const body = (
+              <>
+                <svg viewBox={icon.viewBox} width={c.kind === 'first' || c.kind === 'newest' ? 30 : 26} height="24" aria-hidden="true" focusable="false">
+                  <path d={icon.d} fill="currentColor" />
+                </svg>
+                <span class="reader__control-caption">{c.caption}</span>
+                <span class="reader__control-tip" aria-hidden="true">{c.name}</span>
+              </>
+            );
+            return c.path ? (
+              <a
+                href={c.path}
+                class={`reader__control reader__control--${c.kind}`}
+                aria-label={c.name}
+                rel={c.kind === 'previous' ? 'prev' : c.kind === 'next' ? 'next' : undefined}
+                data-turn={TURNS[c.kind]}
+              >{body}</a>
+            ) : (
+              <a role="link" aria-disabled="true" aria-label={c.name} class={`reader__control reader__control--${c.kind} is-off`}>{body}</a>
+            );
+          })}
+        </nav>
+      </div>
+    )}
+    {end && (
+      <div class="reader__end">
+        <p class="reader__end-heading">{end.heading}</p>
+        <p>{end.line}</p>
+        <a href={back}>Back to series</a>
+      </div>
+    )}
   </div>
 
   <script is:inline>
@@ -141,16 +181,44 @@ const end = entry.isLast ? endNote(entry.series.status) : undefined;
     margin: 0 auto;
     padding: 0.5rem 0.5rem 2rem;
   }
+  /* The page around the reader already has side padding; on a narrow phone, don't add more, so the
+     controls' captions fit even with enlarged text. */
+  @media (max-width: 480px) {
+    .reader { padding-inline: 0; }
+  }
 
   .reader__bar {
     display: flex;
     flex-wrap: wrap;
-    align-items: baseline;
+    align-items: center;
     justify-content: space-between;
     gap: 0.25rem 1rem;
     padding: 0.5rem 0.25rem;
   }
   .reader__back { font-family: 'Nunito', sans-serif; font-weight: 700; color: var(--color-ink); }
+  .reader__all {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 44px;
+    padding: 0.3rem 0.6rem;
+    border: 2px solid var(--color-ink);
+    background: var(--color-beige);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    color: var(--color-ink);
+    text-decoration: none;
+  }
+  .reader__grid { display: inline-grid; grid-template-columns: repeat(3, 5px); gap: 2px; }
+  .reader__grid i { display: block; width: 5px; height: 5px; background: var(--color-ink); }
+  /* Phones: Back to series and All pages on the first line, the location line under them. */
+  @media (max-width: 699px) {
+    .reader__location { flex-basis: 100%; }
+  }
+  @media (min-width: 700px) {
+    .reader__all { order: 3; }
+    .reader__location { margin-right: auto; }
+  }
   .reader__location {
     margin: 0;
     font-family: 'DM Mono', monospace;
@@ -163,9 +231,10 @@ const end = entry.isLast ? endNote(entry.series.status) : undefined;
     position: relative;
     margin: 0 auto;
     width: 100%;
-    /* Fits the window below the reader bar, with room for the page-turn links. */
-    max-height: calc(100vh - 8.5rem);
-    max-width: min(100%, calc((100vh - 8.5rem) * var(--page-ratio, 0.6667)));
+    /* Fits the window below the reader bar (with All pages) and above the controls, so on a
+       360 × 640 phone both are on the first screen. */
+    max-height: calc(100vh - 12.5rem);
+    max-width: min(100%, calc((100vh - 12.5rem) * var(--page-ratio, 0.6667)));
     background: var(--color-paper-dark);
   }
   .reader__loading {
@@ -208,27 +277,76 @@ const end = entry.isLast ? endNote(entry.series.status) : undefined;
     .reader__edge:hover { opacity: 0.6; background: rgba(245, 241, 232, 0.4); }
   }
 
-  .reader__turns {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.75rem;
+  .reader__controls-box {
+    container-type: inline-size;
     max-width: 640px;
     margin: 1rem auto 0;
   }
-  .reader__turn {
+  .reader__controls {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.5rem;
+  }
+  /* When the captions don't fit on one row (enlarged text on a narrow phone), two by two:
+     Previous and Next on top, First and Newest under them. */
+  @container (max-width: 17rem) {
+    .reader__controls { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .reader__control--previous { order: 1; }
+    .reader__control--next { order: 2; }
+    .reader__control--first { order: 3; }
+    .reader__control--newest { order: 4; }
+  }
+  .reader__control {
+    position: relative;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 48px;
+    gap: 2px;
+    min-height: 56px;
+    padding: 0.25rem 0;
     border: 3px solid var(--color-ink);
     background: var(--color-beige);
-    font-family: 'Nunito', sans-serif;
-    font-weight: 700;
     color: var(--color-ink);
     text-decoration: none;
   }
-  .reader__turn--next { background: var(--color-yellow); grid-column: 2; }
-  .reader__end { grid-column: 2; text-align: center; }
+  .reader__control svg { height: 24px; flex: none; }
+  .reader__control-caption {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 0.8rem;
+    line-height: 1.1;
+    text-align: center;
+  }
+  /* A control that can't be used keeps its place, dashed and faded. */
+  .reader__control.is-off {
+    border-style: dashed;
+    border-color: rgba(43, 43, 43, 0.4);
+    color: rgba(43, 43, 43, 0.45);
+  }
+  /* The full name, above the control, on hover and keyboard focus. */
+  .reader__control-tip {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    padding: 0.25rem 0.5rem;
+    background: var(--color-ink);
+    color: var(--color-beige);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+  .reader__control--first .reader__control-tip { left: 0; transform: none; }
+  .reader__control--newest .reader__control-tip { left: auto; right: 0; transform: none; }
+  .reader__control:hover .reader__control-tip,
+  .reader__control:focus-visible .reader__control-tip { display: block; }
+
+  .reader__end { max-width: 640px; margin: 0.75rem auto 0; text-align: center; }
   .reader__end p { margin: 0 0 0.25rem; }
   .reader__end-heading { font-family: 'Nunito', sans-serif; font-weight: 700; }
 

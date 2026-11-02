@@ -1,0 +1,24 @@
+---
+// A page's contact sheet: its chapter's pages, with the page the fan came from marked.
+// Design: docs/design/comic-sheet-and-controls.md. Spec: docs/specs/comic-reader-sheet-and-controls.md.
+import ContactSheet from '../../../../../components/comics/ContactSheet.astro';
+import { getComicSeries } from '../../../../../lib/comics/source';
+import { readerPages } from '../../../../../lib/comics/model';
+import { pageSheet, pageSheetPath } from '../../../../../lib/comics/navigation';
+
+export async function getStaticPaths() {
+  const series = await getComicSeries();
+  return series.flatMap((s) =>
+    readerPages(s)
+      .filter((entry) => pageSheetPath(entry))
+      .map((entry) => ({
+        params: { slug: s.slug!, chapter: String(entry.chapter.number), page: String(entry.pageNumber) },
+        props: { sheet: pageSheet(entry), seriesTitle: s.title },
+      })),
+  );
+}
+
+const { sheet, seriesTitle } = Astro.props;
+---
+
+<ContactSheet sheet={sheet} seriesTitle={seriesTitle} />

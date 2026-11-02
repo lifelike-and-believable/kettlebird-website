@@ -3,6 +3,7 @@ status: implemented
 tests-commit:
   - 4e70ad5d411bb3d576ec41284cc64269aadc964d
 unlocks:
+  - tests/e2e/comic-reader.spec.ts: design-comic-sheet-and-controls replaces the Previous page / Next page pair with four controls that keep their place when they can't be used (links without an address, `aria-disabled`). AC-9 and AC-10 now check that the first page's **Previous page** and the last page's **Next page** have no address, instead of being absent, and AC-16 reads a control's name from `aria-label` before its text. Recorded with docs/specs/comic-reader-sheet-and-controls.md.
   - tests/e2e/comic-reader.spec.ts: the AC-1 test checked for the "No Address" card after navigating away from /comics, so it could never pass; the checks now run on /comics before the click. The criterion is unchanged.
 ---
 

@@ -69,7 +69,8 @@ test('comic-reader-start-and-turn#AC-7 AC-8 AC-13 reader page', async ({ page })
 
 test('comic-reader-start-and-turn#AC-9 turn pages with links', async ({ page }) => {
   await page.goto('/comics/kettle-tales/1/1');
-  await expect(page.getByRole('link', { name: 'Previous page' })).toHaveCount(0);
+  // The first page's Previous page can't be used (design-comic-sheet-and-controls): no address.
+  await expect(page.getByRole('link', { name: 'Previous page' })).not.toHaveAttribute('href');
   await page.getByRole('link', { name: 'Next page' }).click();
   await expect(page).toHaveURL(/\/1\/2$/);
   await page.getByRole('link', { name: 'Next page' }).click();
@@ -97,14 +98,14 @@ test('comic-reader-start-and-turn#AC-9 a turned page is first drawn past the sit
 
 test('comic-reader-start-and-turn#AC-10 last page', async ({ page }) => {
   await page.goto('/comics/kettle-tales/4/1');
-  await expect(page.getByRole('link', { name: 'Next page' })).toHaveCount(0);
+  await expect(page.getByRole('link', { name: 'Next page' })).not.toHaveAttribute('href');
   await expect(page.getByText("You're all caught up!")).toBeVisible();
   await expect(page.getByText('New pages are on the way.')).toBeVisible();
   await expect(page.getByRole('link', { name: 'Previous page' })).toBeVisible();
 
   await page.goto('/comics/paused/1/1');
   await expect(page.getByText('This comic is on a break.')).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Previous page' })).toHaveCount(0);
+  await expect(page.getByRole('link', { name: 'Previous page' })).toHaveCount(0); // one page: no controls
 
   await page.goto('/comics/one-shot/1/2');
   await expect(page.getByText("That's the end of the story.")).toBeVisible();
@@ -164,7 +165,10 @@ test('comic-reader-start-and-turn#AC-16 accessibility', async ({ page }) => {
   const reached = new Set<string>();
   for (let i = 0; i < 40; i++) {
     await page.keyboard.press('Tab');
-    const name = await page.evaluate(() => (document.activeElement as HTMLElement | null)?.innerText?.trim() ?? '');
+    const name = await page.evaluate(() => {
+      const el = document.activeElement as HTMLElement | null;
+      return el?.getAttribute('aria-label') ?? el?.innerText?.trim() ?? '';
+    });
     reached.add(name);
   }
   for (const name of ['Back to series', 'Previous page', 'Next page']) expect([...reached]).toContain(name);
