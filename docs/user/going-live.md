@@ -1,6 +1,6 @@
 ---
 id: docs-going-live
-status: draft
+status: approved
 derived-from:
   - design-know-when-live#how-it-works: 77244fbbe928
   - design-know-when-live#flow: 97e0aab80d39
