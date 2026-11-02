@@ -182,3 +182,8 @@ export interface RuleLike<R> { custom(fn: (value: unknown) => true | string): R;
 export function altTextRule<R extends RuleLike<R>>(rule: R, message: string = ALT_TEXT_WARNING): R {
   return rule.custom((value) => (value && String(value).trim() ? true : message)).warning();
 }
+
+/** organised-editor AC-14 (stub for the tests-first commit). */
+export function chapterPaneTitle(_seriesTitle: string | undefined, _chapter: { number: number; title?: string } | null): string {
+  return 'stub';
+}

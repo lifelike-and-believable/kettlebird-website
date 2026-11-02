@@ -35,13 +35,15 @@ Source: S3.n is the story's nth criterion; design and docs sections as named.
 | AC-10 | **Site settings** opens a note: "Site settings is coming in the next update. It's where you'll open or close commissions, and change your about page, the home page's artist text, and your social links. Until then, ask the person who looks after the site." | test: unit "menu sections"; manual | design-organised-editor#sections-and-fields |
 | AC-11 | The editor's "create" menu offers only the five kinds of item, by their **New …** names; a chapter is created only from its series' **Add chapter**. | test: unit "menu sections"; manual | design-organised-editor#layout |
 | AC-12 | An empty list says "Nothing here yet. Choose the + button above to add one." | test: unit "menu sections"; manual | design-organised-editor#states-and-errors (mock-up 7; see Risks and decisions) |
+| AC-14 | A chapter chosen in its series' **Chapters**, or started with **Add chapter**, opens in a pane to the right of the series (a child of the series' pane, not Sanity's open or create links), headed "Kettle Tales · Chapter 2: The Long Road" ("Kettle Tales · New chapter"; "Untitled series · New chapter" before the series has a title); the open chapter's row is highlighted. | test: unit "chapter beside its series"; manual: `docs/tutorials/publishing-comics.md` step 3 | design-organised-editor#series-and-chapters (lead, 2026-11-02) |
 | AC-13 | Star tries the editor on a few real pieces with the lead (at least one chapter, one piece of art, one commission type), and what they find is written down as story changes or new stories. | manual: `docs/tutorials/editing-your-site.md`, then the lead's notes | S3.6; design-organised-editor#trying-it-with-star |
 
 ## Scope
 
 - In:
   - `sanity-studio/lib/editor-content.ts` (new): every section, label, help text, option label, message and list detail, with no `sanity` imports, so the site's Vitest can test them (AC-1 to AC-12).
-  - `sanity-studio/structure.ts` (new): the menu from those sections, with each list's ordering and **New …** template (AC-1, AC-2, AC-10).
+  - `sanity-studio/structure.ts` (new): the menu from those sections, with each list's ordering and **New …** template (AC-1, AC-2, AC-10); a series opens as a pane whose child is the chapter (AC-14).
+  - `sanity-studio/components/ChaptersList.tsx`: the series' chapter rows and **Add chapter** open the chapter as the series pane's child, and highlight it (AC-14).
   - `sanity-studio/components/MissingSummary.tsx` (new): the box at the top of an item; `sanity-studio/badges/thingsToAdd.tsx` (new): the badge beside **Publish**; `sanity-studio/components/SiteSettingsNote.tsx` (new) (AC-6, AC-10).
   - The schemas: labels, help text, required rules and messages, hidden fields, option labels, list previews (AC-2 to AC-8). `lib/comic-pages.ts`'s `altTextRule` takes the warning's wording, so pieces use their own (AC-7).
   - `sanity-studio/sanity.config.ts`: the structure, the create menu, the badge, and Sanity's empty-list text (AC-1, AC-6, AC-11, AC-12).
@@ -64,6 +66,7 @@ Source: S3.n is the story's nth criterion; design and docs sections as named.
 
 ## Delivery
 
+- AC-14 was added after the lead's look at the editor (2026-11-02) and the design amendment it led to; its tests were committed failing in the second tests commit.
 - Edge cases for the list details and the missing-fields helper were added after mutation testing (`tests/unit/organised-editor-edges.test.ts`), which also removed two checks no input could reach.
 
 - Plan item: epic-content-editing, story 3. Ships before Star is invited (design-sign-in).
