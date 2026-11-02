@@ -1,6 +1,6 @@
 ---
 id: docs-previewing
-status: draft
+status: approved
 derived-from:
   - design-preview#how-it-works: d2e8d6d643b1
   - design-preview#flow: 007cd53fc75d
