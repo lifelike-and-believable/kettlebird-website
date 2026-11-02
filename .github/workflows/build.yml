@@ -42,6 +42,7 @@ jobs:
           test -f dist/studio/index.html
           grep -q '<title>Kettlebird Creations</title>' dist/studio/index.html
           grep -q 'src="/studio/static/' dist/studio/index.html
+          ! grep -q 'href="/static/' dist/studio/index.html
 
   studio:
     # The editor (Sanity Studio) builds with its custom inputs and actions (comic-publish-pages#AC-14).

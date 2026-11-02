@@ -39,7 +39,7 @@ Source: S1.n is the story's nth criterion; design and docs sections as named.
   - `sanity-studio/lib/studio-settings.ts` (new): the title and the sign-in provider filter, with no `sanity` imports, so the site's Vitest can test them (AC-3, AC-4).
   - `sanity-studio/sanity.config.ts`: uses them; drops `visionTool` (AC-8).
   - `sanity-studio/package.json`: drops `@sanity/vision`.
-  - `package.json`: `build:studio` (installs the Studio's dependencies, builds it into `dist/studio`, and sets the built page's tab title with `scripts/studio-title.mjs`) and `build:site` (the site, then the editor) (AC-1, AC-3).
+  - `package.json`: `build:studio` (installs the Studio's dependencies, builds it into `dist/studio`, and sets the built page's tab title and icon links with `scripts/studio-page.mjs`) and `build:site` (the site, then the editor) (AC-1, AC-3).
   - `sanity-studio/sanity.cli.ts`: `project.basePath: '/studio'`, which sets both the built files' paths and the editor's routes; the config's own `basePath` is removed, since Sanity adds it on top.
   - `vercel.json`: `buildCommand` becomes `npm run build:site`; the `/studio` rewrite; `X-Robots-Tag` for `/studio`; the frame headers (AC-1, AC-2, AC-5, AC-6).
   - `.github/workflows/build.yml`: the build job runs `npm run build:site` and checks `dist/studio/index.html` (AC-1).
