@@ -1,6 +1,7 @@
 ---
-// Series page: cover, details, Start reading, and the chapter list.
-// Design: docs/design/comic-start-reading.md. Spec: docs/specs/comic-reader-start-and-turn.md.
+// Series page: cover, details, Start reading (and Read the newest page), and the chapter list.
+// Designs: docs/design/comic-start-reading.md, docs/design/comic-share-and-announce.md.
+// Specs: docs/specs/comic-reader-start-and-turn.md, docs/specs/comic-reader-share-and-announce.md.
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getComicSeries } from '../../lib/comics/source';
 import {
@@ -13,6 +14,7 @@ import {
   visibleChapters,
   type ComicSeries,
 } from '../../lib/comics/model';
+import { readNewestPath, seriesPreview } from '../../lib/comics/sharing';
 
 export async function getStaticPaths() {
   const series = await getComicSeries();
@@ -23,11 +25,15 @@ const { series } = Astro.props as { series: ComicSeries };
 const start = firstPagePath(series);
 const chapters = visibleChapters(series);
 const listChapters = showsChapterList(series);
+const newest = readNewestPath(series);
+const preview = seriesPreview(series, Astro.site!.href);
 ---
 
 <BaseLayout
   title={`${series.title} · Comics · Kettlebird Creations`}
   description={series.description ?? `${series.title}, a comic by Star Goldberg.`}
+  canonical={preview.url}
+  preview={preview}
 >
   <article class="series">
     <div class="series__cover">
@@ -49,7 +55,12 @@ const listChapters = showsChapterList(series);
         )}
       </p>
       {start
-        ? <p class="series__start"><a class="highlighter-btn" href={start}>Start reading</a></p>
+        ? (
+          <p class="series__start">
+            <a class="highlighter-btn" href={start}>Start reading</a>
+            {newest && <a class="series__newest" href={newest}>Read the newest page</a>}
+          </p>
+        )
         : <p class="series__coming-soon">Pages coming soon.</p>}
       {series.description && <p class="series__description">{series.description}</p>}
     </div>
@@ -127,6 +138,16 @@ const listChapters = showsChapterList(series);
   .tag--status[data-status='hiatus'] { background: var(--color-orange); }
 
   .series__start, .series__coming-soon, .series__description { margin: 0; }
+  .series__start { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.75rem; }
+  .series__newest {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    color: var(--color-ink);
+    text-decoration: underline;
+  }
   .series__coming-soon { font-family: 'Nunito', sans-serif; font-weight: 600; color: var(--color-dark-purple); }
 
   .series__chapters h2 { margin: 1rem 0 0.5rem; }

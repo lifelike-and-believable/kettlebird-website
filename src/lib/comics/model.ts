@@ -11,6 +11,8 @@ export interface ComicImage {
   height: number;
   /** A small version for the contact sheet (about 300 px wide); the full image when missing. */
   thumb?: { src: string; srcset?: string };
+  /** For a series cover: the whole cover on a paper-coloured 1200 × 630 background, for link previews. */
+  social?: string;
 }
 
 export interface ComicPage {
