@@ -5,7 +5,6 @@ import { describe, expect, it } from 'vitest';
 import {
   CONTENT_TYPES, DIDNT_GO_LIVE_EXPLANATION, formatWhen, LATEST_QUERY, liveStatus, NOTE_AFTER_PUBLISH, SITE_STATUS_ID, viewOnSitePath, type StatusInput,
 } from '../../sanity-studio/lib/live-status';
-// @ts-expect-error: a plain .mjs script with no types
 import { issueBody, minutesBehind, TYPES } from '../../scripts/live-check.mjs';
 
 const TZ = 'America/Toronto'; // Eastern Standard Time (UTC-5) from 1 Nov 2026
