@@ -20,7 +20,7 @@ render.mjs). Star's getting-started guide is written from this. -->
 
 ## How the editor is served
 
-The editor (Sanity Studio) is built as part of the site and served at `/studio` on the site's own address: `https://kettlebird.com/studio` once the site moves to its domain (lead, 2026-11-01), and `https://kettlebird-website.vercel.app/studio` until then.
+The editor (Sanity Studio) is built as part of the site and served at `/studio` on the site's own address: `https://kettlebird.com/studio` once the site moves to its domain (lead, 2026-11-01), and until then at the staging address Star shares, **newsite.kettlebird.com**, with the editor at **newsite.kettlebird.com/studio** (lead, 2026-11-02). `https://kettlebird-website.vercel.app/studio` also still works.
 
 - Each site build also builds the editor and places it under `/studio`. Any address under `/studio` opens the editor, so a bookmark of a particular chapter keeps working.
 - Sanity's own hosted address isn't used. The site's address is the only place to edit.

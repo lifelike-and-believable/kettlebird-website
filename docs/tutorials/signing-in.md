@@ -14,7 +14,7 @@ derived-from:
 signing in needs a real Sanity account and an allowed address, which CI doesn't have. Before you
 start: the site is deployed with the editor; the lead has added the site's address to Sanity's CORS
 origins with credentials allowed; and you have an invitation to the project, or a second Google
-account that isn't invited (for step 7). Use the live address, https://kettlebird-website.vercel.app
+account that isn't invited (for step 7). Use the live address, https://newsite.kettlebird.com
 until the move to kettlebird.com. -->
 
 You'll accept an invitation, sign in at the site's own address, check you stay signed in, and see what someone who isn't invited gets.

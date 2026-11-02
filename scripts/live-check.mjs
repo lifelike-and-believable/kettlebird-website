@@ -10,7 +10,7 @@ const MINUTE = 60_000;
 // Stryker disable all: settings and the network part (main), which the workflow's own runs check.
 const PROJECT = process.env.SANITY_PROJECT_ID ?? '1p6w5n0l';
 const DATASET = process.env.SANITY_DATASET ?? 'production';
-const SITE = process.env.SITE_URL ?? 'https://kettlebird-website.vercel.app';
+const SITE = process.env.SITE_URL ?? 'https://newsite.kettlebird.com';
 const DEPLOYMENTS = 'https://vercel.com/lifelikedevteam/kettlebird-website/deployments';
 const QUERY = `{
   "latest": *[_type in $types && !(_id in path("drafts.**"))] | order(_updatedAt desc)[0]._updatedAt,
