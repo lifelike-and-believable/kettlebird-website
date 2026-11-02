@@ -15,7 +15,7 @@ derived-from:
 menu and filling in each kind of item. Written from design-organised-editor. Comics have their own
 guide (publishing-comics.md); signing in is in getting-started.md. -->
 
-Open the editor at `kettlebird.com/studio` (signing in is in [Getting started](getting-started.md)). Its menu, on the left, has six sections, always in this order: **Comics**, **Art**, **Writing**, **Shop**, **Commissions** and **Site settings**. Choose one to see what's in it. Each section's list has a **New …** button at the top, then your items, each with a short detail to tell them apart.
+Open the editor at `kettlebird.com/studio` (signing in is in [Getting started](getting-started.md)). Its menu, on the left, has six sections, always in this order: **Comics**, **Art**, **Writing**, **Shop**, **Commissions** and **Site settings**. Choose one to see what's in it. Each section's list has a + button at the top to add something new (**New series**, **New piece**, and so on), then your items, each with a short detail to tell them apart.
 
 Every field has a short note under its name saying what it does on the site. Fields marked **Required**, or **Choose at least one**, must be filled in before you can publish. A new item shows "Not published yet" in its list until you publish it.
 
@@ -25,7 +25,7 @@ Your series, newest first, each with its status. Choose a series to see its deta
 
 ## Art
 
-Your portfolio pieces, newest first, each with the portfolio sections it's in. Choose **New piece** to add one.
+Your portfolio pieces, newest first, each with the portfolio sections it's in. Choose the + button, **New piece**, to add one.
 
 | Field | What it's for |
 |---|---|
@@ -39,7 +39,7 @@ Your portfolio pieces, newest first, each with the portfolio sections it's in. C
 
 ## Writing
 
-Your stories, newest first, each with the date it was posted. Choose **New story** to add one.
+Your stories, newest first, each with the date it was posted. Choose the + button, **New story**, to add one.
 
 | Field | What it's for |
 |---|---|
@@ -52,7 +52,7 @@ Your stories, newest first, each with the date it was posted. Choose **New story
 
 ## Shop
 
-Your products, by name within each shop section, as the shop lists them. Choose **New product** to add one.
+Your products, by name within each shop section, as the shop lists them. Choose the + button, **New product**, to add one.
 
 | Field | What it's for |
 |---|---|
@@ -65,7 +65,7 @@ Your products, by name within each shop section, as the shop lists them. Choose 
 
 ## Commissions
 
-Your commission types, in the order they appear on the Commissions page. Choose **New commission type** to add one.
+Your commission types, in the order they appear on the Commissions page. Choose the + button, **New commission type**, to add one.
 
 | Field | What it's for |
 |---|---|
@@ -99,4 +99,4 @@ It comes off the site with the next update. This can't be undone. (Removing a co
 |---|---|---|
 | **Publish** is greyed out, with how many things are left beside it, and a box at the top of the item listing them, such as "Add these before publishing: a title; the picture; at least one portfolio section" | Something required is missing. Each field also shows its own message. | Fill in what's listed. Your work is saved as a draft meanwhile. |
 | "Add alt text so people using screen readers can follow it" on a piece | The picture has no alt text. | Add it if you can; you can still publish. |
-| "No stories yet. Choose New story to add one." (or the same for another section) | Nothing has been added to that section yet. | Choose the **New …** button at the top. |
+| "Nothing here yet. Choose the + button above to add one." | Nothing has been added to that section yet. | Choose the + button at the top of the list. |
