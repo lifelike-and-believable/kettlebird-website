@@ -48,6 +48,13 @@ function sanityImage(image: SanityImage | undefined, widths: number[]): ComicIma
   };
 }
 
+// Link previews (design-comic-share-and-announce): the whole cover on a paper-coloured 1200 × 630
+// background, so a tall cover isn't cut to a strip.
+function withSocial(cover: ComicImage | undefined, image: SanityImage | undefined): ComicImage | undefined {
+  if (!cover || !image?.asset) return cover;
+  return { ...cover, social: urlFor(image).width(1200).height(630).fit('fill').bg('f5f1e8').format('jpg').url() };
+}
+
 export function fromSanity(raw: SanitySeries): ComicSeries {
   return {
     title: raw.title,
@@ -55,7 +62,7 @@ export function fromSanity(raw: SanitySeries): ComicSeries {
     description: raw.description,
     status: raw.status,
     type: raw.type,
-    cover: sanityImage(raw.coverImage, COVER_WIDTHS),
+    cover: withSocial(sanityImage(raw.coverImage, COVER_WIDTHS), raw.coverImage),
     chapters: (raw.chapters ?? []).map((c) => ({
       number: c.number ?? 0,
       title: c.title || undefined,

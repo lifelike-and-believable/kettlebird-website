@@ -32,7 +32,9 @@ You'll open a comic, start at its first page, turn pages, look at a chapter's pa
 12. Click **First**. You see **Chapter 1: The Kettle · Page 1 of 3**.
 13. Click **Newest**. You see **You're all caught up!**
 14. You see **New pages are on the way.**
+15. Click **Back to series**. You see **Read the newest page**.
+16. Click **Read the newest page**. You see **Chapter 4: Homeward · Page 1 of 1**.
 
 ## What you found
 
-**Next** carries you through a chapter, **All pages** shows a chapter's pages with yours marked, the chapter list opens another chapter's pages, **First** goes back to the start, and **Newest** takes you to the newest page, which tells you more is on the way.
+**Next** carries you through a chapter, **All pages** shows a chapter's pages with yours marked, the chapter list opens another chapter's pages, **First** goes back to the start, and **Newest** (or **Read the newest page** on the comic's page) takes you to the newest page, which tells you more is on the way.

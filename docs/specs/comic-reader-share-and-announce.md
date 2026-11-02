@@ -1,7 +1,9 @@
 ---
-status: draft
-tests-commit: []
-unlocks: []
+status: implemented
+tests-commit:
+  - c2a96d8b8e552137c75bdc6c647280049930d273
+unlocks:
+  - tests/unit/comic-sharing-edges.test.ts (new): mutation testing showed nothing checked an ongoing series with exactly two pages or without a web address (AC-3), an address with /comics/ in its middle (AC-4), the logo's literal address (AC-5), or a turn read in the same millisecond (AC-7). Added; the criteria are unchanged.
 ---
 
 # Comic reader: newest page, sharing, and announcing pages
@@ -67,4 +69,5 @@ Source: S3.n and S4.n are the newest-and-share and assistive-technology stories'
 ## Risks and decisions
 
 - A turn is remembered from a click on a control (by mouse, touch or Enter); arrow keys and swipes navigate with `location.assign`, so they don't move focus.
+- **Read the newest page** sits beside **Start reading** with a smaller gap than the other buttons on the site, so both fit on one line on a 390 px phone; on a 360 px phone it wraps under it, as the design allows.
 - The 404 page's series list is built from the comics at build time, so a series added since the last build isn't linked until the next one; builds follow every publish.

@@ -15,6 +15,7 @@ import {
   type ReaderPage,
 } from '../../../../lib/comics/model';
 import { allPagesHref, playControls, type ControlKind } from '../../../../lib/comics/navigation';
+import { pageAnnouncement, pagePreview, shareTitle } from '../../../../lib/comics/sharing';
 
 export async function getStaticPaths() {
   const series = await getComicSeries();
@@ -32,6 +33,7 @@ const image = entry.page.image;
 const end = entry.isLast ? endNote(entry.series.status) : undefined;
 const controls = playControls(entry);
 const allPages = allPagesHref(entry);
+const preview = { ...pagePreview(entry, Astro.site!.href), type: 'article' };
 // Drawn arrowheads: phones draw characters like ⏭ as emoji of their own (design, Layout).
 const ICONS: Record<ControlKind, { viewBox: string; d: string }> = {
   first: { viewBox: '0 0 32 24', d: 'M30 4 L18 12 L30 20 Z M16 4 L4 12 L16 20 Z' },
@@ -42,7 +44,12 @@ const ICONS: Record<ControlKind, { viewBox: string; d: string }> = {
 const TURNS: Partial<Record<ControlKind, string>> = { previous: 'previous', next: 'next' };
 ---
 
-<BaseLayout title={tabTitle(entry)} description={`${entry.series.title}, a comic by Star Goldberg.`}>
+<BaseLayout
+  title={tabTitle(entry)}
+  description={`${entry.series.title}, a comic by Star Goldberg.`}
+  canonical={preview.url}
+  preview={preview}
+>
   <!-- Don't draw the page until the scroll below has run, so the site header never flashes on a
        turn, even when the page arrives in pieces. Browsers without render-blocking ignore it. -->
   <link slot="head" rel="expect" href="#reader-scrolled" {...{ blocking: 'render' }} />
@@ -98,9 +105,17 @@ const TURNS: Partial<Record<ControlKind, string>> = { previous: 'previous', next
                 aria-label={c.name}
                 rel={c.kind === 'previous' ? 'prev' : c.kind === 'next' ? 'next' : undefined}
                 data-turn={TURNS[c.kind]}
+                data-control={c.kind}
               >{body}</a>
             ) : (
-              <a role="link" aria-disabled="true" aria-label={c.name} class={`reader__control reader__control--${c.kind} is-off`}>{body}</a>
+              <a
+                role="link"
+                aria-disabled="true"
+                aria-label={c.name}
+                tabindex="-1"
+                data-control={c.kind}
+                class={`reader__control reader__control--${c.kind} is-off`}
+              >{body}</a>
             );
           })}
         </nav>
@@ -113,6 +128,24 @@ const TURNS: Partial<Record<ControlKind, string>> = { previous: 'previous', next
         <a href={back}>Back to series</a>
       </div>
     )}
+
+    <!-- Share this page (design-comic-share-and-announce): needs a script, so it's shown by one. -->
+    <div class="reader__share" data-share hidden>
+      <button type="button" class="reader__share-button" data-share-button data-url={preview.url} data-title={shareTitle(entry)}>
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+          <circle cx="18" cy="5" r="3" fill="currentColor" /><circle cx="6" cy="12" r="3" fill="currentColor" /><circle cx="18" cy="19" r="3" fill="currentColor" />
+          <path d="M8.6 10.7 L15.4 6.4 M8.6 13.3 L15.4 17.6" stroke="currentColor" stroke-width="2" />
+        </svg>
+        <span data-share-label>Share this page</span>
+      </button>
+      <p class="visually-hidden" role="status" data-share-status></p>
+      <p class="reader__copy" data-copy hidden>
+        <label for="copy-link">Copy this link:</label>
+        <input id="copy-link" type="text" readonly value={preview.url} />
+      </p>
+    </div>
+    <!-- What a screen reader hears when the page opens; filled in by the script below. -->
+    <p class="visually-hidden" role="status" data-announce data-text={pageAnnouncement(entry)}></p>
   </div>
 
   <script is:inline>
@@ -128,6 +161,8 @@ const TURNS: Partial<Record<ControlKind, string>> = { previous: 'previous', next
   {nextImage && <meta name="kb-next-image" content={nextImage.src} data-srcset={nextImage.srcset ?? ''} />}
 
   <script>
+    import { announcesOnOpen, focusAfterTurn, type NavigationKind, type RememberedTurn } from '../../../../lib/comics/sharing';
+
     // Arrow keys and swipes follow the same links as Previous page and Next page
     // (design-comic-turn-pages, "How a page turn works"). Reading never needs this script.
     const link = (which: 'previous' | 'next') =>
@@ -141,7 +176,7 @@ const TURNS: Partial<Record<ControlKind, string>> = { previous: 'previous', next
       const target = e.key === 'ArrowRight' ? link('next') : e.key === 'ArrowLeft' ? link('previous') : null;
       if (target) {
         e.preventDefault();
-        target.click();
+        location.assign(target.href); // not a click: arrow keys don't move focus (design-comic-share-and-announce)
       }
     });
 
@@ -157,8 +192,91 @@ const TURNS: Partial<Record<ControlKind, string>> = { previous: 'previous', next
       start = null;
       // A turn needs a clearly horizontal swipe; mostly vertical movement is scrolling.
       if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy) * 1.5 || zoomed()) return;
-      (dx < 0 ? link('next') : link('previous'))?.click();
+      const to = dx < 0 ? link('next') : link('previous');
+      if (to) location.assign(to.href);
     });
+
+    // After a turn with a control, focus that control on the new page; announce each page as it
+    // opens, except on a reload (design-comic-share-and-announce, Accessibility).
+    const TURN_KEY = 'kb-turn';
+    const navigation = ((performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined)?.type ??
+      'navigate') as NavigationKind;
+    let remembered: RememberedTurn | undefined;
+    try {
+      remembered = JSON.parse(sessionStorage.getItem(TURN_KEY) ?? 'null') ?? undefined;
+      sessionStorage.removeItem(TURN_KEY);
+    } catch {
+      remembered = undefined;
+    }
+    let referrerPath: string | undefined;
+    try {
+      const from = new URL(document.referrer);
+      referrerPath = from.origin === location.origin ? from.pathname : undefined;
+    } catch {
+      referrerPath = undefined;
+    }
+    const kind = focusAfterTurn(remembered, { navigation, referrerPath, time: Date.now() });
+    if (kind) document.querySelector<HTMLElement>(`[data-control="${kind}"]`)?.focus({ preventScroll: true });
+
+    document.querySelectorAll<HTMLAnchorElement>('a[data-control][href]').forEach((control) => {
+      control.addEventListener('click', () => {
+        const turn: RememberedTurn = { kind: control.dataset.control as RememberedTurn['kind'], from: location.pathname, at: Date.now() };
+        try {
+          sessionStorage.setItem(TURN_KEY, JSON.stringify(turn));
+        } catch {
+          // Storage refused: the turn still happens, without keeping focus.
+        }
+      });
+    });
+
+    const announce = document.querySelector<HTMLElement>('[data-announce]');
+    if (announce && announcesOnOpen(navigation)) {
+      const fill = () => setTimeout(() => { announce.textContent = announce.dataset.text ?? ''; }, 500);
+      if (document.readyState === 'complete') fill();
+      else window.addEventListener('load', fill, { once: true });
+    }
+
+    // Share this page: the share menu on touch screens, otherwise copy; copy by hand if that fails.
+    const shareBox = document.querySelector<HTMLElement>('[data-share]');
+    const shareButton = document.querySelector<HTMLButtonElement>('[data-share-button]');
+    if (shareBox && shareButton) {
+      shareBox.hidden = false;
+      const label = shareButton.querySelector<HTMLElement>('[data-share-label]')!;
+      const status = shareBox.querySelector<HTMLElement>('[data-share-status]')!;
+      const copyBox = shareBox.querySelector<HTMLElement>('[data-copy]')!;
+      const url = shareButton.dataset.url!;
+      let reset: ReturnType<typeof setTimeout> | undefined;
+      const copied = () => {
+        label.textContent = 'Link copied';
+        status.textContent = 'Link copied';
+        shareButton.classList.add('is-done');
+        clearTimeout(reset);
+        reset = setTimeout(() => {
+          label.textContent = 'Share this page';
+          status.textContent = '';
+          shareButton.classList.remove('is-done');
+        }, 4000);
+      };
+      shareButton.addEventListener('click', async () => {
+        if (typeof navigator.share === 'function' && matchMedia('(pointer: coarse)').matches) {
+          try {
+            await navigator.share({ title: shareButton.dataset.title, url });
+            return;
+          } catch (error) {
+            if ((error as DOMException | undefined)?.name === 'AbortError') return;
+          }
+        }
+        try {
+          await navigator.clipboard.writeText(url);
+          copied();
+        } catch {
+          copyBox.hidden = false;
+          const input = copyBox.querySelector('input')!;
+          input.focus();
+          input.select();
+        }
+      });
+    }
 
     // Fetch the next page's image after this one loads, unless the browser asks to save data.
     const next = document.querySelector<HTMLMetaElement>('meta[name="kb-next-image"]');
@@ -346,6 +464,41 @@ const TURNS: Partial<Record<ControlKind, string>> = { previous: 'previous', next
   .reader__control:hover .reader__control-tip,
   .reader__control:focus-visible .reader__control-tip { display: block; }
 
+  .reader__share {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    max-width: 640px;
+    margin: 1rem auto 0;
+  }
+  .reader__share[hidden], .reader__copy[hidden] { display: none; }
+  .reader__share-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 44px;
+    padding: 0.4rem 1rem;
+    border: 2px solid var(--color-ink);
+    background: transparent;
+    color: var(--color-ink);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  .reader__share-button.is-done { background: var(--color-paper-dark); }
+  .reader__copy { width: 100%; margin: 0; font-family: 'Nunito', sans-serif; font-weight: 600; }
+  .reader__copy label { display: block; margin-bottom: 0.25rem; }
+  .reader__copy input {
+    width: 100%;
+    min-height: 44px;
+    padding: 0.4rem;
+    border: 2px solid var(--color-ink);
+    background: #fff;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.85rem;
+  }
   .reader__end { max-width: 640px; margin: 0.75rem auto 0; text-align: center; }
   .reader__end p { margin: 0 0 0.25rem; }
   .reader__end-heading { font-family: 'Nunito', sans-serif; font-weight: 700; }

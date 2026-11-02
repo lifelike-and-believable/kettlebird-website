@@ -7,7 +7,17 @@ const {
   title = 'Kettlebird Creations',
   description = 'Writer & Illustrator • Star Goldberg',
   noindex = false,
-} = Astro.props;
+  canonical,
+  preview,
+} = Astro.props as {
+  title?: string;
+  description?: string;
+  noindex?: boolean;
+  /** Absolute canonical address. */
+  canonical?: string;
+  /** A link preview for social sites (design-comic-share-and-announce). */
+  preview?: { title: string; description: string; image: string; url: string; type?: string };
+};
 
 const settings = await getSettings();
 ---
@@ -20,6 +30,18 @@ const settings = await getSettings();
     <title>{title}</title>
     <meta name="description" content={description} />
     {noindex && <meta name="robots" content="noindex" />}
+    {canonical && <link rel="canonical" href={canonical} />}
+    {preview && (
+      <>
+        <meta property="og:site_name" content="Kettlebird Creations" />
+        <meta property="og:type" content={preview.type ?? 'website'} />
+        <meta property="og:title" content={preview.title} />
+        <meta property="og:description" content={preview.description} />
+        <meta property="og:image" content={preview.image} />
+        <meta property="og:url" content={preview.url} />
+        <meta name="twitter:card" content="summary_large_image" />
+      </>
+    )}
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
