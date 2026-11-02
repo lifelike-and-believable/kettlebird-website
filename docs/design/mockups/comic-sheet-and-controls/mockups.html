@@ -26,6 +26,7 @@
   .menu { width: 44px; height: 44px; border: 2px solid var(--ink); }
   .wide .hdr { display: block; padding: 2rem 1rem calc(max(2.25rem, calc(22px + 3.1cqw)) + 0px); }
   .wide .hdr b { font-size: 5.5rem; }
+  .wide .menu { display: none; }
   .wide .hdr small { font-size: 2.5rem; }
   .scrolled .site-header { display: none; } /* the reader opens scrolled past the header */
 
@@ -46,13 +47,17 @@
   .controls { display: grid; grid-template-columns: 1fr 1fr 1.6fr 1fr; gap: .5rem; max-width: 640px; margin: 1rem auto 0; }
   .ctl { min-height: 56px; border: 3px solid var(--ink); background: var(--beige); color: var(--ink); text-decoration: none;
     display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; position: relative; }
-  .ctl .sym { display: flex; line-height: 0; }
+  .ctl .sym { display: flex; align-items: center; justify-content: center; height: 30px; line-height: 0; }
   .ctl .cap { font: 600 .78rem/1 'Nunito', sans-serif; }
   .ctl.next { background: var(--yellow); }
   .ctl.next .sym svg { width: 30px; height: 30px; }
+  /* With enlarged text on a narrow phone, the row wraps to two by two: Previous | Next, then First | Newest. */
+  .controls.wrapped { grid-template-columns: 1fr 1fr; }
+  .controls.wrapped .ctl:nth-child(1) { order: 3; } .controls.wrapped .ctl:nth-child(2) { order: 1; }
+  .controls.wrapped .ctl:nth-child(3) { order: 2; } .controls.wrapped .ctl:nth-child(4) { order: 4; }
   .ctl.off { border-style: dashed; border-color: #2b2b2b66; color: #2b2b2b66; background: transparent; }
   .ctl.focus { outline: 3px solid var(--focus); outline-offset: 3px; }
-  .tip { position: absolute; top: calc(100% + 8px); left: 50%; transform: translateX(-50%); white-space: nowrap; background: var(--ink); color: var(--beige);
+  .tip { position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%); white-space: nowrap; background: var(--ink); color: var(--beige);
     font: 600 .8rem 'Nunito', sans-serif; padding: .25rem .5rem; }
   .end { text-align: center; margin-top: .75rem; }
   .end p { margin: 0 0 .25rem; }
@@ -123,7 +128,7 @@
   </div>
 </div></div>
 
-<div class="wrap"><h6>4 · Reader on a laptop; Newest has keyboard focus, with its full name shown</h6>
+<div class="wrap"><h6>4 · Reader on a laptop; Newest has keyboard focus, with its full name shown above it</h6>
 <div class="screen wide scrolled" id="m4">
   <div class="reader">
     <div class="bar"><a href="#">Back to series</a><p class="loc">Chapter 2: The Long Road · Page 4 of 12</p><a class="allpages" href="#"><span class="grid-icon"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>All pages</a></div>
@@ -132,7 +137,7 @@
       <a class="ctl" href="#"><span class="sym"><svg viewBox="0 0 32 24" width="30" height="22" aria-hidden="true"><path d="M30 4 L18 12 L30 20 Z M16 4 L4 12 L16 20 Z" fill="currentColor"/></svg></span><span class="cap">First</span></a>
       <a class="ctl" href="#"><span class="sym"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M17 4 L5 12 L17 20 Z" fill="currentColor"/></svg></span><span class="cap">Previous</span></a>
       <a class="ctl next" href="#"><span class="sym"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M7 4 L19 12 L7 20 Z" fill="currentColor"/></svg></span><span class="cap">Next</span></a>
-      <a class="ctl focus" href="#"><span class="sym"><svg viewBox="0 0 32 24" width="30" height="22" aria-hidden="true"><path d="M2 4 L14 12 L2 20 Z M16 4 L28 12 L16 20 Z" fill="currentColor"/></svg></span><span class="cap">Newest</span><span class="tip">Newest page</span></a>
+      <a class="ctl focus" href="#"><span class="sym"><svg viewBox="0 0 32 24" width="30" height="22" aria-hidden="true"><path d="M2 4 L14 12 L2 20 Z M16 4 L28 12 L16 20 Z" fill="currentColor"/></svg></span><span class="cap">Newest</span><span class="tip">Newest page of the series</span></a>
     </nav>
   </div>
 </div></div>
@@ -144,6 +149,7 @@
     <h1>Kettle Tales · Chapter 2: The Long Road</h1>
     <p class="count">12 pages</p>
     <ul class="thumbs" id="t5"></ul>
+    <div class="sheet-foot"><a href="#">← Back to page 4</a><a href="#">Back to series</a></div>
   </div>
 </div></div>
 
@@ -155,6 +161,36 @@
     <p class="count">12 pages</p>
     <ul class="thumbs" id="t6"></ul>
     <div class="sheet-foot"><a href="#">← Back to page 4</a><a href="#">Back to series</a></div>
+  </div>
+</div></div>
+
+
+<div class="wrap"><h6>7 · A 320 px phone with text enlarged to 200%: the row wraps to two by two</h6>
+<!-- render.mjs sets the root font size to 200% before taking this one, as enlarged text does. -->
+<div class="screen phone scrolled" id="m7" style="width:320px;height:740px"><div>
+  <div class="reader">
+    <div class="bar"><a href="#">Back to series</a><a class="allpages" href="#"><span class="grid-icon"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>All pages</a><p class="loc" style="flex-basis:100%">Chapter 2: The Long Road · Page 4 of 12</p></div>
+    <div class="page" style="height:200px">Page 4</div>
+    <nav class="controls wrapped">
+      <a class="ctl" href="#"><span class="sym"><svg viewBox="0 0 32 24" width="30" height="22" aria-hidden="true"><path d="M30 4 L18 12 L30 20 Z M16 4 L4 12 L16 20 Z" fill="currentColor"/></svg></span><span class="cap">First</span></a>
+      <a class="ctl" href="#"><span class="sym"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M17 4 L5 12 L17 20 Z" fill="currentColor"/></svg></span><span class="cap">Previous</span></a>
+      <a class="ctl next" href="#"><span class="sym"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M7 4 L19 12 L7 20 Z" fill="currentColor"/></svg></span><span class="cap">Next</span></a>
+      <a class="ctl" href="#"><span class="sym"><svg viewBox="0 0 32 24" width="30" height="22" aria-hidden="true"><path d="M2 4 L14 12 L2 20 Z M16 4 L28 12 L16 20 Z" fill="currentColor"/></svg></span><span class="cap">Newest</span></a>
+    </nav>
+  </div>
+</div></div></div>
+
+<div class="wrap"><h6>8 · A complete series: the double-right control reads Last, so it doesn't promise new pages</h6>
+<div class="screen phone scrolled" id="m8">
+  <div class="reader">
+    <div class="bar"><a href="#">Back to series</a><a class="allpages" href="#"><span class="grid-icon"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>All pages</a><p class="loc" style="flex-basis:100%">Chapter 1: The Kettle · Page 2 of 3</p></div>
+    <div class="page">Page 2</div>
+    <nav class="controls">
+      <a class="ctl" href="#"><span class="sym"><svg viewBox="0 0 32 24" width="30" height="22" aria-hidden="true"><path d="M30 4 L18 12 L30 20 Z M16 4 L4 12 L16 20 Z" fill="currentColor"/></svg></span><span class="cap">First</span></a>
+      <a class="ctl" href="#"><span class="sym"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M17 4 L5 12 L17 20 Z" fill="currentColor"/></svg></span><span class="cap">Previous</span></a>
+      <a class="ctl next" href="#"><span class="sym"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M7 4 L19 12 L7 20 Z" fill="currentColor"/></svg></span><span class="cap">Next</span></a>
+      <a class="ctl" href="#"><span class="sym"><svg viewBox="0 0 32 24" width="30" height="22" aria-hidden="true"><path d="M2 4 L14 12 L2 20 Z M16 4 L28 12 L16 20 Z" fill="currentColor"/></svg></span><span class="cap">Last</span></a>
+    </nav>
   </div>
 </div></div>
 
