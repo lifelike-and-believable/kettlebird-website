@@ -153,7 +153,7 @@ test('comic-reader-sheet-and-controls#AC-7 page sheet', async ({ page }) => {
   await expect(page).toHaveTitle('Chapter 1, all pages · Kettle Tales · Kettlebird Creations');
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', /noindex/);
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Kettle Tales · Chapter 1: The Kettle');
-  await expect(page.getByText('3 pages', { exact: true })).toBeVisible();
+  await expect(page.getByText('3 pages', { exact: true }).first()).toBeVisible();
 
   const pictures = page.getByRole('list', { name: 'Pages' }).getByRole('link');
   await expect(pictures).toHaveCount(3);
@@ -195,7 +195,7 @@ test('comic-reader-sheet-and-controls#AC-7 a series without chapter names', asyn
 test('comic-reader-sheet-and-controls#AC-8 chapter sheet', async ({ page }) => {
   await page.goto('/comics/kettle-tales/4/pages');
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Kettle Tales · Chapter 4: Homeward');
-  await expect(page.getByText('1 page', { exact: true })).toBeVisible();
+  await expect(page.getByText('1 page', { exact: true }).first()).toBeVisible();
   await expect(page.getByText(/You were here/)).toHaveCount(0);
   await expect(page.getByRole('link', { name: /Back to page/ })).toHaveCount(0);
   await expect(page.getByRole('link', { name: 'Back to series' }).first()).toHaveAttribute('href', '/comics/kettle-tales');

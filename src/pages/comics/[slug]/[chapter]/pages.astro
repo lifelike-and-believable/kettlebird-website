@@ -1,0 +1,24 @@
+---
+// A chapter's contact sheet: its pages, nothing marked. The chapter list and the chapter links open
+// these. Design: docs/design/comic-sheet-and-controls.md. Spec: docs/specs/comic-reader-sheet-and-controls.md.
+import ContactSheet from '../../../../components/comics/ContactSheet.astro';
+import { getComicSeries } from '../../../../lib/comics/source';
+import { visibleChapters } from '../../../../lib/comics/model';
+import { chapterSheet } from '../../../../lib/comics/navigation';
+
+export async function getStaticPaths() {
+  const series = await getComicSeries();
+  return series
+    .filter((s) => s.slug)
+    .flatMap((s) =>
+      visibleChapters(s).map((chapter) => ({
+        params: { slug: s.slug!, chapter: String(chapter.number) },
+        props: { sheet: chapterSheet(s, chapter), seriesTitle: s.title },
+      })),
+    );
+}
+
+const { sheet, seriesTitle } = Astro.props;
+---
+
+<ContactSheet sheet={sheet} seriesTitle={seriesTitle} />

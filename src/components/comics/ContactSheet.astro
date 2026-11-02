@@ -1,0 +1,225 @@
+---
+// A contact sheet: every page of a chapter as a small picture. Used by a page's own sheet and by a
+// chapter's sheet. Design: docs/design/comic-sheet-and-controls.md.
+// Spec: docs/specs/comic-reader-sheet-and-controls.md.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import type { ContactSheet } from '../../lib/comics/navigation';
+
+interface Props {
+  sheet: ContactSheet;
+  seriesTitle: string;
+}
+
+const { sheet, seriesTitle } = Astro.props;
+const links = [sheet.backToPage, { label: 'Back to series', path: sheet.seriesPath }].filter(Boolean) as {
+  label: string;
+  path: string;
+}[];
+---
+
+<BaseLayout title={sheet.tabTitle} description={`All pages of ${seriesTitle}, a comic by Star Goldberg.`} noindex>
+  <div class="sheet">
+    <div class="sheet__bar">
+      {links.map((l) => <a href={l.path}>{l.label}</a>)}
+    </div>
+    <h1 class="sheet__heading">{sheet.heading}</h1>
+    <p class="sheet__count">{sheet.pageCount}</p>
+
+    {sheet.chapterList && (
+      <details class="sheet__chapters">
+        <summary>{sheet.chapterList.summary}</summary>
+        <nav aria-label="Chapters">
+          <ol>
+            {sheet.chapterList.items.map((item) => (
+              <li class={item.current ? 'is-here' : undefined}>
+                {item.path ? <a href={item.path}>{item.label}</a> : <span>{item.label} · you're here</span>}
+                <small>{item.pages}</small>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      </details>
+    )}
+
+    <ul class="sheet__pictures" aria-label="Pages">
+      {sheet.pictures.map((p) => (
+        <li id={p.anchor} class={p.marked ? 'is-marked' : undefined}>
+          <a href={p.path} aria-label={p.name}>
+            <span class="sheet__frame" style={`aspect-ratio: ${p.image.width} / ${p.image.height};`}>
+              <img
+                src={p.image.thumb?.src ?? p.image.src}
+                srcset={p.image.thumb?.srcset}
+                sizes="(max-width: 600px) 33vw, 200px"
+                width={p.image.width}
+                height={p.image.height}
+                alt=""
+                loading="lazy"
+                decoding="async"
+              />
+            </span>
+          </a>
+          <!-- Under the picture, outside its link: the link's name already says it. -->
+          <span class="sheet__number" aria-hidden="true">{p.marked ? `${p.number} · You were here` : p.number}</span>
+        </li>
+      ))}
+    </ul>
+
+    {(sheet.previousChapter || sheet.nextChapter) && (
+      <div class="sheet__chapter-links">
+        {sheet.previousChapter ? (
+          <a href={sheet.previousChapter.path} aria-label={sheet.previousChapter.name}>
+            <span aria-hidden="true">←&nbsp;</span>{sheet.previousChapter.label.replace(/^← /, '')}
+          </a>
+        ) : <span></span>}
+        {sheet.nextChapter && (
+          <a href={sheet.nextChapter.path} aria-label={sheet.nextChapter.name}>
+            {sheet.nextChapter.label.replace(/ →$/, '')}<span aria-hidden="true">&nbsp;→</span>
+          </a>
+        )}
+      </div>
+    )}
+
+    <div class="sheet__bar sheet__bar--foot">
+      {links.map((l) => <a href={l.path}>{l.label}</a>)}
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .sheet {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0.5rem 1rem 2rem;
+  }
+  .sheet__bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem 1rem;
+    padding: 0.5rem 0;
+  }
+  .sheet__bar a,
+  .sheet__chapter-links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+  .sheet__bar--foot { margin-top: 0.5rem; }
+  .sheet__heading {
+    margin: 0.25rem 0 0.1rem;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.5rem;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+  }
+  .sheet__count {
+    margin: 0 0 1rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.9rem;
+    color: var(--color-ink-light);
+  }
+
+  .sheet__chapters {
+    margin: 0 0 1rem;
+    border: 2px solid var(--color-ink);
+    background: var(--color-beige);
+  }
+  .sheet__chapters summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    min-height: 44px;
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+    list-style: none;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+  }
+  .sheet__chapters summary::-webkit-details-marker { display: none; }
+  .sheet__chapters summary::after { content: '▾'; }
+  .sheet__chapters[open] summary::after { content: '▴'; }
+  .sheet__chapters ol {
+    margin: 0;
+    padding: 0 0.75rem 0.5rem;
+    list-style: none;
+    border-top: 1px solid rgba(43, 43, 43, 0.2);
+  }
+  .sheet__chapters li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0 0.5rem;
+    min-height: 44px;
+    border-bottom: 1px solid rgba(43, 43, 43, 0.13);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+  }
+  .sheet__chapters li.is-here { font-weight: 800; }
+  .sheet__chapters li a { color: var(--color-ink); }
+  .sheet__chapters small {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--color-ink-light);
+    white-space: nowrap;
+  }
+
+  .sheet__pictures {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.6rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  @media (min-width: 600px) {
+    .sheet__pictures {
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 1rem;
+    }
+  }
+  /* The marked picture lands below the top of the window, not under its edge. */
+  .sheet__pictures li { scroll-margin-top: 1.5rem; }
+  .sheet__pictures a {
+    display: block;
+    color: var(--color-ink);
+    text-decoration: none;
+  }
+  .sheet__frame {
+    display: block;
+    border: 2px solid var(--color-ink);
+    background: var(--color-paper-dark);
+  }
+  .sheet__frame img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  .sheet__number {
+    display: block;
+    margin-top: 0.25rem;
+    text-align: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.85rem;
+    overflow-wrap: anywhere;
+  }
+  .is-marked .sheet__frame {
+    border-width: 4px;
+    outline: 3px solid var(--color-yellow);
+    outline-offset: -7px;
+  }
+  .is-marked .sheet__number { font-weight: 700; }
+
+  .sheet__chapter-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem 1rem;
+    margin-top: 1.25rem;
+  }
+</style>

@@ -1,7 +1,10 @@
 ---
-status: draft
-tests-commit: []
-unlocks: []
+status: implemented
+tests-commit:
+  - 5f55cf19162a04343c2212171b1135032f9558b1
+unlocks:
+  - tests/e2e/comic-sheet-and-controls.spec.ts: the AC-7 and AC-8 checks for the page count ("3 pages", "1 page") also matched the same count in the chapter list, which AC-9 puts on the sheet; they now take the first match, the count under the heading. The criteria are unchanged.
+  - tests/unit/comic-navigation-edges.test.ts (new): mutation testing showed nothing checked that alt text made only of spaces is left out of a picture's name (AC-7). Added; the criterion is unchanged.
 ---
 
 # Comic reader: contact sheet and player-style controls
@@ -71,3 +74,5 @@ Source: S6.n and S7.n are the contact-sheet and play-controls stories' nth crite
 - "Chapter N of M" counts to the highest chapter number with pages, so Kettle Tales (chapters 1, 2 and 4) reads "Chapter 2 of 4", following the series' own numbering; a prologue (chapter 0) reads by its title, "Prologue · All chapters".
 - A marked picture's name ends "You were here" after its alt text ("Page 3: It falls. You were here").
 - Page sheets exist only for pages in chapters with more than one page, so there's no sheet for a page the reader doesn't link from.
+- A picture's number sits under its link, hidden from screen readers, rather than inside it: the link's name already has the number (and "You were here"), and visible text inside a link must be part of its name (axe's label-content-name-mismatch). The chapter links' arrows are hidden from screen readers for the same reason.
+- The controls wrap two by two when their row is narrower than 17rem, which with text at 200% is any phone, and at normal size none down to 320 px.
