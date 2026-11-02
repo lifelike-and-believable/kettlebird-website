@@ -73,7 +73,7 @@
   .laptop.after-l .site-header::before, .a .site-header::before { content: ''; position: absolute; z-index: -1; pointer-events: none;
     inset: 0 0 -1.5cqw 0;  /* vw on the site: the layer reaches below the header by the image's transparent strip */
     background: url('../../../../public/assets/images/Paper_1_Torn.png') no-repeat center bottom / cover; }
-  .laptop.after-l .inner { padding-bottom: max(2.25rem, 3.5cqw); }
+  .laptop.after-l .inner { padding-bottom: calc(max(2.25rem, 3.5cqw) + 5px); }  /* 5 px more above the tear on wider screens, at the lead's review */
   .laptop .content { max-width: 1200px; margin: 0 auto; }
   .laptop .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
   .laptop .cover { height: 380px; }
