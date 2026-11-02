@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Newest page, sharing and announcements: mock-ups</title>
+<!-- Source for the PNG mock-ups beside this file (docs/design/comic-share-and-announce.md). Built to
+     match the reader and series pages as built: fonts, colours, borders, reader bar and controls.
+     Comic pages and covers are placeholders. Frame 6 is an illustration of a social site, not the
+     site itself; frames 7 and 8 show what a screen reader says in a dark box. Render: node render.mjs -->
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --ink:#2b2b2b; --ink-light:#595959; --beige:#f5f1e8; --paper-dark:#e8e3d8; --yellow:#f4ce6a; --focus:#4a4063; }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 24px; background: #9ca3af; font-family: 'DM Sans', sans-serif; display: flex; flex-wrap: wrap; gap: 32px; align-items: flex-start; }
+  .wrap h6 { margin: 0 0 6px; font: 600 13px/1.4 system-ui; color: #111827; max-width: 560px; }
+  .screen { width: 390px; height: 844px; overflow: hidden; position: relative; color: var(--ink); container-type: inline-size;
+    background: var(--beige) url('../../../../public/assets/images/Paper_2_Tileable.png'); background-size: 400px 400px; }
+  .screen.wide { width: 1280px; height: 800px; }
+
+  /* Site header, as built (design-phone-header) */
+  .site-header { position: relative; z-index: 2; }
+  .site-header::before { content: ''; position: absolute; inset: 0 0 -2.2cqw 0; z-index: -1;
+    background: url('../../../../public/assets/images/Paper_1_Torn.png') no-repeat center bottom / auto max(30cqw, 100%); }
+  .hdr { display: flex; align-items: center; justify-content: space-between; padding: .875rem 1rem max(2.25rem, calc(22px + 3.1cqw)); }
+  .hdr b { font: 700 2.5rem/1.1 'Nunito', sans-serif; display: block; }
+  .hdr small { font: 600 1.0625rem/1.25 'Nunito', sans-serif; }
+  .menu { width: 44px; height: 44px; border: 2px solid var(--ink); }
+  .wide .hdr { display: block; padding: 2rem 1rem calc(max(2.25rem, calc(22px + 3.1cqw)) + 0px); }
+  .wide .hdr b { font-size: 5.5rem; }
+  .wide .menu { display: none; }
+  .wide .hdr small { font-size: 2.5rem; }
+  .scrolled .site-header { display: none; } /* the reader opens scrolled past the header */
+
+  /* Reader */
+  .reader { max-width: 960px; margin: 0 auto; padding: .5rem .5rem 2rem; }
+  .bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .25rem 1rem; padding: .5rem .25rem; }
+  .bar a { font: 700 1rem 'Nunito', sans-serif; color: var(--ink); }
+  .loc { font: 500 .95rem 'DM Mono', monospace; margin: 0; }
+  .allpages { display: inline-flex; align-items: center; gap: .4rem; border: 2px solid var(--ink); padding: .3rem .6rem; text-decoration: none; background: var(--beige); min-height: 44px; }
+  .grid-icon { display: inline-grid; grid-template-columns: repeat(3, 5px); gap: 2px; }
+  .grid-icon i { width: 5px; height: 5px; background: var(--ink); display: block; }
+  .page { margin: 0 auto; background: var(--paper-dark); border: 1px solid #0002; display: flex; align-items: center; justify-content: center;
+    font: 600 1.6rem 'Nunito', sans-serif; color: #2b2b2b99; }
+  .phone .page { width: 100%; height: 520px; }
+  .wide .page { width: 440px; height: 620px; }
+
+  /* Player-style controls */
+  .controls { display: grid; grid-template-columns: repeat(4, 1fr); gap: .5rem; max-width: 640px; margin: 1rem auto 0; }
+  .ctl { min-height: 56px; border: 3px solid var(--ink); background: var(--beige); color: var(--ink); text-decoration: none;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; position: relative; }
+  .ctl .sym { display: flex; align-items: center; justify-content: center; height: 30px; line-height: 0; }
+  .ctl .cap { font: 600 .78rem/1 'Nunito', sans-serif; }
+  /* With enlarged text on a narrow phone, the row wraps to two by two: Previous | Next, then First | Newest. */
+  .controls.wrapped { grid-template-columns: 1fr 1fr; }
+  .controls.wrapped .ctl:nth-child(1) { order: 3; } .controls.wrapped .ctl:nth-child(2) { order: 1; }
+  .controls.wrapped .ctl:nth-child(3) { order: 2; } .controls.wrapped .ctl:nth-child(4) { order: 4; }
+  .ctl.off { border-style: dashed; border-color: #2b2b2b66; color: #2b2b2b66; background: transparent; }
+  .ctl.focus { outline: 3px solid var(--focus); outline-offset: 3px; }
+  .tip { position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%); white-space: nowrap; background: var(--ink); color: var(--beige);
+    font: 600 .8rem 'Nunito', sans-serif; padding: .25rem .5rem; }
+  .end { text-align: center; margin-top: .75rem; }
+  .end p { margin: 0 0 .25rem; }
+  .end b { font: 700 1rem 'Nunito', sans-serif; }
+
+  /* Contact sheet */
+  .sheet { max-width: 1100px; margin: 0 auto; padding: .5rem 1rem 2rem; }
+  .sheet .bar { padding: .5rem 0; }
+  .sheet h1 { font: 700 1.5rem/1.2 'Nunito', sans-serif; margin: .25rem 0 .1rem; }
+  .sheet .count { font: 500 .9rem 'DM Mono', monospace; margin: 0 0 1rem; color: var(--ink-light); }
+  .thumbs { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: .6rem; }
+  .wide .thumbs { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem; }
+  .thumb { text-decoration: none; color: var(--ink); display: block; }
+  .thumb .img { aspect-ratio: 2 / 3; background: var(--paper-dark); border: 2px solid var(--ink); display: flex; align-items: center; justify-content: center;
+    font: 600 .8rem 'Nunito', sans-serif; color: #2b2b2b80; }
+  .thumb .num { display: block; text-align: center; font: 500 .85rem 'DM Mono', monospace; margin-top: .25rem; }
+  .thumb.here .img { border: 4px solid var(--ink); outline: 3px solid var(--yellow); outline-offset: -7px; }
+  .thumb.here .num { font-weight: 700; }
+  .thumb.here .num::after { content: ' · You were here'; font-family: 'Nunito', sans-serif; }
+  .sheet-foot { margin-top: 1.25rem; display: flex; justify-content: space-between; font: 700 1rem 'Nunito', sans-serif; }
+  .sheet-foot a { color: var(--ink); }
+
+  /* Chapter navigation on the sheet: previous and next chapter, and a fold-out list of chapters */
+  .chapnav { display: flex; justify-content: space-between; gap: 1rem; margin: 0 0 .75rem; font: 700 .95rem 'Nunito', sans-serif; }
+  .chapnav a { color: var(--ink); }
+  details.chapters { margin: 0 0 1rem; border: 2px solid var(--ink); background: var(--beige); }
+  details.chapters summary { cursor: pointer; padding: .5rem .75rem; font: 700 .95rem 'Nunito', sans-serif; list-style: none; display: flex; justify-content: space-between; min-height: 44px; align-items: center; }
+  details.chapters summary::after { content: '▾'; }
+  details.chapters[open] summary::after { content: '▴'; }
+  details.chapters ol { margin: 0; padding: 0 .75rem .5rem; list-style: none; border-top: 1px solid #2b2b2b33; }
+  details.chapters li { padding: .45rem 0; border-bottom: 1px solid #2b2b2b22; font: 600 .95rem 'Nunito', sans-serif; display: flex; justify-content: space-between; }
+  details.chapters li a { color: var(--ink); }
+  details.chapters li small { color: var(--ink-light); font: 500 .8rem 'DM Mono', monospace; white-space: nowrap; margin-left: .5rem; }
+  details.chapters li.here { font-weight: 800; }
+
+  .page.short { height: 420px; }
+  .reader.fit .page { width: 340px; height: 480px; }
+  .copybox input::selection { background: #b4d5fe; }
+  .share { display: flex; flex-direction: column; align-items: center; gap: .5rem; margin: 1rem auto 0; max-width: 640px; }
+  .sharebtn { display: inline-flex; align-items: center; gap: .5rem; min-height: 44px; padding: .4rem 1rem; border: 2px solid var(--ink); background: transparent; color: var(--ink); font: 700 1rem 'Nunito', sans-serif; }
+  .sharebtn.done { background: var(--paper-dark); }
+  .copybox { margin: 0; width: 100%; font: 600 .9rem 'Nunito', sans-serif; }
+  .copybox label { display: block; margin-bottom: .25rem; }
+  .copybox input { width: 100%; min-height: 44px; font: 500 .85rem 'DM Mono', monospace; border: 2px solid var(--ink); padding: .4rem; background: #fff; outline: 3px solid var(--focus); outline-offset: 2px; }
+  .ctl.off.focus { outline: 3px solid var(--focus); outline-offset: 3px; }
+  .sr { position: absolute; right: 24px; top: 90px; max-width: 420px; background: #111827; color: #f9fafb; padding: .75rem 1rem; font: 500 15px/1.4 system-ui; border-radius: 8px; box-shadow: 0 4px 16px #0005; }
+  .sr span { display: block; font: 700 11px system-ui; letter-spacing: .06em; text-transform: uppercase; color: #a5b4fc; margin-bottom: .25rem; }
+  .series { padding: 1rem; }
+  .series .cover { height: 260px; aspect-ratio: 5 / 7; margin: 0 0 1rem; background: var(--paper-dark); border: 2px solid var(--ink); display: flex; align-items: center; justify-content: center; font: 600 1rem 'Nunito', sans-serif; color: #2b2b2b99; text-align: center; }
+  .series h1 { font: 700 2.2rem/1.1 'Nunito', sans-serif; margin: 0 0 .5rem; }
+  .tags { margin: 0 0 1rem; display: flex; gap: .5rem; }
+  .tag { border: 2px solid var(--ink); padding: .1rem .5rem; font: 600 .85rem 'Nunito', sans-serif; }
+  .tag.ongoing { background: #b9e4c9; }
+  .starts { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem 1.25rem; margin: 0 0 1rem; }
+  .hl { display: inline-block; padding: .6rem 1.4rem; background: url('../../../../public/assets/images/Highlighter_Y.png') center / 100% 100% no-repeat; font: 700 1.1rem 'Nunito', sans-serif; color: var(--ink); }
+  .newest { font: 700 1rem 'Nunito', sans-serif; color: var(--ink); text-decoration: underline; min-height: 44px; display: inline-flex; align-items: center; }
+  .desc { font: 400 1rem/1.5 'DM Sans', sans-serif; }
+  .nf { padding: 3rem 1rem; text-align: center; }
+  .nf h1 { font: 700 2.2rem 'Nunito', sans-serif; margin: 0 0 1rem; }
+  .nf p { font: 400 1rem/1.5 'DM Sans', sans-serif; }
+  .nflinks { display: flex; flex-direction: column; gap: .5rem; align-items: center; }
+  .nflinks a { font: 700 1rem 'Nunito', sans-serif; color: var(--ink); text-decoration: underline; }
+  .screen.social { width: 560px; height: 520px; background: #f3f4f6; padding: 24px; }
+  .post { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px; font: 15px/1.4 system-ui; color: #111827; }
+  .post p { margin: 0 0 .75rem; } .who { color: #6b7280; }
+  .card { border: 1px solid #d1d5db; border-radius: 12px; overflow: hidden; }
+  .cardimg { aspect-ratio: 1200 / 630; background: var(--paper-dark); display: flex; align-items: center; justify-content: center; font: 600 1rem 'Nunito', sans-serif; color: #2b2b2b99; }
+  .cardimg { background: var(--beige) url('../../../../public/assets/images/Paper_2_Tileable.png'); background-size: 300px; }
+  .cardcover { height: 88%; aspect-ratio: 5 / 7; background: var(--paper-dark); border: 2px solid var(--ink); display: flex; align-items: center; justify-content: center; text-align: center; font-size: .85rem; }
+  .end a { color: var(--ink); }
+  .cardtext { padding: .6rem .8rem; display: flex; flex-direction: column; gap: .15rem; }
+  .cardtext small { color: #6b7280; } .cardtext span { color: #4b5563; font-size: 14px; }
+</style>
+</head>
+<body>
+<template id="hdr"><header class="site-header"><div class="hdr"><div><b>Kettlebird</b><small>Comics + Illustration</small></div><span class="menu"></span></div></header></template>
+<div class="wrap"><h6>1 · Reader on a phone: Share this page under the controls</h6>
+<div class="screen phone scrolled" id="m1"><div class="reader"><div class="bar"><a href="#">Back to series</a><a class="allpages" href="#"><span class="grid-icon"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>All pages</a><p class="loc" style="flex-basis:100%">Chapter 2: The Long Road · Page 4 of 12</p></div><div class="page">Page 4</div><nav class="controls"><a class="ctl"><span class="sym"><svg viewBox="0 0 32 24" width="30" height="22" aria-hidden="true"><path d="M30 4 L18 12 L30 20 Z M16 4 L4 12 L16 20 Z" fill="currentColor"/></svg></span><span class="cap">First</span></a><a class="ctl"><span class="sym"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M17 4 L5 12 L17 20 Z" fill="currentColor"/></svg></span><span class="cap">Previous</span></a><a class="ctl"><span class="sym"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M7 4 L19 12 L7 20 Z" fill="currentColor"/></svg></span><span class="cap">Next</span></a><a class="ctl"><span class="sym"><svg viewBox="0 0 32 24" width="30" height="22" aria-hidden="true"><path d="M2 4 L14 12 L2 20 Z M16 4 L28 12 L16 20 Z" fill="currentColor"/></svg></span><span class="cap">Newest</span></a></nav><div class="share"><button class="sharebtn"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="18" cy="5" r="3" fill="currentColor"/><circle cx="6" cy="12" r="3" fill="currentColor"/><circle cx="18" cy="19" r="3" fill="currentColor"/><path d="M8.6 10.7 L15.4 6.4 M8.6 13.3 L15.4 17.6" stroke="currentColor" stroke-width="2"/></svg><span>Share this page</span></button></div></div></div></div>
+<div class="wrap"><h6>2 · On a laptop, after choosing Share this page: the link is copied, and the button says so for a few seconds</h6>
+<div class="screen wide scrolled" id="m2"><div class="reader fit"><div class="bar"><a href="#">Back to series</a><p class="loc">Chapter 2: The Long Road · Page 4 of 12</p><a class="allpages" href="#"><span class="grid-icon"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>All pages</a></div><div class="page">Page 4</div><nav class="controls"><a class="ctl"><span class="sym"><svg viewBox="0 0 32 24" width="30" height="22" aria-hidden="true"><path d="M30 4 L18 12 L30 20 Z M16 4 L4 12 L16 20 Z" fill="currentColor"/></svg></span><span class="cap">First</span></a><a class="ctl"><span class="sym"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M17 4 L5 12 L17 20 Z" fill="currentColor"/></svg></span><span class="cap">Previous</span></a><a class="ctl"><span class="sym"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M7 4 L19 12 L7 20 Z" fill="currentColor"/></svg></span><span class="cap">Next</span></a><a class="ctl"><span class="sym"><svg viewBox="0 0 32 24" width="30" height="22" aria-hidden="true"><path d="M2 4 L14 12 L2 20 Z M16 4 L28 12 L16 20 Z" fill="currentColor"/></svg></span><span class="cap">Newest</span></a></nav><div class="share"><button class="sharebtn done"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="18" cy="5" r="3" fill="currentColor"/><circle cx="6" cy="12" r="3" fill="currentColor"/><circle cx="18" cy="19" r="3" fill="currentColor"/><path d="M8.6 10.7 L15.4 6.4 M8.6 13.3 L15.4 17.6" stroke="currentColor" stroke-width="2"/></svg><span>Link copied</span></button></div></div></div></div>
+<div class="wrap"><h6>3 · If the browser won't let the site copy: the link, selected, to copy by hand</h6>
+<div class="screen phone scrolled" id="m3"><div class="reader"><div class="bar"><a href="#">Back to series</a><a class="allpages" href="#"><span class="grid-icon"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>All pages</a><p class="loc" style="flex-basis:100%">Chapter 2: The Long Road · Page 4 of 12</p></div><div class="page short">Page 4</div><nav class="controls"><a class="ctl"><span class="sym"><svg viewBox="0 0 32 24" width="30" height="22" aria-hidden="true"><path d="M30 4 L18 12 L30 20 Z M16 4 L4 12 L16 20 Z" fill="currentColor"/></svg></span><span class="cap">First</span></a><a class="ctl"><span class="sym"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M17 4 L5 12 L17 20 Z" fill="currentColor"/></svg></span><span class="cap">Previous</span></a><a class="ctl"><span class="sym"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M7 4 L19 12 L7 20 Z" fill="currentColor"/></svg></span><span class="cap">Next</span></a><a class="ctl"><span class="sym"><svg viewBox="0 0 32 24" width="30" height="22" aria-hidden="true"><path d="M2 4 L14 12 L2 20 Z M16 4 L28 12 L16 20 Z" fill="currentColor"/></svg></span><span class="cap">Newest</span></a></nav><div class="share"><button class="sharebtn"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="18" cy="5" r="3" fill="currentColor"/><circle cx="6" cy="12" r="3" fill="currentColor"/><circle cx="18" cy="19" r="3" fill="currentColor"/><path d="M8.6 10.7 L15.4 6.4 M8.6 13.3 L15.4 17.6" stroke="currentColor" stroke-width="2"/></svg><span>Share this page</span></button><p class="copybox"><label>Copy this link:</label><input value="https://newsite.kettlebird.com/comics/kettle-tales/2/4" readonly></p></div></div></div></div>
+<div class="wrap"><h6>4 · Series page on a phone, ongoing: Read the newest page beside Start reading</h6>
+<div class="screen phone" id="m4"><div class="series"><h1>Kettle Tales</h1><div class="cover">Kettle Tales cover</div><p class="tags"><span class="tag ongoing">Ongoing</span><span class="tag">Original</span></p><p class="starts"><a class="hl">Start reading</a><a class="newest">Read the newest page</a></p><p class="desc">A fox and a kettle set out across the hills.</p></div></div></div>
+<div class="wrap"><h6>5 · A link to a page that no longer exists: Page not found, with a link to its series</h6>
+<div class="screen phone" id="m5"><div class="nf"><h1>Page not found</h1><p>There's nothing at this address. It may be an old or mistyped link.</p><p class="nflinks"><a>Back to Kettle Tales</a><a>Comics</a></p></div></div></div>
+<div class="wrap"><h6>6 · A shared page's preview on a social site (illustration): the series cover, the series and the page's place</h6>
+<div class="screen social" id="m6"><div class="post"><p class="who"><b>A fan</b> · just now</p><p>this page!! 😭</p><div class="card"><div class="cardimg"><span class="cardcover">Kettle Tales cover</span></div><div class="cardtext"><small>newsite.kettlebird.com</small><b>Kettle Tales · Chapter 2, page 4</b><span>Chapter 2: The Long Road, page 4 of 12. A fox and a kettle set out across the hills.</span></div></div></div></div></div>
+<div class="wrap"><h6>7 · After a turn with the keyboard: focus is back on Next, and the new page is announced</h6>
+<div class="screen wide scrolled" id="m7"><div class="reader fit"><div class="bar"><a href="#">Back to series</a><p class="loc">Chapter 2: The Long Road · Page 5 of 12</p><a class="allpages" href="#"><span class="grid-icon"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>All pages</a></div><div class="page">Page 5</div><nav class="controls"><a class="ctl"><span class="sym"><svg viewBox="0 0 32 24" width="30" height="22" aria-hidden="true"><path d="M30 4 L18 12 L30 20 Z M16 4 L4 12 L16 20 Z" fill="currentColor"/></svg></span><span class="cap">First</span></a><a class="ctl"><span class="sym"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M17 4 L5 12 L17 20 Z" fill="currentColor"/></svg></span><span class="cap">Previous</span></a><a class="ctl focus"><span class="sym"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M7 4 L19 12 L7 20 Z" fill="currentColor"/></svg></span><span class="cap">Next</span></a><a class="ctl"><span class="sym"><svg viewBox="0 0 32 24" width="30" height="22" aria-hidden="true"><path d="M2 4 L14 12 L2 20 Z M16 4 L28 12 L16 20 Z" fill="currentColor"/></svg></span><span class="cap">Newest</span></a></nav><div class="share"><button class="sharebtn"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="18" cy="5" r="3" fill="currentColor"/><circle cx="6" cy="12" r="3" fill="currentColor"/><circle cx="18" cy="19" r="3" fill="currentColor"/><path d="M8.6 10.7 L15.4 6.4 M8.6 13.3 L15.4 17.6" stroke="currentColor" stroke-width="2"/></svg><span>Share this page</span></button></div></div><div class="sr"><span>Screen reader</span>Chapter 2: The Long Road, page 5 of 12. The kettle wobbles on the shelf.</div></div></div>
+<div class="wrap"><h6>8 · Next onto the newest page: focus stays on Next, now unavailable, and the end note is announced</h6>
+<div class="screen wide scrolled" id="m8"><div class="reader fit"><div class="bar"><a href="#">Back to series</a><p class="loc">Chapter 2: The Long Road · Page 12 of 12</p><a class="allpages" href="#"><span class="grid-icon"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>All pages</a></div><div class="page">Page 12</div><nav class="controls"><a class="ctl"><span class="sym"><svg viewBox="0 0 32 24" width="30" height="22" aria-hidden="true"><path d="M30 4 L18 12 L30 20 Z M16 4 L4 12 L16 20 Z" fill="currentColor"/></svg></span><span class="cap">First</span></a><a class="ctl"><span class="sym"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M17 4 L5 12 L17 20 Z" fill="currentColor"/></svg></span><span class="cap">Previous</span></a><a class="ctl off focus"><span class="sym"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M7 4 L19 12 L7 20 Z" fill="currentColor"/></svg></span><span class="cap">Next</span></a><a class="ctl off"><span class="sym"><svg viewBox="0 0 32 24" width="30" height="22" aria-hidden="true"><path d="M2 4 L14 12 L2 20 Z M16 4 L28 12 L16 20 Z" fill="currentColor"/></svg></span><span class="cap">Newest</span></a></nav><div class="end"><p><b>You're all caught up!</b></p><p>New pages are on the way.</p><p><a href="#">Back to series</a></p></div><div class="share"><button class="sharebtn"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="18" cy="5" r="3" fill="currentColor"/><circle cx="6" cy="12" r="3" fill="currentColor"/><circle cx="18" cy="19" r="3" fill="currentColor"/><path d="M8.6 10.7 L15.4 6.4 M8.6 13.3 L15.4 17.6" stroke="currentColor" stroke-width="2"/></svg><span>Share this page</span></button></div></div><div class="sr"><span>Screen reader</span>Chapter 2: The Long Road, page 12 of 12. Home at last. You're all caught up! New pages are on the way.</div></div></div>
+
+<script>
+  for (const id of ['m4', 'm5']) document.getElementById(id).prepend(document.getElementById('hdr').content.cloneNode(true));
+  document.fonts.ready.then(() => { document.body.dataset.ready = 'yes'; });
+</script>
+</body>
+</html>
