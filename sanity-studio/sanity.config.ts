@@ -2,6 +2,7 @@ import { visionTool } from '@sanity/vision';
 import { defineConfig } from 'sanity';
 import { structureTool } from 'sanity/structure';
 
+import { withChapters } from './actions/deleteSeries';
 import { withChapterChecks } from './actions/publishChapter';
 import { CHAPTER_TEMPLATE } from './components/ChaptersList';
 import schemaTypes from './schemas';
@@ -37,9 +38,11 @@ export default defineConfig({
   },
   document: {
     // A chapter's Publish waits for uploads and warns about changed links and missing alt text.
-    actions: (prev, context) =>
-      context.schemaType === 'comicChapter'
-        ? prev.map((action) => (action.action === 'publish' ? withChapterChecks(action) : action))
-        : prev
+    // A series' Delete deletes its chapters too (AC-16).
+    actions: (prev, context) => {
+      if (context.schemaType === 'comicChapter') return prev.map((action) => (action.action === 'publish' ? withChapterChecks(action) : action));
+      if (context.schemaType === 'comicSeries') return prev.map((action) => (action.action === 'delete' ? withChapters(action) : action));
+      return prev;
+    }
   }
 });

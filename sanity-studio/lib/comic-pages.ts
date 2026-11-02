@@ -148,15 +148,24 @@ export function chapterRow(c: { number: number; title?: string; pageCount: numbe
 
 /** AC-16: the documents a chapter or series list names, once each, without draft prefixes. */
 export function publishedIds(ids: string[]): string[] {
-  return ['stub'];
+  return [...new Set(ids.map((id) => id.replace(/^drafts\./, '')))];
 }
 
 /** AC-16: every document to delete with a series: each chapter and the series, published and draft. */
 export function idsToDelete(seriesId: string, chapterIds: string[]): string[] {
-  return ['stub'];
+  return publishedIds([...chapterIds, seriesId]).flatMap((id) => [id, `drafts.${id}`]);
 }
 
 /** AC-16: the confirmation before a series is deleted with its chapters. */
 export function deleteSeriesDialog(title: string | undefined, chapterCount: number): PublishDialog {
-  return { title: 'stub', lines: ['stub'], confirm: 'stub' };
+  const name = title?.trim() || 'this comic';
+  if (chapterCount === 0) {
+    return { title: `Delete ${name}?`, lines: ["It comes off the site with the next update. This can't be undone."], confirm: 'Delete' };
+  }
+  const chapters = chapterCount === 1 ? 'its chapter' : `its ${chapterCount} chapters`;
+  return {
+    title: `Delete ${name} and ${chapters}?`,
+    lines: ["The comic, its chapters and their pages come off the site with the next update. This can't be undone."],
+    confirm: 'Delete comic and chapters',
+  };
 }

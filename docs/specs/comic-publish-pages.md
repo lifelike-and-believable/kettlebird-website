@@ -3,6 +3,7 @@ status: implemented
 tests-commit:
   - 7888cf0320d6d947ba5643c6d0afb923c8ea2a3a
   - 3f6d28337bfd44d659fabbc12551e9f483a13328
+  - d82fbd65fe33a700ee9c8e78ab58fcc8ff175f2f
 ---
 
 # Publish comic pages and chapters

@@ -5,7 +5,7 @@ derived-from:
   - story-content-editing-preview: be2784e6f165
   - design-cms#decision: 889c200357ba
   - design-organised-editor: c014dfe64fbc
-  - design-comic-publish-pages: 37139d9491dd
+  - design-comic-publish-pages: 979d1da1ae7d
   - design-site-settings: 156335124dd1
   - design-know-when-live: b7f62b452b90
   - design-sign-in: 8a54c1540982

@@ -45,6 +45,7 @@ Low-fidelity: the real screens are Sanity Studio's own components, arranged and 
 | 8 | Problems that stop publishing: duplicate chapter number, missing web address | `mockups/comic-publish-pages/8-cant-publish.png` |
 | 9 | The shared-link warning for a removed page, an inserted page, and a changed chapter number | `mockups/comic-publish-pages/9-link-warnings.png` |
 | 10 | Publishing with pages missing alt text (no link changes): the reminder | `mockups/comic-publish-pages/10-alt-text-reminder.png` |
+| 11 | Deleting a comic: **Delete** in the menu next to **Publish**, then the confirmation naming its chapters | `mockups/comic-publish-pages/11-delete-comic.png` |
 
 ## Layout
 
@@ -69,6 +70,15 @@ Low-fidelity: the real screens are Sanity Studio's own components, arranged and 
 - **Two chapters with the same number:** the editor won't publish, and says "Chapter 2 already exists in this series. Choose another number." (mock-up 8).
 - **Series without a web address:** the editor won't publish the series, and says "Add a web address so readers can find this comic." (mock-up 8).
 - **Publish status** (mock-up 5): **Updating the site…**; **Live** with the time and **View on site**; or **Didn't go live** with "Your change is saved, but the site didn't update. The person who looks after the site has been told and will fix it; you don't need to do anything." (story-content-editing-know-when-live).
+
+## Deleting a comic
+
+Added after the lead's manual pass (2026-11-02): Sanity refused to delete a series while a chapter still pointed to it, and the lead decided that deleting a series deletes its chapters.
+
+- On a series, the menu (**⋯**) next to **Publish** has **Delete**, as on every document (mock-up 11).
+- **Delete** first asks, naming the comic and how many chapters go with it: "Delete Kettle Tales and its 3 chapters?" (or "its chapter" for one), "The comic, its chapters and their pages come off the site with the next update. This can't be undone.", with **Cancel** and **Delete comic and chapters**. A comic with no chapters gets "Delete Kettle Tales?" and **Delete**. An untitled comic is "this comic".
+- The series and all its chapters, published and unpublished, are deleted together, so a comic is never left half-deleted.
+- Deleting one chapter is Sanity's own **Delete** on the chapter; nothing points to a chapter, so it needs no extra step.
 
 ## Accessibility
 
