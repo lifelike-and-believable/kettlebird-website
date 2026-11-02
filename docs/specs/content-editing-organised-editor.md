@@ -2,6 +2,7 @@
 status: implemented
 tests-commit:
   - 5f3cf5ff6e58723c7fd7791c3c8f8fa0ed201fe7
+  - 206f0803d5afb332e17f3ca4cf6460af190d5b7a
 ---
 
 # An editor organised around Star's work

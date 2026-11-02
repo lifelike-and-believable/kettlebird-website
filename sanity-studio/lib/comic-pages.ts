@@ -183,7 +183,8 @@ export function altTextRule<R extends RuleLike<R>>(rule: R, message: string = AL
   return rule.custom((value) => (value && String(value).trim() ? true : message)).warning();
 }
 
-/** organised-editor AC-14 (stub for the tests-first commit). */
-export function chapterPaneTitle(_seriesTitle: string | undefined, _chapter: { number: number; title?: string } | null): string {
-  return 'stub';
+/** organised-editor AC-14: the heading of a chapter's pane, beside its series. */
+export function chapterPaneTitle(seriesTitle: string | undefined, chapter: { number: number; title?: string } | null): string {
+  const series = seriesTitle?.trim() || 'Untitled series';
+  return `${series} · ${chapter ? chapterLabel(chapter) : 'New chapter'}`;
 }
