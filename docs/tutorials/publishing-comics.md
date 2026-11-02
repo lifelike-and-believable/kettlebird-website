@@ -7,10 +7,10 @@ derived-from:
   - docs-publishing-comics#add-a-chapter: 6b9730bd5db8
   - docs-publishing-comics#add-pages: 0114dfedb96c
   - docs-publishing-comics#describe-each-page: c096de4c45a0
-  - docs-publishing-comics#publish: ea852ae62524
+  - docs-publishing-comics#publish: b498b69fde74
   - docs-publishing-comics#if-links-will-change: 9488ad00a0a3
-  - docs-publishing-comics#if-something-goes-wrong: 9823debac817
-  - docs-publishing-comics#remove-a-comic: 42ae37a0cf12
+  - docs-publishing-comics#if-something-goes-wrong: c00d73719809
+  - docs-publishing-comics#remove-a-comic: 7ccc4082f01b
 ---
 
 # Tutorial: put a new comic on the site

@@ -6,8 +6,8 @@ derived-from:
   - docs-editing-your-site#art: 103624d707bb
   - docs-editing-your-site#shop: b33cdf34e074
   - docs-editing-your-site#commissions: b5306156e840
-  - docs-editing-your-site#publish: f77b4e40ba0a
-  - docs-editing-your-site#remove-something: 5cf5a49b5b48
+  - docs-editing-your-site#publish: 7a071e32eb28
+  - docs-editing-your-site#remove-something: f11ed0fde606
   - docs-editing-your-site#if-something-goes-wrong: 44c01a07022b
 ---
 
