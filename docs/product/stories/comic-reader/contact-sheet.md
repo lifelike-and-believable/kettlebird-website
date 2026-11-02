@@ -25,3 +25,4 @@ As a fan, I want to see all of a chapter's pages as a grid of small pictures, li
 - Every picture is a link a keyboard and a screen reader can reach, named by its page number and the page's alt text where there is one ("Page 4: Rain on the road").
 - The sheet works without scripts, like the rest of the reader.
 - A chapter with only one page has no contact sheet control.
+- From the sheet, the fan can open the previous or next chapter's sheet, and unfold a list of the series' chapters to open any of them; the list is folded away until they ask for it, so it doesn't push the pictures down on a phone (lead, 2026-11-02).

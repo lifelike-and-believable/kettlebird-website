@@ -77,6 +77,19 @@
   .thumb.here .num::after { content: ' · You were here'; font-family: 'Nunito', sans-serif; }
   .sheet-foot { margin-top: 1.25rem; display: flex; justify-content: space-between; font: 700 1rem 'Nunito', sans-serif; }
   .sheet-foot a { color: var(--ink); }
+
+  /* Chapter navigation on the sheet: previous and next chapter, and a fold-out list of chapters */
+  .chapnav { display: flex; justify-content: space-between; gap: 1rem; margin: 0 0 .75rem; font: 700 .95rem 'Nunito', sans-serif; }
+  .chapnav a { color: var(--ink); }
+  details.chapters { margin: 0 0 1rem; border: 2px solid var(--ink); background: var(--beige); }
+  details.chapters summary { cursor: pointer; padding: .5rem .75rem; font: 700 .95rem 'Nunito', sans-serif; list-style: none; display: flex; justify-content: space-between; min-height: 44px; align-items: center; }
+  details.chapters summary::after { content: '▾'; }
+  details.chapters[open] summary::after { content: '▴'; }
+  details.chapters ol { margin: 0; padding: 0 .75rem .5rem; list-style: none; border-top: 1px solid #2b2b2b33; }
+  details.chapters li { padding: .45rem 0; border-bottom: 1px solid #2b2b2b22; font: 600 .95rem 'Nunito', sans-serif; display: flex; justify-content: space-between; }
+  details.chapters li a { color: var(--ink); }
+  details.chapters li small { color: var(--ink-light); font: 500 .8rem 'DM Mono', monospace; white-space: nowrap; margin-left: .5rem; }
+  details.chapters li.here { font-weight: 800; }
 </style>
 </head>
 <body>
@@ -140,13 +153,15 @@
   </div>
 </div></div>
 
-<div class="wrap"><h6>5 · Contact sheet on a phone, opened from page 4: three a row, page 4 marked</h6>
+<div class="wrap"><h6>5 · Contact sheet on a phone, opened from page 4: three a row, page 4 marked; the chapter list folded</h6>
 <div class="screen phone" id="m5">
   <div class="sheet">
     <div class="bar"><a href="#">← Back to page 4</a><a href="#">Back to series</a></div>
     <h1>Kettle Tales · Chapter 2: The Long Road</h1>
     <p class="count">12 pages</p>
+    <details class="chapters"><summary>Chapter 2 of 6 · All chapters</summary><ol><li><a href="#">Chapter 1: The Kettle</a><small>3 pages</small></li><li class="here"><span>Chapter 2: The Long Road · you're here</span><small>12 pages</small></li><li><a href="#">Chapter 3: Over the Hill</a><small>9 pages</small></li><li><a href="#">Chapter 4: Homeward</a><small>6 pages</small></li><li><a href="#">Chapter 5: The Fair</a><small>14 pages</small></li><li><a href="#">Chapter 6: Rain</a><small>8 pages</small></li></ol></details>
     <ul class="thumbs" id="t5"></ul>
+    <div class="chapnav"><a href="#">← Chapter 1</a><a href="#">Chapter 3 →</a></div>
     <div class="sheet-foot"><a href="#">← Back to page 4</a><a href="#">Back to series</a></div>
   </div>
 </div></div>
@@ -157,7 +172,9 @@
     <div class="bar"><a href="#">← Back to page 4</a><a href="#">Back to series</a></div>
     <h1>Kettle Tales · Chapter 2: The Long Road</h1>
     <p class="count">12 pages</p>
+    <details class="chapters"><summary>Chapter 2 of 6 · All chapters</summary><ol><li><a href="#">Chapter 1: The Kettle</a><small>3 pages</small></li><li class="here"><span>Chapter 2: The Long Road · you're here</span><small>12 pages</small></li><li><a href="#">Chapter 3: Over the Hill</a><small>9 pages</small></li><li><a href="#">Chapter 4: Homeward</a><small>6 pages</small></li><li><a href="#">Chapter 5: The Fair</a><small>14 pages</small></li><li><a href="#">Chapter 6: Rain</a><small>8 pages</small></li></ol></details>
     <ul class="thumbs" id="t6"></ul>
+    <div class="chapnav"><a href="#">← Chapter 1</a><a href="#">Chapter 3 →</a></div>
     <div class="sheet-foot"><a href="#">← Back to page 4</a><a href="#">Back to series</a></div>
   </div>
 </div></div>
@@ -192,13 +209,25 @@
   </div>
 </div></div>
 
+
+<div class="wrap"><h6>9 · The chapter list unfolded on a phone; a chapter opens that chapter's sheet</h6>
+<div class="screen phone" id="m9">
+  <div class="sheet">
+    <div class="bar"><a href="#">← Back to page 4</a><a href="#">Back to series</a></div>
+    <h1>Kettle Tales · Chapter 2: The Long Road</h1>
+    <p class="count">12 pages</p>
+    <details class="chapters" open><summary>Chapter 2 of 6 · All chapters</summary><ol><li><a href="#">Chapter 1: The Kettle</a><small>3 pages</small></li><li class="here"><span>Chapter 2: The Long Road · you're here</span><small>12 pages</small></li><li><a href="#">Chapter 3: Over the Hill</a><small>9 pages</small></li><li><a href="#">Chapter 4: Homeward</a><small>6 pages</small></li><li><a href="#">Chapter 5: The Fair</a><small>14 pages</small></li><li><a href="#">Chapter 6: Rain</a><small>8 pages</small></li></ol></details>
+    <ul class="thumbs" id="t9"></ul>
+  </div>
+</div></div>
+
 <script>
   for (const s of document.querySelectorAll('.screen.wide, .screen.phone')) {
     if (!s.classList.contains('scrolled') && !s.id.match(/m[56]/)) continue;
   }
   // Phone and laptop sheets and readers that aren't scrolled get the site header.
-  for (const id of ['m5', 'm6']) document.getElementById(id).prepend(document.getElementById('hdr').content.cloneNode(true));
-  for (const id of ['t5', 't6']) {
+  for (const id of ['m5', 'm6', 'm9']) document.getElementById(id).prepend(document.getElementById('hdr').content.cloneNode(true));
+  for (const id of ['t5', 't6', 't9']) {
     const list = document.getElementById(id);
     for (let n = 1; n <= 12; n++) {
       const li = document.createElement('li');
