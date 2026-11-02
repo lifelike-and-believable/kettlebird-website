@@ -1,14 +1,17 @@
 // A series' Delete: deletes its chapters with it, after saying how many (AC-16). Chapters point to
-// their series, so Sanity refuses to delete a series on its own while it has any; deleting them all
-// in one transaction keeps that check happy and never leaves a comic half-deleted.
+// their series, so Sanity refuses to delete a series while it has any. The chapters go first, in one
+// transaction; then the series goes through Sanity's own delete operation, which the open document
+// pane listens for, so the series' Published and Draft tabs close as they do for any deletion. If
+// that second step fails, the series is left with no chapters, and Delete can be chosen again.
 import { useState } from 'react';
-import { useClient, type DocumentActionComponent } from 'sanity';
-import { deleteSeriesDialog, idsToDelete, publishedIds, type PublishDialog } from '../lib/comic-pages';
+import { useClient, useDocumentOperation, type DocumentActionComponent } from 'sanity';
+import { chapterDocsToDelete, deleteSeriesDialog, publishedIds, type PublishDialog } from '../lib/comic-pages';
 
 export function withChapters(original: DocumentActionComponent): DocumentActionComponent {
   const DeleteSeries: DocumentActionComponent = (props) => {
     const base = original(props);
     const client = useClient({ apiVersion: '2024-01-01' });
+    const ops = useDocumentOperation(props.id, props.type);
     const [pending, setPending] = useState<{ chapterIds: string[]; dialog: PublishDialog } | null>(null);
     const [busy, setBusy] = useState(false);
     if (!base) return base;
@@ -42,10 +45,14 @@ export function withChapters(original: DocumentActionComponent): DocumentActionC
             onCancel: () => setPending(null),
             onConfirm: async () => {
               setBusy(true);
-              const tx = client.transaction();
-              for (const doc of idsToDelete(id, pending.chapterIds)) tx.delete(doc);
               try {
-                await tx.commit();
+                const chapters = chapterDocsToDelete(pending.chapterIds);
+                if (chapters.length) {
+                  const tx = client.transaction();
+                  for (const doc of chapters) tx.delete(doc);
+                  await tx.commit();
+                }
+                ops.delete.execute();
               } finally {
                 setBusy(false);
                 setPending(null);

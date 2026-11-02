@@ -39,7 +39,7 @@ Source: S5.n is the story's nth criterion; design and docs sections as named.
 | AC-12 | In an open page, **Previous page** and **Next page** move to the neighbouring page without closing the panel. | manual: tutorial step in the Studio | design-comic-publish-pages#layout |
 | AC-13 | Published pages and chapters appear in the reader, in Star's order, after the site's next build. | test: e2e (existing reader tests over fixtures that mirror the CMS shape); command: build | S5.5 |
 | AC-15 | Publishing the first chapter of a series that isn't on the site yet publishes the series too, after a dialog saying so ("Kettle Tales isn't on the site yet, so publishing this chapter publishes it too.", **Publish both**), or as a line in the other dialogs. A series without a web address blocks it with the AC-10 message. | test: unit "publishing a new series with its chapter"; manual | design-comic-publish-pages#flow (step 9); docs-publishing-comics#start-a-new-comic |
-| AC-16 | Deleting a series deletes its chapters too, published and draft, in one change, after a dialog naming how many go ("Delete Kettle Tales and its 3 chapters?", **Delete comic and chapters**; "Delete Kettle Tales?", **Delete**, when it has none). | test: unit "deleting a series with its chapters"; manual | docs-publishing-comics#remove-a-comic (lead, 2026-11-02, after the manual pass) |
+| AC-16 | Deleting a series deletes its chapters too, published and draft, then the series with the editor's own delete (so its open tabs close), after a dialog naming how many go ("Delete Kettle Tales and its 3 chapters?", **Delete comic and chapters**; "Delete Kettle Tales?", **Delete**, when it has none). | test: unit "deleting a series with its chapters"; manual | docs-publishing-comics#remove-a-comic (lead, 2026-11-02, after the manual pass) |
 | AC-14 | A Studio tutorial (`runner: manual`) walks Star's guide end to end in the real editor, and the Studio builds. | command: `npm run build` in `sanity-studio/`; manual: the tutorial | process stage 12 |
 
 ## Scope
@@ -73,10 +73,10 @@ Source: S5.n is the story's nth criterion; design and docs sections as named.
 
 - Plan item: epic-comic-reader, story 5.
 - AC-15 was added after the first tests commit, when the code was checked against Star's guide ("Start a new comic", step 4); its test was committed failing in the second tests commit.
-- AC-16 was added after the lead's manual pass, where deleting a series was refused because its chapter still pointed to it. The lead decided deleting a series should delete its chapters; its tests were committed failing in the third tests commit.
+- AC-16 was added after the lead's manual pass, where deleting a series was refused because its chapter still pointed to it. The lead decided deleting a series should delete its chapters; its tests were committed failing in the third tests commit. The lead's second pass found the series' tabs left open after deleting; the series now goes through Sanity's own delete.
 
 ## Risks and decisions
 
 - Studio components can't be tested end to end in CI without a Sanity login, so their logic lives in pure functions with unit tests, and the components are checked by a `runner: manual` tutorial in the real editor before release. This is the first manual tutorial on the project.
 - Replacing the chapter's Publish action changes how Star publishes chapters; other document types keep the default.
-- Deleting a series deletes its chapters in the same transaction, so Sanity's reference check passes and nothing is left half-deleted. Uploaded page images stay in the project's media library, unused; nothing on the site shows them.
+- Deleting a series deletes its chapters first, in one transaction, so Sanity's reference check passes; then the series goes through Sanity's delete operation, which closes its document pane (the lead found the tabs left open when the series was deleted in the same transaction). If that second step fails, the series is left with no chapters and **Delete** works again. Uploaded page images stay in the project's media library, unused; nothing on the site shows them.

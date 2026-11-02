@@ -4,7 +4,7 @@ import {
   altTextMessage, chapterLabel, chapterRow, DID_NOT_UPLOAD, duplicateChapterMessage, isAcceptedImage,
   linkChange, missingAltCount, naturalCompare, nextChapterNumber, NOT_AN_IMAGE, publishDialog,
   publishLabel, retryable, SERIES_SLUG_MESSAGE, sortByFileName, type ChapterLike,
-  deleteSeriesDialog, idsToDelete, publishedIds, altTextRule, ALT_TEXT_WARNING, type RuleLike,
+  deleteSeriesDialog, chapterDocsToDelete, publishedIds, altTextRule, ALT_TEXT_WARNING, type RuleLike,
 } from '../../sanity-studio/lib/comic-pages';
 
 const pages = (...keys: string[]) => keys.map((k) => ({ _key: k, altText: `alt ${k}` }));
@@ -162,9 +162,9 @@ describe('comic-publish-pages#AC-16 deleting a series with its chapters', () => 
     // Only a leading drafts. prefix is a draft; the same text later in an ID is part of the name.
     expect(publishedIds(['old-drafts.c4'])).toEqual(['old-drafts.c4']);
   });
-  it('deletes every chapter and the series, published and draft', () => {
-    expect(idsToDelete('s1', ['c1', 'drafts.c1', 'drafts.c2'])).toEqual(['c1', 'drafts.c1', 'c2', 'drafts.c2', 's1', 'drafts.s1']);
-    expect(idsToDelete('drafts.s1', [])).toEqual(['s1', 'drafts.s1']);
+  it('deletes every chapter, published and draft, before the series', () => {
+    expect(chapterDocsToDelete(['c1', 'drafts.c1', 'drafts.c2'])).toEqual(['c1', 'drafts.c1', 'c2', 'drafts.c2']);
+    expect(chapterDocsToDelete([])).toEqual([]);
   });
   it('says how many chapters go with the comic', () => {
     expect(deleteSeriesDialog('Kettle Tales', 3)).toEqual({
@@ -203,5 +203,6 @@ describe('comic-publish-pages#AC-8 missing alt text never blocks Publish', () =>
     expect(rule.check!('Fox looks at the kettle.')).toBe(true);
     expect(rule.check!('   ')).toBe(ALT_TEXT_WARNING);
     expect(rule.check!(undefined)).toBe(ALT_TEXT_WARNING);
+    expect(ALT_TEXT_WARNING).toBe('Add alt text so people using screen readers can follow the story');
   });
 });

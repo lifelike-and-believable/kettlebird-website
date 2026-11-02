@@ -77,7 +77,7 @@ Added after the lead's manual pass (2026-11-02): Sanity refused to delete a seri
 
 - On a series, the menu (**⋯**) next to **Publish** has **Delete**, as on every document (mock-up 11).
 - **Delete** first asks, naming the comic and how many chapters go with it: "Delete Kettle Tales and its 3 chapters?" (or "its chapter" for one), "The comic, its chapters and their pages come off the site with the next update. This can't be undone.", with **Cancel** and **Delete comic and chapters**. A comic with no chapters gets "Delete Kettle Tales?" and **Delete**. An untitled comic is "this comic".
-- The series and all its chapters, published and unpublished, are deleted together, so a comic is never left half-deleted.
+- The chapters, published and unpublished, are deleted first, then the comic, which closes as any deleted document does. If deleting the comic itself fails, it is left with no chapters, and **Delete** can be chosen again.
 - Deleting one chapter is Sanity's own **Delete** on the chapter; nothing points to a chapter, so it needs no extra step.
 
 ## Accessibility

@@ -2,7 +2,7 @@
 id: docs-publishing-comics
 status: approved
 derived-from:
-  - design-comic-publish-pages: 979d1da1ae7d
+  - design-comic-publish-pages: 9225936f631c
   - story-comic-reader-publish-pages: c43f60cc7f9f
   - design-comic-start-reading#what-star-enters: f8ef076087b9
 ---

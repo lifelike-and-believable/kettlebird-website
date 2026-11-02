@@ -151,9 +151,9 @@ export function publishedIds(ids: string[]): string[] {
   return [...new Set(ids.map((id) => id.replace(/^drafts\./, '')))];
 }
 
-/** AC-16: every document to delete with a series: each chapter and the series, published and draft. */
-export function idsToDelete(seriesId: string, chapterIds: string[]): string[] {
-  return publishedIds([...chapterIds, seriesId]).flatMap((id) => [id, `drafts.${id}`]);
+/** AC-16: the chapter documents to delete before their series: each chapter, published and draft. */
+export function chapterDocsToDelete(chapterIds: string[]): string[] {
+  return publishedIds(chapterIds).flatMap((id) => [id, `drafts.${id}`]);
 }
 
 /** AC-16: the confirmation before a series is deleted with its chapters. */
