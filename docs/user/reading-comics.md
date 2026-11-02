@@ -1,6 +1,6 @@
 ---
 id: docs-reading-comics
-status: draft
+status: approved
 derived-from:
   - design-comic-start-reading: 829c750345ab
   - design-comic-turn-pages: 7a603d6d8f84
