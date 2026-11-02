@@ -1,5 +1,7 @@
 ---
-status: draft
+status: implemented
+tests-commit:
+  - 7ed9b82beae4543280dea80674a1a0740e997fba
 ---
 
 # Sign in at the site
@@ -23,7 +25,7 @@ Source: S1.n is the story's nth criterion; design and docs sections as named.
 |---|---|---|---|
 | AC-1 | The deployed site's build also builds the editor into `dist/studio`, with `/studio` as its base path, so `/studio` on the site opens it. | command: `npm run build:site`, then `dist/studio/index.html` exists (CI build job); manual: the tutorial | S1.1; design-sign-in#how-the-editor-is-served |
 | AC-2 | Any address under `/studio` that isn't a file opens the editor (a bookmarked document path keeps working). | test: unit "site headers and routing" (the rewrite in `vercel.json`); manual | design-sign-in#how-the-editor-is-served |
-| AC-3 | The editor's title is **Kettlebird Creations**, on the sign-in screen and at the top left. | test: unit "editor settings"; manual | design-sign-in#layout; docs-getting-started#sign-in |
+| AC-3 | The editor's title is **Kettlebird Creations**, on the sign-in screen, at the top left, and in the browser tab before signing in. | test: unit "editor settings"; command: the CI build job checks `dist/studio/index.html`'s title; manual | design-sign-in#layout; docs-getting-started#sign-in |
 | AC-4 | The sign-in screen offers only **Google** and **E-mail / password**; any other provider Sanity offers (GitHub) is left out. | test: unit "editor settings"; manual | design-sign-in#how-the-editor-is-served; docs-getting-started#accept-your-invitation |
 | AC-5 | Responses under `/studio` tell search engines not to index them (`X-Robots-Tag: noindex, nofollow`). | test: unit "site headers and routing" | design-sign-in#how-the-editor-is-served |
 | AC-6 | No page of the site can be framed by another site; the site may frame its own pages (`X-Frame-Options: SAMEORIGIN` and `Content-Security-Policy: frame-ancestors 'self'`). | test: unit "site headers and routing" | design-sign-in#how-the-editor-is-served |
@@ -37,7 +39,8 @@ Source: S1.n is the story's nth criterion; design and docs sections as named.
   - `sanity-studio/lib/studio-settings.ts` (new): the title and the sign-in provider filter, with no `sanity` imports, so the site's Vitest can test them (AC-3, AC-4).
   - `sanity-studio/sanity.config.ts`: uses them; drops `visionTool` (AC-8).
   - `sanity-studio/package.json`: drops `@sanity/vision`.
-  - `package.json`: `build:studio` (installs the Studio's dependencies and builds it into `dist/studio`) and `build:site` (the site, then the editor) (AC-1).
+  - `package.json`: `build:studio` (installs the Studio's dependencies, builds it into `dist/studio`, and sets the built page's tab title with `scripts/studio-title.mjs`) and `build:site` (the site, then the editor) (AC-1, AC-3).
+  - `sanity-studio/sanity.cli.ts`: `project.basePath: '/studio'`, which sets both the built files' paths and the editor's routes; the config's own `basePath` is removed, since Sanity adds it on top.
   - `vercel.json`: `buildCommand` becomes `npm run build:site`; the `/studio` rewrite; `X-Robots-Tag` for `/studio`; the frame headers (AC-1, AC-2, AC-5, AC-6).
   - `.github/workflows/build.yml`: the build job runs `npm run build:site` and checks `dist/studio/index.html` (AC-1).
   - Tests: `tests/unit/sign-in.test.ts`; `docs/tutorials/signing-in.md` (`runner: manual`).

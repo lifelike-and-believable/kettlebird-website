@@ -16,7 +16,7 @@ npm install
 npm run dev           # http://localhost:4321
 ```
 
-Sanity Studio:
+Sanity Studio (the editor; on the live site it's at `/studio`):
 
 ```bash
 cd sanity-studio
@@ -33,19 +33,21 @@ Environment variables (see `.env.example`):
 ## Scripts
 
 - `npm run dev` / `npm run start` – Astro dev server
-- `npm run build` – production build to `dist/`
+- `npm run build` – the site's production build to `dist/`
+- `npm run build:site` – the site, then the editor into `dist/studio` (what Vercel runs)
 - `npm run preview` – preview the built site
 - `npm run check` / `npm test` – Astro type/integration check
 
 Sanity (inside `sanity-studio/`):
 
 - `npm run dev` – Studio local server
-- `npm run build` – static Studio build
-- `npm run deploy` – deploy Studio to Sanity managed hosting
+- `npm run build` – static Studio build (the site's `build:studio` builds it into `dist/studio`)
+
+The editor isn't deployed to Sanity's own hosting: it's served by the site at `/studio` (design: `docs/design/sign-in.md`).
 
 ## Deployment
 
-- **Vercel** (production): uses `vercel.json`, build `npm run build`, output `dist`. Preview builds set `KETTLEBIRD_FIXTURES=1`, so they show the test comics.
+- **Vercel** (production): uses `vercel.json`, build `npm run build:site`, output `dist`, with the editor at `/studio`. Preview builds set `KETTLEBIRD_FIXTURES=1`, so they show the test comics.
 
 ## Documentation
 

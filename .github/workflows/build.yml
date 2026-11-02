@@ -24,7 +24,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'npm'
 
       - name: Install dependencies
@@ -33,8 +33,15 @@ jobs:
       - name: Type check (astro check)
         run: npm run check
 
-      - name: Build website
-        run: npm run build
+      # The same command Vercel runs: the site, then the editor into dist/studio (content-editing-sign-in AC-1, AC-3).
+      - name: Build website and editor
+        run: npm run build:site
+
+      - name: Check the editor is in the build
+        run: |
+          test -f dist/studio/index.html
+          grep -q '<title>Kettlebird Creations</title>' dist/studio/index.html
+          grep -q 'src="/studio/static/' dist/studio/index.html
 
   studio:
     # The editor (Sanity Studio) builds with its custom inputs and actions (comic-publish-pages#AC-14).
