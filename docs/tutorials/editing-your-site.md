@@ -3,12 +3,12 @@ id: tutorial-editing-your-site
 status: draft
 runner: manual
 derived-from:
-  - docs-editing-your-site#art: 66779e5899f9
-  - docs-editing-your-site#shop: 56662132196e
-  - docs-editing-your-site#commissions: c37b50ff4bea
+  - docs-editing-your-site#art: 103624d707bb
+  - docs-editing-your-site#shop: b33cdf34e074
+  - docs-editing-your-site#commissions: b5306156e840
   - docs-editing-your-site#publish: f77b4e40ba0a
   - docs-editing-your-site#remove-something: 5cf5a49b5b48
-  - docs-editing-your-site#if-something-goes-wrong: 417a1f9bb343
+  - docs-editing-your-site#if-something-goes-wrong: 44c01a07022b
 ---
 
 # Tutorial: find your way round the editor
