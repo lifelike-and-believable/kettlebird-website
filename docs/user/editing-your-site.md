@@ -80,7 +80,7 @@ Whether commissions are open or closed is set in **Site settings**, not here.
 
 ## Site settings
 
-This is where you'll open or close commissions, and change your about page, the home page's artist text and your social links. Until it arrives in an update, the section says so; ask the person who looks after the site for any of those changes.
+This is where you open or close commissions, and change your about page, the home page's artist text, your contact email and your social links: see [Commissions, your about page, the home page and your links](site-settings.md).
 
 ## Publish
 
