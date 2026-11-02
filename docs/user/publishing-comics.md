@@ -59,7 +59,7 @@ The top of the pages shows how many still need alt text ("3 pages need alt text"
 
 ## Publish
 
-1. If there's a **Preview** button at the top right, choose it to see the chapter as readers will, then close the preview to come back. (It arrives with a later update to the editor; until then, the button isn't there.)
+1. To see a page as readers will, choose **Preview**, beside **Publish** at the bottom of the chapter. [See it before you publish](previewing.md) explains it. (It arrives with a later update to the editor; until then, the button isn't there.)
 2. Choose **Publish**.
 3. If any pages still need alt text, or published links will change (below), the editor tells you first; choose **Publish anyway** to carry on, or **Cancel** to go back and fix it.
 4. The status at the top right shows **Updating the site…**, then **Live** with the time (see [When your change is live](going-live.md)).

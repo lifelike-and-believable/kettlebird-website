@@ -28,6 +28,8 @@ Each item is published on its own. Choose one, change it, and choose **Publish**
 
 After **Publish**, the site updates on its own, and the status at the top right says when your change is live ([When your change is live](going-live.md)). **View on site** opens the page the item changes: the Commissions page, the about page, or the home page (for the home page text, and for your contact email and social links).
 
+To check a change on its page before you publish it, read [See it before you publish](previewing.md).
+
 ## Before you start: check your quick facts
 
 The **About page** item starts with what your about page shows today, including four quick facts: pronouns, where you're based, what you make, and what you love. Choose **Site settings**, then **About page**, and check them first. Change anything that isn't right, and choose **Publish**.
