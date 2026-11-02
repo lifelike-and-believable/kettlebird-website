@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import {
   DEVELOPER_WORDS, EMPTY_LIST, FIELDS, fieldText, HIDDEN, ITEM_NAMES, listDetail, missingSummary, PIECE_ALT_TEXT_WARNING,
-  PORTFOLIO_SECTIONS, requiredMessage, SECTIONS, SERIES_KIND, SERIES_STATUS, SHOP_SECTION_OPTIONS, SITE_SETTINGS_NOTE,
+  PORTFOLIO_SECTIONS, requiredMessage, SECTIONS, SERIES_KIND, SERIES_STATUS, SHOP_SECTION_OPTIONS,
   thingsToAdd, type ItemType,
 } from '../../sanity-studio/lib/editor-content';
 import { shopSections, SHOP_SECTIONS } from '../../src/lib/shop';
@@ -29,19 +29,13 @@ describe('content-editing-organised-editor#AC-1 AC-10 AC-11 AC-12 menu sections'
       comicSeries: 'Series', comicChapter: 'Chapter', galleryItem: 'Piece', writtenWork: 'Story', product: 'Product', commissionType: 'Commission type',
     });
   });
-  it('says what Site settings will hold (AC-10)', () => {
-    expect(SITE_SETTINGS_NOTE).toBe(
-      "Site settings is coming in the next update. It's where you'll open or close commissions, and change your about page, the home page's artist text, and your social links. Until then, ask the person who looks after the site.",
-    );
-  });
   it('words the empty list for Star (AC-12)', () => {
     expect(EMPTY_LIST).toBe('Nothing here yet. Choose the + button above to add one.');
   });
-  it('builds the menu, the create menu, the badge and the empty text from these (AC-1, AC-6, AC-10, AC-11, AC-12)', () => {
+  it('builds the menu, the create menu, the badge and the empty text from these (AC-1, AC-6, AC-11, AC-12)', () => {
     const structure = read('sanity-studio/structure.ts');
     const config = read('sanity-studio/sanity.config.ts');
     expect(structure).toMatch(/SECTIONS\.map/);
-    expect(structure).toMatch(/SiteSettingsNote/);
     expect(config).toMatch(/structureTool\(\{\s*structure/);
     expect(config).toMatch(/newDocumentOptions/);
     expect(config).toMatch(/badges/);
@@ -218,7 +212,7 @@ describe('content-editing-organised-editor#AC-4 no developer words', () => {
       ...Object.values(ITEM_NAMES),
       ...Object.values(FIELDS).flatMap((fields) => Object.values(fields).flatMap((f) => [f.label, f.help, f.missing ?? ''])),
       ...[PORTFOLIO_SECTIONS, SHOP_SECTION_OPTIONS, SERIES_STATUS, SERIES_KIND].flat().map((o) => o.title),
-      SITE_SETTINGS_NOTE, EMPTY_LIST, PIECE_ALT_TEXT_WARNING,
+      EMPTY_LIST, PIECE_ALT_TEXT_WARNING,
     ];
     expect(DEVELOPER_WORDS).toEqual(['slug', 'reference', 'document', 'schema', 'array', 'category', 'boolean']);
     const hits = texts.filter((t) => DEVELOPER_WORDS.some((w) => new RegExp(`\\b${w}`, 'i').test(t)));

@@ -6,6 +6,9 @@ import { withPublishNote } from './actions/publishNote';
 import { LiveStatus } from './components/LiveStatus';
 import { CONTENT_TYPES } from './lib/live-status';
 import { ThingsToAddBadge } from './badges/thingsToAdd';
+import { ThingsToFixBadge } from './badges/thingsToFix';
+import { FixSummary } from './components/FixSummary';
+import { isSettingsType, SETTINGS_ACTIONS } from './lib/site-settings';
 import { withChapterChecks } from './actions/publishChapter';
 import { CHAPTER_TEMPLATE } from './components/ChaptersList';
 import { EMPTY_LIST, isItemType, SECTIONS } from './lib/editor-content';
@@ -38,7 +41,8 @@ export default defineConfig({
     ],
   },
   schema: {
-    types: schemaTypes,
+    // Site settings' items show what to fix at the top (content-editing-site-settings AC-4).
+    types: schemaTypes.map((type) => (isSettingsType(type.name) ? { ...type, components: { input: FixSummary } } : type)),
     // Add chapter on a series opens a chapter for that series with the next number (AC-11).
     // Each kind of item is created by its New … name (organised-editor AC-1, AC-11).
     templates: (prev) => [
@@ -67,11 +71,19 @@ export default defineConfig({
     newDocumentOptions: (prev, { creationContext }) =>
       creationContext.type === 'global' ? prev.filter((item) => isItemType(item.templateId)) : prev,
     // "3 things to add before publishing", beside Publish (organised-editor AC-6).
-    badges: (prev, context) => (isItemType(context.schemaType) ? [...prev, ThingsToAddBadge] : prev),
+    badges: (prev, context) => {
+      if (isItemType(context.schemaType)) return [...prev, ThingsToAddBadge];
+      if (isSettingsType(context.schemaType)) return [...prev, ThingsToFixBadge];
+      return prev;
+    },
     // A chapter's Publish waits for uploads and warns about changed links and missing alt text.
     // A series' Delete deletes its chapters too (AC-16).
     // Every Publish is followed by a note that the site is updating (know-when-live AC-8).
     actions: (prev, context) => {
+      // Site settings' items can't be deleted, duplicated or unpublished (content-editing-site-settings AC-1).
+      if (isSettingsType(context.schemaType)) {
+        return prev.filter((action) => action.action && SETTINGS_ACTIONS.includes(action.action)).map((action) => (action.action === 'publish' ? withPublishNote(action) : action));
+      }
       let actions = prev;
       if (context.schemaType === 'comicChapter') actions = actions.map((action) => (action.action === 'publish' ? withChapterChecks(action) : action));
       if (context.schemaType === 'comicSeries') actions = actions.map((action) => (action.action === 'delete' ? withChapters(action) : action));

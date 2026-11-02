@@ -34,10 +34,6 @@ export const ITEM_NAMES: Record<ItemType | 'comicChapter', string> = {
   commissionType: 'Commission type',
 };
 
-/** AC-10 */
-export const SITE_SETTINGS_NOTE =
-  "Site settings is coming in the next update. It's where you'll open or close commissions, and change your about page, the home page's artist text, and your social links. Until then, ask the person who looks after the site.";
-
 /** AC-12 */
 export const EMPTY_LIST = 'Nothing here yet. Choose the + button above to add one.';
 

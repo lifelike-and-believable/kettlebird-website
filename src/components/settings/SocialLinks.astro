@@ -1,0 +1,108 @@
+---
+// Star's social links, from Site settings, in Star's order (content-editing-site-settings AC-10).
+// home: the home page's big row; footer: every page's footer; about: the about page's column.
+// Colours go green, yellow, orange, pink, then repeat. Nothing is rendered with no links.
+import { linkColour, type Link } from '../../lib/site-settings';
+
+interface Props { links: Link[]; variant: 'home' | 'footer' | 'about' }
+const { links, variant } = Astro.props;
+const BUTTON: Record<string, string> = { green: 'highlighter-btn--green', yellow: '', orange: 'highlighter-btn--orange', pink: 'highlighter-btn--pink' };
+const wrapper = { home: 'social-links', footer: 'footer-social', about: 'about-social' }[variant];
+---
+{links.length > 0 && (
+  <div class={wrapper}>
+    {links.map((link, i) => {
+      const colour = linkColour(i);
+      const className = variant === 'home' ? 'social-link' : `highlighter-btn ${BUTTON[colour]}`.trim();
+      return <a href={link.url} target="_blank" rel="noopener noreferrer" class={className} data-colour={colour}>{link.name}</a>;
+    })}
+  </div>
+)}
+
+<style>
+  /* Home page row */
+  .social-links {
+    display: flex;
+    flex-direction: row;
+    gap: 0;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 3rem;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .social-link {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.5rem;
+    padding: 1.25rem 2.5rem;
+    text-decoration: none;
+    text-transform: uppercase;
+    color: var(--color-ink);
+    font-weight: 700;
+    transition: transform 0.2s ease-out, filter 0.2s ease-out;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    flex: 1 1 auto;
+    min-width: 160px;
+  }
+
+  .social-link[data-colour='green'] { background-image: url('/assets/images/Highlighter_G.png'); }
+  .social-link[data-colour='yellow'] { background-image: url('/assets/images/Highlighter_Y.png'); }
+  .social-link[data-colour='orange'] { background-image: url('/assets/images/Highlighter_O.png'); }
+  .social-link[data-colour='pink'] { background-image: url('/assets/images/Highlighter_M.png'); }
+
+  .social-link:hover { transform: scale(1.05); filter: brightness(1.1); }
+  .social-link:focus-visible {
+    outline: 3px solid var(--color-ink);
+    outline-offset: 4px;
+    transform: scale(1.05);
+  }
+
+  /* Footer */
+  .footer-social {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .footer-social .highlighter-btn {
+    font-size: 0.95rem;
+    padding: 0.4rem 1rem;
+    text-align: center;
+  }
+
+  @media (min-width: 768px) {
+    .footer-social {
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+  }
+
+  /* About page */
+  .about-social {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  @media (max-width: 860px) {
+    .about-social {
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .social-link:hover,
+    .social-link:focus-visible {
+      transform: none;
+    }
+  }
+</style>

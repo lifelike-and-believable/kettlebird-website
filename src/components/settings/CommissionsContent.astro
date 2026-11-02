@@ -1,0 +1,374 @@
+---
+// The Commissions page's content, open or closed, from Site settings: the banner, How it works, the
+// commission types, Ready to order? and the email buttons (content-editing-site-settings AC-7, AC-11;
+// design-site-settings mock-up 5). The page passes in the commission types, ready to show.
+import { commissionsView, type Settings } from '../../lib/site-settings';
+
+export interface TypeCard {
+  name: string;
+  priceRange?: string;
+  description?: string;
+  deliveryTime?: string;
+  images: { src: string; alt: string }[];
+}
+interface Props { settings: Settings; types: TypeCard[] }
+const { settings, types } = Astro.props;
+const view = commissionsView(settings);
+const email = settings.contact.email;
+---
+  <section class="commissions-page">
+
+    <header class="page-header">
+      <h1 class="page-title">Commissions</h1>
+      <p class="page-subtitle">Custom artwork made just for you</p>
+    </header>
+
+    <!-- Open or closed, from Site settings (content-editing-site-settings AC-7) -->
+    <div class={`status-banner status-banner--${view.open ? 'open' : 'closed'}`}>
+      <span class="status-banner__dot" aria-hidden="true"></span>
+      <p class="status-banner__text">
+        <strong>{view.heading}</strong> {view.note}
+      </p>
+      {view.showOrdering && (
+        <a href={`mailto:${email}`} class="status-banner__btn">
+          Contact me
+        </a>
+      )}
+    </div>
+
+    {view.intro && <p class="closed-intro">{view.intro}</p>}
+
+    <!-- The steps, only while open -->
+    {view.showOrdering && (
+    <div class="how-it-works">
+      <h2 class="section-heading">How it works</h2>
+      <ol class="steps">
+        <li class="step">
+          <span class="step__num">1</span>
+          <div class="step__body">
+            <h3 class="step__title">Get in touch</h3>
+            <p class="step__text">Email me with your idea, the commission type you want, and any reference images.</p>
+          </div>
+        </li>
+        <li class="step">
+          <span class="step__num">2</span>
+          <div class="step__body">
+            <h3 class="step__title">Approval & payment</h3>
+            <p class="step__text">I'll confirm availability and send an invoice. Work begins once a deposit is received.</p>
+          </div>
+        </li>
+        <li class="step">
+          <span class="step__num">3</span>
+          <div class="step__body">
+            <h3 class="step__title">Sketches & feedback</h3>
+            <p class="step__text">You'll receive a sketch for approval before I move to final linework and colour.</p>
+          </div>
+        </li>
+        <li class="step">
+          <span class="step__num">4</span>
+          <div class="step__body">
+            <h3 class="step__title">Delivery</h3>
+            <p class="step__text">Final files delivered digitally at high resolution once the remaining balance is paid.</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+
+    )}
+
+    <!-- Commission types, open or closed -->
+    {types.length > 0 && (
+      <div class="commission-types">
+        <h2 class="section-heading">What I offer</h2>
+        <ul class="types-grid">
+          {types.map((type) => (
+            <li class="type-card">
+              {type.images.length > 0 && (
+                <div class="type-card__examples">
+                  {type.images.map((img) => (
+                    <img src={img.src} alt={img.alt} class="type-card__example-img" width={300} height={300} loading="lazy" />
+                  ))}
+                </div>
+              )}
+              <div class="type-card__body">
+                <div class="type-card__header">
+                  <h3 class="type-card__name">{type.name}</h3>
+                  {type.priceRange && <span class="type-card__price">{type.priceRange}</span>}
+                </div>
+                {type.description && <p class="type-card__desc">{type.description}</p>}
+                {type.deliveryTime && (
+                  <p class="type-card__delivery">
+                    <strong>Est. delivery:</strong> {type.deliveryTime}
+                  </p>
+                )}
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
+
+    <!-- The order block only while open; the closing sentence while closed -->
+    {view.showOrdering && (
+    <div class="cta-block">
+      <h2 class="cta-block__heading">Ready to order?</h2>
+      <p class="cta-block__text">
+        Send an email with your idea, reference images, and the commission type you're after.
+        I'll get back to you as soon as I can!
+      </p>
+      <a href={`mailto:${email}`} class="highlighter-btn highlighter-btn--green">
+        Email me to get started →
+      </a>
+    </div>
+
+    )}
+
+    {view.outro && <p class="closed-outro">{view.outro}</p>}
+  </section>
+
+<style>
+  .commissions-page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem 1rem 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .page-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .page-title {
+    margin: 0;
+  }
+
+  .page-subtitle {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.1rem;
+    color: var(--color-dark-purple, #4a4063);
+    margin: 0;
+  }
+
+  /* ── Status banner ── */
+  .status-banner {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    border: 3px solid var(--color-ink, #2b2b2b);
+    flex-wrap: wrap;
+  }
+
+  .status-banner--open {
+    background: var(--color-green, #a8d5ba);
+  }
+
+  .status-banner--closed {
+    background: var(--color-orange, #e89a5a);
+  }
+
+  .status-banner__dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--color-ink, #2b2b2b);
+    flex-shrink: 0;
+  }
+
+  .status-banner--open .status-banner__dot {
+    background: #2d8a4e;
+  }
+
+  .closed-intro,
+  .closed-outro {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.05rem;
+    margin: 0;
+  }
+
+  .status-banner__text {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    margin: 0;
+    flex: 1;
+  }
+
+  .status-banner__btn {
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    padding: 0.4rem 1rem;
+    border: 2px solid var(--color-ink, #2b2b2b);
+    background: var(--color-ink, #2b2b2b);
+    color: var(--color-beige, #f5f1e8);
+    text-decoration: none;
+    max-width: 100%;
+    transition: background 0.15s;
+  }
+
+  .status-banner__btn:hover {
+    background: var(--color-dark-purple, #4a4063);
+  }
+
+  /* ── Section headings ── */
+  .section-heading {
+    font-family: 'Nunito', sans-serif;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 700;
+    margin: 0 0 1.25rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 3px solid var(--color-ink, #2b2b2b);
+  }
+
+  /* ── How it works ── */
+  .steps {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    /* min(220px, 100%): one column that fits the screen when 220 px doesn't (WCAG 1.4.10 reflow). */
+    grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+    gap: 1rem;
+  }
+
+  .step {
+    display: flex;
+    gap: 1rem;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    padding: 1rem;
+    border: 3px solid var(--color-ink, #2b2b2b);
+    background: var(--color-beige, #f5f1e8);
+  }
+
+  .step__num {
+    font-family: 'Nunito', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-dark-purple, #4a4063);
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .step__title {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0 0 0.25rem;
+  }
+
+  .step__text {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  /* ── Commission types ── */
+  .types-grid {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .type-card {
+    border: 3px solid var(--color-ink, #2b2b2b);
+    background: var(--color-beige, #f5f1e8);
+    overflow: hidden;
+  }
+
+  .type-card__examples {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-bottom: 3px solid var(--color-ink, #2b2b2b);
+  }
+
+  .type-card__example-img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    display: block;
+    border-right: 2px solid var(--color-ink, #2b2b2b);
+  }
+
+  .type-card__example-img:last-child {
+    border-right: none;
+  }
+
+  .type-card__body {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .type-card__header {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .type-card__name {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .type-card__price {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-dark-purple, #4a4063);
+  }
+
+  .type-card__desc {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .type-card__delivery {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    margin: 0;
+    color: var(--color-dark-purple, #4a4063);
+  }
+
+  /* ── CTA ── */
+  .cta-block {
+    padding: 2rem;
+    border: 3px solid var(--color-ink, #2b2b2b);
+    background: var(--color-yellow, #f4ce6a);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .cta-block__heading {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .cta-block__text {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0;
+    max-width: 60ch;
+  }
+
+  /* .cta-btn replaced with .highlighter-btn from global.css */
+</style>

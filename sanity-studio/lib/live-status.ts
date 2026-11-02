@@ -3,7 +3,11 @@
 // tests and mutation testing can run it directly.
 
 /** The kinds of item that appear on the site; a change to any of them starts a site build. */
-export const CONTENT_TYPES = ['comicSeries', 'comicChapter', 'galleryItem', 'writtenWork', 'product', 'commissionType'];
+export const CONTENT_TYPES = [
+  'comicSeries', 'comicChapter', 'galleryItem', 'writtenWork', 'product', 'commissionType',
+  // Site settings' four items (content-editing-site-settings AC-13).
+  'commissionSettings', 'aboutPage', 'homePage', 'contactSettings',
+];
 
 /** The hidden item that records the time of the latest removal (AC-3). */
 export const SITE_STATUS_ID = 'siteStatus';
@@ -75,6 +79,10 @@ const PAGES: Record<string, string> = {
   writtenWork: '/writing',
   product: '/shop',
   commissionType: '/commissions',
+  commissionSettings: '/commissions',
+  aboutPage: '/about',
+  homePage: '/',
+  contactSettings: '/',
 };
 
 /** The page View on site opens for the latest change (AC-6). */

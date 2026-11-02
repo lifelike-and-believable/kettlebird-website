@@ -17,7 +17,10 @@ const QUERY = `{
   "removedAt": *[_id == "siteStatus"][0]._updatedAt
 }`;
 // Stryker restore all
-export const TYPES = ['comicSeries', 'comicChapter', 'galleryItem', 'writtenWork', 'product', 'commissionType'];
+export const TYPES = [
+  'comicSeries', 'comicChapter', 'galleryItem', 'writtenWork', 'product', 'commissionType',
+  'commissionSettings', 'aboutPage', 'homePage', 'contactSettings',
+];
 
 /** Whole minutes since the latest change, or 0 when the site has read the content after it. */
 export function minutesBehind({ lastChangeAt, contentReadAt, now }) {

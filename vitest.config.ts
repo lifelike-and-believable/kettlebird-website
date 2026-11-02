@@ -1,5 +1,7 @@
-import { defineConfig } from 'vitest/config';
+/// <reference types="vitest" />
+// getViteConfig compiles .astro components, so unit tests can render them with Astro's container API.
+import { getViteConfig } from 'astro/config';
 
-export default defineConfig({
+export default getViteConfig({
   test: { include: ['tests/unit/**/*.test.{ts,tsx}'] },
 });

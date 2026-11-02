@@ -3,6 +3,8 @@ status: implemented
 tests-commit:
   - 5f3cf5ff6e58723c7fd7791c3c8f8fa0ed201fe7
   - 206f0803d5afb332e17f3ca4cf6460af190d5b7a
+unlocks:
+  - tests/unit/organised-editor.test.ts: the AC-10 checks (the "coming in the next update" note, and the structure using SiteSettingsNote) are removed. Site settings itself replaced the note (content-editing-site-settings AC-1), whose tests check the four items instead. AC-10 is superseded.
 ---
 
 # An editor organised around Star's work
@@ -33,7 +35,7 @@ Source: S3.n is the story's nth criterion; design and docs sections as named.
 | AC-7 | A piece without alt text is warned ("Add alt text so people using screen readers can follow it") and can still be published. | test: unit "required messages" (the rule is a warning); manual | design-organised-editor#states-and-errors |
 | AC-8 | Portfolio sections are offered as Original Work, Fan Work, Past Clients, Featured, Work in Progress, keeping their stored values; shop sections as Prints, Stickers, Digital, without "Commission"; a series' status as Ongoing, Complete, On Hiatus, and its **Kind** as Original or Fancomic. | test: unit "option labels" | design-organised-editor#sections-and-fields, #for-the-spec-to-check |
 | AC-9 | The shop page heads its sections Prints, Stickers and Digital, in that order, with no "Commission" section and no added "s". | test: unit "shop sections" | design-organised-editor#for-the-spec-to-check |
-| AC-10 | **Site settings** opens a note: "Site settings is coming in the next update. It's where you'll open or close commissions, and change your about page, the home page's artist text, and your social links. Until then, ask the person who looks after the site." | test: unit "menu sections"; manual | design-organised-editor#sections-and-fields |
+| AC-10 | Superseded by content-editing-site-settings AC-1, which replaced the note with the four items. Was: **Site settings** opens a note: "Site settings is coming in the next update. It's where you'll open or close commissions, and change your about page, the home page's artist text, and your social links. Until then, ask the person who looks after the site." | test: unit "menu sections"; manual | design-organised-editor#sections-and-fields |
 | AC-11 | The editor's "create" menu offers only the five kinds of item, by their **New …** names; a chapter is created only from its series' **Add chapter**. | test: unit "menu sections"; manual | design-organised-editor#layout |
 | AC-12 | An empty list says "Nothing here yet. Choose the + button above to add one." | test: unit "menu sections"; manual | design-organised-editor#states-and-errors (mock-up 7; see Risks and decisions) |
 | AC-14 | A chapter chosen in its series' **Chapters**, or started with **Add chapter**, opens in a pane to the right of the series (a child of the series' pane, not Sanity's open or create links), headed "Kettle Tales · Chapter 2: The Long Road" ("Kettle Tales · New chapter"; "Untitled series · New chapter" before the series has a title); the open chapter's row is highlighted. | test: unit "chapter beside its series"; manual: `docs/tutorials/publishing-comics.md` step 3 | design-organised-editor#series-and-chapters (lead, 2026-11-02) |

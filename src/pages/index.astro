@@ -1,5 +1,10 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import HomeArtist from '../components/settings/HomeArtist.astro';
+import SocialLinks from '../components/settings/SocialLinks.astro';
+import { getSettings } from '../lib/site-settings-source';
+
+const settings = await getSettings();
 ---
 
 <BaseLayout
@@ -38,13 +43,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </a>
     </div>
 
-    <!-- Social Links -->
-    <div class="social-links">
-      <a href="https://bsky.app/profile/kettlebird.bsky.social" target="_blank" rel="noopener noreferrer" class="social-link">BLUESKY</a>
-      <a href="https://kettle-bird.tumblr.com" target="_blank" rel="noopener noreferrer" class="social-link">TUMBLR</a>
-      <a href="https://www.instagram.com/kettlebirdart" target="_blank" rel="noopener noreferrer" class="social-link">INSTAGRAM</a>
-      <a href="https://ko-fi.com/kettlebirdart" target="_blank" rel="noopener noreferrer" class="social-link">KO-FI</a>
-    </div>
+    <!-- Social links and the artist text, from Site settings (content-editing-site-settings AC-9, AC-10) -->
+    <SocialLinks links={settings.contact.links} variant="home" />
+    <HomeArtist settings={settings} />
   </div>
 </BaseLayout>
 
@@ -164,50 +165,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     width: 100%;
     height: 100%;
     object-fit: cover;
-  }
-
-  /* ── Social links ── */
-  .social-links {
-    display: flex;
-    flex-direction: row;
-    gap: 0;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-bottom: 3rem;
-    max-width: 900px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .social-link {
-    font-family: 'Nunito', sans-serif;
-    font-size: 1.5rem;
-    padding: 1.25rem 2.5rem;
-    text-decoration: none;
-    color: var(--color-ink);
-    font-weight: 700;
-    transition: transform 0.2s ease-out, filter 0.2s ease-out;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-    background-position: center;
-    flex: 1 1 auto;
-    min-width: 160px;
-  }
-
-  .social-link:nth-child(1) { background-image: url('/assets/images/Highlighter_G.png'); }
-  .social-link:nth-child(2) { background-image: url('/assets/images/Highlighter_Y.png'); }
-  .social-link:nth-child(3) { background-image: url('/assets/images/Highlighter_O.png'); }
-  .social-link:nth-child(4) { background-image: url('/assets/images/Highlighter_M.png'); }
-
-  .social-link:hover { transform: scale(1.05); filter: brightness(1.1); }
-  .social-link:focus-visible {
-    outline: 3px solid var(--color-ink);
-    outline-offset: 4px;
-    transform: scale(1.05);
   }
 
   /* ── About section ── */

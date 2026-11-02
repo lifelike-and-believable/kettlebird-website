@@ -1,0 +1,114 @@
+---
+// Every page's footer: Connect (Star's social links, left out with none), Contact (the contact email),
+// and the copyright line, from Site settings (content-editing-site-settings AC-10, AC-11).
+import type { Settings } from '../../lib/site-settings';
+import SocialLinks from './SocialLinks.astro';
+
+interface Props { settings: Settings }
+const { settings } = Astro.props;
+const { links, email } = settings.contact;
+const currentYear = new Date().getFullYear();
+---
+<footer class="site-footer">
+  <div class="footer-container">
+    {links.length > 0 && (
+      <div class="footer-section">
+        <h3 class="footer-heading">Connect</h3>
+        <SocialLinks links={links} variant="footer" />
+      </div>
+    )}
+    <div class="footer-section">
+      <h3 class="footer-heading">Contact</h3>
+      <p class="footer-contact">
+        <a href={`mailto:${email}`}>{email}</a>
+      </p>
+    </div>
+    <div class="footer-section footer-copyright">
+      <p>&copy; {currentYear} Kettlebird Creations • Star Goldberg</p>
+      <p class="footer-meta">All artwork and writing are the property of the artist.</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  /* ── Footer ── */
+  .site-footer {
+    background: var(--color-paper-dark);
+    border-top: 2px solid var(--color-ink);
+    margin-top: 4rem;
+    padding: 2rem var(--gutter-mobile) 1.5rem;
+    position: relative;
+  }
+
+  /* Deckled edge */
+  .site-footer::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 0;
+    right: 0;
+    height: 10px;
+    background:
+      linear-gradient(135deg, transparent 33.33%, var(--color-paper-dark) 33.33%, var(--color-paper-dark) 66.66%, transparent 66.66%),
+      linear-gradient(45deg, transparent 33.33%, var(--color-beige) 33.33%, var(--color-beige) 66.66%, transparent 66.66%);
+    background-size: 8px 20px;
+    background-position: 0 0, 4px 0;
+  }
+
+  .footer-container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+  }
+
+  .footer-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .footer-contact {
+    margin: 0;
+  }
+
+  .footer-contact a {
+    color: var(--color-ink);
+    overflow-wrap: break-word;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+  }
+
+  .footer-copyright {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-ink-light);
+    margin-top: 1rem;
+  }
+
+  .footer-copyright p {
+    margin: 0.25rem 0;
+    font-size: 0.9rem;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .footer-meta {
+    color: var(--color-ink-light);
+    font-size: 0.85rem !important;
+  }
+
+  @media (min-width: 768px) {
+    .site-footer {
+      padding: 3rem var(--gutter-tablet) 2rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .site-footer {
+      padding: 3rem var(--gutter-desktop) 2rem;
+    }
+  }
+
+</style>
