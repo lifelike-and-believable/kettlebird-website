@@ -47,7 +47,7 @@ The menu on the left lists everything you can edit: **Comics**, **Art**, **Writi
 
 Visitors to your site never see a link to the editor. Only people who have been invited can see or change anything in it.
 
-Next: [Publishing comic pages and chapters](publishing-comics.md), and [Editing your art, writing, shop and commissions](editing-your-site.md).
+Next: [Publishing comic pages and chapters](publishing-comics.md), [Editing your art, writing, shop and commissions](editing-your-site.md), and [Commissions, your about page, the home page and your links](site-settings.md). Start with the last one: it asks you to check the quick facts on your about page.
 
 ## If something goes wrong
 
