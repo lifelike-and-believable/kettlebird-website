@@ -1,9 +1,10 @@
-// Stryker mutation testing (rfr-process 0.9.0, profile static-site). Advisory: the `process /
+// Stryker mutation testing (rfr-process 0.9.3, profile static-site). Advisory: the `process /
 // mutation` job reports the score and surviving mutants on tier:story and tier:epic pull requests and
 // never fails the build.
 export default {
   testRunner: 'vitest',
-  // Only the logic the unit tests cover: the reader's model and the editor's comic page rules.
+  // Only the logic the unit tests cover: the reader's model (src/lib, the profile's default) and the
+  // editor's comic page rules (sanity-studio/lib, a folder of pure logic the profile says to add).
   // The Sanity loaders (queries.ts, source.ts) are covered by the end-to-end tests over fixtures.
   // Astro pages and Studio components are checked by the end-to-end tests and tutorials, which
   // Stryker doesn't run, so their mutants would all survive and hide the useful ones.

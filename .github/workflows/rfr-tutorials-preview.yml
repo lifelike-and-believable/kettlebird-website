@@ -1,7 +1,7 @@
-# From rfr-process 0.9.0 (templates/workflows/rfr-tutorials-preview.yml). When a Vercel preview
+# From rfr-process 0.9.3 (templates/workflows/rfr-tutorials-preview.yml). When a Vercel preview
 # deployment succeeds, runs the `runner: web` tutorials against it and uploads the recording as the
-# `tutorials` build artifact. GitHub runs deployment_status workflows from the default branch, so this
-# takes effect once merged to main.
+# `tutorials` build artifact. It runs from the workflow file at the deployed commit, so a pull request
+# that changes this file runs its own version on its own preview.
 #
 # Preview builds show the test comics (Vercel sets KETTLEBIRD_FIXTURES=1 for Preview only), which is
 # what the reading tutorial follows. Previews are protected, so the RFR_PREVIEW_BYPASS repository
