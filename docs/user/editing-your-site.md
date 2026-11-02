@@ -84,14 +84,14 @@ This is where you'll open or close commissions, and change your about page, the 
 
 ## Publish
 
-**Publish** is at the bottom of the open item. Until you publish, your changes are saved as a draft: visitors don't see it, and the site doesn't change. After you choose **Publish**, the site updates on its own, usually within a minute or two, and the status at the top right shows "Updating the site…", then "Live" with the time.
+**Publish** is at the bottom of the open item. Until you publish, your changes are saved as a draft: visitors don't see it, and the site doesn't change. After you choose **Publish**, the site updates on its own, usually within a minute or two, and the status at the top right says when your change is live: see [When your change is live](going-live.md).
 
 ## Remove something
 
 1. Open the item.
 2. Choose the ⋯ menu next to **Publish**, then **Delete**.
 
-It comes off the site with the next update. This can't be undone. (Removing a comic is different, because of its chapters: see [Publishing comic pages and chapters](publishing-comics.md).)
+It comes off the site with the next update. This can't be undone. The status at the top right then reads "Removed from the site" with the time; see [When your change is live](going-live.md). (Removing a comic is different, because of its chapters: see [Publishing comic pages and chapters](publishing-comics.md).)
 
 ## If something goes wrong
 

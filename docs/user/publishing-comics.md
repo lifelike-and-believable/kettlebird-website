@@ -15,7 +15,7 @@ with the editor at /studio. Written from design-comic-publish-pages. -->
 
 Everything here happens in the editor, at `kettlebird.com/studio` (signing in is in [Getting started](getting-started.md)). **Publish** is at the bottom of the open item, and the update status is at the top right.
 
-When you publish, the site updates on its own, usually within a minute or two. You never need to resize or export your pages for the site; the only thing to check is that their file names sort in reading order (see "Add pages").
+When you publish, the site updates on its own, usually within a minute or two; [When your change is live](going-live.md) explains the status that tells you. You never need to resize or export your pages for the site; the only thing to check is that their file names sort in reading order (see "Add pages").
 
 ## Start a new comic
 
@@ -62,7 +62,7 @@ The top of the pages shows how many still need alt text ("3 pages need alt text"
 1. If there's a **Preview** button at the top right, choose it to see the chapter as readers will, then close the preview to come back. (It arrives with a later update to the editor; until then, the button isn't there.)
 2. Choose **Publish**.
 3. If any pages still need alt text, or published links will change (below), the editor tells you first; choose **Publish anyway** to carry on, or **Cancel** to go back and fix it.
-4. The status at the top right shows **Updating the site…**, then **Live** with the time. (Before you publish, it shows when your last change went live.)
+4. The status at the top right shows **Updating the site…**, then **Live** with the time (see [When your change is live](going-live.md)).
 5. Choose **View on site** to open the chapter's first page as readers see it.
 
 ## If links will change
@@ -81,7 +81,7 @@ When you publish one of these, the editor tells you which pages' links will chan
 2. Choose the menu (**⋯**) next to **Publish**, then **Delete**.
 3. The editor asks, for example, "Delete Kettle Tales and its 3 chapters?". Choose **Delete comic and chapters**, or **Cancel** to keep it.
 
-The comic, its chapters and their pages come off the site with the next update, and links people have shared to them stop working. This can't be undone.
+The comic, its chapters and their pages come off the site with the next update, and links people have shared to them stop working. This can't be undone. The status at the top right then reads "Removed from the site" with the time; see [When your change is live](going-live.md).
 
 To remove just one chapter, open it and choose **Delete** from the same menu.
 
@@ -94,4 +94,4 @@ To remove just one chapter, open it and choose **Delete** from the same menu.
 | "Chapter 2 already exists in this series. Choose another number.", and **Publish** greyed out with "Fix the problem above to publish." | Two chapters have the same **Chapter** number. | Change one of them. |
 | "Add a web address so readers can find this comic.", and **Publish** greyed out | The comic's **Web address** is empty. | Fill it in; it can be the title, in lower case with dashes. |
 | "This isn't an image file" on a PSD or PDF | Those aren't page images. | Save the page as PNG, then upload it. |
-| **Didn't go live**: "Your change is saved, but the site didn't update." | Something went wrong on the site's side, not yours. | Nothing; your work is saved, and the person who looks after the site has been told and will fix it. |
+| **Didn't go live** at the top right | After 15 minutes, the site still didn't update. Something went wrong on the site's side, not yours. | Nothing: your change is saved, and the person who looks after the site is told automatically and will fix it. Publishing more is fine; wait until it says **Live** before telling people it's up. |
