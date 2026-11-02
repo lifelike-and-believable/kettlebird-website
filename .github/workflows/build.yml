@@ -44,6 +44,10 @@ jobs:
           grep -q 'src="/studio/static/' dist/studio/index.html
           ! grep -q 'href="/static/' dist/studio/index.html
 
+      # The site says which content it was built from (content-editing-know-when-live AC-2).
+      - name: Check the build info is in the build
+        run: node -e "const i=require('./dist/build-info.json'); if(!Date.parse(i.contentReadAt)||!Date.parse(i.builtAt)) process.exit(1)"
+
   studio:
     # The editor (Sanity Studio) builds with its custom inputs and actions (comic-publish-pages#AC-14).
     runs-on: ubuntu-latest

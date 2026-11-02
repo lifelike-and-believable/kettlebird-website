@@ -6,7 +6,8 @@ type SanityImageSource = any;
 export const sanityClient = createClient({
   projectId: import.meta.env.SANITY_PROJECT_ID ?? '1p6w5n0l',
   dataset: import.meta.env.SANITY_DATASET ?? 'production',
-  useCdn: true,
+  // The live API, not the cache, so a build right after Publish sees the change (content-editing-know-when-live AC-2).
+  useCdn: false,
   apiVersion: '2024-01-01',
 });
 
