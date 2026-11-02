@@ -1,5 +1,10 @@
 ---
-status: draft
+status: implemented
+tests-commit:
+  - 7336d6d81ceff7eb5e41b287172bd5521099f2f0
+unlocks:
+  - tests/e2e/site-settings.spec.ts: the AC-7 check looked for "Email me to get started." as an element of its own; in the banner it follows the bold heading inside one paragraph, so the check now reads the banner's whole text, "Commissions are open. Email me to get started.", which is at least as strict.
+  - tests/unit/site-settings-pages.test.ts: the AC-8 decoration check looked for `alt=""` literally. Astro writes an empty alt as a bare `alt` attribute, which HTML reads the same way, so the check accepts either. The criterion is unchanged.
 ---
 
 # Site settings

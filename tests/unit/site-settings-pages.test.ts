@@ -85,7 +85,8 @@ describe('content-editing-site-settings#AC-8 about', () => {
   });
   it('treats a portrait without alt text as decoration', async () => {
     const html = await render(AboutContent, { settings: settings({ aboutPage: { portrait: { asset: { _ref: 'image-x' } } } }) });
-    expect(html).toMatch(/<img[^>]*alt=""/);
+    // An empty alt; Astro writes it as a bare `alt`, which HTML reads as alt="".
+    expect(html).toMatch(/<img[^>]*\salt(="")?[\s>]/);
   });
 });
 

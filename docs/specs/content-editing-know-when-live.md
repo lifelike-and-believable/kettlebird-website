@@ -3,6 +3,7 @@ status: implemented
 tests-commit:
   - 487c4b0486ec2cb6f5fc8131012edb836cbdfb76
 unlocks:
+  - tests/unit/know-when-live.test.ts: the AC-3 check pinned CONTENT_TYPES to the six kinds of item. Site settings adds its four items as content types (content-editing-site-settings AC-13), so the check now pins the first six; that spec's tests check the four.
   - tests/unit/know-when-live.test.ts: the AC-3 and AC-4 wiring checks looked for a `withRemovalRecord` action wrapper in sanity.config.ts. Sanity runs Delete and Unpublish inside their own dialogs and closes the pane straight after, so a wrapper can't reliably see them finish; removals are recorded by a listener in the top bar instead (see Risks and decisions). The checks now look for that listener. The criterion is unchanged.
 ---
 

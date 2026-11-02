@@ -1,3 +1,240 @@
 ---
-// Stub for the tests-first commit; see docs/specs/content-editing-site-settings.md.
+// The about page, from Site settings: the portrait, Hello!, The Work and At a glance appear only when
+// filled in; About the Artist and Get in touch always do (content-editing-site-settings AC-8, AC-10,
+// AC-11; design-site-settings mock-up 6).
+import { getInTouchText, type Settings } from '../../lib/site-settings';
+import SocialLinks from './SocialLinks.astro';
+
+interface Props { settings: Settings }
+const { settings } = Astro.props;
+const { about, contact, commissions } = settings;
+const [user, domain] = contact.email.split('@');
 ---
+<section class="about-page">
+  <header class="page-header">
+    <h1 class="page-title">About the Artist</h1>
+  </header>
+
+  <div class="about-layout">
+    <aside class="portrait-col">
+      {about.portrait && (
+        <img
+          class="portrait"
+          src={about.portrait.src}
+          width={about.portrait.width}
+          height={about.portrait.height}
+          alt={about.portraitAlt}
+        />
+      )}
+
+      {about.facts.length > 0 && (
+        <div class="quick-facts">
+          <h2 class="quick-facts__heading">At a glance</h2>
+          <ul class="quick-facts__list">
+            {about.facts.map((fact) => (
+              <li><span class="qf-label">{fact.label}</span><span class="qf-value">{fact.value}</span></li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      <SocialLinks links={contact.links} variant="about" />
+    </aside>
+
+    <div class="bio-col">
+      {about.bio.length > 0 && (
+        <section class="bio-section">
+          <h2 class="bio-section__heading">Hello!</h2>
+          {about.bio.map((p) => <p class="bio-section__text">{p}</p>)}
+        </section>
+      )}
+
+      {about.statement.length > 0 && (
+        <section class="bio-section">
+          <h2 class="bio-section__heading">The Work</h2>
+          {about.statement.map((p) => <p class="bio-section__text">{p}</p>)}
+        </section>
+      )}
+
+      <div class="contact-block" id="contact">
+        <h2 class="contact-block__heading">Get in touch</h2>
+        <p class="contact-block__text">{getInTouchText(commissions.open)}</p>
+        <a href={`mailto:${contact.email}`} class="highlighter-btn">
+          {domain ? <Fragment>{user}@<wbr />{domain}</Fragment> : contact.email}
+        </a>
+        {commissions.open && (
+          <p class="contact-block__note">
+            For commission details and pricing, see the <a href="/commissions">Commissions</a> page.
+          </p>
+        )}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem 4rem;
+  }
+
+  .page-header {
+    margin-bottom: 2.5rem;
+  }
+
+  /* .page-title sizing comes from global.css */
+
+  /* ── Two-column layout ── */
+  .about-layout {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  /* ── Portrait, facts and links ── */
+  .portrait-col {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    position: sticky;
+    top: 2rem;
+  }
+
+  .portrait {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 3px solid var(--color-ink, #2b2b2b);
+  }
+
+  .quick-facts {
+    border: 3px solid var(--color-ink, #2b2b2b);
+    padding: 1rem;
+    background: var(--color-green, #a8d5ba);
+  }
+
+  .quick-facts__heading {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0 0 0.75rem;
+  }
+
+  .quick-facts__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .quick-facts__list li {
+    display: flex;
+    gap: 0.5rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+
+  .qf-label {
+    font-weight: 700;
+    min-width: 80px;
+    flex-shrink: 0;
+  }
+
+  /* ── Bio and artist statement ── */
+  .bio-col {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  .bio-section__heading {
+    font-family: 'Nunito', sans-serif;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 700;
+    margin: 0 0 0.75rem;
+  }
+
+  .bio-section__text {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin: 0 0 1rem;
+    white-space: pre-line;
+  }
+
+  /* ── Contact block ── */
+  .contact-block {
+    border: 3px solid var(--color-ink, #2b2b2b);
+    padding: 1.5rem;
+    background: var(--color-yellow, #f4ce6a);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .contact-block__heading {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .contact-block__text {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    margin: 0;
+  }
+
+  .contact-block__note {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    margin: 0;
+  }
+
+  .contact-block__note a {
+    color: var(--color-ink, #2b2b2b);
+    font-weight: 700;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 860px) {
+    /* minmax(0, 1fr): the column fits the screen even when something in it (an email address with
+       enlarged text) is wider; long words break instead (WCAG 1.4.10 reflow). */
+    .about-layout {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .about-layout > * {
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+
+    .portrait-col {
+      position: static;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .portrait-col :global(.about-social) {
+      grid-column: 1 / -1;
+    }
+
+    .portrait-col :global(.about-social .highlighter-btn) {
+      flex: 1 1 auto;
+    }
+  }
+
+  @media (max-width: 540px) {
+    .portrait-col {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,3 +1,61 @@
 ---
-// Stub for the tests-first commit; see docs/specs/content-editing-site-settings.md.
+// The home page's artist text, with the portrait beside it, from Site settings; nothing when the text
+// is empty (content-editing-site-settings AC-9; design-site-settings mock-up 7).
+import type { Settings } from '../../lib/site-settings';
+
+interface Props { settings: Settings }
+const { settings } = Astro.props;
+const { home, about } = settings;
 ---
+{home.text.length > 0 && (
+  <section class="home-artist" aria-label="About the artist">
+    {about.portrait && (
+      <img
+        class="home-artist__portrait"
+        src={about.portrait.src}
+        width={about.portrait.width}
+        height={about.portrait.height}
+        alt={about.portraitAlt}
+      />
+    )}
+    <div class="home-artist__text">
+      {home.text.map((p) => <p>{p}</p>)}
+    </div>
+  </section>
+)}
+
+<style>
+  .home-artist {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    gap: 2rem;
+    align-items: start;
+    max-width: 900px;
+    margin: 0 auto 3rem;
+  }
+
+  .home-artist:not(:has(.home-artist__portrait)) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .home-artist__portrait {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 3px solid var(--color-ink);
+  }
+
+  .home-artist__text p {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin: 0 0 1rem;
+    white-space: pre-line;
+  }
+
+  @media (max-width: 600px) {
+    .home-artist {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

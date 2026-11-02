@@ -1,10 +1,11 @@
 // The editor's menu: Comics, Art, Writing, Shop, Commissions, Site settings, and nothing else
-// (content-editing-organised-editor AC-1, AC-2, AC-10; design-organised-editor).
+// (content-editing-organised-editor AC-1, AC-2; design-organised-editor), with Site settings' four
+// items (content-editing-site-settings AC-1).
 import type { StructureResolver } from 'sanity/structure';
 import { CHAPTER_TEMPLATE } from './components/ChaptersList';
-import { SiteSettingsNote } from './components/SiteSettingsNote';
 import { chapterPaneTitle } from './lib/comic-pages';
 import { SECTIONS } from './lib/editor-content';
+import { SETTINGS_ITEMS } from './lib/site-settings';
 
 const TITLES = `{ "series": *[_id in [$series, "drafts." + $series]][0].title, "chapter": *[_id in [$chapter, "drafts." + $chapter]][0]{ number, title } }`;
 
@@ -14,11 +15,22 @@ export const structure: StructureResolver = (S) =>
     .items(
       SECTIONS.map((section) => {
         const id = section.title.toLowerCase().replace(/\s+/g, '-');
+        // Site settings: four single items, each opened straight away and published on its own
+        // (content-editing-site-settings AC-1; design-site-settings, Flow).
         if (!section.type) {
           return S.listItem()
             .id(id)
             .title(section.title)
-            .child(S.component(SiteSettingsNote).id(id).title(section.title));
+            .child(
+              S.list()
+                .id(id)
+                .title(section.title)
+                .items(
+                  SETTINGS_ITEMS.map(({ type, title }) =>
+                    S.listItem().id(type).title(title).schemaType(type).child(S.document().schemaType(type).documentId(type).title(title)),
+                  ),
+                ),
+            );
         }
         const ordering = (section.ordering ?? []).map(([field, direction]) => ({ field, direction }));
         let list = S.documentTypeList(section.type)

@@ -10,7 +10,6 @@ import {
   noteMessage, rowTitle, SETTINGS_ACTIONS, SETTINGS_FIELDS, SETTINGS_ITEMS, SETTINGS_TYPES, STARTING_VALUES, thingsToFix,
 } from '../../sanity-studio/lib/site-settings';
 import { CONTENT_TYPES, viewOnSitePath } from '../../sanity-studio/lib/live-status';
-// @ts-expect-error: a plain .mjs script
 import { TYPES } from '../../scripts/live-check.mjs';
 
 const read = (path: string) => readFileSync(path, 'utf8');

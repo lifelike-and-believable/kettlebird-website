@@ -7,8 +7,7 @@ const NAMES = ['Bluesky', 'Tumblr', 'Instagram', 'Ko-fi ☕'];
 
 test('content-editing-site-settings#AC-7 commissions open by default', async ({ page }) => {
   await page.goto('/commissions');
-  await expect(page.getByText('Commissions are open.')).toBeVisible();
-  await expect(page.getByText('Email me to get started.', { exact: true })).toBeVisible();
+  await expect(page.locator('.status-banner__text')).toHaveText('Commissions are open. Email me to get started.');
   await expect(page.getByRole('link', { name: 'Contact me' })).toHaveAttribute('href', EMAIL);
 });
 
