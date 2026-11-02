@@ -11,12 +11,17 @@ derived-from:
   - design-comic-sheet-and-controls#states-and-errors: 0c7c934ecf4a
   - story-comic-reader-contact-sheet: b81881d28d35
   - story-comic-reader-play-controls: 62a27f4a8594
+  - design-comic-share-and-announce#flow: 48fe43854297
+  - design-comic-share-and-announce#states-and-errors: 87623041a67d
+  - design-comic-share-and-announce#accessibility: 89f5389240b5
+  - story-comic-reader-newest-and-share: 2900c6fe8f4e
+  - story-comic-reader-assistive-technology: 1db666e12004
 ---
 
 # Reading comics
 
 <!-- docs/user/reading-comics.md. For fans (persona-fan). The behaviour fans should expect from the
-comic reader, stories 1, 2, 6 and 7; stories 3 and 4 add sharing and screen reader sections. Whether this
+comic reader, stories 1 to 4, 6 and 7. Whether this
 also becomes a help page on the site is not decided by any story yet. -->
 
 ## Start a comic
@@ -24,6 +29,8 @@ also becomes a help page on the site is not decided by any story yet. -->
 1. Open **Comics** from the menu at the top of any page.
 2. Choose a comic. Its page shows the cover, whether it's **Ongoing**, **Complete**, or **On Hiatus**, whether it's an **Original** or a **Fancomic**, and what it's about.
 3. Choose **Start reading** to begin at the first page. If the comic has chapters, you can instead choose one from the **Chapters** list to start there. Comics without chapters don't have a list; **Start reading** is all you need.
+
+To catch up on an **Ongoing** comic, choose **Read the newest page** beside **Start reading**. It opens the newest page Star has posted. If an update was several pages long, use **Previous**, or **All pages** to see the chapter's pages and pick up where you left off. Other comics don't have **Read the newest page**: choose **Start reading**, then **Newest**.
 
 If a comic says **Pages coming soon**, Star hasn't posted any pages yet. Check back later.
 
@@ -80,11 +87,30 @@ On the newest page, **Next** and **Newest** (**Last** on a finished comic) fade 
 
 **Previous** and **First** are still there if you want to look back.
 
+## Share a page
+
+Every page has its own address, and the address in your browser changes as you turn pages. So a link always opens the page you were on, in the reader.
+
+To share the page you're on, choose **Share this page** under the buttons:
+
+- On a phone or tablet, your share menu opens, so you can send the page straight to an app or a friend. If your browser has no share menu, the link is copied instead, as on a computer.
+- On a computer, the link is copied, and the button says **Link copied**. Paste it wherever you like.
+- If your browser doesn't let the site copy, the link appears in a box, already selected, under **Copy this link:**. Copy it the usual way.
+
+When you post a page's link, the preview shows the comic's cover (or the Kettlebird logo, if it has no cover) and title and where the page is, for example "Kettle Tales · Chapter 2, page 4". It never shows the page itself, so nobody sees it before they get there.
+
+## Using a screen reader or a keyboard
+
+- Every button has a name your screen reader reads, and you can reach each one with Tab. Tab skips buttons you can't use.
+- When a new page opens, your screen reader says where you are and what the page shows, for example "Chapter 2: The Long Road, page 4 of 12. A fox looks up at a kettle on a high shelf." If Star hasn't described a page, it says where you are.
+- After **Next** or **Previous** (or **First** or **Newest**), the focus stays on that button, so you can keep pressing Enter to turn pages. Arrow keys and swipes also announce the new page, but don't move the focus. Refreshing a page doesn't announce it.
+- On the newest page, **Next** can't be used any more, but the focus stays on it, and you'll hear "You're all caught up!" and what comes next. Press Tab to reach **Back to series**, then **Share this page**.
+- When you open a page from a link, some screen readers also start reading the page from the top, so you may hear where you are twice.
+
 ## If something doesn't look right
 
 | What you see | What it means | What to do |
 |---|---|---|
 | **Loading page… If it doesn't appear, try refreshing.** | The page image is still downloading, or didn't arrive. | Wait a moment on a slow connection, or refresh the page. |
-| **Page not found** | There's nothing at that address. It may be an old or mistyped link. | Choose **Comics** and find the comic from there. |
-
-Using a screen reader? Notes on how pages are announced will be added here with the reader's accessibility work.
+| **Page not found** | There's nothing at that address. It may be an old or mistyped link, or Star may have moved or removed the page. | Choose the link with the comic's name, for example **Back to Kettle Tales**, to go to the comic. If there isn't one (the comic is gone, or your browser blocks scripts), choose **Comics** and find it from there. |
+| No **Share this page** button | Your browser is blocking the site's scripts. | Copy the address from your browser's address bar instead. |
