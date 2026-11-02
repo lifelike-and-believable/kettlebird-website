@@ -16,7 +16,7 @@ derived-from:
 it needs a signed-in editor and the site's automatic updates, which CI doesn't have. Before you start:
 this change is deployed, and the lead has added the four new types to the "Rebuild site" webhook's
 filter (docs/specs/content-editing-site-settings.md, What the lead sets up). Use the live address,
-https://kettlebird-website.vercel.app until the move to kettlebird.com. Put things back as they were
+https://newsite.kettlebird.com until the move to kettlebird.com. Put things back as they were
 at the end (step 10). -->
 
 You'll close and reopen commissions, fill in the about page and the home page, add, reorder and remove a social link, and see each change on the site.
