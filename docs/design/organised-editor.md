@@ -133,10 +133,13 @@ Whether commissions are open is in **Site settings** (story-content-editing-site
 
 Added after the lead's look at the editor (2026-11-02): with Sanity's default menu, Chapter appeared as its own entry above Comic Series, as if chapters were separate from their series. The organised menu (above) already removes the Chapter entry. This keeps the link between a chapter and its series in view while Star works on it (mock-up 9):
 
-- A chapter is opened from its series: choosing a chapter in the series' **Chapters**, or **Add chapter**, opens it in a pane to the right of the series. The panes read, left to right, **Comics**, the series, then the chapter, so the series stays on screen.
-- The chapter's pane is headed with the series' name and the chapter: "Kettle Tales · Chapter 2: The Long Road" (a new chapter: "Kettle Tales · New chapter").
-- Choosing another chapter replaces the one on the right; closing it leaves the series open.
-- A chapter is still never listed on its own in the menu or in "Create new". If Star finds a chapter through Sanity's search, it opens on its own, headed "Chapter 2: The Long Road" with the series' name under it, as Sanity opens search results.
+- A chapter is opened from its series: choosing a chapter in the series' **Chapters**, or **Add chapter**, opens it in a pane to the right of the series, as a child of the series' pane. (Sanity's general "open this item" and "create" links, which the first build used, open a chapter on its own instead; the chapter rows and **Add chapter** must not use them.) The panes read, left to right, **Comics**, the series, then the chapter, so the series stays on screen.
+- The series' pane stays its whole form, with its own **Publish** at the bottom; mock-up 9 is cropped to the fields that matter here. The open chapter's row is highlighted in the series' **Chapters**.
+- The chapter's pane is headed with the series' name and the chapter: "Kettle Tales · Chapter 2: The Long Road" (a new chapter: "Kettle Tales · New chapter"; a series with no title yet: "Untitled series · New chapter"). The heading follows the series' and the chapter's current titles.
+- Choosing another chapter replaces the one on the right; closing it leaves the series open. Deleting the open chapter closes its pane; the series stays open, and the chapter leaves its **Chapters**.
+- Publishing a chapter that also publishes a new series (design-comic-publish-pages) updates the series' pane beside it straight away, so both show they're on the site.
+- On a narrow screen, Sanity shows fewer panes side by side and collapses the ones on the left. The chapter's heading keeps the series' name in view, and going back (Sanity's back arrow, or choosing the collapsed series pane) returns to the series with the chapter's row still highlighted.
+- A chapter is still never listed on its own in the menu or in "Create new". If Star finds a chapter through Sanity's search, it opens on its own, headed with the chapter and its series' name under it. Its **Series** field names the series; choosing it opens the series beside the chapter, so Star can get back to it.
 
 ## States and errors
 

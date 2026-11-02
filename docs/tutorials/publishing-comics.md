@@ -24,7 +24,7 @@ You'll start a comic, add a chapter, upload its pages, describe them, and publis
 
 ## Steps
 
-1. Open the editor at `/studio` and sign in. Choose **Comic Series**, then create a new one.
+1. Open the editor at `/studio` and sign in. Choose **Comics**, then the + button, **New series**.
 2. Type `Tutorial Comic` into **Title**. Choose **Generate** next to **Web address**. You see `tutorial-comic`.
 3. Under **Chapters**, you see "No chapters yet." Choose **Add chapter**. A new chapter opens beside the series, headed "Tutorial Comic · New chapter", and its **Chapter** field shows 1.
 4. Type `The Kettle` into **Title**.
