@@ -3,7 +3,7 @@ id: design-comic-sheet-and-controls
 status: draft
 derived-from:
   - story-comic-reader-contact-sheet: 7f9684183ed2
-  - story-comic-reader-play-controls: 7d9e07932238
+  - story-comic-reader-play-controls: 62a27f4a8594
   - design-comic-turn-pages#layout: a26d566f95d8
   - design-comic-turn-pages#states-and-errors: d45ab0902ca3
   - design-comic-start-reading#page-addresses: 108059c3ef86
@@ -68,7 +68,7 @@ Built to match the reader as it is: its fonts, colours, borders and reader bar. 
 - When the captions don't fit on one row (enlarged text on a narrow phone), the row wraps to two by two, with the ones used most on top: **Previous** and **Next**, then **First** and **Newest** (mock-up 7). Nothing is shortened or hidden.
 - The reader page leaves room for the bar, with **All pages**, and the controls: on a 360 × 640 phone, the page and the controls both fit on the first screen.
 - Each control is a bordered box at least 56 px tall, with a drawn arrowhead icon above a short caption: two arrowheads pointing left for **First**, one for **Previous**, one pointing right for **Next**, two for **Newest**, as Star asked. The icons are drawn (SVG), not typed characters, because phones draw characters like ⏭ as colourful emoji of their own.
-- **Next** is the widest (1.6 times the others) and yellow, as **Next page** was, because it's used most. The others are beige.
+- All four look the same: the same width, the same beige, and icons of the same size (lead, 2026-11-02). **Next** is told apart by its icon and caption, not by its size or colour.
 - The captions are always visible, on phones too, where there's no hovering: "First", "Previous", "Next", "Newest" (or "Last"). On hover or keyboard focus, the full name shows in a small label above the control, where it never covers the end note: "First page of the series", "Previous page", "Next page", "Newest page of the series" (or "Last page of the series") (mock-up 4). The full names say "of the series" because, beside "Chapter 4 · Page 3 of 6", "First" alone could mean the chapter's first page. The icons are all the same height, so the captions line up.
 - A control that can't be used stays in its place, with a dashed, faded border and faded icon, so the others never move (mock-ups 2 and 3).
 - On wide screens, the quiet arrows at the page's left and right edges stay, for **Previous** and **Next** (design-comic-turn-pages).
@@ -117,7 +117,7 @@ Built to match the reader as it is: its fonts, colours, borders and reader bar. 
 ## For the spec to check
 
 - Every reader page has its sheet at `<page address>/pages`, built ahead of time, with its tab title and a request not to be listed by search engines; a chapter with one page has none.
-- The controls' order, names, captions (**Last** on a complete series), icons (SVG, hidden from screen readers), the full-name label on hover and focus, **Next**'s width and colour, sizes, the two-by-two wrap, and the unusable states (links without an address, `role="link"`, `aria-disabled`, same place); no controls on a one-page series.
+- The controls' order, names, captions (**Last** on a complete series), icons (SVG, hidden from screen readers), the full-name label on hover and focus, the four being the same width and colour, sizes, the two-by-two wrap, and the unusable states (links without an address, `role="link"`, `aria-disabled`, same place); no controls on a one-page series.
 - On a 360 × 640 phone, the controls are on the first screen with the page.
 - **First** and **Newest** go to the series' first and newest pages, skipping empty chapters. Home and End are not used.
 - On the sheet: the order, numbers, the marked picture ("You were here" in its name), the scroll position, **← Back to page N** above and under the pictures, picture sizes (small images, loaded lazily, with their boxes sized), three a row on a 360 or 390 px phone, link names with alt text, the heading for a series without chapter names.
@@ -125,9 +125,10 @@ Built to match the reader as it is: its fonts, colours, borders and reader bar. 
 
 ## Decisions at review
 
-The lead decided two questions the walkthrough raised (2026-11-02):
+The lead decided these at review (2026-11-02); the first two came from the walkthrough:
 1. **Home and End:** not used. They keep their usual scrolling, because a keyboard user pressing End to reach the controls would otherwise jump to the newest page and could spoil the story. The play-controls story is amended to match.
 2. **A complete series:** the double-right control reads **Last** ("Last page of the series"), not **Newest**, which would promise new pages.
+3. **Next looks like the others:** the same width and colour as the other three, not wider and yellow. The play-controls story is amended to match.
 
 ## Persona walkthrough
 

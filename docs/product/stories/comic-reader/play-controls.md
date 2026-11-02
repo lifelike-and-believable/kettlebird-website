@@ -25,6 +25,6 @@ As a fan, I want the reader's page buttons to work like a media player's (one ar
 - ⏮ opens the first page of the series (page 1 of its first chapter with pages). ⏭ opens the series' newest page (the last page of its last chapter with pages).
 - Each control has a name for screen readers and a visible label on hover and keyboard focus: "First page of the series", "Previous page", "Next page", "Newest page of the series". On a complete series, newest page is called last page ("Last page of the series"), so it doesn't promise new pages (lead, 2026-11-02).
 - The controls keep their positions on every page. On the first page of the series, ⏮ and ◀ can't be used; on the newest page, ▶ and ⏭ can't be used, and "You're all caught up" and **Back to series** show as now. A control that can't be used looks it, and says so to screen readers.
-- Each control is at least 48 pixels tall and wide on a phone, with ▶ the most prominent, since it's used most.
+- Each control is at least 48 pixels tall and wide on a phone. All four look alike, the same size and colour (lead, 2026-11-02).
 - Swiping and the left and right arrow keys work as now. The Home and End keys keep their usual scrolling (lead, 2026-11-02).
 - The controls are links, like the buttons they replace, so they work without scripts and each has its own address.
