@@ -34,7 +34,7 @@
   .today .subtitle { font-size: 1.5rem; }
 
   /* Option A: title and menu on one row, subtitle kept, smaller */
-  .a .inner { padding: .875rem 1rem 2.25rem; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .5rem .75rem; }
+  .a .inner { padding: .875rem 1rem max(2.25rem, 3.5cqw); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .5rem .75rem; }
   .a .titles { min-width: 0; }
   .a .title { font-size: min(2.5rem, 13cqw); }  /* 13vw on the site; cqw here, because each frame is narrower than this page */
   .a .subtitle { font-size: 1.0625rem; margin-top: .125rem; }
@@ -56,6 +56,27 @@
   .cover { height: 420px; background: radial-gradient(circle at 50% 45%, #fff 0, #f9a8d4 55%, #ec4899 100%); display: flex; align-items: center; justify-content: center;
     font: 700 2.4rem/1.1 monospace; color: #ec4899; text-align: center; letter-spacing: .1em; }
   .card b { display: block; font: 700 1.4rem 'Nunito', sans-serif; padding: 10px 4px 2px; }
+
+  /* Laptop frames, 1280 x 800 */
+  .screen.laptop { width: 1280px; height: 800px; }
+  .laptop .inner { max-width: 1600px; margin: 0 auto; padding: 2rem 1rem .25rem; }
+  .laptop .title { font-size: clamp(3.5rem, 8cqw, 5.5rem); margin-bottom: .25rem; }
+  .laptop .row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+  .laptop .subtitle { font-size: clamp(1.5rem, 4cqw, 2.5rem); }
+  .laptop .links { display: flex; gap: .5rem; flex-wrap: wrap; }
+  .laptop .links a { font: 700 1rem 'Nunito', sans-serif; padding: .5rem 1.25rem; color: var(--ink); text-decoration: none;
+    background: url('../../../../public/assets/images/Highlighter_Y.png') center / 100% 100% no-repeat; }
+  .laptop.today-l .site-header { min-height: 300px; }
+  /* The image's bottom 23 of 300 rows are transparent: shift it down by that much (1.5vw at laptop
+     widths, where the image is scaled to the screen's width) and keep just enough paper for the tear. */
+  .laptop.after-l .site-header, .a .site-header { background: none; }
+  .laptop.after-l .site-header::before, .a .site-header::before { content: ''; position: absolute; z-index: -1; pointer-events: none;
+    inset: 0 0 -1.5cqw 0;  /* vw on the site: the layer reaches below the header by the image's transparent strip */
+    background: url('../../../../public/assets/images/Paper_1_Torn.png') no-repeat center bottom / cover; }
+  .laptop.after-l .inner { padding-bottom: max(2.25rem, 3.5cqw); }
+  .laptop .content { max-width: 1200px; margin: 0 auto; }
+  .laptop .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+  .laptop .cover { height: 380px; }
 </style>
 </head>
 <body>
@@ -100,6 +121,21 @@
     <a class="title" href="#">Kettlebird</a><button class="menu" aria-label="Toggle menu"><i></i></button>
   </div></header>
   <main class="content"><h1>Comics</h1><p>Original stories and fancomics</p><div class="card"><div class="cover">ALIEN<br>KARAOKE</div><b>Alien Karaoke</b></div></main>
+</div></div>
+
+
+<div class="wrap"><h6>7 · Today on a laptop, 1280 × 800: 300 px, 38% of the screen</h6>
+<div class="screen laptop today-l" id="m7">
+  <header class="site-header"><div class="inner"><a class="title" href="#">Kettlebird</a>
+    <div class="row"><p class="subtitle">Comics + Illustration</p><nav class="links"><a>PORTFOLIO</a><a>COMICS</a><a>WRITING</a><a>SHOP</a><a>COMMISSIONS</a><a>ABOUT</a><a>NEWS</a></nav></div></div></header>
+  <main class="content"><h1>Comics</h1><p>Original stories and fancomics</p><div class="cards"><div class="card"><div class="cover">ALIEN<br>KARAOKE</div><b>Alien Karaoke</b></div></div></main>
+</div></div>
+
+<div class="wrap"><h6>8 · After, on a laptop: the same header, as tall as its content</h6>
+<div class="screen laptop after-l" id="m8">
+  <header class="site-header"><div class="inner"><a class="title" href="#">Kettlebird</a>
+    <div class="row"><p class="subtitle">Comics + Illustration</p><nav class="links"><a>PORTFOLIO</a><a>COMICS</a><a>WRITING</a><a>SHOP</a><a>COMMISSIONS</a><a>ABOUT</a><a>NEWS</a></nav></div></div></header>
+  <main class="content"><h1>Comics</h1><p>Original stories and fancomics</p><div class="cards"><div class="card"><div class="cover">ALIEN<br>KARAOKE</div><b>Alien Karaoke</b></div></div></main>
 </div></div>
 
 <div class="wrap"><h6>6 · Option A with text enlarged to 200%: the menu button moves under the title, still on screen</h6>
