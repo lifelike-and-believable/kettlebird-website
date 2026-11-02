@@ -34,6 +34,8 @@ Each is written as its own story file, and approved, before work on it starts. W
 3. **Jump to the newest page and share a page** (`story-comic-reader-newest-and-share`). As a fan, I want each page to have its own address and a way to go straight to the newest page, so that I can follow a link from a social post to the right page, and pick up where a new update starts.
 4. **Read with assistive technology** (`story-comic-reader-assistive-technology`). As a fan using a screen reader, I want each page announced with its chapter, page number, and alt text, and focus kept in the reader as I turn pages, so that I can follow the story.
 5. **Publish pages and chapters** (`story-comic-reader-publish-pages`). As Star, I want pages and chapters I add in the CMS to appear in the reader, in order, after the next deploy, so that new pages reach fans without a developer.
+6. **See a chapter's pages at a glance** (`story-comic-reader-contact-sheet`). As a fan, I want to see all of a chapter's pages as a grid of small pictures, like a contact sheet, and open any one of them, so that I can find a page I remember, or see where I am in the chapter. (Asked for by Star.)
+7. **Player-style page controls** (`story-comic-reader-play-controls`). As a fan, I want the reader's page buttons to work like a media player's (one arrowhead to step a page, two to jump to the start or the newest page), so that I can turn a page or catch up on a series in one tap. Its newest-page control is the reader's part of story 3. (Asked for by Star.)
 
 ## Dependencies
 
