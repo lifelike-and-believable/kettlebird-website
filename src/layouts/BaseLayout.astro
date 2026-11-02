@@ -126,7 +126,9 @@ const currentYear = new Date().getFullYear();
   .header-inner {
     max-width: 1600px;
     margin: 0 auto;
-    padding: 2rem 1rem calc(max(2.25rem, 3.5vw) + 5px);
+    /* 22 px between the text and the highest point of the tear, as on phones: the tear's own height
+       is about 3.1vw at this image size (design-phone-header). */
+    padding: 2rem 1rem max(2.25rem, calc(22px + 3.1vw));
     display: grid;
     grid-template-columns: auto 1fr;
     grid-template-areas:
@@ -261,7 +263,7 @@ const currentYear = new Date().getFullYear();
       align-items: center;
       justify-content: space-between;
       gap: 0.5rem 0.75rem;
-      padding: 0.875rem 1rem max(2.25rem, 3.5vw);
+      padding: 0.875rem 1rem max(2.25rem, calc(22px + 3.1vw));
     }
 
     .header-brand { display: block; min-width: 0; }

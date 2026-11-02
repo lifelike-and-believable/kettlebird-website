@@ -3,6 +3,7 @@ status: implemented
 tests-commit:
   - 3a9b98404db3819c9b4c0a2f3d3fce8273bccead
 unlocks:
+  - tests/e2e/site-header.spec.ts: AC-2's laptop limit rose from 245 to 250 px. At the lead's review of the built pages, the tear sat closer to the text on laptops (about 10 px) than on phones (22 px); the padding under the text now keeps 22 px at every width, which makes the 1280 px header 244 px. The design records the change.
   - tests/e2e/site-header.spec.ts: AC-6 expected the paper image at `cover` size on a layer 1.5vw below the header. At the lead's review of the built pages, laptops showed the high ends of the tear, angling it up toward the edges, while phones showed its dipping middle. The image is now at least 160% of the screen's width (`auto max(30vw, 100%)`), on a layer 2.2vw below the header, so every screen shows the middle; the test checks the new values. The design records the change.
   - tests/e2e/site-header.spec.ts: AC-5 checked that the whole page doesn't scroll sideways with text at 200%. The comics page's own "Comics" heading (page content, outside this change) is wider than a 390 px screen at that size, so the test now checks that nothing in the header reaches past the screen, which is what this change controls. The heading is reported separately.
 ---
@@ -27,7 +28,7 @@ Source: design-phone-header sections as named.
 | # | Criterion | Verified by | Source |
 |---|---|---|---|
 | AC-1 | On 360 × 740, 390 × 844 and 768 × 1024 screens, the header of the home, comics, portfolio, about and series pages is no taller than 130 px. | test: e2e "phone height" | #the-problem, #the-change-option-a-recommended |
-| AC-2 | On a 1280 × 800 screen, the same pages' header is no taller than 245 px, the title is 88 px (today's `clamp(3.5rem, 8vw, 5.5rem)`), and the subtitle and the links are on one row. | test: e2e "laptop" | #laptops-and-wider-above-768-px |
+| AC-2 | On a 1280 × 800 screen, the same pages' header is no taller than 250 px, the title is 88 px (today's `clamp(3.5rem, 8vw, 5.5rem)`), and the subtitle and the links are on one row. | test: e2e "laptop" | #laptops-and-wider-above-768-px |
 | AC-3 | Up to 768 px wide, the title and the menu button are on the same row, the subtitle is under the title, the title links to `/`, and the button is 44 × 44 px. | test: e2e "phone layout" | #the-change-option-a-recommended, #layout |
 | AC-4 | The menu button opens and closes the menu, setting `aria-expanded`, and the menu panel starts directly under the header. | test: e2e "menu" | #the-change-option-a-recommended; REQ-site-1 |
 | AC-5 | With the root font size at 200%, on 390 px and 320 px wide screens, nothing in the header reaches past the screen (so the header causes no sideways scrolling) and the menu button is fully on screen. | test: e2e "enlarged text" | #accessibility |
@@ -41,9 +42,10 @@ Source: design-phone-header sections as named.
 
 ## Design values
 
-- Up to 768 px: header padding `0.875rem 1rem` above, and `max(2.25rem, 3.5vw)` below the content; title `min(2.5rem, 13vw)`; subtitle `1.0625rem`; the title and subtitle grouped, with the button after them in a wrapping row.
+- At every width: `max(2.25rem, calc(22px + 3.1vw))` below the content, which leaves about 22 px between the text and the highest point of the tear at every width, as on phones (the tear's own height is about 3.1vw at this image size).
+- Up to 768 px: header padding `0.875rem 1rem` above; title `min(2.5rem, 13vw)`; subtitle `1.0625rem`; the title and subtitle grouped, with the button after them in a wrapping row.
 - At every width: the subtitle's line height is 1.25 (it inherited the body's 1.6, which added empty space under it).
-- Above 768 px: today's layout and sizes; `calc(max(2.25rem, 3.5vw) + 5px)` below the content.
+- Above 768 px: today's layout and sizes, `2rem` above.
 - Paper layer: `::before`, `inset: 0 0 -2.2vw 0`, `background: url(Paper_1_Torn.png) no-repeat center bottom / auto max(30vw, 100%)`, `z-index: -1`, `pointer-events: none`.
 
 ## Delivery

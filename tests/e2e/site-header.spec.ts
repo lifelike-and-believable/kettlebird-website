@@ -25,7 +25,7 @@ test('site-header#AC-2 laptop', async ({ page }) => {
   for (const path of PAGES) {
     await page.goto(path);
     const header = await box(page, '.site-header');
-    expect(header.height, path).toBeLessThanOrEqual(245);
+    expect(header.height, path).toBeLessThanOrEqual(250);
     expect(header.height, path).toBeGreaterThan(150);
   }
   await page.goto('/comics');
