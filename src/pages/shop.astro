@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getAllProducts, type Product } from '../lib/queries';
+import { shopSections } from '../lib/shop';
 import { urlFor } from '../lib/sanity';
 
 let products: Product[] = [];
@@ -10,22 +11,8 @@ try {
   console.warn('[shop] Could not fetch products:', e);
 }
 
-const CATEGORY_LABELS: Record<string, string> = {
-  print: 'Print',
-  sticker: 'Sticker',
-  digital: 'Digital',
-  commission: 'Commission',
-};
-
-// Group by category
-const grouped = products.reduce<Record<string, Product[]>>((acc, p) => {
-  const cat = p.category ?? 'other';
-  (acc[cat] ??= []).push(p);
-  return acc;
-}, {});
-
-const categoryOrder = ['print', 'sticker', 'digital', 'commission', 'other'];
-const sortedCategories = categoryOrder.filter((c) => grouped[c]?.length);
+// Prints, Stickers, Digital, in that order (content-editing-organised-editor AC-9).
+const sections = shopSections(products);
 ---
 
 <BaseLayout
@@ -46,7 +33,7 @@ const sortedCategories = categoryOrder.filter((c) => grouped[c]?.length);
       </a>
     </header>
 
-    {products.length === 0 ? (
+    {sections.length === 0 ? (
       <div class="empty-state">
         <p class="empty-state__text">Shop stocking up — check back soon!</p>
         <a href="https://ko-fi.com/kettlebirdart" target="_blank" rel="noopener noreferrer" class="highlighter-btn highlighter-btn--orange">
@@ -54,11 +41,11 @@ const sortedCategories = categoryOrder.filter((c) => grouped[c]?.length);
         </a>
       </div>
     ) : (
-      sortedCategories.map((cat) => (
+      sections.map((section) => (
         <div class="category-section">
-          <h2 class="category-heading">{CATEGORY_LABELS[cat] ?? cat}s</h2>
+          <h2 class="category-heading">{section.heading}</h2>
           <ul class="product-grid">
-            {grouped[cat].map((product) => {
+            {section.products.map((product) => {
               const imgUrl = product.images?.[0]?.asset
                 ? urlFor(product.images[0]).width(500).height(500).fit('crop').auto('format').url()
                 : null;
