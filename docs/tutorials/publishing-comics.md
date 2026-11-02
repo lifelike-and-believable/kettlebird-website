@@ -37,7 +37,7 @@ You'll start a comic, add a chapter, upload its pages, describe them, and publis
 12. Open the chapter again and drag page 3 to the start. Choose **Publish**. The dialog is headed "Some page links will change" and says "You moved page 1 of Chapter 1: The Kettle. Links people have shared to pages 1 to 3 of Chapter 1 will point to different pages." Choose **Cancel**, and nothing is published.
 13. Choose **Add chapter** on the series and change its **Chapter** field to 1. The field shows "Chapter 1 already exists in this series. Choose another number." and **Publish** can't be pressed. Delete this chapter.
 14. After the site's next build (a minute or two), open `/comics/tutorial-comic`. You see **Chapter 1: The Kettle** (or, for a series with one untitled chapter, **Start reading**), and the reader shows the three pages in the order you published them.
-15. Delete **Tutorial Comic** and its chapter in the editor.
+15. Open **Chapter 1: The Kettle**, choose the menu next to **Publish**, and choose **Delete**. Then do the same for **Tutorial Comic**. A series can't be deleted while a chapter still belongs to it, so delete the chapters first.
 
 ## What you found
 
