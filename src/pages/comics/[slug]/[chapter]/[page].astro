@@ -72,6 +72,15 @@ const end = entry.isLast ? endNote(entry.series.status) : undefined;
     </nav>
   </div>
 
+  <script is:inline>
+    // Open with the reader bar at the top of the window, past the site header, so the whole page
+    // shows and the next page appears without scrolling back up (design-comic-turn-pages). Inline,
+    // right after the reader, so it runs before the page is first drawn: a bundled script runs
+    // later, and the header would flash on screen at each turn. Skipped if the fan has already
+    // scrolled; without a script the page simply starts at the top.
+    if (window.scrollY === 0) document.querySelector('.reader')?.scrollIntoView({ block: 'start' });
+  </script>
+
   {nextImage && <meta name="kb-next-image" content={nextImage.src} data-srcset={nextImage.srcset ?? ''} />}
 
   <script>
@@ -106,13 +115,6 @@ const end = entry.isLast ? endNote(entry.series.status) : undefined;
       if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy) * 1.5 || zoomed()) return;
       (dx < 0 ? link('next') : link('previous'))?.click();
     });
-
-    // Open with the reader bar at the top of the window, past the site header, so the whole page
-    // shows and the next page appears without scrolling back up (design-comic-turn-pages).
-    // Skipped if the fan has already scrolled, and without a script the page simply starts at the top.
-    if (window.scrollY === 0) {
-      document.querySelector('.reader')?.scrollIntoView({ block: 'start' });
-    }
 
     // Fetch the next page's image after this one loads, unless the browser asks to save data.
     const next = document.querySelector<HTMLMetaElement>('meta[name="kb-next-image"]');

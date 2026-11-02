@@ -80,6 +80,21 @@ test('comic-reader-start-and-turn#AC-9 turn pages with links', async ({ page }) 
   await expect(page).toHaveURL(/\/1\/3$/);
 });
 
+test('comic-reader-start-and-turn#AC-9 a turned page is first drawn past the site header', async ({ page }) => {
+  // design-comic-turn-pages: the page opens with the reader bar at the top of the window. If that
+  // scroll waits until after the first frame, the site header flashes on screen at each turn.
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await page.addInitScript(() => {
+    requestAnimationFrame(() => { (window as unknown as { firstFrameY: number }).firstFrameY = window.scrollY; });
+  });
+  for (const path of ['/comics/kettle-tales/1/1', '/comics/kettle-tales/1/2', '/comics/kettle-tales/2/1']) {
+    await page.goto(path);
+    await page.waitForFunction(() => 'firstFrameY' in window);
+    const firstFrameY = await page.evaluate(() => (window as unknown as { firstFrameY: number }).firstFrameY);
+    expect(firstFrameY, path).toBeGreaterThan(0);
+  }
+});
+
 test('comic-reader-start-and-turn#AC-10 last page', async ({ page }) => {
   await page.goto('/comics/kettle-tales/4/1');
   await expect(page.getByRole('link', { name: 'Next page' })).toHaveCount(0);
