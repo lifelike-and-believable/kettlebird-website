@@ -4,8 +4,8 @@ status: approved
 runner: web
 derived-from:
   - docs-reading-comics#start-a-comic: 56a68bb5670f
-  - docs-reading-comics#turn-pages: 58ed28381a64
-  - docs-reading-comics#when-you-reach-the-end: cb5b3262369c
+  - docs-reading-comics#turn-pages: b0976c6d3152
+  - docs-reading-comics#when-you-reach-the-end: 13d6837fff63
 ---
 
 # Tutorial: read a comic from the start into its second chapter
