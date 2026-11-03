@@ -49,7 +49,7 @@ The menu on the left lists everything you can edit: **Comics**, **Art**, **Writi
 
 **Help**, at the top right just left of the status (such as **Live**), opens a list of these guides and **All help**. Choose one to open it in a new tab. At the top of each item, a line such as "Help: Add a chapter" opens the part of a guide about that item, also in a new tab.
 
-The **?** button further right is Sanity's own help, about how the editor works. On a narrow window it moves into Sanity's side menu.
+The **?** button near your account circle is Sanity's own help, about how the editor works. On a narrow window it moves into Sanity's side menu.
 
 **Help** and the lines at the top of each item arrive with a later update to the editor; until then, the guides are sent to you as links.
 
