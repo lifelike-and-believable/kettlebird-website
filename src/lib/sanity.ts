@@ -9,6 +9,8 @@ export const sanityClient = createClient({
   // The live API, not the cache, so a build right after Publish sees the change (content-editing-know-when-live AC-2).
   useCdn: false,
   apiVersion: '2024-01-01',
+  // Published content only: the public site never reads drafts (content-editing-preview AC-9).
+  perspective: 'published',
 });
 
 const builder = imageUrlBuilder(sanityClient);

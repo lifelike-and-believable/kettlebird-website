@@ -44,3 +44,6 @@ tutorial-recordings/
 # Stryker
 reports/
 .stryker-tmp/
+
+# The Vercel adapter's build output
+.vercel/

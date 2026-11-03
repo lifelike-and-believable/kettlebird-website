@@ -1,0 +1,21 @@
+---
+// The about page. Rendered by src/pages/about.astro and by the preview route
+// (docs/specs/content-editing-preview.md).
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import type { PreviewInfo } from '../../lib/preview/load';
+import AboutContent from '../settings/AboutContent.astro';
+import type { Settings } from '../../lib/site-settings';
+
+const { settings } = Astro.props as { settings: Settings };
+/** In the preview route: what the preview shows and outlines (docs/specs/content-editing-preview.md). */
+const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
+---
+
+<BaseLayout
+  previewInfo={previewInfo}
+  settings={settings}
+  title="About • Kettlebird Creations"
+  description="About Star Goldberg — writer, illustrator, and creator behind Kettlebird Creations."
+>
+  <AboutContent settings={settings} />
+</BaseLayout>

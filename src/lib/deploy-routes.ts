@@ -25,11 +25,27 @@ export interface VercelJson {
 }
 
 /** A vercel.json source ("/(.*)", "/studio/:path*", "/build-info.json") as a route's regular expression. */
-export function sourceToRegex(_source: string): string {
-  throw new Error('not implemented');
+export function sourceToRegex(source: string): string {
+  const body = source
+    .replace(/\.(?!\*)/g, '\\.') // a literal dot, not the `.` of `(.*)`
+    .replace(/\/:[A-Za-z]+\*$/, '(?:/(.*))?');
+  return `^${body}$`;
 }
 
+const sameRoute = (a: VercelRoute, b: VercelRoute) => JSON.stringify(a) === JSON.stringify(b);
+
 /** Adds vercel.json's headers (before everything) and rewrites (after files, before the catch-all 404). */
-export function withSiteRoutes(_config: VercelConfig, _vercel: VercelJson): VercelConfig {
-  throw new Error('not implemented');
+export function withSiteRoutes(config: VercelConfig, vercel: VercelJson): VercelConfig {
+  const headerRoutes: VercelRoute[] = (vercel.headers ?? []).map((h) => ({
+    src: sourceToRegex(h.source),
+    headers: Object.fromEntries(h.headers.map(({ key, value }) => [key, value])),
+    continue: true,
+  }));
+  const rewriteRoutes: VercelRoute[] = (vercel.rewrites ?? []).map((r) => ({ src: sourceToRegex(r.source), dest: r.destination }));
+  const ours = [...headerRoutes, ...rewriteRoutes];
+  // Running twice gives the same result: drop any routes added before.
+  const theirs = config.routes.filter((route) => !ours.some((o) => sameRoute(o, route)));
+  const catchAll = theirs.findIndex((route) => route.status === 404);
+  const at = catchAll === -1 ? theirs.length : catchAll;
+  return { ...config, routes: [...headerRoutes, ...theirs.slice(0, at), ...rewriteRoutes, ...theirs.slice(at)] };
 }

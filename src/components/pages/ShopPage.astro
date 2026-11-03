@@ -1,0 +1,247 @@
+---
+// The shop. Rendered by src/pages/shop.astro and by the preview route
+// (docs/specs/content-editing-preview.md).
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import type { PreviewInfo } from '../../lib/preview/load';
+import type { Product } from '../../lib/queries';
+import { shopSections } from '../../lib/shop';
+import { urlFor } from '../../lib/sanity';
+
+const { products } = Astro.props as { products: Product[] };
+
+// Prints, Stickers, Digital, in that order (content-editing-organised-editor AC-9).
+const sections = shopSections(products);
+/** In the preview route: what the preview shows and outlines (docs/specs/content-editing-preview.md). */
+const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
+---
+
+
+<BaseLayout
+  previewInfo={previewInfo}
+  title="Shop • Kettlebird Creations"
+  description="Prints, stickers, and digital goods from Kettlebird Creations. Buy on Ko-fi."
+>
+  <section class="shop-page">
+    <header class="page-header">
+      <h1 class="page-title">Shop</h1>
+      <p class="page-subtitle">Prints, stickers, and more — sold via Ko-fi</p>
+      <a
+        href="https://ko-fi.com/kettlebirdart"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="highlighter-btn highlighter-btn--orange"
+      >
+        Visit the Ko-fi Shop ☕
+      </a>
+    </header>
+
+    {sections.length === 0 ? (
+      <div class="empty-state">
+        <p class="empty-state__text">Shop stocking up — check back soon!</p>
+        <a href="https://ko-fi.com/kettlebirdart" target="_blank" rel="noopener noreferrer" class="highlighter-btn highlighter-btn--orange">
+          Browse Ko-fi in the meantime ☕
+        </a>
+      </div>
+    ) : (
+      sections.map((section) => (
+        <div class="category-section">
+          <h2 class="category-heading">{section.heading}</h2>
+          <ul class="product-grid">
+            {section.products.map((product) => {
+              const imgUrl = product.images?.[0]?.asset
+                ? urlFor(product.images[0]).width(500).height(500).fit('crop').auto('format').url()
+                : null;
+
+              return (
+                <li class="product-card" id={`item-${product._id}`} data-part={`item-${product._id}`}>
+                  <div class="product-card__img-wrap">
+                    {imgUrl
+                      ? <img src={imgUrl} alt={product.name} class="product-card__img" width={500} height={500} loading="lazy" />
+                      : <div class="product-card__placeholder" aria-hidden="true">🛍</div>
+                    }
+                  </div>
+                  <div class="product-card__body">
+                    <h3 class="product-card__name">{product.name}</h3>
+                    {product.price && <p class="product-card__price">{product.price}</p>}
+                    {product.description && <p class="product-card__desc">{product.description}</p>}
+                    {product.kofiLink && (
+                      <a href={product.kofiLink} target="_blank" rel="noopener noreferrer" class="btn btn--small">
+                        Buy on Ko-fi ↗
+                      </a>
+                    )}
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      ))
+    )}
+  </section>
+</BaseLayout>
+
+<style>
+  .shop-page {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 2rem 1rem 4rem;
+  }
+
+  .page-header {
+    margin-bottom: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .page-title {
+    margin: 0;
+  }
+
+  .page-subtitle {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.1rem;
+    color: var(--color-dark-purple, #4a4063);
+    margin: 0;
+  }
+
+  /* .kofi-btn replaced with .highlighter-btn from global.css */
+
+  /* ── Empty state ── */
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 5rem 1rem;
+    border: 3px dashed var(--color-dark-purple, #4a4063);
+    text-align: center;
+  }
+
+  .empty-state__text {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-dark-purple, #4a4063);
+    margin: 0;
+  }
+
+  /* ── Category sections ── */
+  .category-section {
+    margin-bottom: 3rem;
+  }
+
+  .category-heading {
+    font-family: 'Nunito', sans-serif;
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    font-weight: 700;
+    margin: 0 0 1.25rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 3px solid var(--color-ink, #2b2b2b);
+  }
+
+  /* ── Product grid ── */
+  .product-grid {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .product-card {
+    border: 3px solid var(--color-ink, #2b2b2b);
+    background: var(--color-beige, #f5f1e8);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .product-card:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 6px 6px 0 rgba(0,0,0,0.12);
+  }
+
+  .product-card__img-wrap {
+    aspect-ratio: 1;
+    overflow: hidden;
+    border-bottom: 3px solid var(--color-ink, #2b2b2b);
+  }
+
+  .product-card__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .product-card__placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    background: var(--color-yellow, #f4ce6a);
+  }
+
+  .product-card__body {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 1;
+  }
+
+  .product-card__name {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .product-card__price {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-dark-purple, #4a4063);
+    margin: 0;
+  }
+
+  .product-card__desc {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .btn {
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    padding: 0.5rem 1.25rem;
+    border: 2px solid var(--color-ink, #2b2b2b);
+    background: var(--color-ink, #2b2b2b);
+    color: var(--color-beige, #f5f1e8);
+    text-decoration: none;
+    display: inline-block;
+    margin-top: auto;
+    transition: background 0.15s, transform 0.15s;
+  }
+
+  .btn:hover {
+    background: var(--color-dark-purple, #4a4063);
+    transform: translate(-1px, -1px);
+  }
+
+  .btn--small {
+    font-size: 0.85rem;
+    padding: 0.4rem 1rem;
+  }
+</style>

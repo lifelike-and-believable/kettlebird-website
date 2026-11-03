@@ -33,20 +33,28 @@ jobs:
       - name: Type check (astro check)
         run: npm run check
 
-      # The same command Vercel runs: the site, then the editor into dist/studio (content-editing-sign-in AC-1, AC-3).
+      # The same command Vercel runs: the site, the editor into dist/studio, then both into the deployed
+      # output with vercel.json's headers and rewrites, and the draft and token check
+      # (content-editing-sign-in AC-1, AC-3; content-editing-preview AC-9, AC-12).
       - name: Build website and editor
         run: npm run build:site
 
       - name: Check the editor is in the build
         run: |
-          test -f dist/studio/index.html
-          grep -q '<title>Kettlebird Creations</title>' dist/studio/index.html
-          grep -q 'src="/studio/static/' dist/studio/index.html
-          ! grep -q 'href="/static/' dist/studio/index.html
+          test -f .vercel/output/static/studio/index.html
+          grep -q '<title>Kettlebird Creations</title>' .vercel/output/static/studio/index.html
+          grep -q 'src="/studio/static/' .vercel/output/static/studio/index.html
+          ! grep -q 'href="/static/' .vercel/output/static/studio/index.html
+
+      # The deployed routing has vercel.json's headers and the /studio rewrite (content-editing-preview AC-12).
+      - name: Check the deployed routing
+        run: |
+          grep -q '"X-Frame-Options": "SAMEORIGIN"' .vercel/output/config.json
+          grep -q '"dest": "/studio/index.html"' .vercel/output/config.json
 
       # The site says which content it was built from (content-editing-know-when-live AC-2).
       - name: Check the build info is in the build
-        run: node -e "const i=require('./dist/build-info.json'); if(!Date.parse(i.contentReadAt)||!Date.parse(i.builtAt)) process.exit(1)"
+        run: node -e "const i=require('./.vercel/output/static/build-info.json'); if(!Date.parse(i.contentReadAt)||!Date.parse(i.builtAt)) process.exit(1)"
 
   studio:
     # The editor (Sanity Studio) builds with its custom inputs and actions (comic-publish-pages#AC-14).
@@ -112,11 +120,11 @@ jobs:
           path: .rfr
 
       - name: Run tutorials against the fixture build
-        # The end-to-end step leaves a fixture build in dist/.
+        # The end-to-end step leaves a fixture build in dist/, served by the Node adapter's own server.
         run: |
-          npx astro preview --port 4325 &
-          for i in $(seq 1 30); do curl -sf http://localhost:4325/comics > /dev/null && break; sleep 2; done
-          node .rfr/checks/tutorial-run.mjs . --base-url http://localhost:4325 --record tutorial-recordings
+          HOST=127.0.0.1 PORT=4325 node dist/server/entry.mjs &
+          for i in $(seq 1 30); do curl -sf http://127.0.0.1:4325/comics > /dev/null && break; sleep 2; done
+          node .rfr/checks/tutorial-run.mjs . --base-url http://127.0.0.1:4325 --record tutorial-recordings
 
       - name: Upload tutorial recordings
         if: always()

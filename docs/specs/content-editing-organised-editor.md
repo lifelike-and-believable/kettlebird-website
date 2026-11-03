@@ -4,6 +4,7 @@ tests-commit:
   - 5f3cf5ff6e58723c7fd7791c3c8f8fa0ed201fe7
   - 206f0803d5afb332e17f3ca4cf6460af190d5b7a
 unlocks:
+  - tests/unit/organised-editor.test.ts: the AC-9 shop-page check read src/pages/shop.astro; the shop's markup moved into src/components/pages/ShopPage.astro so the preview can render it (content-editing-preview), and the check reads that file. The criterion is unchanged.
   - tests/unit/organised-editor.test.ts: the AC-10 checks (the "coming in the next update" note, and the structure using SiteSettingsNote) are removed. Site settings itself replaced the note (content-editing-site-settings AC-1), whose tests check the four items instead. AC-10 is superseded.
 ---
 

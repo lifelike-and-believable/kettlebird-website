@@ -5,7 +5,10 @@ import { expect, test, type Page } from '@playwright/test';
 const KEY = 'fixture-preview-key';
 const preview = (kind: string, id: string, extra = '') => `/preview/${kind}/${id}?sanity-preview-secret=${KEY}${extra}`;
 const info = (page: Page) =>
-  page.locator('#kb-preview').evaluate((el) => JSON.parse(el.textContent ?? '{}') as { name: string; notes: string[] });
+  page.locator('#kb-preview').evaluate((el) => {
+    const { name, notes } = JSON.parse(el.textContent ?? '{}') as { name: string; notes: string[] };
+    return { name, notes };
+  });
 
 test('content-editing-preview#AC-8 access and headers', async ({ page }) => {
   for (const path of [

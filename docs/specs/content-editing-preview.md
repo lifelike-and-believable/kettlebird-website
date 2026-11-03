@@ -1,7 +1,11 @@
 ---
-status: draft
-tests-commit: []
-unlocks: []
+status: implemented
+tests-commit:
+  - 958a6c4e102e2042caa90e906c1721519aaf776f
+unlocks:
+  - tests/e2e/preview.spec.ts: the checks of the page's name and notes compared the whole preview data, which also carries the outlined parts and the place to scroll to; they now compare the name and notes only. The criteria are unchanged.
+  - tests/fixtures/drafts.ts: the fixture pictures' asset ids weren't in Sanity's form (image-<id>-<w>x<h>-<ext>), which the image service's address builder rejects; they are now. Test data only.
+  - tests/unit/preview-edges.test.ts (new): mutation testing showed gaps in the open-page reading, the part selectors, system fields, alt text in lists, removed links without a key, the closing note's conditions, and messages' pages. Added; the criteria are unchanged.
 ---
 
 # Preview before publishing
@@ -87,4 +91,6 @@ Until step 2 is done, **Preview** shows "Can't show the preview right now." on t
 - The adapter changes the build's output folders, and Vercel then ignores `vercel.json`'s headers and rewrites. The routes script restores them and has a unit test; the first pull request deployment is also checked by hand (AC-12) before merging.
 - Outlines mark whole top-level parts, and changes inside lists (a fact, a link, a page) mark the list (lead, 2026-11-03).
 - Preview pages reuse the public components through props. Where a page fetched its own data (portfolio, writing, shop, series, reader), the fetch moves into its page file and the component takes the data, so preview and public pages share one component.
+- Fixture builds tell the preview route they're fixture builds through a build-time constant (`__KETTLEBIRD_FIXTURES__`, Vite's `define`): pages made on request don't see `KETTLEBIRD_FIXTURES` from the build's environment.
+- Each public page's markup moved into a component in `src/components/pages/`, which the page file and the preview route both render; the public pages are unchanged.
 - The preview route uses `scrollTo` on its own window and never calls `focus()` or `scrollIntoView`, so it can't move the editor around it.

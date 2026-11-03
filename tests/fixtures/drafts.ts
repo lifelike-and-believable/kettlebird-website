@@ -24,7 +24,7 @@ export const FIXTURE_PUBLISHED: RawDoc[] = [
     description: 'A fox and a kettle set out across the hills.',
     status: 'ongoing',
     type: 'original',
-    chapters: [{ number: 1, title: 'The Kettle', pages: [{ ...img('image-k1'), altText: 'A fox looks up at a kettle.' }] }],
+    chapters: [{ number: 1, title: 'The Kettle', pages: [{ ...img('image-Kettle1aaaaaaaaaaaaaaaaa-800x1200-png'), altText: 'A fox looks up at a kettle.' }] }],
   },
 ];
 
@@ -39,7 +39,7 @@ export const FIXTURE_DRAFTS: RawDoc[] = [
     description: 'A fox and a kettle set out across the hills, and keep going.',
     status: 'ongoing',
     type: 'original',
-    chapters: [{ number: 1, title: 'The Kettle', pages: [{ ...img('image-k1'), altText: 'A fox looks up at a kettle.' }] }],
+    chapters: [{ number: 1, title: 'The Kettle', pages: [{ ...img('image-Kettle1aaaaaaaaaaaaaaaaa-800x1200-png'), altText: 'A fox looks up at a kettle.' }] }],
   },
   // A series never published, and a chapter in it.
   { _id: 'drafts.series-new', _type: 'comicSeries', title: 'New Story', slug: { current: 'new-story' }, status: 'ongoing', type: 'original' },
@@ -49,6 +49,6 @@ export const FIXTURE_DRAFTS: RawDoc[] = [
     number: 1,
     title: 'Beginnings',
     series: { _ref: 'series-new' },
-    pages: [{ _key: 'p1', ...img('image-n1'), altText: 'A door opens.' }, { _key: 'p2', ...img('image-n2'), altText: 'Light spills out.' }],
+    pages: [{ _key: 'p1', ...img('image-New1aaaaaaaaaaaaaaaaaaaa-800x1200-png'), altText: 'A door opens.' }, { _key: 'p2', ...img('image-New2aaaaaaaaaaaaaaaaaaaa-800x1200-png'), altText: 'Light spills out.' }],
   },
 ];
