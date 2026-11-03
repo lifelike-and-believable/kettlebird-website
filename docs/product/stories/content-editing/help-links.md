@@ -1,6 +1,6 @@
 ---
 id: story-content-editing-help-links
-status: draft
+status: approved
 derived-from:
   - epic-content-editing#outcome: ce75baca7267
   - persona-artist#skills-and-tools: 4e28d5374320
