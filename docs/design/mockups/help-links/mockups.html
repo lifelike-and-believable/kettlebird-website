@@ -21,7 +21,10 @@
   .nav { display: flex; gap: 6px; }
   .nav span { font: 700 12px Nunito, system-ui; padding: 6px 10px; background: var(--green); }
   .nav span:nth-child(2n) { background: var(--yellow); }
-  .menu-btn { width: 40px; height: 34px; border: 3px solid var(--site); }
+  .menu-btn { width: 44px; height: 40px; border: 3px solid var(--site); display:flex; flex-direction:column; justify-content:center; gap:5px; padding:0 8px; }
+  .menu-btn i { display:block; height:3px; background: var(--site); }
+  .anno { font: 12px system-ui; color: #fff; background: #111827; padding: 3px 8px; display: inline-block; margin-top: 6px; }
+  .tbl:focus-visible, .tbl.f { outline: 3px solid var(--site); outline-offset: 3px; }
   .sbody { max-width: 760px; margin: 0 auto; padding: 18px 24px 36px; }
   .crumb { font-size: 13px; color: var(--purple); display: flex; justify-content: space-between; border-bottom: 2px dashed var(--purple); padding-bottom: 6px; margin-bottom: 18px; }
   .crumb a, .sbody a { color: var(--site); font-weight: 700; text-decoration: underline; }
@@ -93,14 +96,14 @@
 <div class="frame phone" id="m2">
 <h6>2 · The same page on a phone; a wide table scrolls inside its box</h6>
 <div class="site">
-  <div class="shead" style="padding:10px 16px"><div><div class="t" style="font-size:24px">Kettlebird</div><div class="s" style="font-size:11px">Comics + Illustration</div></div><div class="menu-btn"></div></div>
+  <div class="shead" style="padding:10px 16px"><div><div class="t" style="font-size:24px">Kettlebird</div><div class="s" style="font-size:11px">Comics + Illustration</div></div><div class="menu-btn" aria-label="Toggle menu"><i></i><i></i><i></i></div></div>
   <div class="sbody" style="padding:14px 16px 24px">
     <div class="crumb"><span>Help for your site's editor</span><a>All help</a></div>
     <h1 style="font-size:28px">Publishing comic pages and chapters</h1>
     <nav class="toc" aria-label="On this page"><strong>On this page</strong><ul style="columns:1"><li><a>Start a new comic</a></li><li><a>Add a chapter</a></li><li><a>Add pages</a></li><li>…</li></ul></nav>
     <h2>If something goes wrong</h2>
-    <div class="tbl"><table><tr><th>What you see</th><th>What it means</th><th>What to do</th></tr><tr><td>"Chapter 2 already exists in this series"</td><td>Two chapters have the same number.</td><td>Change the number on one of them.</td></tr></table></div>
-    <p class="scroll-hint">The table scrolls sideways; the page doesn't.</p>
+    <div class="tbl f" tabindex="0" role="region" aria-label="What you see, what it means, what to do"><table><tr><th>What you see</th><th>What it means</th><th>What to do</th></tr><tr><td>"Chapter 2 already exists in this series"</td><td>Two chapters have the same number.</td><td>Change the number on one of them.</td></tr></table></div>
+    <span class="anno">Annotation: the table scrolls sideways in its box (shown with keyboard focus); the page doesn't.</span>
   </div>
 </div>
 </div>
@@ -121,7 +124,7 @@
       <li><a>When your change is live</a><p>What the status at the top right means after you publish.</p></li>
     </ul>
   </div>
-  <div class="sfoot">Connect · Bluesky · Tumblr · Instagram · Ko-fi ☕ &nbsp;&nbsp; Contact · kettlebirdillustration@gmail.com</div>
+  <div class="sfoot">Connect · Bluesky · Tumblr · Instagram · Ko-fi ☕ &nbsp;&nbsp; Contact · kettlebirdillustration@gmail.com &nbsp;&nbsp; © 2026 Kettlebird Creations</div>
 </div>
 </div>
 
@@ -131,7 +134,7 @@
   <div class="pop"><div class="f">Getting started with your site's editor <span class="ext">↗</span></div><div>Editing your art, writing, shop and commissions <span class="ext">↗</span></div><div>Publishing comic pages and chapters <span class="ext">↗</span></div><div>Commissions, your about page, the home page and your links <span class="ext">↗</span></div><div>See it before you publish <span class="ext">↗</span></div><div>When your change is live <span class="ext">↗</span></div><hr><div>All help <span class="ext">↗</span></div></div>
 </div>
 <div class="cols"><div class="col"><div class="it sel">Comics</div><div class="it">Art</div><div class="it">Writing</div><div class="it">Shop</div><div class="it">Commissions</div><div class="it">Site settings</div></div><div class="col"><div class="it">Kettle Tales · Ongoing</div><div class="it">One Shot · Complete</div></div><div class="doc"><div class="bd" style="color:var(--muted)">Choose a series.</div></div></div>
-<div class="note">Each guide opens in a new tab. On a narrow window, Help is a "?" button with the same menu.</div>
+<div class="note">Each guide opens in a new tab; its name says so. Sanity's own "?" menu (Help and resources, about Sanity) is further right, beside the account circle, not shown here.</div>
 </div>
 
 <div class="frame" id="m5">
@@ -144,6 +147,18 @@
 <h6>6 · Site settings, Commissions: the help link above the box of things to fix</h6>
 <div class="top"><strong>Kettlebird Creations</strong><span><span class="btn">Help ▾</span> &nbsp;<span class="status">● Live · 2:41 pm</span><span class="avatar">S</span></span></div>
 <div class="cols"><div class="col"><div class="it">Comics</div><div class="it">Art</div><div class="it">Writing</div><div class="it">Shop</div><div class="it">Commissions</div><div class="it sel">Site settings</div></div><div class="col"><div class="it sel">Commissions</div><div class="it">About page</div><div class="it">Home page</div><div class="it">Contact and social links</div></div><div class="doc"><div class="hd">Commissions</div><div class="bd"><div class="tl"><span class="hl">Help: Open or close commissions ↗</span><span class="btn">Preview</span></div><div class="fix">Fix this before publishing: Note when closed is over 120 characters.</div><div class="field"><label>Commissions are…</label><div class="input">○ Open &nbsp; ◉ Closed</div></div><div class="field"><label>Note when closed</label><div class="input">Back in March, once the convention season is over and I've caught up on the queue of…</div></div></div><div class="bar"><span class="btn primary">Publish</span></div></div></div>
+</div>
+
+<div class="frame" id="m7" style="width:600px">
+<h6>7 · A narrow window: Help keeps its word; Sanity's "?" menu has moved into its side menu (☰)</h6>
+<div class="top"><span><span class="btn">☰</span> <strong>Kettlebird Creations</strong></span><span><span class="btn">Help ▾</span> &nbsp;<span class="status" style="background:#fef3c7;color:#92400e">⚠ Can't check the site right now</span><span class="avatar">S</span></span></div>
+<div class="cols" style="grid-template-columns:1fr;min-height:200px"><div class="doc"><div class="bd"><div class="tl"><span class="hl">Help: Start a new comic ↗</span><span class="btn">Preview</span></div><div class="field"><label>Title</label><div class="input">Kettle Tales</div></div></div></div></div>
+</div>
+
+<div class="frame" id="m8">
+<h6>8 · Contact and social links with the preview open: the long link wraps; Hide preview stays at the right</h6>
+<div class="top"><strong>Kettlebird Creations</strong><span><span class="btn">Help ▾</span> &nbsp;<span class="status">● Live · 2:41 pm</span><span class="avatar">S</span></span></div>
+<div style="display:grid;grid-template-columns:48px 300px 1fr;min-height:360px"><div class="col" style="padding:6px"></div><div class="doc" style="border-right:1px solid var(--line)"><div class="hd">Contact and social links</div><div class="bd"><div class="tl" style="align-items:flex-start;gap:10px"><span class="hl" style="max-width:170px">Help: Your contact email and social links ↗</span><span class="btn on" style="white-space:nowrap">Hide preview</span></div><div class="field"><label>Contact email</label><div class="input">star@kettlebird.com</div></div><div class="field"><label>Social links</label><div class="input">Bluesky · Tumblr · Ko-fi</div></div></div><div class="bar"><span class="btn primary">Publish</span></div></div><div style="background:#d1d5db;padding:16px"><div style="background:var(--paper);border:1px solid #bbb;height:100%;padding:12px;font-family:system-ui;color:var(--site)">Preview of the home page, scrolled to the social links and footer (as in design-preview)</div></div></div>
 </div>
 
 </body>
