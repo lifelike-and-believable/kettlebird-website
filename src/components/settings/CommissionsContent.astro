@@ -5,6 +5,8 @@
 import { commissionsView, type Settings } from '../../lib/site-settings';
 
 export interface TypeCard {
+  /** The commission type's id, so the preview can scroll to it (item-<id>). */
+  id?: string;
   name: string;
   priceRange?: string;
   description?: string;
@@ -24,7 +26,7 @@ const email = settings.contact.email;
     </header>
 
     <!-- Open or closed, from Site settings (content-editing-site-settings AC-7) -->
-    <div class={`status-banner status-banner--${view.open ? 'open' : 'closed'}`}>
+    <div class={`status-banner status-banner--${view.open ? 'open' : 'closed'}`} data-part="commission-banner">
       <span class="status-banner__dot" aria-hidden="true"></span>
       <p class="status-banner__text">
         <strong>{view.heading}</strong> {view.note}
@@ -82,7 +84,7 @@ const email = settings.contact.email;
         <h2 class="section-heading">What I offer</h2>
         <ul class="types-grid">
           {types.map((type) => (
-            <li class="type-card">
+            <li class="type-card" id={type.id ? `item-${type.id}` : undefined} data-part={type.id ? `item-${type.id}` : undefined}>
               {type.images.length > 0 && (
                 <div class="type-card__examples">
                   {type.images.map((img) => (

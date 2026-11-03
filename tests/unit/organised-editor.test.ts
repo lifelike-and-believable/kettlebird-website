@@ -236,7 +236,8 @@ describe('content-editing-organised-editor#AC-9 shop sections', () => {
     expect(shopSections([])).toEqual([]);
   });
   it('uses them on the shop page, with no added "s"', () => {
-    const page = read('src/pages/shop.astro');
+    // The shop page's markup moved into a component the preview also renders (content-editing-preview).
+    const page = read('src/components/pages/ShopPage.astro');
     expect(page).toMatch(/shopSections\(/);
     expect(page).not.toMatch(/CATEGORY_LABELS|\}s<\/h2>/);
   });

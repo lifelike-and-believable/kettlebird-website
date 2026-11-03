@@ -1,14 +1,8 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import AboutContent from '../components/settings/AboutContent.astro';
+import AboutPage from '../components/pages/AboutPage.astro';
 import { getSettings } from '../lib/site-settings-source';
 
 const settings = await getSettings();
 ---
 
-<BaseLayout
-  title="About • Kettlebird Creations"
-  description="About Star Goldberg — writer, illustrator, and creator behind Kettlebird Creations."
->
-  <AboutContent settings={settings} />
-</BaseLayout>
+<AboutPage settings={settings} />

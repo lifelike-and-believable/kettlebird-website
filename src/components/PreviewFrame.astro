@@ -1,0 +1,55 @@
+---
+// On preview pages only: outlines the parts Star changed, makes links inactive, scrolls this page
+// (never the editor around it) to the part being previewed, and tells the editor the page's name and
+// notes. Design: docs/design/preview.md. Spec: docs/specs/content-editing-preview.md (AC-5, AC-7).
+import type { PreviewInfo } from '../lib/preview/load';
+
+const { info } = Astro.props as { info: PreviewInfo };
+---
+
+<script type="application/json" id="kb-preview" set:html={JSON.stringify(info)} />
+
+<script>
+  import type { PreviewInfo } from '../lib/preview/load';
+
+  const LINKS_OFF = "Links don't work in the preview";
+  const info = JSON.parse(document.getElementById('kb-preview')?.textContent ?? '{}') as PreviewInfo;
+
+  const mark = () => {
+    for (const { field, selector } of info.outlined ?? []) {
+      document.querySelectorAll<HTMLElement>(selector).forEach((el) => {
+        if (!el.dataset.previewChanged) el.dataset.previewChanged = field;
+      });
+    }
+    document.querySelectorAll<HTMLAnchorElement>('a[href]').forEach((a) => (a.title = LINKS_OFF));
+  };
+  mark();
+  // Parts drawn later (the portfolio's carousels) are marked when they appear.
+  new MutationObserver(mark).observe(document.body, { childList: true, subtree: true });
+
+  document.addEventListener(
+    'click',
+    (event) => {
+      if ((event.target as Element | null)?.closest('a[href]')) event.preventDefault();
+    },
+    true,
+  );
+
+  const scroll = () => {
+    const target = info.anchor ? document.getElementById(info.anchor) : null;
+    if (target) window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - 16 });
+  };
+  if (document.readyState === 'complete') scroll();
+  else window.addEventListener('load', scroll, { once: true });
+
+  if (window.parent !== window) {
+    window.parent.postMessage({ type: 'kettlebird-preview', name: info.name, notes: info.notes, message: info.message }, location.origin);
+  }
+</script>
+
+<style is:global>
+  [data-preview-changed] {
+    outline: 3px dashed #7c3aed;
+    outline-offset: 4px;
+  }
+</style>

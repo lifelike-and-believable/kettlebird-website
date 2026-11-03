@@ -14,7 +14,9 @@ import { CHAPTER_TEMPLATE } from './components/ChaptersList';
 import { EMPTY_LIST, isItemType, SECTIONS } from './lib/editor-content';
 import { signInProviders, STUDIO_TITLE } from './lib/studio-settings';
 import schemaTypes from './schemas';
-import { structure } from './structure';
+import { defaultDocumentNode, structure } from './structure';
+import { withPreviewInput } from './components/PreviewButton';
+import { isPreviewable } from './lib/preview';
 
 export default defineConfig({
   name: 'kettlebirdStudio',
@@ -26,7 +28,7 @@ export default defineConfig({
   auth: { providers: signInProviders },
   // Only the content editor, organised as Comics, Art, Writing, Shop, Commissions and Site settings
   // (content-editing-organised-editor AC-1); no query tool (sign-in AC-8).
-  plugins: [structureTool({ structure })],
+  plugins: [structureTool({ structure, defaultDocumentNode })],
   // The state of the latest change at the top right of every screen; it also records removals
   // (content-editing-know-when-live AC-3, AC-4).
   studio: { components: { navbar: LiveStatus } },
@@ -42,7 +44,14 @@ export default defineConfig({
   },
   schema: {
     // Site settings' items show what to fix at the top (content-editing-site-settings AC-4).
-    types: schemaTypes.map((type) => (isSettingsType(type.name) ? { ...type, components: { input: FixSummary } } : type)),
+    types: schemaTypes
+      .map((type) => (isSettingsType(type.name) ? { ...type, components: { input: FixSummary } } : type))
+      // Preview at the top of every item that has one (content-editing-preview AC-1).
+      .map((type) => {
+        if (!isPreviewable(type.name)) return type;
+        const inner = (type as { components?: { input?: never } }).components?.input;
+        return { ...type, components: { ...(type as { components?: object }).components, input: withPreviewInput(inner) } };
+      }),
     // Add chapter on a series opens a chapter for that series with the next number (AC-11).
     // Each kind of item is created by its New … name (organised-editor AC-1, AC-11).
     templates: (prev) => [

@@ -16,7 +16,7 @@ interface SanityImage {
   dimensions?: { width: number; height: number };
 }
 
-interface SanitySeries {
+export interface SanitySeries {
   title: string;
   slug?: { current?: string };
   description?: string;

@@ -1,8 +1,7 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import CommissionsContent, { type TypeCard } from '../components/settings/CommissionsContent.astro';
+import CommissionsPage from '../components/pages/CommissionsPage.astro';
+import { commissionTypeCards } from '../lib/commission-cards';
 import { getAllCommissionTypes, type CommissionType } from '../lib/queries';
-import { urlFor } from '../lib/sanity';
 import { getSettings } from '../lib/site-settings-source';
 
 let commissionTypes: CommissionType[] = [];
@@ -12,21 +11,7 @@ try {
   console.warn('[commissions] Could not fetch commission types:', e);
 }
 const settings = await getSettings();
-const types: TypeCard[] = commissionTypes.map((type) => ({
-  name: type.name,
-  priceRange: type.priceRange,
-  description: type.description,
-  deliveryTime: type.deliveryTime,
-  images: (type.exampleImages ?? []).slice(0, 3).map((img, i) => ({
-    src: urlFor(img).width(300).height(300).fit('crop').auto('format').url(),
-    alt: `${type.name} example ${i + 1}`,
-  })),
-}));
+const types = commissionTypeCards(commissionTypes);
 ---
 
-<BaseLayout
-  title="Commissions • Kettlebird Creations"
-  description="Commission custom artwork from Kettlebird Creations. Pricing, examples, and how to order."
->
-  <CommissionsContent settings={settings} types={types} />
-</BaseLayout>
+<CommissionsPage settings={settings} types={types} />

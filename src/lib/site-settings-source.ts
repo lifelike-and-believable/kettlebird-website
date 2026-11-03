@@ -9,7 +9,7 @@ const QUERY = '*[_id in $ids]';
 const PORTRAIT_WIDTH = 640;
 
 /** A Sanity image as a picture, keeping its shape from the asset's id (image-<id>-<w>x<h>-<ext>). */
-function picture(image: unknown): Picture | null {
+export function picture(image: unknown): Picture | null {
   const ref = (image as { asset?: { _ref?: string } }).asset?._ref ?? '';
   const size = /-(\d+)x(\d+)-/.exec(ref);
   if (!size) return null;

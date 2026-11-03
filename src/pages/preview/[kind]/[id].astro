@@ -1,0 +1,75 @@
+---
+// A preview page: the site's own page for an item, with its draft in place, made on request for the
+// editor's preview pane. Without a valid key it's Page not found. Never cached or listed.
+// Design: docs/design/preview.md. Spec: docs/specs/content-editing-preview.md.
+export const prerender = false;
+
+import { getSecret } from 'astro:env/server';
+import AboutPage from '../../../components/pages/AboutPage.astro';
+import CommissionsPage from '../../../components/pages/CommissionsPage.astro';
+import HomePage from '../../../components/pages/HomePage.astro';
+import NotFoundPage from '../../../components/pages/NotFoundPage.astro';
+import PortfolioPage from '../../../components/pages/PortfolioPage.astro';
+import ReaderPage from '../../../components/pages/ReaderPage.astro';
+import SeriesPage from '../../../components/pages/SeriesPage.astro';
+import ShopPage from '../../../components/pages/ShopPage.astro';
+import WritingPage from '../../../components/pages/WritingPage.astro';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { fixtureSource, loadPreview, sanitySource, type PreviewSource } from '../../../lib/preview/load';
+
+Astro.response.headers.set('Cache-Control', 'private, no-store');
+Astro.response.headers.set('X-Robots-Tag', 'noindex, nofollow');
+Astro.response.headers.set('Referrer-Policy', 'no-referrer');
+
+async function source(): Promise<PreviewSource | undefined> {
+  if (__KETTLEBIRD_FIXTURES__) {
+    const { FIXTURE_PREVIEW_KEY, FIXTURE_PUBLISHED, FIXTURE_DRAFTS } = await import('../../../../tests/fixtures/drafts');
+    return fixtureSource({ key: FIXTURE_PREVIEW_KEY, published: FIXTURE_PUBLISHED, drafts: FIXTURE_DRAFTS });
+  }
+  // Read here, when a preview is requested; the build never reads it (AC-9).
+  const token = getSecret('SANITY_PREVIEW_TOKEN');
+  if (!token) return undefined;
+  return sanitySource(token, import.meta.env.SANITY_PROJECT_ID ?? '1p6w5n0l', import.meta.env.SANITY_DATASET ?? 'production');
+}
+
+const { kind = '', id = '' } = Astro.params;
+const from = await source();
+let result: Awaited<ReturnType<typeof loadPreview>>;
+let unavailable = !from;
+if (from) {
+  try {
+    result = await loadPreview(kind, id, new URL(Astro.request.url), from);
+  } catch (e) {
+    console.warn('[preview] Could not load the preview:', e);
+    unavailable = true;
+  }
+}
+if (unavailable) Astro.response.status = 503;
+else if (!result) Astro.response.status = 404;
+const model = result?.model;
+const info = result?.info;
+---
+
+{unavailable && (
+  <BaseLayout title="Preview · Kettlebird Creations" noindex>
+    <p class="preview-message">Can't show the preview right now.</p>
+  </BaseLayout>
+)}
+{!unavailable && !result && <NotFoundPage />}
+{model?.page === 'message' && (
+  <BaseLayout title="Preview · Kettlebird Creations" noindex previewInfo={info}>
+    <p class="preview-message">{info!.message}</p>
+  </BaseLayout>
+)}
+{model?.page === 'commissions' && <CommissionsPage settings={model.settings} types={model.types} previewInfo={info} />}
+{model?.page === 'about' && <AboutPage settings={model.settings} previewInfo={info} />}
+{model?.page === 'home' && <HomePage settings={model.settings} previewInfo={info} />}
+{model?.page === 'series' && <SeriesPage series={model.series} previewInfo={info} />}
+{model?.page === 'reader' && <ReaderPage entry={model.entry} preview previewInfo={info} />}
+{model?.page === 'portfolio' && <PortfolioPage items={model.items} focusId={model.focusId} openId={model.openId} preview previewInfo={info} />}
+{model?.page === 'writing' && <WritingPage works={model.works} previewInfo={info} />}
+{model?.page === 'shop' && <ShopPage products={model.products} previewInfo={info} />}
+
+<style>
+  .preview-message { max-width: 640px; margin: 0 auto; padding: 3rem 1rem; text-align: center; font-family: 'Nunito', sans-serif; font-weight: 700; }
+</style>

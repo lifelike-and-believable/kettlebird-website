@@ -14,7 +14,7 @@ const currentYear = new Date().getFullYear();
     {links.length > 0 && (
       <div class="footer-section">
         <h3 class="footer-heading">Connect</h3>
-        <SocialLinks links={links} variant="footer" />
+        <div data-part="social-links"><SocialLinks links={links} variant="footer" /></div>
       </div>
     )}
     <div class="footer-section">

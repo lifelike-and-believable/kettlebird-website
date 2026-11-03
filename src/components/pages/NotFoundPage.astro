@@ -1,0 +1,41 @@
+---
+// Not-found page, used by src/pages/404.astro and the preview route (design-comic-start-reading, "States and errors"). When the address belongs to a series
+// that still exists, a small script adds a link back to it (design-comic-share-and-announce, Flow).
+// Spec: docs/specs/comic-reader-share-and-announce.md (AC-4).
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getComicSeries } from '../../lib/comics/source';
+
+const series = (await getComicSeries()).flatMap((s) => (s.slug ? [{ slug: s.slug, title: s.title }] : []));
+---
+
+<BaseLayout title="Page not found · Kettlebird Creations" description="There's nothing at this address.">
+  <section class="not-found">
+    <h1>Page not found</h1>
+    <p>There's nothing at this address. It may be an old or mistyped link.</p>
+    <p class="not-found__links">
+      <a href="" data-series-link hidden></a>
+      <a href="/comics">Comics</a>
+    </p>
+  </section>
+  <script type="application/json" id="kb-series" set:html={JSON.stringify(series)} />
+</BaseLayout>
+
+<script>
+  import { seriesForMissingPath } from '../../lib/comics/sharing';
+
+  const list = JSON.parse(document.getElementById('kb-series')?.textContent ?? '[]');
+  const found = seriesForMissingPath(location.pathname, list);
+  const link = document.querySelector<HTMLAnchorElement>('[data-series-link]');
+  if (found && link) {
+    link.href = found.path;
+    link.textContent = `Back to ${found.title}`;
+    link.hidden = false;
+  }
+</script>
+
+<style>
+  .not-found { max-width: 640px; margin: 0 auto; padding: 3rem 1rem 4rem; text-align: center; }
+  .not-found__links { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+  .not-found a { font-family: 'Nunito', sans-serif; font-weight: 700; color: var(--color-ink); }
+  .not-found a[hidden] { display: none; }
+</style>

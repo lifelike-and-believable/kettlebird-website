@@ -1,0 +1,21 @@
+---
+// The Commissions page. Rendered by src/pages/commissions.astro and by the preview route
+// (docs/specs/content-editing-preview.md).
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import type { PreviewInfo } from '../../lib/preview/load';
+import CommissionsContent, { type TypeCard } from '../settings/CommissionsContent.astro';
+import type { Settings } from '../../lib/site-settings';
+
+const { settings, types } = Astro.props as { settings: Settings; types: TypeCard[] };
+/** In the preview route: what the preview shows and outlines (docs/specs/content-editing-preview.md). */
+const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
+---
+
+<BaseLayout
+  previewInfo={previewInfo}
+  settings={settings}
+  title="Commissions • Kettlebird Creations"
+  description="Commission custom artwork from Kettlebird Creations. Pricing, examples, and how to order."
+>
+  <CommissionsContent settings={settings} types={types} />
+</BaseLayout>

@@ -29,13 +29,19 @@ function fullUrl(item: DisplayItem): string | null {
 
 interface GalleryGridProps {
   items: DisplayItem[];
+  /** Preview only (docs/specs/content-editing-preview.md): move carousels to this piece. */
+  focusId?: string;
+  /** Preview only: open this piece, as Show it opened. */
+  openId?: string;
+  /** Preview only: never take focus or scroll the page, which would move the editor around it. */
+  preview?: boolean;
 }
 
 function GalleryCard({ item, onClick }: { item: DisplayItem; onClick: () => void }) {
   const imgUrl = thumbUrl(item);
 
   return (
-    <button className="gallery-card" onClick={onClick} aria-label={`View ${item.title}`}>
+    <button className="gallery-card" onClick={onClick} aria-label={`View ${item.title}`} data-piece={item._id} data-part={`piece-${item._id}`}>
       {imgUrl ? (
         <img
           src={imgUrl}
@@ -56,11 +62,20 @@ function GalleryCard({ item, onClick }: { item: DisplayItem; onClick: () => void
 function FolderCarousel({
   items,
   onItemClick,
+  focusId,
 }: {
   items: DisplayItem[];
   onItemClick: (item: DisplayItem) => void;
+  focusId?: string;
 }) {
   const trackRef = useRef<HTMLDivElement>(null);
+
+  // Preview: move the carousel to the piece, without scrolling anything else.
+  useEffect(() => {
+    const track = trackRef.current;
+    const card = focusId ? track?.querySelector<HTMLElement>(`[data-piece="${CSS.escape(focusId)}"]`) : null;
+    if (track && card) track.scrollLeft = card.offsetLeft - track.offsetLeft;
+  }, [focusId]);
 
   const scroll = (dir: 'left' | 'right') => {
     const track = trackRef.current;
@@ -94,9 +109,9 @@ function FolderCarousel({
   );
 }
 
-export default function GalleryGrid({ items }: GalleryGridProps) {
+export default function GalleryGrid({ items, focusId, openId, preview = false }: GalleryGridProps) {
   const [activeCategory, setActiveCategory] = useState<string>('all');
-  const [lightboxItem, setLightboxItem] = useState<DisplayItem | null>(null);
+  const [lightboxItem, setLightboxItem] = useState<DisplayItem | null>(() => (openId ? items.find((i) => i._id === openId) ?? null : null));
 
   // Derive available categories in preferred order
   const availableCategories = useMemo(() => {
@@ -135,7 +150,7 @@ export default function GalleryGrid({ items }: GalleryGridProps) {
 
   useEffect(() => {
     if (!isOpen) return;
-    closeRef.current?.focus();
+    if (!preview) closeRef.current?.focus();
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         event.preventDefault();
@@ -161,9 +176,9 @@ export default function GalleryGrid({ items }: GalleryGridProps) {
     document.addEventListener('keydown', onKeyDown);
     return () => {
       document.removeEventListener('keydown', onKeyDown);
-      openerRef.current?.focus();
+      if (!preview) openerRef.current?.focus();
     };
-  }, [isOpen]);
+  }, [isOpen, preview]);
 
   return (
     <div className="gallery-wrapper">
@@ -210,6 +225,7 @@ export default function GalleryGrid({ items }: GalleryGridProps) {
               <section
                 key={cat}
                 className="folder-section"
+                id={`section-${cat}`}
                 data-cat={cat}
                 aria-label={CATEGORY_LABELS[cat] ?? cat}
               >
@@ -220,7 +236,7 @@ export default function GalleryGrid({ items }: GalleryGridProps) {
                   {folderItems.length === 0 ? (
                     <p className="gallery-empty">Nothing here yet — check back soon!</p>
                   ) : (
-                    <FolderCarousel items={folderItems} onItemClick={openLightbox} />
+                    <FolderCarousel items={folderItems} onItemClick={openLightbox} focusId={focusId} />
                   )}
                 </div>
               </section>

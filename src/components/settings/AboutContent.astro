@@ -16,7 +16,7 @@ const [user, domain] = contact.email.split('@');
   </header>
 
   <div class="about-layout">
-    <aside class="portrait-col">
+    <aside class="portrait-col" id="about-portrait" data-part="about-portrait">
       {about.portrait && (
         <img
           class="portrait"
@@ -28,7 +28,7 @@ const [user, domain] = contact.email.split('@');
       )}
 
       {about.facts.length > 0 && (
-        <div class="quick-facts">
+        <div class="quick-facts" id="about-facts" data-part="about-facts">
           <h2 class="quick-facts__heading">At a glance</h2>
           <ul class="quick-facts__list">
             {about.facts.map((fact) => (
@@ -43,14 +43,14 @@ const [user, domain] = contact.email.split('@');
 
     <div class="bio-col">
       {about.bio.length > 0 && (
-        <section class="bio-section">
+        <section class="bio-section" id="about-bio" data-part="about-bio">
           <h2 class="bio-section__heading">Hello!</h2>
           {about.bio.map((p) => <p class="bio-section__text">{p}</p>)}
         </section>
       )}
 
       {about.statement.length > 0 && (
-        <section class="bio-section">
+        <section class="bio-section" id="about-statement" data-part="about-statement">
           <h2 class="bio-section__heading">The Work</h2>
           {about.statement.map((p) => <p class="bio-section__text">{p}</p>)}
         </section>
