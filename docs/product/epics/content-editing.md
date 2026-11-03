@@ -33,6 +33,7 @@ Each is written as its own story file, and approved, before work on it starts. W
 4. **Site settings** (`story-content-editing-site-settings`). As Star, I want to change whether commissions are open, my about page (bio, statement, portrait, quick facts), the home page's artist text, and my social links, so that I can keep the site current myself (REQ-content-editing-3).
 5. **Preview before publishing** (`story-content-editing-preview`). As Star, I want to see a piece, page, or text change as it will look on the site before I publish it, so that I catch crops and mistakes first.
 6. **Know when it's live** (`story-content-editing-know-when-live`). As Star, I want publishing to update the site on its own and the editor to tell me when my change is live, or that it failed, so that I never wonder whether fans can see it.
+7. **Help where I'm working** (`story-content-editing-help-links`). As Star, I want the guide for what I'm editing one click away in the editor, so that I can check how something works without asking anyone or knowing where the guides are kept. (Added 2026-11-03, at the lead's request.)
 
 ## Dependencies
 
