@@ -42,7 +42,7 @@ describe('line breaks in descriptions', () => {
 
   it('shows line breaks in what a commission type includes', async () => {
     const html = await render(CommissionsContent, {
-      settings: readSettings({}, () => undefined),
+      settings: readSettings({}, () => null),
       types: [{ name: 'Sketch', priceRange: '$20', description: TEXT, deliveryTime: '1 week', images: [] }],
     });
     expect(html).toMatch(SHOWN);
