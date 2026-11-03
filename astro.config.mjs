@@ -9,16 +9,19 @@ import { buildInfo } from './src/integrations/build-info.ts';
 const site = process.env.SITE_URL ?? 'https://newsite.kettlebird.com';
 
 // Every page is built ahead of time except /preview/, which is made on request
-// (docs/specs/content-editing-preview.md). Deployed builds use the Vercel adapter; fixture builds,
-// for tests and tutorials, use the Node adapter, because `astro preview` doesn't run Vercel builds.
+// (docs/specs/content-editing-preview.md). Builds on Vercel use the Vercel adapter, including
+// pull-request previews, which are fixture builds (KETTLEBIRD_FIXTURES=1 for Preview, lead's
+// decision 2026-11-01). Fixture builds elsewhere, for tests and tutorials, use the Node adapter,
+// because `astro preview` doesn't run Vercel builds.
 const fixtures = process.env.KETTLEBIRD_FIXTURES === '1';
+const onVercel = process.env.VERCEL === '1';
 
 export default defineConfig({
   site,
   integrations: [react(), buildInfo()],
   srcDir: 'src',
   output: 'static',
-  adapter: fixtures ? node({ mode: 'standalone' }) : vercel(),
+  adapter: fixtures && !onVercel ? node({ mode: 'standalone' }) : vercel(),
   // Fixed at build time, so pages made on request (the preview route) know a fixture build too.
   vite: { define: { __KETTLEBIRD_FIXTURES__: JSON.stringify(fixtures) } },
   env: {
