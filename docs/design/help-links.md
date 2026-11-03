@@ -1,6 +1,6 @@
 ---
 id: design-help-links
-status: draft
+status: approved
 derived-from:
   - story-content-editing-help-links: 34bd0da8a86a
   - design-sign-in: e414f49976a1
