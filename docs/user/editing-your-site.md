@@ -21,6 +21,8 @@ Open the editor at `kettlebird.com/studio` (signing in is in [Getting started](g
 
 Every field has a short note under its name saying what it does on the site. Fields marked **Required**, or **Choose at least one**, must be filled in before you can publish. A new item shows "Not published yet" in its list until you publish it.
 
+In a **Description**, **Short description** or **What's included**, press Enter to start a new line, and leave a blank line between paragraphs: the site shows them as you typed them.
+
 ## Comics
 
 Your series, newest first, each with its status. Choose a series to see its details and its **Chapters**, in number order; choose a chapter to open it and its pages beside the series, headed with both names, like "Kettle Tales · Chapter 2: The Long Road". The series stays open on the left. Everything about comics, from starting a series to uploading pages, is in [Publishing comic pages and chapters](publishing-comics.md).
