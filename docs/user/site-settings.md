@@ -1,7 +1,9 @@
 ---
 id: docs-site-settings
 status: approved
+summary: "Opening and closing commissions, and the text on your site's pages."
 derived-from:
+  - design-help-links#the-help-page: 9b6650022c9f
   - design-site-settings#flow: 057431850691
   - design-site-settings#fields: a8158ed2c5ad
   - design-site-settings#what-changes-on-the-site: 8b3aacf39b4d

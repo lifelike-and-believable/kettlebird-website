@@ -1,7 +1,9 @@
 ---
 id: docs-editing-your-site
 status: approved
+summary: "Adding, changing and removing pieces, stories, products and commission types."
 derived-from:
+  - design-help-links#for-the-guides: 3a4dfc02e6e9
   - design-organised-editor#flow: c41806ea6111
   - design-organised-editor#sections-and-fields: 20d25885468d
   - design-organised-editor#layout: 39a5a7b648dc
@@ -76,7 +78,7 @@ Your commission types, in the order they appear on the Commissions page. Choose 
 | **How long it takes** | Shown as "Est. delivery", like 2–3 weeks. |
 | **Order on the page** | Lower numbers come first on the Commissions page, and in this list. Number them 1, 2, 3; to move one, change the numbers. |
 
-Whether commissions are open or closed is set in **Site settings**, not here.
+Whether commissions are open or closed is set in **Site settings**: see [Open or close commissions](site-settings.md#open-or-close-commissions).
 
 ## Site settings
 

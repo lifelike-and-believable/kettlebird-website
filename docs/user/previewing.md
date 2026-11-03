@@ -1,7 +1,9 @@
 ---
 id: docs-previewing
 status: approved
+summary: "Previewing a change on its page, on a computer and a phone."
 derived-from:
+  - design-help-links#the-help-page: 9b6650022c9f
   - design-preview#how-it-works: 11a7966f162b
   - design-preview#flow: 257ebbac18cb
   - design-preview#which-page-the-preview-shows-and-where-it-scrolls: db9418c19513
