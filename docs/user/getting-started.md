@@ -1,7 +1,9 @@
 ---
 id: docs-getting-started
 status: approved
+summary: "Your invitation, signing in, and finding your way around."
 derived-from:
+  - design-help-links#in-the-editor: 772a769b3240
   - design-sign-in#flow: 47aae9f612b2
   - design-sign-in#layout: 5c5debd13966
   - design-sign-in#states-and-errors: 9004383a3971
@@ -44,6 +46,8 @@ On the same computer and browser, you usually stay signed in, and the editor ope
 The editor works in any up-to-date browser. It works on a phone, but it's cramped there; use a computer for uploading comic pages.
 
 The menu on the left lists everything you can edit: **Comics**, **Art**, **Writing**, **Shop**, **Commissions** and **Site settings**. If it shows older names instead, the tidier menu hasn't arrived yet. Until it does: "Comic Series" and "Chapter" are your comics, **Gallery Item** is your art, "Written Work" is your writing, "Product" is the shop, and "Commission Type" is your commissions.
+
+**Help**, at the top right next to the status, opens these guides in a new tab, and the line at the top of each item, such as "Help: Add a chapter", opens the part of a guide about that item. (The **?** button further right is Sanity's own help, about the editor in general, not about your site.) **Help** arrives with a later update to the editor; until then, the guides are sent to you as links.
 
 Visitors to your site never see a link to the editor. Only people who have been invited can see or change anything in it.
 

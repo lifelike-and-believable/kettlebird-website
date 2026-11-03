@@ -1,7 +1,9 @@
 ---
 id: docs-publishing-comics
 status: approved
+summary: "Starting a comic, adding chapters and pages, and publishing them."
 derived-from:
+  - design-help-links#the-help-page: 9b6650022c9f
   - design-comic-publish-pages: 9225936f631c
   - story-comic-reader-publish-pages: c43f60cc7f9f
   - design-comic-start-reading#what-star-enters: f8ef076087b9

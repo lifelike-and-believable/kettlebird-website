@@ -1,7 +1,9 @@
 ---
 id: docs-going-live
 status: approved
+summary: "What the status at the top right means after you publish."
 derived-from:
+  - design-help-links#the-help-page: 9b6650022c9f
   - design-know-when-live#how-it-works: 77244fbbe928
   - design-know-when-live#flow: 97e0aab80d39
   - design-know-when-live#layout: 42269756f09c

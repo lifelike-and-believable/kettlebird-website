@@ -5,7 +5,7 @@ runner: manual
 derived-from:
   - docs-editing-your-site#art: 103624d707bb
   - docs-editing-your-site#shop: b33cdf34e074
-  - docs-editing-your-site#commissions: b5306156e840
+  - docs-editing-your-site#commissions: 9153a82c38e3
   - docs-editing-your-site#publish: 095e41b97127
   - docs-editing-your-site#remove-something: f11ed0fde606
   - docs-editing-your-site#if-something-goes-wrong: 44c01a07022b
