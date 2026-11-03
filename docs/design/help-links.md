@@ -92,7 +92,7 @@ The summaries are kept with each guide, so a new guide brings its own.
 | Situation | What Star sees |
 |---|---|
 | A guide's section is renamed | The build fails until the item's link is updated, so a link never lands at the top of the page instead of the section. |
-| A guide is added | It isn't on `/help` or in the menu until the design lists it. |
+| A guide is added | Every new guide for Star joins the online help: on `/help`, with its summary, and in the **Help** menu, and its items link to it. A guide in `docs/user/` that isn't there fails the build. Fans' guides, like `reading-comics.md`, stay out. (Lead, 2026-11-03.) |
 | The site is updating | The help page is the last published one; a guide merged a minute ago may not be there yet. |
 | A help address that doesn't exist | The site's **Page not found**. |
 | A guide links to a guide that isn't on `/help`, or to a section that doesn't exist | The build fails, so a help page never has a link that goes nowhere. |
