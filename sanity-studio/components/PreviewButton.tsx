@@ -1,16 +1,31 @@
 // Preview and Hide preview at the top of a previewable item (design-preview, Flow, as amended:
 // Sanity draws only one button beside Publish). Opens the preview as a second pane with the
-// "preview" view, and closes it again (docs/specs/content-editing-preview.md AC-1).
-import { Box, Button, Flex, Stack } from '@sanity/ui';
+// "preview" view, and closes it again (docs/specs/content-editing-preview.md AC-1). On the same
+// line, at the left, the item's help link (docs/specs/content-editing-help-links.md AC-9).
+import { Box, Button, Flex, Stack, Text } from '@sanity/ui';
 import type { ComponentType, ReactNode } from 'react';
 import type { ObjectInputProps } from 'sanity';
 import { useRouter } from 'sanity/router';
 import { usePaneRouter } from 'sanity/structure';
+import { ITEM_HELP, newTabName } from '../lib/help';
 import { PREVIEW_TEXT } from '../lib/preview';
 
 type Panes = { id: string; params?: Record<string, string>; payload?: unknown }[][];
 
-export function PreviewButton({ children }: { children: ReactNode }) {
+/** "Help: Add a chapter ↗", opening that part of a guide in a new tab. */
+export function ItemHelpLink({ type }: { type: string }) {
+  const help = ITEM_HELP[type];
+  if (!help) return null;
+  return (
+    <Text size={1} weight="medium">
+      <a href={help.path} target="_blank" rel="noopener" aria-label={newTabName(help.text)}>
+        {help.text} <span aria-hidden="true">↗</span>
+      </a>
+    </Text>
+  );
+}
+
+export function PreviewButton({ children, type }: { children: ReactNode; type: string }) {
   const { routerPanesState, groupIndex, duplicateCurrent, params } = usePaneRouter();
   const router = useRouter();
   const group = (routerPanesState as Panes)[groupIndex] ?? [];
@@ -29,7 +44,10 @@ export function PreviewButton({ children }: { children: ReactNode }) {
 
   return (
     <Stack space={4}>
-      <Flex justify="flex-end">
+      <Flex justify="space-between" align="flex-start" gap={3}>
+        <Box flex={1}>
+          <ItemHelpLink type={type} />
+        </Box>
         <Button mode={open ? 'default' : 'ghost'} text={open ? PREVIEW_TEXT.hide : PREVIEW_TEXT.preview} onClick={toggle} />
       </Flex>
       <Box>{children}</Box>
@@ -40,7 +58,7 @@ export function PreviewButton({ children }: { children: ReactNode }) {
 /** An item's own top-of-form input (if any), with Preview above it. */
 export function withPreviewInput(Inner?: ComponentType<ObjectInputProps>) {
   function PreviewInput(props: ObjectInputProps) {
-    return <PreviewButton>{Inner ? <Inner {...props} /> : props.renderDefault(props)}</PreviewButton>;
+    return <PreviewButton type={props.schemaType.name}>{Inner ? <Inner {...props} /> : props.renderDefault(props)}</PreviewButton>;
   }
   return PreviewInput;
 }

@@ -1,0 +1,37 @@
+---
+// The frame of a help page and of /help (design-help-links, The help page; mock-ups 1 to 3):
+// the site's header and footer, "Help for your site's editor", All help, and a reading width.
+// Unlisted: noindex here, and X-Robots-Tag from vercel.json (docs/specs/content-editing-help-links.md).
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const { title, description, isIndex = false } = Astro.props as { title: string; description: string; isIndex?: boolean };
+---
+
+<BaseLayout title={isIndex ? 'Help · Kettlebird Creations' : `${title} · Help · Kettlebird Creations`} description={description} noindex>
+  <article class="help">
+    <p class="help__crumb">
+      <span>Help for your site's editor</span>
+      {!isIndex && <a href="/help">All help</a>}
+    </p>
+    <h1>{title}</h1>
+    <slot />
+    {!isIndex && <p class="help__end"><a href="/help">All help</a></p>}
+  </article>
+</BaseLayout>
+
+<style>
+  .help { max-width: 46rem; margin: 0 auto; padding: 1.25rem 1rem 3rem; font-family: 'DM Sans', sans-serif; line-height: 1.6; }
+  .help__crumb { display: flex; justify-content: space-between; gap: 1rem; font-size: 0.9rem; color: var(--color-dark-purple); border-bottom: 2px dashed var(--color-dark-purple); padding-bottom: 0.4rem; margin: 0 0 1.25rem; }
+  .help h1 { font-family: 'Nunito', sans-serif; font-size: clamp(1.75rem, 5vw, 2.25rem); line-height: 1.15; margin: 0 0 1rem; overflow-wrap: anywhere; }
+  .help a { color: var(--color-ink); font-weight: 700; }
+  .help a:focus-visible { outline: 3px solid var(--color-ink); outline-offset: 2px; }
+  .help__end { text-align: right; margin-top: 2rem; }
+  .help :global(h2) { font-family: 'Nunito', sans-serif; font-size: 1.4rem; line-height: 1.2; margin: 2rem 0 0.5rem; scroll-margin-top: 1rem; }
+  .help :global(h3) { font-family: 'Nunito', sans-serif; font-size: 1.15rem; margin: 1.5rem 0 0.4rem; scroll-margin-top: 1rem; }
+  .help :global(code) { font-family: 'DM Mono', monospace; font-size: 0.95em; overflow-wrap: anywhere; }
+  .help :global(.help-table) { overflow-x: auto; border: 2px solid var(--color-ink); margin: 1rem 0; }
+  .help :global(.help-table:focus-visible) { outline: 3px solid var(--color-ink); outline-offset: 3px; }
+  .help :global(table) { border-collapse: collapse; min-width: 34rem; font-size: 0.95rem; }
+  .help :global(th), .help :global(td) { border: 1px solid var(--color-ink-light); padding: 0.4rem 0.6rem; text-align: left; vertical-align: top; }
+  .help :global(th) { background: var(--color-beige); }
+</style>

@@ -1,0 +1,30 @@
+---
+// A help page: one of Star's guides from docs/user, built ahead of time
+// (docs/specs/content-editing-help-links.md AC-1, AC-2, AC-4, AC-5).
+import HelpPage from '../../components/HelpPage.astro';
+import { helpGuides } from '../../lib/help/read';
+import type { Guide } from '../../lib/help/guides';
+
+export function getStaticPaths() {
+  return helpGuides().map((guide) => ({ params: { guide: guide.name }, props: { guide } }));
+}
+
+const { guide } = Astro.props as { guide: Guide };
+---
+
+<HelpPage title={guide.title} description={guide.summary}>
+  <nav class="toc" aria-label="On this page">
+    <p class="toc__label">On this page</p>
+    <ul>
+      {guide.sections.map((s) => <li><a href={`#${s.id}`}>{s.title}</a></li>)}
+    </ul>
+  </nav>
+  <Fragment set:html={guide.html} />
+</HelpPage>
+
+<style>
+  .toc { border: 3px solid var(--color-ink); background: var(--color-green); padding: 0.6rem 1rem; margin-bottom: 1.25rem; }
+  .toc__label { font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.08em; margin: 0; }
+  .toc ul { margin: 0.4rem 0 0; padding-left: 1.2rem; }
+  @media (min-width: 640px) { .toc ul { columns: 2; } }
+</style>

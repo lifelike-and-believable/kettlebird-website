@@ -1,0 +1,26 @@
+---
+// /help: Star's guides in the order Star needs them, with a line about each
+// (docs/specs/content-editing-help-links.md AC-3). Building it also checks the editor's Help menu
+// and each item's link against the guides, so a renamed section fails the build (AC-10).
+import HelpPage from '../../components/HelpPage.astro';
+import { addressProblem } from '../../lib/help/guides';
+import { helpGuides } from '../../lib/help/read';
+import { HELP_MENU, ITEM_HELP } from '../../../sanity-studio/lib/help';
+
+const guides = helpGuides();
+const problems = [...HELP_MENU, ...Object.values(ITEM_HELP)].flatMap(({ path }) => addressProblem(path, guides) ?? []);
+if (problems.length) throw new Error(`The editor's help links go nowhere:\n${problems.join('\n')}`);
+---
+
+<HelpPage title="Help" description="Guides to your site's editor." isIndex>
+  <ul class="guides">
+    {guides.map((g) => <li><a href={`/help/${g.name}`}>{g.title}</a><p>{g.summary}</p></li>)}
+  </ul>
+</HelpPage>
+
+<style>
+  .guides { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.75rem; }
+  .guides li { border: 3px solid var(--color-ink); padding: 0.6rem 1rem; }
+  .guides a { font-family: 'Nunito', sans-serif; font-size: 1.15rem; }
+  .guides p { margin: 0.25rem 0 0; }
+</style>

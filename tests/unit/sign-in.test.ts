@@ -74,3 +74,16 @@ describe('content-editing-sign-in#AC-7 no link to the editor', () => {
     expect(hits).toEqual([]);
   });
 });
+
+describe('content-editing-help-links#AC-6 help pages are unlisted', () => {
+  it('tells search engines not to list /help', () => {
+    for (const source of ['/help', '/help/(.*)']) expect(header(source, 'X-Robots-Tag'), source).toBe('noindex, nofollow');
+  });
+
+  it.skipIf(!existsSync(DIST))('finds no link to /help in any page outside /help', () => {
+    const helpLink = /(?:href|action)\s*=\s*["'](?:https?:\/\/[^/"']+)?\/help(?:[/?#"']|$)/i;
+    const outside = publicPages(DIST).filter((file) => !/[/\\]help[/\\]/.test(file) && !/[/\\]help\.html$/.test(file));
+    expect(outside.length).toBeGreaterThan(0);
+    expect(outside.filter((file) => helpLink.test(readFileSync(file, 'utf8')))).toEqual([]);
+  });
+});
