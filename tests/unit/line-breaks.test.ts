@@ -14,7 +14,8 @@ let container: AstroContainer;
 beforeAll(async () => { container = await AstroContainer.create(); });
 const render = (component: Parameters<AstroContainer['renderToString']>[0], props: Record<string, unknown>) => container.renderToString(component, { props });
 const TEXT = 'First line.\nSecond line.\n\nNew paragraph.';
-const SHOWN = /First line\.<br\/?>Second line\.<br\/?><br\/?>New paragraph\./;
+// Astro's test rendering adds source attributes to elements, so <br> may carry some.
+const SHOWN = /First line\.<br[^>]*>Second line\.<br[^>]*><br[^>]*>New paragraph\./;
 
 describe('line breaks in descriptions', () => {
   it('splits text into lines, keeping one empty line for a blank line', () => {
@@ -30,7 +31,7 @@ describe('line breaks in descriptions', () => {
   });
 
   it('shows line breaks in a product\'s description', async () => {
-    const html = await render(ShopPage, { products: [{ _id: 'p', name: 'Print', slug: { current: 'print' }, description: TEXT }] });
+    const html = await render(ShopPage, { products: [{ _id: 'p', name: 'Print', slug: { current: 'print' }, category: 'print', description: TEXT }] });
     expect(html).toMatch(SHOWN);
   });
 

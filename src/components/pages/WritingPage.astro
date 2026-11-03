@@ -1,4 +1,5 @@
 ---
+import Lines from '../Lines.astro';
 // The Writing page. Rendered by src/pages/writing.astro and by the preview route
 // (docs/specs/content-editing-preview.md).
 import BaseLayout from '../../layouts/BaseLayout.astro';
@@ -54,7 +55,7 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
                     ))}
                   </ul>
                 )}
-                {work.excerpt && <p class="work-card__excerpt">{work.excerpt}</p>}
+                {work.excerpt && <p class="work-card__excerpt"><Lines text={work.excerpt} /></p>}
                 <div class="work-card__actions">
                   {work.externalLink && (
                     <a href={work.externalLink} target="_blank" rel="noopener noreferrer" class="btn">
