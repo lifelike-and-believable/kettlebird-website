@@ -47,7 +47,11 @@ The editor works in any up-to-date browser. It works on a phone, but it's crampe
 
 The menu on the left lists everything you can edit: **Comics**, **Art**, **Writing**, **Shop**, **Commissions** and **Site settings**. If it shows older names instead, the tidier menu hasn't arrived yet. Until it does: "Comic Series" and "Chapter" are your comics, **Gallery Item** is your art, "Written Work" is your writing, "Product" is the shop, and "Commission Type" is your commissions.
 
-**Help**, at the top right next to the status, opens these guides in a new tab, and the line at the top of each item, such as "Help: Add a chapter", opens the part of a guide about that item. (The **?** button further right is Sanity's own help, about the editor in general, not about your site.) **Help** arrives with a later update to the editor; until then, the guides are sent to you as links.
+**Help**, at the top right just left of the status (such as **Live**), opens a list of these guides and **All help**. Choose one to open it in a new tab. At the top of each item, a line such as "Help: Add a chapter" opens the part of a guide about that item, also in a new tab.
+
+The **?** button further right is Sanity's own help, about how the editor works. On a narrow window it moves into Sanity's side menu.
+
+**Help** and the lines at the top of each item arrive with a later update to the editor; until then, the guides are sent to you as links.
 
 Visitors to your site never see a link to the editor. Only people who have been invited can see or change anything in it.
 

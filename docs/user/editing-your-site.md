@@ -78,7 +78,7 @@ Your commission types, in the order they appear on the Commissions page. Choose 
 | **How long it takes** | Shown as "Est. delivery", like 2–3 weeks. |
 | **Order on the page** | Lower numbers come first on the Commissions page, and in this list. Number them 1, 2, 3; to move one, change the numbers. |
 
-Whether commissions are open or closed is set in **Site settings**, not here: see [Open or close commissions](site-settings.md#open-or-close-commissions).
+Whether commissions are open or closed is set in **Site settings**: see [Open or close commissions](site-settings.md#open-or-close-commissions).
 
 ## Site settings
 
