@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Help where I'm working: mock-ups</title>
+<!-- Source for the PNG mock-ups beside this file (docs/design/help-links.md). Low-fidelity: the
+     editor is Sanity Studio 5.1; the help pages use the site's header, footer, fonts and colours.
+     Render: node render.mjs -->
+<style>
+  :root { --ink:#1f2328; --muted:#6b7280; --line:#d8dce2; --bg:#f6f7f9; --panel:#fff; --accent:#2563eb; --ok:#15803d; --okbg:#dcfce7; --paper:#f5f1e8; --site:#2b2b2b; --green:#a8d5ba; --yellow:#f4ce6a; --purple:#4a4063; }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 24px; background: #e5e7eb; font: 14px/1.4 system-ui, sans-serif; color: var(--ink); }
+  .frame { width: 1280px; background: var(--bg); border: 1px solid var(--line); margin-bottom: 32px; }
+  .frame.phone { width: 390px; }
+  .frame h6 { margin: 0; padding: 6px 12px; background: #111827; color: #fff; font: 600 12px/1.6 system-ui; }
+  /* Site */
+  .site { background: var(--paper); color: var(--site); font: 16px/1.6 "DM Sans", system-ui, sans-serif; }
+  .shead { display: flex; align-items: center; justify-content: space-between; padding: 14px 24px; border-bottom: 3px solid var(--site); }
+  .shead .t { font: 800 30px/1 Nunito, system-ui; }
+  .shead .s { font: 600 13px Nunito, system-ui; text-transform: uppercase; letter-spacing: .08em; }
+  .nav { display: flex; gap: 6px; }
+  .nav span { font: 700 12px Nunito, system-ui; padding: 6px 10px; background: var(--green); }
+  .nav span:nth-child(2n) { background: var(--yellow); }
+  .menu-btn { width: 44px; height: 40px; border: 3px solid var(--site); display:flex; flex-direction:column; justify-content:center; gap:5px; padding:0 8px; }
+  .menu-btn i { display:block; height:3px; background: var(--site); }
+  .anno { font: 12px system-ui; color: #fff; background: #111827; padding: 3px 8px; display: inline-block; margin-top: 6px; }
+  .tbl:focus-visible, .tbl.f { outline: 3px solid var(--site); outline-offset: 3px; }
+  .sbody { max-width: 760px; margin: 0 auto; padding: 18px 24px 36px; }
+  .crumb { font-size: 13px; color: var(--purple); display: flex; justify-content: space-between; border-bottom: 2px dashed var(--purple); padding-bottom: 6px; margin-bottom: 18px; }
+  .crumb a, .sbody a { color: var(--site); font-weight: 700; text-decoration: underline; }
+  .sbody h1 { font: 800 34px/1.15 Nunito, system-ui; margin: 0 0 14px; }
+  .sbody h2 { font: 800 22px/1.2 Nunito, system-ui; margin: 22px 0 8px; }
+  .toc { border: 3px solid var(--site); background: var(--green); padding: 10px 14px; margin-bottom: 14px; }
+  .toc strong { font: 800 13px Nunito, system-ui; text-transform: uppercase; letter-spacing: .08em; }
+  .toc ul { margin: 6px 0 0; padding-left: 18px; columns: 2; }
+  .sbody p, .sbody li { margin: 0 0 10px; }
+  .tbl { overflow-x: auto; border: 2px solid var(--site); }
+  .tbl table { border-collapse: collapse; min-width: 560px; font-size: 14px; }
+  .tbl td, .tbl th { border: 1px solid #b9b2a3; padding: 6px 8px; text-align: left; vertical-align: top; }
+  .scroll-hint { font-size: 12px; color: var(--purple); }
+  .sfoot { background: var(--site); color: var(--paper); padding: 16px 24px; font-size: 13px; }
+  .guides { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+  .guides li { border: 3px solid var(--site); background: #fff8; padding: 10px 14px; }
+  .guides li a { font: 800 18px Nunito, system-ui; }
+  .guides li p { margin: 4px 0 0; font-size: 14px; }
+  /* Studio */
+  .top { display: flex; align-items: center; justify-content: space-between; padding: 8px 16px; background: var(--panel); border-bottom: 1px solid var(--line); position: relative; }
+  .status { display: inline-flex; padding: 3px 10px; border-radius: 999px; font-size: 13px; background: var(--okbg); color: var(--ok); }
+  .avatar { width: 26px; height: 26px; border-radius: 50%; background: #c7d2fe; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px; margin-left: 10px; }
+  .btn { padding: 6px 12px; border-radius: 4px; border: 1px solid var(--line); background: #fff; font-weight: 600; font-size: 13px; display: inline-block; }
+  .btn.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .btn.on { background: #eef2ff; border-color: var(--accent); }
+  .pop { position: absolute; right: 150px; top: 44px; width: 340px; background: #fff; border: 1px solid var(--line); border-radius: 6px; box-shadow: 0 8px 24px #0002; padding: 6px; z-index: 2; }
+  .pop div { padding: 8px 10px; border-radius: 4px; display: flex; justify-content: space-between; }
+  .pop div.f { background: #eef2ff; outline: 2px solid var(--accent); }
+  .pop hr { border: 0; border-top: 1px solid var(--line); margin: 4px 0; }
+  .ext { color: var(--muted); }
+  .cols { display: grid; grid-template-columns: 220px 300px 1fr; min-height: 470px; }
+  .col { background: var(--panel); border-right: 1px solid var(--line); padding: 10px 12px; }
+  .col .it { padding: 7px 8px; border-radius: 4px; }
+  .col .it.sel { background: #eef2ff; }
+  .doc { background: var(--panel); display: flex; flex-direction: column; }
+  .doc .hd { padding: 10px 20px; border-bottom: 1px solid var(--line); font-weight: 700; }
+  .doc .bd { padding: 14px 20px; flex: 1; }
+  .tl { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+  .hl { color: var(--accent); font-weight: 600; text-decoration: underline; }
+  .field { margin-bottom: 14px; }
+  .field label { display: block; font-weight: 600; margin-bottom: 2px; }
+  .input { border: 1px solid var(--line); border-radius: 4px; padding: 7px 10px; min-height: 34px; }
+  .fix { background: #fff7d6; border: 1px solid #ecd889; border-radius: 4px; padding: 8px 10px; margin-bottom: 14px; color: #7a5b00; }
+  .bar { display: flex; justify-content: flex-end; padding: 10px 20px; border-top: 1px solid var(--line); }
+  .note { font-size: 12px; color: var(--muted); padding: 6px 16px 10px; }
+</style>
+</head>
+<body>
+
+<div class="frame" id="m1">
+<h6>1 · A help page at computer width: /help/publishing-comics</h6>
+<div class="site">
+  <div class="shead"><div><div class="t">Kettlebird</div><div class="s">Comics + Illustration</div></div><div class="nav"><span>PORTFOLIO</span><span>COMICS</span><span>WRITING</span><span>SHOP</span><span>COMMISSIONS</span><span>ABOUT</span><span>NEWS</span></div></div>
+  <div class="sbody">
+    <div class="crumb"><span>Help for your site's editor</span><a>All help</a></div>
+    <h1>Publishing comic pages and chapters</h1>
+    <nav class="toc" aria-label="On this page"><strong>On this page</strong><ul><li><a>Start a new comic</a></li><li><a>Add a chapter</a></li><li><a>Add pages</a></li><li><a>Describe each page</a></li><li><a>Publish</a></li><li><a>If links will change</a></li><li><a>Remove a comic</a></li><li><a>If something goes wrong</a></li></ul></nav>
+    <p>Everything here happens in the editor, at <code>kettlebird.com/studio</code> (signing in is in <a>Getting started</a>). <strong>Publish</strong> is at the bottom of the open item, and the update status is at the top right.</p>
+    <h2>Start a new comic</h2>
+    <p>1. In the menu, choose <strong>Comics</strong>, then <strong>New series</strong>. …</p>
+    <h2>Add a chapter</h2>
+    <p>1. Open the series and choose <strong>Add chapter</strong> under <strong>Chapters</strong>. …</p>
+    <p style="text-align:right;margin-top:24px"><a>All help</a></p>
+  </div>
+  <div class="sfoot">Connect · Bluesky · Tumblr · Instagram · Ko-fi ☕ &nbsp;&nbsp; Contact · kettlebirdillustration@gmail.com &nbsp;&nbsp; © 2026 Kettlebird Creations</div>
+</div>
+</div>
+
+<div class="frame phone" id="m2">
+<h6>2 · The same page on a phone; a wide table scrolls inside its box</h6>
+<div class="site">
+  <div class="shead" style="padding:10px 16px"><div><div class="t" style="font-size:24px">Kettlebird</div><div class="s" style="font-size:11px">Comics + Illustration</div></div><div class="menu-btn" aria-label="Toggle menu"><i></i><i></i><i></i></div></div>
+  <div class="sbody" style="padding:14px 16px 24px">
+    <div class="crumb"><span>Help for your site's editor</span><a>All help</a></div>
+    <h1 style="font-size:28px">Publishing comic pages and chapters</h1>
+    <nav class="toc" aria-label="On this page"><strong>On this page</strong><ul style="columns:1"><li><a>Start a new comic</a></li><li><a>Add a chapter</a></li><li><a>Add pages</a></li><li>…</li></ul></nav>
+    <h2>If something goes wrong</h2>
+    <div class="tbl f" tabindex="0" role="region" aria-label="What you see, what it means, what to do"><table><tr><th>What you see</th><th>What it means</th><th>What to do</th></tr><tr><td>"Chapter 2 already exists in this series"</td><td>Two chapters have the same number.</td><td>Change the number on one of them.</td></tr></table></div>
+    <span class="anno">Annotation: the table scrolls sideways in its box (shown with keyboard focus); the page doesn't.</span>
+  </div>
+</div>
+</div>
+
+<div class="frame" id="m3">
+<h6>3 · /help: all the guides, in the order Star needs them</h6>
+<div class="site">
+  <div class="shead"><div><div class="t">Kettlebird</div><div class="s">Comics + Illustration</div></div><div class="nav"><span>PORTFOLIO</span><span>COMICS</span><span>WRITING</span><span>SHOP</span><span>COMMISSIONS</span><span>ABOUT</span><span>NEWS</span></div></div>
+  <div class="sbody">
+    <div class="crumb"><span>Help for your site's editor</span><span></span></div>
+    <h1>Help</h1>
+    <ul class="guides">
+      <li><a>Getting started with your site's editor</a><p>Your invitation, signing in, and finding your way around.</p></li>
+      <li><a>Editing your art, writing, shop and commissions</a><p>Adding, changing and removing pieces, stories, products and commission types.</p></li>
+      <li><a>Publishing comic pages and chapters</a><p>Starting a comic, adding chapters and pages, and publishing them.</p></li>
+      <li><a>Commissions, your about page, the home page and your links</a><p>Opening and closing commissions, and the text on your site's pages.</p></li>
+      <li><a>See it before you publish</a><p>Previewing a change on its page, on a computer and a phone.</p></li>
+      <li><a>When your change is live</a><p>What the status at the top right means after you publish.</p></li>
+    </ul>
+  </div>
+  <div class="sfoot">Connect · Bluesky · Tumblr · Instagram · Ko-fi ☕ &nbsp;&nbsp; Contact · kettlebirdillustration@gmail.com &nbsp;&nbsp; © 2026 Kettlebird Creations</div>
+</div>
+</div>
+
+<div class="frame" id="m4">
+<h6>4 · The editor's top bar: Help, left of the status, with its menu open</h6>
+<div class="top"><strong>Kettlebird Creations</strong><span><span class="btn on">Help ▾</span> &nbsp;<span class="status">● Live · 2:41 pm</span><span class="avatar">S</span></span>
+  <div class="pop"><div class="f">Getting started with your site's editor <span class="ext">↗</span></div><div>Editing your art, writing, shop and commissions <span class="ext">↗</span></div><div>Publishing comic pages and chapters <span class="ext">↗</span></div><div>Commissions, your about page, the home page and your links <span class="ext">↗</span></div><div>See it before you publish <span class="ext">↗</span></div><div>When your change is live <span class="ext">↗</span></div><hr><div>All help <span class="ext">↗</span></div></div>
+</div>
+<div class="cols"><div class="col"><div class="it sel">Comics</div><div class="it">Art</div><div class="it">Writing</div><div class="it">Shop</div><div class="it">Commissions</div><div class="it">Site settings</div></div><div class="col"><div class="it">Kettle Tales · Ongoing</div><div class="it">One Shot · Complete</div></div><div class="doc"><div class="bd" style="color:var(--muted)">Choose a series.</div></div></div>
+<div class="note">Each guide opens in a new tab; its name says so. Sanity's own "?" menu (Help and resources, about Sanity) is further right, beside the account circle, not shown here.</div>
+</div>
+
+<div class="frame" id="m5">
+<h6>5 · A chapter: "Help: Add a chapter" at the top left, Preview at the right</h6>
+<div class="top"><strong>Kettlebird Creations</strong><span><span class="btn">Help ▾</span> &nbsp;<span class="status">● Live · 2:41 pm</span><span class="avatar">S</span></span></div>
+<div class="cols"><div class="col"><div class="it sel">Comics</div><div class="it">Art</div><div class="it">Writing</div><div class="it">Shop</div><div class="it">Commissions</div><div class="it">Site settings</div></div><div class="col"><div class="it" style="font-weight:700">Kettle Tales</div><div class="it">Chapter 1: The Kettle</div><div class="it sel">Chapter 2: The Long Road</div></div><div class="doc"><div class="hd">Kettle Tales · Chapter 2: The Long Road</div><div class="bd"><div class="tl"><span class="hl">Help: Add a chapter ↗</span><span class="btn">Preview</span></div><div class="field"><label>Chapter</label><div class="input">2</div></div><div class="field"><label>Title</label><div class="input">The Long Road</div></div><div class="field"><label>Pages</label><div class="input">[24 thumbnails]</div></div></div><div class="bar"><span class="btn primary">Publish</span></div></div></div>
+</div>
+
+<div class="frame" id="m6">
+<h6>6 · Site settings, Commissions: the help link above the box of things to fix</h6>
+<div class="top"><strong>Kettlebird Creations</strong><span><span class="btn">Help ▾</span> &nbsp;<span class="status">● Live · 2:41 pm</span><span class="avatar">S</span></span></div>
+<div class="cols"><div class="col"><div class="it">Comics</div><div class="it">Art</div><div class="it">Writing</div><div class="it">Shop</div><div class="it">Commissions</div><div class="it sel">Site settings</div></div><div class="col"><div class="it sel">Commissions</div><div class="it">About page</div><div class="it">Home page</div><div class="it">Contact and social links</div></div><div class="doc"><div class="hd">Commissions</div><div class="bd"><div class="tl"><span class="hl">Help: Open or close commissions ↗</span><span class="btn">Preview</span></div><div class="fix">Fix this before publishing: Note when closed is over 120 characters.</div><div class="field"><label>Commissions are…</label><div class="input">○ Open &nbsp; ◉ Closed</div></div><div class="field"><label>Note when closed</label><div class="input">Back in March, once the convention season is over and I've caught up on the queue of…</div></div></div><div class="bar"><span class="btn primary">Publish</span></div></div></div>
+</div>
+
+<div class="frame" id="m7" style="width:600px">
+<h6>7 · A narrow window: Help keeps its word; Sanity's "?" menu has moved into its side menu (☰)</h6>
+<div class="top"><span><span class="btn">☰</span> <strong>Kettlebird Creations</strong></span><span><span class="btn">Help ▾</span> &nbsp;<span class="status" style="background:#fef3c7;color:#92400e">⚠ Can't check the site right now</span><span class="avatar">S</span></span></div>
+<div class="cols" style="grid-template-columns:1fr;min-height:200px"><div class="doc"><div class="bd"><div class="tl"><span class="hl">Help: Start a new comic ↗</span><span class="btn">Preview</span></div><div class="field"><label>Title</label><div class="input">Kettle Tales</div></div></div></div></div>
+</div>
+
+<div class="frame" id="m8">
+<h6>8 · Contact and social links with the preview open: the long link wraps; Hide preview stays at the right</h6>
+<div class="top"><strong>Kettlebird Creations</strong><span><span class="btn">Help ▾</span> &nbsp;<span class="status">● Live · 2:41 pm</span><span class="avatar">S</span></span></div>
+<div style="display:grid;grid-template-columns:48px 300px 1fr;min-height:360px"><div class="col" style="padding:6px"></div><div class="doc" style="border-right:1px solid var(--line)"><div class="hd">Contact and social links</div><div class="bd"><div class="tl" style="align-items:flex-start;gap:10px"><span class="hl" style="max-width:170px">Help: Your contact email and social links ↗</span><span class="btn on" style="white-space:nowrap">Hide preview</span></div><div class="field"><label>Contact email</label><div class="input">star@kettlebird.com</div></div><div class="field"><label>Social links</label><div class="input">Bluesky · Tumblr · Ko-fi</div></div></div><div class="bar"><span class="btn primary">Publish</span></div></div><div style="background:#d1d5db;padding:16px"><div style="background:var(--paper);border:1px solid #bbb;height:100%;padding:12px;font-family:system-ui;color:var(--site)">Preview of the home page, scrolled to the social links and footer (as in design-preview)</div></div></div>
+</div>
+
+</body>
+</html>
