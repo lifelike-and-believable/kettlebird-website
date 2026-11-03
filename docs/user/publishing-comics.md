@@ -23,7 +23,7 @@ When you publish, the site updates on its own, usually within a minute or two; [
 
 1. In the editor's menu, choose **Comics**, then **New series**.
 2. Type the comic's **Title**. The **Web address** fills itself in from the title; that's the end of the comic's link, like `/comics/moonlit-errands` after your site's address. You can change it now, but once people have shared links, leave it alone.
-3. Add a **Cover**, a **Description**, the **Status** (**Ongoing**, **Complete**, or **On Hiatus**), and the **Kind** (**Original** or **Fancomic**). In the **Description**, press return to start a new line, and leave a blank line between paragraphs.
+3. Add a **Cover**, a **Description**, the **Status** (**Ongoing**, **Complete**, or **On Hiatus**), and the **Kind** (**Original** or **Fancomic**). In the **Description**, press Enter to start a new line, and leave a blank line between paragraphs: the site shows them as you typed them.
 4. Choose **Add chapter** to add the first chapter (below). When you publish, the editor publishes the new comic along with it.
 
 If your comic doesn't have chapters, add one chapter and leave its **Title** empty. Readers won't see a chapter list, and you can add chapters later without breaking anyone's links.
