@@ -33,7 +33,8 @@ test('content-editing-help-links#AC-2 AC-4 a help page, its sections and its lin
   await expect(toc.getByRole('link').first()).toHaveText('Comics');
   await toc.getByRole('link', { name: 'Commissions', exact: true }).click();
   await expect(page).toHaveURL(/\/help\/editing-your-site#commissions$/);
-  expect(await page.content()).not.toContain('<!--');
+  // The guide's own comment (notes for whoever maintains it) isn't in the page or its source.
+  expect(await page.content()).not.toContain('docs/user/editing-your-site.md');
 
   await main.getByRole('link', { name: 'Open or close commissions' }).click();
   await expect(page).toHaveURL(/\/help\/site-settings#open-or-close-commissions$/);

@@ -6,6 +6,7 @@ import { useClient, type NavbarProps } from 'sanity';
 import { Box, Button, Card, Dialog, Flex, Stack, Text } from '@sanity/ui';
 import { CheckmarkCircleIcon, ErrorOutlineIcon, LaunchIcon, SyncIcon, TrashIcon, WarningOutlineIcon } from '@sanity/icons';
 import { useRemovalRecord } from '../actions/recordRemoval';
+import { HelpMenu } from './HelpMenu';
 import {
   CONTENT_TYPES, DIDNT_GO_LIVE_EXPLANATION, LATEST_QUERY, liveStatus, SITE_STATUS_ID,
   type BuildInfo, type Change, type Status, type StatusKind,
@@ -104,6 +105,9 @@ export function LiveStatus(props: NavbarProps) {
   return (
     <Flex align="center">
       <Box flex={1}>{props.renderDefault(props)}</Box>
+      <Box paddingLeft={2}>
+        <HelpMenu />
+      </Box>
       <Box paddingX={3}>
         <LiveStatusText />
       </Box>
