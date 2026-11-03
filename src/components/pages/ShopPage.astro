@@ -1,4 +1,5 @@
 ---
+import Lines from '../Lines.astro';
 // The shop. Rendered by src/pages/shop.astro and by the preview route
 // (docs/specs/content-editing-preview.md).
 import BaseLayout from '../../layouts/BaseLayout.astro';
@@ -63,7 +64,7 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
                   <div class="product-card__body">
                     <h3 class="product-card__name">{product.name}</h3>
                     {product.price && <p class="product-card__price">{product.price}</p>}
-                    {product.description && <p class="product-card__desc">{product.description}</p>}
+                    {product.description && <p class="product-card__desc"><Lines text={product.description} /></p>}
                     {product.kofiLink && (
                       <a href={product.kofiLink} target="_blank" rel="noopener noreferrer" class="btn btn--small">
                         Buy on Ko-fi ↗

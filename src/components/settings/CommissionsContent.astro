@@ -1,4 +1,5 @@
 ---
+import Lines from '../Lines.astro';
 // The Commissions page's content, open or closed, from Site settings: the banner, How it works, the
 // commission types, Ready to order? and the email buttons (content-editing-site-settings AC-7, AC-11;
 // design-site-settings mock-up 5). The page passes in the commission types, ready to show.
@@ -97,7 +98,7 @@ const email = settings.contact.email;
                   <h3 class="type-card__name">{type.name}</h3>
                   {type.priceRange && <span class="type-card__price">{type.priceRange}</span>}
                 </div>
-                {type.description && <p class="type-card__desc">{type.description}</p>}
+                {type.description && <p class="type-card__desc"><Lines text={type.description} /></p>}
                 {type.deliveryTime && (
                   <p class="type-card__delivery">
                     <strong>Est. delivery:</strong> {type.deliveryTime}

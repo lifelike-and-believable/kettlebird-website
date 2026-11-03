@@ -14,6 +14,7 @@ import {
   type ReaderPage,
 } from './model';
 import type { ControlKind } from './navigation';
+import { oneLine } from '../text';
 
 export interface LinkPreview {
   title: string;
@@ -68,7 +69,7 @@ const previewImage = (series: ComicSeries, site: string) => series.cover?.social
 export function pagePreview(entry: ReaderPage, site: string): LinkPreview {
   return {
     title: shareTitle(entry),
-    description: joined(placeLine(entry), entry.series.description),
+    description: joined(placeLine(entry), entry.series.description && oneLine(entry.series.description)),
     image: previewImage(entry.series, site),
     url: absoluteUrl(site, entry.path),
   };
@@ -77,7 +78,7 @@ export function pagePreview(entry: ReaderPage, site: string): LinkPreview {
 export function seriesPreview(series: ComicSeries, site: string): LinkPreview {
   return {
     title: series.title,
-    description: series.description ?? `${series.title}, a comic by Star Goldberg.`,
+    description: series.description ? oneLine(series.description) : `${series.title}, a comic by Star Goldberg.`,
     image: previewImage(series, site),
     url: absoluteUrl(site, seriesPath(series.slug!)),
   };

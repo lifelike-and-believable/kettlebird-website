@@ -1,4 +1,5 @@
 ---
+import Lines from '../Lines.astro';
 // Series page (rendered by src/pages/comics/[slug].astro and the preview route): cover, details, Start reading (and Read the newest page), and the chapter list.
 // Designs: docs/design/comic-start-reading.md, docs/design/comic-share-and-announce.md.
 // Specs: docs/specs/comic-reader-start-and-turn.md, docs/specs/comic-reader-share-and-announce.md.
@@ -61,7 +62,7 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
           </p>
         )
         : <p class="series__coming-soon">Pages coming soon.</p>}
-      {series.description && <p class="series__description" data-part="series-description">{series.description}</p>}
+      {series.description && <p class="series__description" data-part="series-description"><Lines text={series.description} /></p>}
     </div>
 
     {start && listChapters && (

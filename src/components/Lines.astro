@@ -1,0 +1,9 @@
+---
+// Text with Star's line breaks: a break between lines, and an empty line for a blank one
+// (src/lib/text.ts; tier:fix, returns in descriptions were ignored).
+import { textLines } from '../lib/text';
+
+const { text } = Astro.props as { text?: string | null };
+const lines = textLines(text);
+---
+{lines.map((line, i) => <Fragment>{i > 0 && <br />}{line}</Fragment>)}

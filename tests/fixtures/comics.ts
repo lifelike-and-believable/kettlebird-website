@@ -33,7 +33,7 @@ export const FIXTURE_SERIES: ComicSeries[] = [
   {
     slug: 'one-shot',
     title: 'One Shot',
-    description: 'A short fan comic.',
+    description: 'A short fan comic.\nTwo friends, one afternoon.',
     status: 'complete',
     type: 'fancomic',
     chapters: [{ number: 1, pages: [p('OS 1', 'Two friends meet.'), p('OS 2')] }],

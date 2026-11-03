@@ -1,6 +1,7 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import type { GalleryItem } from '../lib/queries';
 import { urlFor } from '../lib/sanity';
+import { textLines } from '../lib/text';
 
 const CATEGORY_LABELS: Record<string, string> = {
   featured: 'Featured',
@@ -274,7 +275,11 @@ export default function GalleryGrid({ items, focusId, openId, preview = false }:
             <div className="lightbox__info">
               <h2 className="lightbox__title">{lightboxItem.title}</h2>
               {lightboxItem.description && (
-                <p className="lightbox__description">{lightboxItem.description}</p>
+                <p className="lightbox__description">
+                  {textLines(lightboxItem.description).map((line, i) => (
+                    <Fragment key={i}>{i > 0 && <br />}{line}</Fragment>
+                  ))}
+                </p>
               )}
               {lightboxItem.tags && lightboxItem.tags.length > 0 && (
                 <ul className="lightbox__tags" aria-label="Tags">
