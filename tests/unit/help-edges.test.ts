@@ -52,6 +52,11 @@ describe('content-editing-help-links#AC-5 table names', () => {
     expect(html).toContain('aria-label="One"');
     expect(html).not.toMatch(/<p>\s*<div/);
   });
+
+  it('skips an empty header cell, as in a table whose first column has no heading', () => {
+    const html = renderGuide('a', '# T\n\n| | Open | Closed |\n|---|---|---|\n| Banner | Green | Orange |', { a: ['t'] }).html;
+    expect(html).toContain('aria-label="Open, closed"');
+  });
 });
 
 describe('content-editing-help-links#AC-10 addresses', () => {

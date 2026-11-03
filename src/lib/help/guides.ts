@@ -67,13 +67,14 @@ export function outline(markdown: string): { title: string; summary: string; sec
   };
 }
 
-/** "What you see, what it means, what to do", from a table's header cells. */
+/** "What you see, what it means, what to do", from a table's header cells; empty cells are skipped. */
 function tableName(table: Element): string {
   const cells: string[] = [];
   visit(table, { tagName: 'th' }, (node: Element) => {
     cells.push(toString(node));
   });
-  return cells.map((text, i) => (i === 0 ? text : text.charAt(0).toLowerCase() + text.slice(1))).join(', ');
+  const named = cells.filter((text) => text !== '');
+  return named.map((text, i) => (i === 0 ? text : text.charAt(0).toLowerCase() + text.slice(1))).join(', ');
 }
 
 function wrapTables() {

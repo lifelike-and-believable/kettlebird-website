@@ -20,6 +20,7 @@ test('content-editing-help-links#AC-1 AC-3 /help lists the six guides with their
   await expect(list.getByRole('link')).toHaveText(TITLES);
   await expect(list.nth(2)).toContainText('Starting a comic, adding chapters and pages, and publishing them.');
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex');
+  await expect(page).toHaveTitle('Help · Kettlebird Creations');
   expect((await page.goto('/help/reading-comics'))?.status()).toBe(404);
 });
 
