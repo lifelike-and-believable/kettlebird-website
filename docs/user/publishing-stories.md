@@ -1,6 +1,6 @@
 ---
 id: docs-publishing-stories
-status: draft
+status: approved
 summary: "Starting a story, pasting its text, chapters, and ratings."
 derived-from:
   - design-story-reader#how-it-works: d58d5d9e1b0f
