@@ -1,6 +1,6 @@
 ---
 id: design-story-reader
-status: draft
+status: approved
 derived-from:
   - story-story-reader-read-a-story: 8c8226a23162
   - story-story-reader-read-by-chapter: 8d31c3859be5
