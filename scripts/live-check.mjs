@@ -19,6 +19,7 @@ const QUERY = `{
 // Stryker restore all
 export const TYPES = [
   'comicSeries', 'comicChapter', 'galleryItem', 'writtenWork', 'product', 'commissionType',
+  'storyChapter',
   'commissionSettings', 'aboutPage', 'homePage', 'contactSettings',
 ];
 

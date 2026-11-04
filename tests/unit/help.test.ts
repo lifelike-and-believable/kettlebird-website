@@ -124,12 +124,14 @@ describe('content-editing-help-links#AC-8 help menu', () => {
 
 describe('content-editing-help-links#AC-9 item help', () => {
   it('gives every item type its section of a guide', () => {
-    expect(Object.keys(ITEM_HELP).sort()).toEqual([...PREVIEWABLE_TYPES].sort());
+    // A story's chapter has its help link before it has a preview (story-reader-editor AC-11).
+    expect(Object.keys(ITEM_HELP).sort()).toEqual([...PREVIEWABLE_TYPES, 'storyChapter'].sort());
     expect(ITEM_HELP).toEqual({
       comicSeries: { text: 'Help: Start a new comic', path: '/help/publishing-comics#start-a-new-comic' },
       comicChapter: { text: 'Help: Add a chapter', path: '/help/publishing-comics#add-a-chapter' },
       galleryItem: { text: 'Help: Art', path: '/help/editing-your-site#art' },
-      writtenWork: { text: 'Help: Writing', path: '/help/editing-your-site#writing' },
+      writtenWork: { text: 'Help: Start a new story', path: '/help/publishing-stories#start-a-new-story' },
+      storyChapter: { text: 'Help: Add a chapter to a story', path: '/help/publishing-stories#add-a-chapter-to-a-story' },
       product: { text: 'Help: Shop', path: '/help/editing-your-site#shop' },
       commissionType: { text: 'Help: Commissions', path: '/help/editing-your-site#commissions' },
       commissionSettings: { text: 'Help: Open or close commissions', path: '/help/site-settings#open-or-close-commissions' },

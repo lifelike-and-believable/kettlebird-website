@@ -25,9 +25,10 @@ export const SECTIONS: Section[] = [
 ];
 
 /** What each kind of item is called (Sanity's type titles). */
-export const ITEM_NAMES: Record<ItemType | 'comicChapter', string> = {
+export const ITEM_NAMES: Record<ItemType | 'comicChapter' | 'storyChapter', string> = {
   comicSeries: 'Series',
   comicChapter: 'Chapter',
+  storyChapter: 'Chapter',
   galleryItem: 'Piece',
   writtenWork: 'Story',
   product: 'Product',
@@ -44,6 +45,8 @@ export interface FieldText {
   missing?: string;
   /** "(choose at least one)" rather than "(required)" (AC-5). */
   atLeastOne?: boolean;
+  /** Needed only in some cases (a story's, once it has text or chapters), so no "(required)". */
+  sometimes?: boolean;
 }
 
 /** AC-3, AC-5: each form's visible fields, in order. Keys are the stored field names. */
@@ -81,11 +84,30 @@ export const FIELDS: Record<ItemType, Record<string, FieldText>> = {
   },
   writtenWork: {
     title: { label: 'Title', help: "The story's title.", missing: 'a title' },
-    externalLink: { label: 'Link to read it', help: "Where the Writing page's Read it button goes, such as the story on AO3." },
-    excerpt: { label: 'Short description', help: 'A sentence or two, shown on the Writing page.' },
-    coverImage: { label: 'Cover', help: 'Shown beside the story on the Writing page, cropped to a tall rectangle.' },
-    genre: { label: 'Genres', help: 'Shown as tags on the Writing page. Type one, then press Enter.' },
+    slug: {
+      label: 'Web address',
+      help: "It's the last part of the story's link: kettlebird.com/writing/the-kettles-song. Filled in from the title. Changing it after people have shared links breaks them.",
+      missing: 'a web address',
+      sometimes: true,
+    },
+    excerpt: { label: 'Short description', help: 'A sentence or two, shown on the Writing page and when the story is shared.' },
+    coverImage: { label: 'Cover', help: 'Shown beside the story on the Writing page and at the top of its page.' },
+    genre: { label: 'Genres', help: 'Shown as tags. Type one, then press Enter.' },
+    rating: {
+      label: 'Rating',
+      help: 'Shown before the story and on the Writing page. Mature and Explicit stories ask readers before showing the text.',
+      missing: 'a rating',
+      sometimes: true,
+    },
+    contentNotes: { label: 'Content notes', help: 'Anything a reader should know before starting, such as "Mild violence". Shown before the story.' },
+    status: { label: 'Status', help: 'For a story in chapters: In progress or Complete.' },
+    content: { label: 'Text', help: 'For a one-shot: paste or type the whole story. For a story in chapters, add chapters instead.' },
+    chapters: { label: 'Chapters', help: 'For a story in chapters. Each chapter has its own page.' },
     publishDate: { label: 'Date posted', help: 'The Writing page shows newest first.' },
+    externalLink: {
+      label: 'Link to read it',
+      help: "Optional: the story somewhere else, such as AO3. Without text on the site, the Writing page's Read it opens it; with text, it's shown as \"Also on AO3\".",
+    },
   },
   product: {
     name: { label: 'Name', help: "The product's name in the shop.", missing: 'a name' },
@@ -113,7 +135,7 @@ export const FIELDS: Record<ItemType, Record<string, FieldText>> = {
 export const HIDDEN: Record<ItemType, string[]> = {
   comicSeries: [],
   galleryItem: ['slug', 'featured'],
-  writtenWork: ['slug', 'content'],
+  writtenWork: [],
   product: ['slug', 'tags', 'inventory'],
   commissionType: [],
 };
@@ -122,7 +144,7 @@ export const HIDDEN: Record<ItemType, string[]> = {
 export function fieldText(type: ItemType, name: string): { title: string; description: string } {
   const field = FIELDS[type][name];
   if (!field) throw new Error(`No text for ${type}.${name}`);
-  const marker = field.atLeastOne ? ' (choose at least one)' : field.missing ? ' (required)' : '';
+  const marker = field.atLeastOne ? ' (choose at least one)' : field.missing && !field.sometimes ? ' (required)' : '';
   return { title: field.label + marker, description: field.help };
 }
 

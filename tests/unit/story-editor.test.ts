@@ -117,7 +117,7 @@ describe('story-reader-editor#AC-4 paste', () => {
     const out = pasteHtml(word, parseHtml);
     expect(texts(out)).toEqual(['One two.', '⁂', 'Heading', 'Three.']);
     expect(out[0].children?.find((c) => c.text === 'two')?.marks).toEqual(['em']);
-  });
+  }, 60_000);
 });
 
 describe('story-reader-editor#AC-6 chapters', () => {

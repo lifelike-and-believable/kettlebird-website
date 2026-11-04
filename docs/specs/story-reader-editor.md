@@ -1,5 +1,12 @@
 ---
 status: draft
+tests-commit:
+  - fddddd6a76bef363cee0016b8771dd8776b68158
+unlocks:
+  - tests/unit/story-editor.test.ts: the Google Docs and Word paste test loads the editor's schema library, which takes about 12 seconds the first time, so it has a 60-second limit of its own. The criterion is unchanged.
+  - tests/unit/organised-editor.test.ts: a story's fields, hidden fields and item names are now this spec's (AC-1, AC-6), and its web address and rating carry this spec's messages (AC-2) rather than the organised editor's "(required)" ones. The organised editor's criteria are unchanged for every other item.
+  - tests/unit/help.test.ts: a story's help link is "Help: Start a new story", and a story's chapter has a help link before it has a preview (AC-11), so the links are the previewable items plus the chapter.
+  - tests/unit/story-editor-edges.test.ts (new): mutation testing showed nothing checked symbol lines with spaces around them or across spans, exactly two empty lines, scene breaks next to each other, a pasted paragraph's own key, links and other marks, the generated keys, or untitled stories and chapters; it also found an untitled story's link warning reading "You changed 's web address". Added, and the wording fixed; the criteria are unchanged.
 ---
 
 # Stories in the editor
@@ -43,10 +50,12 @@ Source: S3.n is the story's nth criterion; design and docs sections as named.
 - In:
   - `sanity-studio/schemas/objects/writtenWork.ts`: the fields of AC-1 and AC-2; `slug` and `content` shown; `rating`, `contentNotes`, `status` added; **Chapters** as a read-only list field.
   - `sanity-studio/schemas/objects/storyChapter.ts` (new); `sanity-studio/schemas/objects/storyText.ts` (new): the shared text type with the scene break.
-  - `sanity-studio/lib/stories.ts` (new, pure): field order, ratings, scene-break lines, paste clean-up, chapter rows and messages, the one-shot move, link warnings and the delete dialog.
-  - `sanity-studio/lib/comic-pages.ts`: the chapter-list, numbering, link and delete helpers made to take a kind ("series"/"story") so comics and stories share them; comics' wording unchanged.
-  - `sanity-studio/components/ChaptersList.tsx`: shared by series and stories; `StoryTextInput.tsx` (new): the paste handler and the Enter rule.
-  - `sanity-studio/actions/`: chapter publish checks and the delete action for stories.
+  - `sanity-studio/lib/stories.ts` (new, pure): ratings, scene-break lines, paste clean-up, chapter rows and messages, the one-shot move, link warnings and the delete dialog, using `comic-pages.ts`'s chapter label and numbering; `lib/story-paste.ts` (new): the editor's paste library with the clean-up; `lib/story-checks.ts` (new): whether a story has chapters, for its checks.
+  - `sanity-studio/lib/editor-content.ts`: a field can be needed only sometimes (a story's web address and rating), listed in the box without "(required)" on its label.
+  - `sanity-studio/components/ChaptersList.tsx`: shared by series and stories, with what differs for each kind in one table; comics unchanged. `StoryTextInput.tsx` (new): the paste handler and the notes; `SceneBreakOnEnter.tsx` (new): the Enter rule, as a text-box plugin.
+  - `sanity-studio/actions/publishStory.tsx` (new): a chapter's and a story's publish checks; `actions/deleteSeries.tsx`: the delete with chapters takes a kind, for stories.
+  - `sanity-studio/package.json`: `@portabletext/editor`, `@portabletext/block-tools` and `@sanity/schema` as direct dependencies, at the versions Sanity already installs.
+  - `scripts/live-check.mjs`: a chapter of a story counts as a change, as in the editor.
   - `sanity-studio/structure.ts`, `sanity.config.ts`: the story pane with its chapter as child, the chapter template, actions, badges.
   - `sanity-studio/lib/editor-content.ts`, `lib/help.ts`, `lib/live-status.ts`, `lib/preview.ts` (chapter not previewable yet).
   - Tests: `tests/unit/story-editor*.test.ts`; `docs/tutorials/publishing-stories.md`.
@@ -60,6 +69,7 @@ Checked 2026-11-04 against the installed packages:
 - Sanity 5.1 `PortableTextInputProps.onPaste` (`OnPasteFn` from `@portabletext/editor` 4.1.3) lets the text input replace what's pasted with its own blocks.
 - Sanity 5.1 form components accept `portableText.plugins`; `@portabletext/editor` 4.1.3 exports behaviours (`@portabletext/editor/behaviors`) that can act on Enter. AC-5 is built on one; if that proves unreliable in Sanity's editor, AC-5 falls back to the site's own rule (the reader spec shows symbol-only lines as scene breaks), and the guide's sentence is amended.
 - Comic chapters already have: a list with Add chapter (`ChaptersList`), a template with a weak reference strengthened on publish, publish checks with a dialog, and a delete that removes chapters first. Stories reuse these, generalised.
+- Sanity's documented way to set a field on publish (a patch, then the publish operation) fills in a chapter's **Date posted**.
 
 ## Non-functional requirements
 
@@ -73,5 +83,5 @@ Checked 2026-11-04 against the installed packages:
 ## Risks and decisions
 
 - `slug` and `content` keep their stored names, so nothing already entered is lost; only their labels change.
-- Comic and story chapters share code with a "kind" parameter rather than copies, so a fix to one is a fix to both.
+- Comic and story chapters share the chapters list, the delete and the chapter label and numbering, so a fix to one is a fix to both. Their publish checks are separate: a comic chapter's are about pages and uploads, a story chapter's about the date posted and the story's rating.
 - A chapter can't be previewed until story pages exist; its help link still shows.

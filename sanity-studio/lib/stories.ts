@@ -1,13 +1,24 @@
 // Stories in the editor: ratings, scene breaks, the paste clean-up, chapters, and the messages
-// (docs/specs/story-reader-editor.md; design-story-reader). Pure. STUB: tests first.
+// (docs/specs/story-reader-editor.md; design-story-reader). Pure.
+import { chapterLabel, nextChapterNumber } from './comic-pages';
 
-export const RATINGS: { title: string; value: string }[] = [];
-export const STATUSES: { title: string; value: string }[] = [];
-export const WEB_ADDRESS_MESSAGE = '';
-export const RATING_MESSAGE = '';
-export const CHAPTER_TEXT_MESSAGE = '';
-export const HAS_CHAPTERS_NOTE = '';
-export const MOVED_NOTE = '';
+export const RATINGS = [
+  { title: 'General', value: 'general' },
+  { title: 'Teen', value: 'teen' },
+  { title: 'Mature', value: 'mature' },
+  { title: 'Explicit', value: 'explicit' },
+  { title: 'Not rated', value: 'notRated' },
+];
+export const STATUSES = [
+  { title: 'In progress', value: 'inProgress' },
+  { title: 'Complete', value: 'complete' },
+];
+export const WEB_ADDRESS_MESSAGE = 'Add a web address so readers can find this story.';
+export const RATING_MESSAGE = 'Choose a rating, or Not rated.';
+export const CHAPTER_TEXT_MESSAGE = "Add the chapter's text.";
+export const HAS_CHAPTERS_NOTE = 'This story has chapters, so its text is in them. To make it a one-shot again, move the text back and remove the chapters.';
+export const MOVED_NOTE = "Your story's text is now in Chapter 1.";
+export { nextChapterNumber };
 
 /** A block of Portable Text, as the editor stores it. */
 export interface Block {
@@ -18,49 +29,107 @@ export interface Block {
   markDefs?: unknown[];
 }
 
+const SYMBOLS = /^[*~\-#=•·\s]+$/;
+const SINGLES = new Set(['~', '#', '⁂']);
+
 /** AC-4: a line with only symbols on it, which shows as a scene break. */
-export function isSceneBreakLine(_text: string): boolean {
-  throw new Error('not implemented');
+export function isSceneBreakLine(text: string): boolean {
+  const line = text.trim();
+  if (SINGLES.has(line)) return true;
+  return SYMBOLS.test(line) && line.replace(/\s/g, '').length >= 3;
 }
+
+const textOf = (block: Block) => (block.children ?? []).map((c) => c.text).join('');
+const isEmpty = (block: Block) => block._type === 'block' && textOf(block).trim() === '';
 
 /** AC-4: pasted blocks, cleaned: scene breaks made, single empty lines dropped, only paragraphs kept. */
-export function cleanPastedBlocks(_blocks: Block[], _key?: () => string): Block[] {
-  throw new Error('not implemented');
+export function cleanPastedBlocks(blocks: Block[], key: () => string = randomKey): Block[] {
+  const out: Block[] = [];
+  let empties = 0;
+  const sceneBreak = () => {
+    if (out.length && out[out.length - 1]._type !== 'sceneBreak') out.push({ _type: 'sceneBreak', _key: key() });
+  };
+  for (const block of blocks) {
+    if (isEmpty(block)) {
+      empties += 1;
+      continue;
+    }
+    if (empties >= 2) sceneBreak();
+    empties = 0;
+    if (block._type === 'sceneBreak' || (block._type === 'block' && isSceneBreakLine(textOf(block)))) {
+      sceneBreak();
+      continue;
+    }
+    if (block._type !== 'block') continue;
+    out.push({
+      ...block,
+      _key: block._key ?? key(),
+      style: 'normal',
+      markDefs: [],
+      children: (block.children ?? []).map((c) => ({ ...c, marks: (c.marks ?? []).filter((m) => m === 'em' || m === 'strong') })),
+    });
+  }
+  return out;
 }
 
-/** AC-2, AC-8: what a story still needs before it can be published, in Star's words. */
-export function storyNeeds(_story: { slug?: string; rating?: string; hasText: boolean; hasChapters: boolean }): string[] {
-  throw new Error('not implemented');
+function randomKey(): string {
+  return Math.random().toString(36).slice(2, 10);
+}
+
+/** AC-2: what a story still needs before it can be published, in Star's words. */
+export function storyNeeds(story: { slug?: string; rating?: string; hasText: boolean; hasChapters: boolean }): string[] {
+  if (!story.hasText && !story.hasChapters) return [];
+  const needs: string[] = [];
+  if (!story.slug?.trim()) needs.push(WEB_ADDRESS_MESSAGE);
+  if (!story.rating) needs.push(RATING_MESSAGE);
+  return needs;
 }
 
 /** AC-6: a chapter's row in its story's list. */
-export function storyChapterRow(_c: { number: number; title?: string; published: boolean }): string {
-  throw new Error('not implemented');
+export function storyChapterRow(c: { number: number; title?: string; published: boolean }): string {
+  return `${chapterLabel(c)} · ${c.published ? 'On the site' : 'Not published yet'}`;
 }
 
 /** AC-6 */
-export function duplicateStoryChapterMessage(_number: number, _others: number[]): string | null {
-  throw new Error('not implemented');
+export function duplicateStoryChapterMessage(number: number, others: number[]): string | null {
+  return others.includes(number) ? `Chapter ${number} already exists in this story. Choose another number.` : null;
 }
 
 /** AC-6: the chapter pane's title, "The Long Road · Chapter 2: Over the Ridge". */
-export function storyChapterPaneTitle(_story: string | undefined, _chapter: { number: number; title?: string } | null): string {
-  throw new Error('not implemented');
+export function storyChapterPaneTitle(story: string | undefined, chapter: { number: number; title?: string } | null): string {
+  const label = chapter ? chapterLabel(chapter) : 'New chapter';
+  return story ? `${story} · ${label}` : label;
 }
 
 /** AC-7: Add chapter on a one-shot: Chapter 1 takes the story's text, and the story's is emptied. */
-export function firstChapterFrom(_storyText: Block[] | undefined): { number: number; content?: Block[]; moved: boolean } {
-  throw new Error('not implemented');
+export function firstChapterFrom(storyText: Block[] | undefined): { number: number; content?: Block[]; moved: boolean } {
+  return storyText?.length ? { number: 1, content: storyText, moved: true } : { number: 1, moved: false };
 }
 
 /** AC-9: the shared-link warning before publishing, or null. */
 export function storyLinkDialog(
-  _change: { kind: 'chapter'; from: number; to: number; title?: string } | { kind: 'story'; from: string; to: string; title?: string },
+  change: { kind: 'chapter'; from: number; to: number; title?: string } | { kind: 'story'; from: string; to: string; title?: string },
 ): { title: string; lines: string[] } | null {
-  throw new Error('not implemented');
+  if (change.from === change.to) return null;
+  const title = change.title?.trim();
+  let line: string;
+  if (change.kind === 'chapter') {
+    const what = title ? `${title} from chapter ${change.from}` : `chapter ${change.from}`;
+    line = `You changed ${what} to chapter ${change.to}. Links people have shared to it use chapter ${change.from}'s address, so they'll stop working, or open a different chapter if you later add a new chapter ${change.from}.`;
+  } else {
+    line = `You changed ${title || 'the story'}'s web address from ${change.from} to ${change.to}. Links people have shared to the story and its chapters will stop working.`;
+  }
+  return { title: 'Some links will change', lines: [line] };
 }
 
 /** AC-10: the confirmation before a story is deleted with its chapters. */
-export function deleteStoryDialog(_title: string | undefined, _chapterCount: number): { title: string; lines: string[]; confirm: string } {
-  throw new Error('not implemented');
+export function deleteStoryDialog(title: string | undefined, chapterCount: number): { title: string; lines: string[]; confirm: string } {
+  const name = title?.trim() || 'this story';
+  if (chapterCount === 0) return { title: `Delete ${name}?`, lines: ["It comes off the site with the next update. This can't be undone."], confirm: 'Delete' };
+  const chapters = chapterCount === 1 ? 'its chapter' : `its ${chapterCount} chapters`;
+  return {
+    title: `Delete ${name} and ${chapters}?`,
+    lines: ["They come off the site, and links people have shared to them stop working. This can't be undone."],
+    confirm: 'Delete',
+  };
 }

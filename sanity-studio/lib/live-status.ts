@@ -5,6 +5,8 @@
 /** The kinds of item that appear on the site; a change to any of them starts a site build. */
 export const CONTENT_TYPES = [
   'comicSeries', 'comicChapter', 'galleryItem', 'writtenWork', 'product', 'commissionType',
+  // A story's chapters (story-reader-editor AC-12).
+  'storyChapter',
   // Site settings' four items (content-editing-site-settings AC-13).
   'commissionSettings', 'aboutPage', 'homePage', 'contactSettings',
 ];
@@ -77,6 +79,8 @@ export function formatWhen(at: string | Date, now: Date, timeZone?: string): str
 const PAGES: Record<string, string> = {
   galleryItem: '/portfolio',
   writtenWork: '/writing',
+  // Until story pages exist (story-reader-editor AC-12).
+  storyChapter: '/writing',
   product: '/shop',
   commissionType: '/commissions',
   commissionSettings: '/commissions',

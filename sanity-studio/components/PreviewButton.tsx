@@ -62,3 +62,16 @@ export function withPreviewInput(Inner?: ComponentType<ObjectInputProps>) {
   }
   return PreviewInput;
 }
+
+/** An item without a preview yet (a story's chapter): its help link alone at the top (story-reader-editor AC-11). */
+export function withHelpLinkInput(Inner?: ComponentType<ObjectInputProps>) {
+  function HelpLinkInput(props: ObjectInputProps) {
+    return (
+      <Stack space={4}>
+        <ItemHelpLink type={props.schemaType.name} />
+        <Box>{Inner ? <Inner {...props} /> : props.renderDefault(props)}</Box>
+      </Stack>
+    );
+  }
+  return HelpLinkInput;
+}
