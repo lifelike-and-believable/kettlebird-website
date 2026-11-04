@@ -1,6 +1,6 @@
 ---
 id: epic-story-reader
-status: draft
+status: approved
 derived-from:
   - requirements-writing#REQ-writing-4: bb1c119d11fb
   - requirements-writing#REQ-writing-2: 82afee9c0eac
