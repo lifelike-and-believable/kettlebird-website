@@ -68,3 +68,15 @@ describe('story-reader-editor#AC-6 AC-9 AC-10 wording edges', () => {
     expect(deleteStoryDialog('  ', 0).title).toBe('Delete this story?');
   });
 });
+
+describe('story-reader-editor#AC-3 AC-4 paste schema', () => {
+  it('describes the same text as the editor\'s Text type', async () => {
+    const { STORY_TEXT_SCHEMA } = await import('../../sanity-studio/lib/story-paste');
+    const source = (await import('node:fs')).readFileSync('sanity-studio/schemas/objects/storyText.ts', 'utf8');
+    for (const style of STORY_TEXT_SCHEMA.styles) expect(source).toContain(`{ title: '${style.title}', value: '${style.value}' }`);
+    for (const mark of STORY_TEXT_SCHEMA.decorators) expect(source).toContain(`{ title: '${mark.title}', value: '${mark.value}' }`);
+    expect(STORY_TEXT_SCHEMA.blockObjects.map((o) => o.name)).toEqual(['sceneBreak']);
+    expect(source).toMatch(/lists: \[\]/);
+    expect(source).toMatch(/annotations: \[\]/);
+  });
+});

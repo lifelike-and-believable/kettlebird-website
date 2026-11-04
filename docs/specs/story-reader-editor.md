@@ -3,10 +3,10 @@ status: draft
 tests-commit:
   - fddddd6a76bef363cee0016b8771dd8776b68158
 unlocks:
-  - tests/unit/story-editor.test.ts: the Google Docs and Word paste test loads the editor's schema library, which takes about 12 seconds the first time, so it has a 60-second limit of its own. The criterion is unchanged.
+  - tests/unit/story-editor.test.ts: the Google Docs and Word paste test was given a 60-second limit of its own while it loaded the editor's schema library (about 12 seconds). The paste code no longer loads it, so the limit is generous; it stays. The criterion is unchanged.
   - tests/unit/organised-editor.test.ts: a story's fields, hidden fields and item names are now this spec's (AC-1, AC-6), and its web address and rating carry this spec's messages (AC-2) rather than the organised editor's "(required)" ones. The organised editor's criteria are unchanged for every other item.
   - tests/unit/help.test.ts: a story's help link is "Help: Start a new story", and a story's chapter has a help link before it has a preview (AC-11), so the links are the previewable items plus the chapter.
-  - tests/unit/story-editor-edges.test.ts (new): mutation testing showed nothing checked symbol lines with spaces around them or across spans, exactly two empty lines, scene breaks next to each other, a pasted paragraph's own key, links and other marks, the generated keys, or untitled stories and chapters; it also found an untitled story's link warning reading "You changed 's web address". Added, and the wording fixed; the criteria are unchanged.
+  - tests/unit/story-editor-edges.test.ts (new): mutation testing showed nothing checked symbol lines with spaces around them or across spans, exactly two empty lines, scene breaks next to each other, a pasted paragraph's own key, links and other marks, the generated keys, or untitled stories and chapters, and nothing kept the paste code's description of the text in step with the editor's; it also found an untitled story's link warning reading "You changed 's web address". Added, and the wording fixed; the criteria are unchanged.
 ---
 
 # Stories in the editor
@@ -50,11 +50,11 @@ Source: S3.n is the story's nth criterion; design and docs sections as named.
 - In:
   - `sanity-studio/schemas/objects/writtenWork.ts`: the fields of AC-1 and AC-2; `slug` and `content` shown; `rating`, `contentNotes`, `status` added; **Chapters** as a read-only list field.
   - `sanity-studio/schemas/objects/storyChapter.ts` (new); `sanity-studio/schemas/objects/storyText.ts` (new): the shared text type with the scene break.
-  - `sanity-studio/lib/stories.ts` (new, pure): ratings, scene-break lines, paste clean-up, chapter rows and messages, the one-shot move, link warnings and the delete dialog, using `comic-pages.ts`'s chapter label and numbering; `lib/story-paste.ts` (new): the editor's paste library with the clean-up; `lib/story-checks.ts` (new): whether a story has chapters, for its checks.
+  - `sanity-studio/lib/stories.ts` (new, pure): ratings, scene-break lines, paste clean-up, chapter rows and messages, the one-shot move, link warnings and the delete dialog, using `comic-pages.ts`'s chapter label and numbering; `lib/story-paste.ts` (new): the editor's paste library with the clean-up, given the text's schema directly so it needs no Sanity package; `lib/story-checks.ts` (new): whether a story has chapters, for its checks.
   - `sanity-studio/lib/editor-content.ts`: a field can be needed only sometimes (a story's web address and rating), listed in the box without "(required)" on its label.
   - `sanity-studio/components/ChaptersList.tsx`: shared by series and stories, with what differs for each kind in one table; comics unchanged. `StoryTextInput.tsx` (new): the paste handler and the notes; `SceneBreakOnEnter.tsx` (new): the Enter rule, as a text-box plugin.
   - `sanity-studio/actions/publishStory.tsx` (new): a chapter's and a story's publish checks; `actions/deleteSeries.tsx`: the delete with chapters takes a kind, for stories.
-  - `sanity-studio/package.json`: `@portabletext/editor`, `@portabletext/block-tools` and `@sanity/schema` as direct dependencies, at the versions Sanity already installs.
+  - `sanity-studio/package.json`: `@portabletext/editor` and `@portabletext/block-tools` as direct dependencies, at the versions Sanity already installs. `package.json`: `@portabletext/block-tools` 5.0.0 as a development dependency, so the site's unit and mutation tests can run the paste clean-up without the editor's packages; installing it moves the site's `@sanity/client` from 7.16.0 to 7.28.0, within its existing range.
   - `scripts/live-check.mjs`: a chapter of a story counts as a change, as in the editor.
   - `sanity-studio/structure.ts`, `sanity.config.ts`: the story pane with its chapter as child, the chapter template, actions, badges.
   - `sanity-studio/lib/editor-content.ts`, `lib/help.ts`, `lib/live-status.ts`, `lib/preview.ts` (chapter not previewable yet).
