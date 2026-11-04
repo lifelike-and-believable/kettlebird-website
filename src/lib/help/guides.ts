@@ -16,7 +16,7 @@ import { visit } from 'unist-util-visit';
 /** Guides in docs/user written for fans, not Star; they aren't help pages. Every other guide must be in GUIDE_NAMES. */
 export const FAN_GUIDES = ['reading-comics'] as const;
 
-export const GUIDE_NAMES = ['getting-started', 'editing-your-site', 'publishing-comics', 'site-settings', 'previewing', 'going-live'] as const;
+export const GUIDE_NAMES = ['getting-started', 'editing-your-site', 'publishing-comics', 'publishing-stories', 'site-settings', 'previewing', 'going-live'] as const;
 
 export interface Section {
   id: string;
