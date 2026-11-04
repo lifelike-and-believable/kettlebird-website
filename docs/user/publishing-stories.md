@@ -100,7 +100,7 @@ Changing the **Web address** of a published story, or the **Chapter** number of 
 
 ## Remove a story
 
-Choose ⋯ next to **Publish**, then **Delete**. For a story in chapters, the editor asks once, naming the chapters: "Delete The Long Road and its 3 chapters?" Choose **Delete** to go ahead, or **Cancel**. The story and its chapters come off the site with the next update, and links people have shared stop working. This can't be undone.
+Choose ⋯ next to **Publish**, then **Delete**. For a story in chapters, the editor asks once, naming the chapters: "Delete The Long Road and its 3 chapters?" Choose **Delete** to go ahead, or Cancel. The story and its chapters come off the site with the next update, and links people have shared stop working. This can't be undone.
 
 ## If something goes wrong
 
