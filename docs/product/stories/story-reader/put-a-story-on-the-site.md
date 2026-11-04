@@ -1,6 +1,6 @@
 ---
 id: story-story-reader-put-a-story-on-the-site
-status: draft
+status: approved
 derived-from:
   - epic-story-reader#outcome: 5b8ea42e2e6b
   - persona-artist#goals: f3044c738f84

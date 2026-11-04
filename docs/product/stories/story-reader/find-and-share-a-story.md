@@ -1,6 +1,6 @@
 ---
 id: story-story-reader-find-and-share-a-story
-status: draft
+status: approved
 derived-from:
   - epic-story-reader#outcome: 5b8ea42e2e6b
   - requirements-writing#REQ-writing-3: 723e918bb64e
