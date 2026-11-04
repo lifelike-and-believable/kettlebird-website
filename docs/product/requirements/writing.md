@@ -27,5 +27,5 @@ Each written work can be read in full on the site, on phone and desktop, with it
 
 ## Open questions
 
-1. Page-flip, like the original plan, or plain scrolling text? A design question.
+1. Page-flip, like the original plan, or plain scrolling text? Answered: scrolling text, with chapters when a story needs them (lead, 2026-11-04; epic-story-reader).
 2. The news page is generated from new art and writing; there is no way to post an announcement. Is that enough?
