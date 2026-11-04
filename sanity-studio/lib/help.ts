@@ -14,6 +14,7 @@ export const HELP_MENU: HelpLink[] = [
   { text: "Getting started with your site's editor", path: '/help/getting-started' },
   { text: 'Editing your art, writing, shop and commissions', path: '/help/editing-your-site' },
   { text: 'Publishing comic pages and chapters', path: '/help/publishing-comics' },
+  { text: 'Putting stories on the site', path: '/help/publishing-stories' },
   { text: 'Commissions, your about page, the home page and your links', path: '/help/site-settings' },
   { text: 'See it before you publish', path: '/help/previewing' },
   { text: 'When your change is live', path: '/help/going-live' },

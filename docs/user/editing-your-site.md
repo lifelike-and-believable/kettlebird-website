@@ -43,7 +43,7 @@ Your portfolio pieces, newest first, each with the portfolio sections it's in. C
 
 ## Writing
 
-Your stories, newest first, each with the date it was posted. Choose the + button, **New story**, to add one.
+Your stories, newest first, each with the date it was posted. Choose the + button, **New story**, to add one. To put a story's text on the site, as a one-shot or in chapters, see [Putting stories on the site](publishing-stories.md).
 
 | Field | What it's for |
 |---|---|

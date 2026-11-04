@@ -7,12 +7,13 @@ const TITLES = [
   "Getting started with your site's editor",
   'Editing your art, writing, shop and commissions',
   'Publishing comic pages and chapters',
+  'Putting stories on the site',
   'Commissions, your about page, the home page and your links',
   'See it before you publish',
   'When your change is live',
 ];
 
-test('content-editing-help-links#AC-1 AC-3 /help lists the six guides with their summaries', async ({ page }) => {
+test('content-editing-help-links#AC-1 AC-3 /help lists the guides with their summaries', async ({ page }) => {
   const response = await page.goto('/help');
   expect(response?.status()).toBe(200);
   await expect(page.getByRole('heading', { level: 1, name: 'Help' })).toBeVisible();
