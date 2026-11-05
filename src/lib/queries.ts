@@ -1,5 +1,9 @@
 import { sanityClient } from './sanity';
 
+/** The fixture build (KETTLEBIRD_FIXTURES=1) lists no content, so its pages never depend on what is live. */
+const isFixtureBuild = () => import.meta.env.KETTLEBIRD_FIXTURES === '1' || process.env.KETTLEBIRD_FIXTURES === '1';
+const list = <T>(query: string): Promise<T[]> => (isFixtureBuild() ? Promise.resolve([]) : sanityClient.fetch(query));
+
 // ── Gallery ────────────────────────────────────────────────────────────────
 
 export interface GalleryItem {
@@ -29,11 +33,11 @@ export const FEATURED_GALLERY_QUERY = `*[_type == "galleryItem" && featured == t
 }`;
 
 export async function getAllGalleryItems(): Promise<GalleryItem[]> {
-  return sanityClient.fetch(GALLERY_QUERY);
+  return list(GALLERY_QUERY);
 }
 
 export async function getFeaturedGalleryItems(): Promise<GalleryItem[]> {
-  return sanityClient.fetch(FEATURED_GALLERY_QUERY);
+  return list(FEATURED_GALLERY_QUERY);
 }
 
 // ── Written Works ──────────────────────────────────────────────────────────
@@ -55,7 +59,7 @@ export const WRITTEN_WORKS_QUERY = `*[_type == "writtenWork"] | order(publishDat
 }`;
 
 export async function getAllWrittenWorks(): Promise<WrittenWork[]> {
-  return sanityClient.fetch(WRITTEN_WORKS_QUERY);
+  return list(WRITTEN_WORKS_QUERY);
 }
 
 // ── News Posts ─────────────────────────────────────────────────────────────
@@ -84,7 +88,7 @@ export const NEWS_QUERY = `*[_type in ["writtenWork", "galleryItem"]] | order(co
 }`;
 
 export async function getNewsFeed(): Promise<NewsPost[]> {
-  return sanityClient.fetch(NEWS_QUERY);
+  return list(NEWS_QUERY);
 }
 
 // ── Shop ───────────────────────────────────────────────────────────────────
@@ -107,7 +111,7 @@ export const PRODUCTS_QUERY = `*[_type == "product"] | order(name asc) {
 }`;
 
 export async function getAllProducts(): Promise<Product[]> {
-  return sanityClient.fetch(PRODUCTS_QUERY);
+  return list(PRODUCTS_QUERY);
 }
 
 // ── Commissions ────────────────────────────────────────────────────────────
@@ -128,7 +132,7 @@ export const COMMISSIONS_QUERY = `*[_type == "commissionType"] | order(order asc
 }`;
 
 export async function getAllCommissionTypes(): Promise<CommissionType[]> {
-  return sanityClient.fetch(COMMISSIONS_QUERY);
+  return list(COMMISSIONS_QUERY);
 }
 
 // ── Comics ─────────────────────────────────────────────────────────────────
