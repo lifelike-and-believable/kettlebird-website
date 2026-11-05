@@ -40,23 +40,29 @@
   .fs { position: absolute; inset: 0; background: var(--fs); color: #f5f1e8; overflow: hidden; }
   .fs__stage { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
   .fs__stage img { flex-shrink: 0; max-width: 100%; max-height: 100%; object-fit: contain; display: block; }
-  .fs__top { position: absolute; top: 0; left: 0; right: 0; display: flex; align-items: center; gap: 1rem; padding: .5rem .5rem .5rem 1rem;
-    background: linear-gradient(#000c, #0000); }
+  .fs__top { position: absolute; top: 0; left: 0; right: 0; height: 60px; display: flex; align-items: center; gap: 1rem; padding: .5rem .5rem .5rem 1rem;
+    background: #161616; border-bottom: 1px solid #f5f1e833; }
+  .fs__stage.between { top: 60px; bottom: 76px; }
+  .fs__stage.between-wide { top: 60px; bottom: 72px; left: 72px; right: 72px; }
+  .fs__bottom { position: absolute; left: 0; right: 0; bottom: 0; height: 76px; background: #161616; border-top: 1px solid #f5f1e833; }
   .fs__title { font: 700 1.05rem 'Nunito'; flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .fs__count { font: 500 .9rem 'DM Mono'; opacity: .9; }
   .fs__close { min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; gap: .4rem; padding: 0 .75rem; background: var(--beige); color: var(--ink);
     border: 2px solid var(--beige); font: 700 .95rem 'Nunito'; }
   .fs__side { position: absolute; top: 50%; transform: translateY(-50%); width: 56px; height: 72px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
-    background: #2b2b2bcc; border: 2px solid #f5f1e8; color: #f5f1e8; font: 600 .7rem 'Nunito'; }
+    background: #161616; border: 2px solid #f5f1e8; color: #f5f1e8; font: 600 .7rem 'Nunito'; }
   .fs__side svg { width: 22px; height: 22px; }
+  .fs__side, .fs__zoom { z-index: 2; }
   .fs__side.prev { left: .5rem; } .fs__side.next { right: .5rem; }
   .fs__side.off { border-style: dashed; border-color: #f5f1e866; color: #f5f1e866; background: transparent; }
   .fs__zoom { position: absolute; bottom: .75rem; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: .25rem; padding: .25rem;
-    background: #2b2b2bcc; border: 2px solid #f5f1e8; }
+    background: #161616; border: 2px solid #f5f1e8; }
   .fs__zoom button { min-width: 44px; min-height: 44px; background: transparent; color: #f5f1e8; border: 0; font: 700 1.2rem 'Nunito'; }
   .fs__zoom .lvl { font: 500 .85rem 'DM Mono'; min-width: 4.5em; text-align: center; }
   .fs__zoom .fit { font-size: .85rem; border-left: 1px solid #f5f1e855; }
-  .fs__zoom .off { opacity: .4; }
+  .fs__zoom button.off { border: 2px dashed #f5f1e877; color: #f5f1e877; }
+  .fs__zoom button { border: 2px solid transparent; }
+  .fsbtn.icon { padding: 0; width: 44px; justify-content: center; }
   .note { position: absolute; font: 600 .8rem 'Nunito'; background: var(--yellow); color: var(--ink); padding: .3rem .55rem; border: 2px solid var(--ink); }
   .touch { position: absolute; width: 44px; height: 44px; border-radius: 50%; border: 3px solid #fff; background: #ffffff33; }
   .arrow { position: absolute; height: 3px; background: #fff; }
@@ -82,23 +88,23 @@
 </div></div>
 
 <!-- 2. Phone: the dialog with Full screen -->
-<div class="wrap"><h6>2. Phone: the dialog; Full screen on the picture (tapping the picture works too)</h6>
+<div class="wrap"><h6>2. Phone: the dialog; Full screen is an icon button (named "Full screen") on the picture, and tapping the picture works too</h6>
 <div class="screen phone" id="m2">
   <div class="behind"></div>
   <div class="lightbox"><div class="lb">
     <button class="lb__close">✕</button>
     <div class="lb__pic"><img src="../../../../public/assets/images/bkgd-Comics.jpg" alt="">
-      <span class="fsbtn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>Full screen</span></div>
+      <span class="fsbtn icon" title="Full screen"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></span></div>
     <div class="lb__info"><h2>Late Night Alibi</h2><p>"Well gee, officer…" A one-panel gag.</p>
       <ul class="tags"><li>original</li><li>gag</li></ul></div>
   </div></div>
 </div></div>
 
 <!-- 3. Laptop full screen, fit -->
-<div class="wrap"><h6>3. Laptop, full screen: the piece fits the screen; title, "3 of 12", Close; Previous and Next at the sides; zoom below</h6>
+<div class="wrap"><h6>3. Laptop, full screen: the piece fits between the bars; title, "3 of 12 · Original Work", Close; Previous and Next at the sides; zoom below (Fit and − can't be used at 100%: dashed)</h6>
 <div class="screen wide" id="m3">
   <div class="fs">
-    <div class="fs__stage"><img src="../../../../public/assets/images/bkgd-artwork.jpg" alt="" style="height:100%"></div>
+    <div class="fs__stage between-wide"><img src="../../../../public/assets/images/bkgd-artwork.jpg" alt="" style="height:100%"></div>
     <div class="fs__top"><span class="fs__title">Night Market</span><span class="fs__count">3 of 12 · Original Work</span>
       <span class="fs__close">✕ Close</span></div>
     <span class="fs__side prev"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M15 4 7 12l8 8z"/></svg>Previous</span>
@@ -108,7 +114,7 @@
 </div></div>
 
 <!-- 4. Laptop zoomed -->
-<div class="wrap"><h6>4. Laptop, zoomed in to 340% where the fan clicked: drag (or the arrow keys) to move; the corner map shows where</h6>
+<div class="wrap"><h6>4. Laptop, zoomed in to 340% where the fan clicked: drag (or Shift with the arrow keys) to move; the corner map shows where</h6>
 <div class="screen wide" id="m4">
   <div class="fs">
     <div class="fs__stage" style="justify-content:flex-start;align-items:flex-start"><img src="../../../../public/assets/images/bkgd-artwork.jpg" alt=""
@@ -122,14 +128,14 @@
 </div></div>
 
 <!-- 5. Phone full screen -->
-<div class="wrap"><h6>5. Phone, full screen (on an iPhone, the piece fills the window the same way)</h6>
+<div class="wrap"><h6>5. Phone, full screen (on an iPhone, Safari's own bars stay above and below this)</h6>
 <div class="screen phone" id="m5">
   <div class="fs">
-    <div class="fs__stage"><img src="../../../../public/assets/images/bkgd-Comics.jpg" alt="" style="width:100%"></div>
+    <div class="fs__stage between"><img src="../../../../public/assets/images/bkgd-Comics.jpg" alt="" style="width:100%"></div>
     <div class="fs__top"><span class="fs__title">Late Night Alibi</span><span class="fs__count">5 of 12</span><span class="fs__close">✕</span></div>
-    <span class="fs__side prev" style="top:auto;bottom:.75rem;transform:none"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M15 4 7 12l8 8z"/></svg>Previous</span>
-    <span class="fs__side next" style="top:auto;bottom:.75rem;transform:none"><svg viewBox="0 0 24 24" fill="currentColor"><path d="m9 4 8 8-8 8z"/></svg>Next</span>
-    <div class="fs__zoom" style="bottom:1.25rem"><button class="off">−</button><span class="lvl">100%</span><button>+</button></div>
+    <span class="fs__side prev" style="top:auto;bottom:.25rem;transform:none;height:66px"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M15 4 7 12l8 8z"/></svg>Previous</span>
+    <span class="fs__side next" style="top:auto;bottom:.25rem;transform:none;height:66px"><svg viewBox="0 0 24 24" fill="currentColor"><path d="m9 4 8 8-8 8z"/></svg>Next</span>
+    <div class="fs__bottom"></div><div class="fs__zoom" style="bottom:.5rem"><button class="off">−</button><span class="lvl">100%</span><button>+</button><button class="fit off">Fit</button></div>
   </div>
 </div></div>
 
@@ -140,16 +146,16 @@
     <div class="fs__stage" style="justify-content:flex-start;align-items:flex-start"><img src="../../../../public/assets/images/bkgd-Comics.jpg" alt=""
       style="max-width:none;max-height:none;width:1170px;height:1067px;transform:translate(-420px,-80px)"></div>
     <div class="fs__top"><span class="fs__title">Late Night Alibi</span><span class="fs__count">5 of 12</span><span class="fs__close">✕</span></div>
-    <span class="fs__side prev" style="top:auto;bottom:.75rem;transform:none"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M15 4 7 12l8 8z"/></svg>Previous</span>
-    <span class="fs__side next" style="top:auto;bottom:.75rem;transform:none"><svg viewBox="0 0 24 24" fill="currentColor"><path d="m9 4 8 8-8 8z"/></svg>Next</span>
-    <div class="fs__zoom" style="bottom:1.25rem"><button>−</button><span class="lvl">300%</span><button>+</button></div>
+    <span class="fs__side prev" style="top:auto;bottom:.25rem;transform:none;height:66px"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M15 4 7 12l8 8z"/></svg>Previous</span>
+    <span class="fs__side next" style="top:auto;bottom:.25rem;transform:none;height:66px"><svg viewBox="0 0 24 24" fill="currentColor"><path d="m9 4 8 8-8 8z"/></svg>Next</span>
+    <div class="fs__bottom"></div><div class="fs__zoom" style="bottom:.5rem"><button>−</button><span class="lvl">300%</span><button>+</button><button class="fit">Fit</button></div>
     <span class="touch" style="left:200px;top:420px"></span><span class="arrow" style="left:110px;top:441px;width:90px"></span>
     <span class="note" style="left:40px;top:480px">Drag: moves the piece</span>
   </div>
 </div></div>
 
 <!-- 7. Controls hidden -->
-<div class="wrap"><h6>7. A tap on the piece hides the controls; another brings them back</h6>
+<div class="wrap"><h6>7. A tap on the piece hides the controls and the piece takes the whole screen; another tap brings them back</h6>
 <div class="screen phone" id="m7">
   <div class="fs">
     <div class="fs__stage"><img src="../../../../public/assets/images/bkgd-Comics.jpg" alt="" style="width:100%"></div>
@@ -160,7 +166,7 @@
 <div class="wrap"><h6>8. The first piece of its section: Previous can't be used; a screen reader hears the piece's title</h6>
 <div class="screen wide" id="m8">
   <div class="fs">
-    <div class="fs__stage"><img src="../../../../public/assets/images/bkgd-writing.jpg" alt="" style="height:100%"></div>
+    <div class="fs__stage between-wide"><img src="../../../../public/assets/images/bkgd-writing.jpg" alt="" style="height:100%"></div>
     <div class="fs__top"><span class="fs__title">Jungle Eyes</span><span class="fs__count">1 of 12 · Original Work</span><span class="fs__close">✕ Close</span></div>
     <span class="fs__side prev off"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M15 4 7 12l8 8z"/></svg>Previous</span>
     <span class="fs__side next"><svg viewBox="0 0 24 24" fill="currentColor"><path d="m9 4 8 8-8 8z"/></svg>Next</span>
@@ -170,14 +176,14 @@
 </div></div>
 
 <!-- 9. Phone sideways -->
-<div class="wrap"><h6>9. A phone held sideways: the piece fits the height; the controls sit at the edges and over the piece, and a tap hides them</h6>
+<div class="wrap"><h6>9. A phone held sideways: Previous and Next move to the sides; the piece fits between the bars, and a tap gives it the whole screen</h6>
 <div class="screen side" id="m9">
   <div class="fs">
-    <div class="fs__stage"><img src="../../../../public/assets/images/bkgd-artwork.jpg" alt="" style="height:100%"></div>
-    <div class="fs__top"><span class="fs__title">Night Market</span><span class="fs__count">3 of 12</span><span class="fs__close">✕</span></div>
+    <div class="fs__stage between-wide" style="top:52px;bottom:60px"><img src="../../../../public/assets/images/bkgd-artwork.jpg" alt="" style="height:100%"></div>
+    <div class="fs__top"><span class="fs__title">Night Market</span><span class="fs__count">6 of 12</span><span class="fs__close">✕</span></div>
     <span class="fs__side prev"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M15 4 7 12l8 8z"/></svg>Previous</span>
     <span class="fs__side next"><svg viewBox="0 0 24 24" fill="currentColor"><path d="m9 4 8 8-8 8z"/></svg>Next</span>
-    <div class="fs__zoom" style="bottom:.5rem"><button class="off">−</button><span class="lvl">100%</span><button>+</button></div>
+    <div class="fs__zoom" style="bottom:.25rem"><button class="off">−</button><span class="lvl">100%</span><button>+</button><button class="fit off">Fit</button></div>
   </div>
 </div></div>
 
