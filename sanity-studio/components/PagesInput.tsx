@@ -180,7 +180,9 @@ export function PagesInput(props: ArrayOfObjectsInputProps) {
           </Stack>
         )}
 
-        <Card radius={2} tone={dragging ? 'primary' : 'default'}>
+        <Card radius={2} tone={dragging ? 'primary' : 'default'} data-kb-pages="">
+          {/* A two-page spread's tile is twice as wide (docs/specs/comic-reader-spread-and-flip.md AC-10). */}
+          <style>{'[data-kb-pages] [data-ui="Grid"] > *:has([data-kb-spread]) { grid-column: span 2; }'}</style>
           {props.renderDefault({ ...props, onSelectFile })}
           <Card marginTop={2} padding={4} radius={2} border style={{ borderStyle: 'dashed' }}>
             <Text size={1} muted align="center">Drop page files anywhere here</Text>

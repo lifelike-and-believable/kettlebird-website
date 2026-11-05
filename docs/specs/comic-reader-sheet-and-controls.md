@@ -5,6 +5,7 @@ tests-commit:
 unlocks:
   - tests/e2e/comic-sheet-and-controls.spec.ts: the AC-7 and AC-8 checks for the page count ("3 pages", "1 page") also matched the same count in the chapter list, which AC-9 puts on the sheet; they now take the first match, the count under the heading. The criteria are unchanged.
   - tests/unit/comic-navigation-edges.test.ts (new): mutation testing showed nothing checked that alt text made only of spaces is left out of a picture's name (AC-7). Added; the criterion is unchanged.
+  - tests/e2e/comic-sheet-and-controls.spec.ts: the AC-1 checks for the icons and the full name looked for them anywhere in the page; each reader page now also carries the wide screen's controls, hidden on a narrow one (comic-reader-spread-and-flip AC-4), so they look inside the Page navigation that shows. The criteria are unchanged.
   - tests/e2e/comic-sheet-and-controls.spec.ts: runs in a 900 × 800 window, narrower than the width at which pages pair (comic-reader-spread-and-flip AC-3), so it still checks one page at a time; Playwright's default 1280 × 720 now shows two. The criteria are unchanged.
 ---
 

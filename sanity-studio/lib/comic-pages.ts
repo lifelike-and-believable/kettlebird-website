@@ -1,10 +1,11 @@
 // Pure logic for publishing comic pages in the editor (no `sanity` imports, so the site's Vitest
 // can test it). Spec: docs/specs/comic-publish-pages.md.
+import { aloneBeforeSpread, type OpenOn } from '../../src/lib/comics/pairing';
 
 export interface FileLike { name: string; type: string }
 export type QueueState = 'waiting' | 'uploading' | 'done' | 'failed' | 'rejected';
 export interface QueueItem { name: string; state: QueueState }
-export interface PageLike { _key: string; altText?: string }
+export interface PageLike { _key: string; altText?: string; spread?: boolean }
 export interface ChapterLike { number: number; title?: string; pages: PageLike[] }
 export type LinkChange =
   | { kind: 'none' }
@@ -187,4 +188,62 @@ export function altTextRule<R extends RuleLike<R>>(rule: R, message: string = AL
 export function chapterPaneTitle(seriesTitle: string | undefined, chapter: { number: number; title?: string } | null): string {
   const series = seriesTitle?.trim() || 'Untitled series';
   return `${series} · ${chapter ? chapterLabel(chapter) : 'New chapter'}`;
+}
+
+// Two-page spreads (docs/specs/comic-reader-spread-and-flip.md AC-1, AC-10; design-comic-spread-and-flip,
+// "What Star enters").
+
+/** A chapter's Open on field. */
+export const OPEN_ON_FIELD = {
+  name: 'openOn',
+  title: 'Open on',
+  type: 'string',
+  description: 'How pages pair up on a wide screen. A printed comic opens on the right, so its facing pages are 2 and 3, 4 and 5.',
+  initialValue: 'right',
+  options: {
+    layout: 'radio',
+    list: [
+      { value: 'right', title: 'The right, like a printed comic: Page 1 alone on the right, then 2 and 3, 4 and 5.' },
+      { value: 'left', title: 'The left, pairing from page 1: Pages 1 and 2 together, then 3 and 4.' },
+    ],
+  },
+} as const;
+
+/** A page's Two-page spread tick box. */
+export const SPREAD_FIELD = {
+  name: 'spread',
+  title: 'Two-page spread',
+  type: 'boolean',
+  description: "One picture drawn across two facing pages. On a wide screen it covers both pages; on a phone it's shrunk to fit. It's never split across a page turn.",
+} as const;
+
+export const WIDE_PICTURE_QUESTION =
+  'This picture is wider than it is tall. Is it a two-page spread? If so, tick Two-page spread; otherwise it shows small, on one side.';
+
+/** The note under a page's Two-page spread tick box, if any. `page` counts from 1. */
+export function pageNote(
+  pages: { spread?: boolean; width?: number; height?: number }[],
+  openOn: OpenOn | undefined,
+  page: number,
+): string | undefined {
+  const current = pages[page - 1];
+  if (!current) return undefined;
+  const side = openOn === 'left' ? 'left' : 'right';
+  if (current.spread) {
+    const alone = aloneBeforeSpread(pages.map((p) => Boolean(p.spread)), side, page);
+    return alone ? `This chapter opens on the ${side}, so page ${alone} shows alone on the left, before this spread.` : undefined;
+  }
+  return (current.width ?? 0) > (current.height ?? Infinity) ? WIDE_PICTURE_QUESTION : undefined;
+}
+
+/** What a page's tile in the pages grid says under its file name. */
+export function pageGridSubtitle(page: { spread?: boolean; altText?: string }): string | undefined {
+  const parts = [page.spread ? 'Two-page spread' : undefined, page.altText?.trim() ? undefined : '⚠ Alt text'].filter(Boolean);
+  return parts.length ? parts.join(' · ') : undefined;
+}
+
+/** A Sanity image asset's size from its id ("image-<hash>-1600x1200-png"), without fetching it. */
+export function imageSize(ref: string | undefined): { width: number; height: number } | undefined {
+  const match = ref?.match(/-(\d+)x(\d+)-[a-z0-9]+$/);
+  return match ? { width: Number(match[1]), height: Number(match[2]) } : undefined;
 }

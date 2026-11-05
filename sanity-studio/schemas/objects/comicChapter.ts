@@ -1,7 +1,8 @@
 import { defineArrayMember, defineField, defineType } from 'sanity';
 import { PageItemNav } from '../../components/PageItemNav';
 import { PagesInput } from '../../components/PagesInput';
-import { altTextRule, duplicateChapterMessage } from '../../lib/comic-pages';
+import { PageGridItem, SpreadInput } from '../../components/SpreadInput';
+import { altTextRule, duplicateChapterMessage, OPEN_ON_FIELD, pageGridSubtitle, SPREAD_FIELD } from '../../lib/comic-pages';
 import { ITEM_NAMES } from '../../lib/editor-content';
 
 // A chapter of a comic series and its pages, in reading order.
@@ -48,6 +49,8 @@ export default defineType({
       type: 'string',
       description: "Just the name, for example The Long Road. The site adds 'Chapter 2' for you.",
     }),
+    // Two-page spreads: how pages pair up on a wide screen (docs/specs/comic-reader-spread-and-flip.md AC-1).
+    defineField({ ...OPEN_ON_FIELD, options: { ...OPEN_ON_FIELD.options, list: [...OPEN_ON_FIELD.options.list] } }),
     defineField({
       name: 'pages',
       title: 'Pages',
@@ -58,14 +61,14 @@ export default defineType({
       of: [
         defineArrayMember({
           type: 'image',
-          components: { input: PageItemNav },
+          components: { input: PageItemNav, item: PageGridItem },
           // Pages without alt text are marked in the grid (design: "Missing alt text").
           preview: {
-            select: { media: 'asset', altText: 'altText', filename: 'asset.originalFilename' },
-            prepare: ({ media, altText, filename }) => ({
+            select: { media: 'asset', altText: 'altText', spread: 'spread', filename: 'asset.originalFilename' },
+            prepare: ({ media, altText, spread, filename }) => ({
               media,
               title: filename,
-              subtitle: altText && String(altText).trim() ? undefined : '⚠ Alt text',
+              subtitle: pageGridSubtitle({ spread: Boolean(spread), altText: altText ? String(altText) : undefined }),
             }),
           },
           fields: [
@@ -78,6 +81,8 @@ export default defineType({
               // A warning, so Publish stays available (AC-8).
               validation: (Rule) => altTextRule(Rule),
             }),
+            // The note about a page left alone, or the question about a wide picture, shows under it (PageItemNav).
+            defineField({ ...SPREAD_FIELD, components: { input: SpreadInput } }),
             defineField({
               name: 'panels',
               title: 'Panels',

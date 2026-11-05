@@ -43,7 +43,7 @@ const links = [sheet.backToPage, { label: 'Back to series', path: sheet.seriesPa
 
     <ul class="sheet__pictures" aria-label="Pages">
       {sheet.pictures.map((p) => (
-        <li id={p.anchor} class={p.marked ? 'is-marked' : undefined}>
+        <li id={p.anchor} class={[p.marked && 'is-marked', p.spread && 'is-spread'].filter(Boolean).join(' ') || undefined}>
           <a href={p.path} aria-label={p.name}>
             <span class="sheet__frame" style={`aspect-ratio: ${p.image.width} / ${p.image.height};`}>
               <img
@@ -59,7 +59,7 @@ const links = [sheet.backToPage, { label: 'Back to series', path: sheet.seriesPa
             </span>
           </a>
           <!-- Under the picture, outside its link: the link's name already says it. -->
-          <span class="sheet__number" aria-hidden="true">{p.marked ? `${p.number} · You were here` : p.number}</span>
+          <span class="sheet__number" aria-hidden="true">{[p.number, p.spread && 'spread', p.marked && 'You were here'].filter(Boolean).join(' · ')}</span>
         </li>
       ))}
     </ul>
@@ -184,6 +184,8 @@ const links = [sheet.backToPage, { label: 'Back to series', path: sheet.seriesPa
   }
   /* The marked picture lands below the top of the window, not under its edge. */
   .sheet__pictures li { scroll-margin-top: 1.5rem; }
+  /* A two-page spread takes two places (docs/specs/comic-reader-spread-and-flip.md AC-9). */
+  .sheet__pictures li.is-spread { grid-column: span 2; }
   .sheet__pictures a {
     display: block;
     color: var(--color-ink);

@@ -1,5 +1,9 @@
 ---
 status: draft
+tests-commit: 361da635dbf727c09cabbdc05507b53bc424b53d
+unlocks:
+  - tests/e2e/comic-spread-and-flip.spec.ts: three corrections found by the first run against the build. The pair-layout accessibility check counted a moderate heading-order finding in the site's footer; it now counts serious and critical findings, like the other reader tests. The sideways-phone check wanted the spread within 40 px of the window's width, but the site's side margins are wider; it now compares with the reader's own width. The flip recorder read a transition's types before the page's handler had added them; it now reads them once the transition is ready. The criteria are unchanged.
+  - tests/unit/comic-spreads-edges.test.ts (new): mutation testing showed nothing checked a pair's announcement in a series without chapter names, blank or missing alt text in a pair, a page alone that isn't before a spread, or reading a picture's size from its asset id. Added; the criteria are unchanged.
 ---
 
 # Comic reader: two-page spreads and the page-flip
@@ -40,13 +44,13 @@ Source: S1.n and S2.n are the two stories' nth criteria; design and docs section
 ## Scope
 
 - In:
-  - `src/lib/comics/spreads.ts` (new, pure): the groups, the wide view's links, controls, location and announcements, the turn's direction, and the editor's notes.
+  - `src/lib/comics/pairing.ts` (new, pure, no imports): the groups, shared with the editor. `src/lib/comics/spreads.ts` (new, pure): the wide view's links, controls, location and announcements, and the turn's direction.
   - `src/lib/comics/model.ts`: `openOn` on chapters and `spread` on pages; the location line for a spread. `src/lib/comics/sharing.ts`: the announcement for a spread. `src/lib/comics/navigation.ts`: the sheet's spread pictures.
   - `src/lib/comics/source.ts`: `openOn` and `spread` from Sanity.
   - `src/components/pages/ReaderPage.astro`: the group's pages, both sets of links, the width test, the page-flip. `src/components/comics/ContactSheet.astro`: wide pictures.
-  - `sanity-studio/schemaTypes/documents/comicChapter.ts`, `sanity-studio/lib/comic-pages.ts`, `sanity-studio/components/PageItemNav.tsx`: the fields, the grid mark and the notes. `sanity-studio/lib/preview.ts`, `sanity-studio/components/PreviewPane.tsx`: the frame's height.
+  - `sanity-studio/schemas/objects/comicChapter.ts`, `sanity-studio/lib/comic-pages.ts`, `sanity-studio/components/SpreadInput.tsx` (new), `sanity-studio/components/PagesInput.tsx`: the fields, the grid mark and width, and the notes. `sanity-studio/lib/preview.ts`, `sanity-studio/components/PreviewPane.tsx`: the frame's height.
   - `tests/fixtures/comics.ts`: a series with spreads, **Open on** left, and a pair holding the newest page.
-  - Tests: `tests/unit/comic-spreads.test.ts`, `tests/e2e/comic-spread-and-flip.spec.ts`. The other comic e2e files check one page at a time, so they run in a window narrower than the width test (recorded under those specs' unlocks).
+  - Tests: `tests/unit/comic-spreads.test.ts`, `tests/e2e/comic-spread-and-flip.spec.ts`. The other comic e2e files check one page at a time, so they run in a window narrower than the width test (recorded under those specs' unlocks). `docs/tutorials/reading-comics.md`: the runner's browser is laptop-sized, so the tutorial turns by pairs.
 - Out: panels (stories 3 to 5).
 
 ## APIs and assumptions
@@ -70,3 +74,6 @@ Source: S1.n and S2.n are the two stories' nth criteria; design and docs section
 - The wide view's links are computed for every page, not only the first of a group, so a shared link to a right-hand page works without a redirect.
 - The flip's direction is decided as the old page leaves (`pageswap`), from whether the new address is the page's wide or narrow previous or next link; any other address skips the flip.
 - The preview's **Computer** frame is capped at the height of a laptop (800 px) for chapters only; other items keep the pane's full height.
+- Each reader page puts the wide controls before the narrow ones. Only one set shows, and the hidden set is out of the Tab order and the accessibility tree; tools that find a control by its visible word and take the first match (the tutorial runner) find the laptop's.
+- The page-flip turns snapshots of the pages with `rotateY`, in two halves: the leaving page turns edge-on, then the arriving one turns flat. A page that has no partner on the other side (a page alone, a spread) turns the same way on its own.
+- A spread's page in the editor's grid spans two columns by a style that matches a marked tile (`:has()`), since the grid's cells belong to Sanity.

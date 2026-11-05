@@ -51,12 +51,12 @@ export function shareTitle(entry: ReaderPage): string {
 }
 
 /** "Chapter 2: The Long Road, page 4 of 12.", or "Page 4 of 12." */
-function placeLine(entry: ReaderPage): string {
-  const of = `${entry.pageNumber} of ${entry.pageCount}.`;
+export function placeLine(entry: ReaderPage): string {
+  const of = `${entry.pageNumber} of ${entry.pageCount}${entry.page.spread ? ', two-page spread' : ''}.`;
   return showsChapterList(entry.series) ? `${chapterLabel(entry.chapter)}, page ${of}` : `Page ${of}`;
 }
 
-const joined = (...parts: (string | undefined)[]) => parts.filter(Boolean).join(' ');
+export const joined = (...parts: (string | undefined)[]) => parts.filter(Boolean).join(' ');
 
 /** What a screen reader hears when a page opens. */
 export function pageAnnouncement(entry: ReaderPage): string {

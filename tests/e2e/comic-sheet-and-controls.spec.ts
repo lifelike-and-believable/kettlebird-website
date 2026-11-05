@@ -18,7 +18,7 @@ test('comic-reader-sheet-and-controls#AC-1 controls', async ({ page }) => {
     await expect(page.getByRole('navigation', { name: 'Page navigation' }).getByText(caption, { exact: true })).toBeVisible();
   }
   // Icons are drawn and hidden from screen readers.
-  const icons = page.locator('.reader__controls svg');
+  const icons = page.getByRole('navigation', { name: 'Page navigation' }).locator('svg');
   await expect(icons).toHaveCount(4);
   for (const icon of await icons.all()) await expect(icon).toHaveAttribute('aria-hidden', 'true');
   // All four the same width and colour.
@@ -34,7 +34,7 @@ test('comic-reader-sheet-and-controls#AC-1 controls', async ({ page }) => {
 
 test('comic-reader-sheet-and-controls#AC-1 the full name shows on hover and on focus', async ({ page }) => {
   await page.goto('/comics/kettle-tales/1/2');
-  const tip = page.locator('.reader__control-tip', { hasText: 'Newest page of the series' });
+  const tip = page.getByRole('navigation', { name: 'Page navigation' }).locator('.reader__control-tip', { hasText: 'Newest page of the series' });
   await expect(tip).toBeHidden();
   await page.getByRole('link', { name: 'Newest page of the series' }).hover();
   await expect(tip).toBeVisible();

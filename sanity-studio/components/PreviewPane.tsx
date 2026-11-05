@@ -14,8 +14,7 @@ import {
   scaleToFit,
   SECRET_RENEW_MS,
   SETTLE_MS,
-  WIDTHS,
-} from '../lib/preview';
+  WIDTHS, previewFrameHeight } from '../lib/preview';
 
 type Width = keyof typeof WIDTHS;
 type Doc = { _id: string; _type: string; _rev?: string; pages?: { _key?: string }[] } | null | undefined;
@@ -170,7 +169,7 @@ export function PreviewPane({ documentId, schemaType, document }: Props) {
                   onLoad={onLoad}
                   style={{
                     width: pageWidth,
-                    height: `calc(100% / ${scale})`,
+                    height: previewFrameHeight(schemaType.name, width, scale),
                     border: 0,
                     background: 'white',
                     transform: `scale(${scale})`,

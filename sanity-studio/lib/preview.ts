@@ -69,3 +69,10 @@ export function pageFromPath(path: string | undefined, pages: { _key?: string }[
   const index = pages?.findIndex((p) => p._key === key) ?? -1;
   return index === -1 ? undefined : index + 1;
 }
+
+/** The frame's height: a chapter's computer preview is capped at a laptop's 800 px, so it's never
+ * taller than wide and shows pages in pairs (docs/specs/comic-reader-spread-and-flip.md AC-12). */
+export function previewFrameHeight(type: string, width: keyof typeof WIDTHS, scale: number): string {
+  const fill = `calc(100% / ${scale})`;
+  return type === 'comicChapter' && width === 'computer' ? `min(${fill}, 800px)` : fill;
+}

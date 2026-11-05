@@ -2,7 +2,7 @@
 // From Sanity normally; from tests/fixtures/comics.ts when KETTLEBIRD_FIXTURES=1 (tests and tutorials).
 // Spec: docs/specs/comic-reader-start-and-turn.md.
 import { sanityClient, urlFor } from '../sanity';
-import type { ComicImage, ComicSeries, SeriesStatus, SeriesType } from './model';
+import type { ComicImage, ComicSeries, OpenOn, SeriesStatus, SeriesType } from './model';
 
 // Widths the reader requests from the image service; never the print-resolution original.
 const PAGE_WIDTHS = [480, 800, 1200, 1600];
@@ -23,15 +23,15 @@ export interface SanitySeries {
   status?: SeriesStatus;
   type?: SeriesType;
   coverImage?: SanityImage;
-  chapters?: { number?: number; title?: string; pages?: (SanityImage & { altText?: string })[] }[];
+  chapters?: { number?: number; title?: string; openOn?: OpenOn; pages?: (SanityImage & { altText?: string; spread?: boolean })[] }[];
 }
 
 export const COMIC_SERIES_WITH_CHAPTERS_QUERY = `*[_type == "comicSeries"] | order(title asc) {
   title, slug, description, status, type,
   coverImage { asset, hotspot, "dimensions": asset->metadata.dimensions },
   "chapters": *[_type == "comicChapter" && series._ref == ^._id] | order(number asc) {
-    number, title,
-    "pages": pages[] { asset, altText, "dimensions": asset->metadata.dimensions }
+    number, title, openOn,
+    "pages": pages[] { asset, altText, spread, "dimensions": asset->metadata.dimensions }
   }
 }`;
 
@@ -66,10 +66,12 @@ export function fromSanity(raw: SanitySeries): ComicSeries {
     chapters: (raw.chapters ?? []).map((c) => ({
       number: c.number ?? 0,
       title: c.title || undefined,
+      // Two-page spreads (docs/specs/comic-reader-spread-and-flip.md AC-1): the right unless Star chose the left.
+      openOn: c.openOn === 'left' ? 'left' : 'right',
       pages: (c.pages ?? []).flatMap((p) => {
         const image = sanityImage(p, PAGE_WIDTHS);
         const thumb = sanityImage(p, THUMB_WIDTHS);
-        return image ? [{ image: { ...image, thumb: thumb && { src: thumb.src, srcset: thumb.srcset } }, altText: p.altText }] : [];
+        return image ? [{ image: { ...image, thumb: thumb && { src: thumb.src, srcset: thumb.srcset } }, altText: p.altText, spread: p.spread === true }] : [];
       }),
     })),
   };
