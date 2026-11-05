@@ -1,6 +1,6 @@
 ---
 id: design-portfolio-full-screen
-status: draft
+status: approved
 derived-from:
   - story-portfolio-full-screen-view-a-piece-full-screen: 19f9bca00ea0
   - story-portfolio-full-screen-move-between-pieces-full-screen: 496c24c72cca
@@ -136,4 +136,4 @@ A walkthrough for persona-fan (2026-11-05), which checked both stories' criteria
   - large text;
   - the corner map on laptops only;
   - mock-ups 5, 6 and 9 matched to the text.
-- **For the lead:** story 1 says full screen "shows only the piece"; this design shows the title, count and controls in bars around it, which a tap hides. Confirm that reading when merging, or ask for the bars to go.
+- **The lead (2026-11-05)** approved the bars around the piece, which a tap hides, as the reading of story 1's "shows only the piece".
