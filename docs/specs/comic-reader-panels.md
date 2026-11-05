@@ -4,6 +4,7 @@ tests-commit: a20fcf5ce30fd48961ab263d0ad924b0861416ca
 unlocks:
   - tests/e2e/comic-panels-edges.spec.ts (new): a screenshot of the build showed that on a comic's newest page, Next (unusable for pages) couldn't step through the page's remaining panels. Added; the criteria are unchanged.
   - tests/unit/comic-panels-edges.test.ts (new): mutation testing showed nothing checked finding panels on an unreadable or blank picture, a dark background, a gutter just too thin or too marked, exactly 12 panels, the 3% and 70% limits, the editor's steps with nothing selected or at the ends of the order, picking outside the order, undoing a confirm, a panel with no width, or a tall panel's frame. Added; the criteria are unchanged.
+  - tests/e2e/comic-panels.spec.ts: the AC-12 check measured the picture straight after **Panel by panel** was pressed, while the view's 0.3 s zoom (AC-14) could still be on its first frame, so it failed about one run in fifteen. It now waits for the picture to grow. The criteria are unchanged.
 ---
 
 # Comic reader: panels
