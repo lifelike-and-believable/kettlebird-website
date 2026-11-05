@@ -1,6 +1,6 @@
 ---
 id: story-portfolio-full-screen-view-a-piece-full-screen
-status: draft
+status: approved
 derived-from:
   - epic-portfolio-full-screen#outcome: ff9757299e73
   - requirements-portfolio#REQ-portfolio-4: 136ce70ca3a4

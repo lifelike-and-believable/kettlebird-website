@@ -1,6 +1,6 @@
 ---
 id: story-portfolio-full-screen-move-between-pieces-full-screen
-status: draft
+status: approved
 derived-from:
   - epic-portfolio-full-screen#outcome: ff9757299e73
   - persona-fan#goals: 2b047e4cae5d
