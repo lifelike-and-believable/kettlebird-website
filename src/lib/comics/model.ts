@@ -41,6 +41,10 @@ export interface ComicSeries {
   status?: SeriesStatus;
   type?: SeriesType;
   cover?: ComicImage;
+  /** How it reads (docs/specs/comic-reader-comic-settings.md): two pages side by side on a wide screen. Off when missing. */
+  twoUp?: boolean;
+  /** How it reads: turn pages with the page-flip. Off when missing. */
+  pageFlip?: boolean;
   chapters: ComicChapter[];
 }
 

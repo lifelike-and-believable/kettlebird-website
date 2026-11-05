@@ -8,6 +8,7 @@ import {
   readerPages,
   showsChapterList,
   visibleChapters,
+  type ComicSeries,
   type ReaderPage,
 } from './model';
 import { playControls, type PlayControl } from './navigation';
@@ -15,6 +16,11 @@ import { joined, pageAnnouncement } from './sharing';
 import { pageGroups, type GroupKind } from './pairing';
 
 export { aloneBeforeSpread, pageGroups, type GroupKind, type PageGroup } from './pairing';
+
+/** A comic's How it reads settings (docs/specs/comic-reader-comic-settings.md AC-1): off unless set. */
+export function readsAs(series: ComicSeries): { twoUp: boolean; pageFlip: boolean } {
+  return { twoUp: series.twoUp === true, pageFlip: series.pageFlip === true };
+}
 
 /** The width test: two pages side by side when it matches (AC-3). */
 export const WIDE_MEDIA = '(min-width: 62.5em) and (orientation: landscape)';
