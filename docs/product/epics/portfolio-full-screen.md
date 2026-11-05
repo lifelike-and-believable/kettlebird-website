@@ -1,6 +1,6 @@
 ---
 id: epic-portfolio-full-screen
-status: draft
+status: approved
 derived-from:
   - requirements-portfolio#REQ-portfolio-4: 136ce70ca3a4
   - persona-fan#goals: 2b047e4cae5d
