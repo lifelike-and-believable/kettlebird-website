@@ -25,7 +25,7 @@ export interface SanitySeries {
   coverImage?: SanityImage;
   twoUp?: unknown;
   pageFlip?: unknown;
-  chapters?: { number?: number; title?: string; openOn?: OpenOn; pages?: (SanityImage & { altText?: string; spread?: boolean })[] }[];
+  chapters?: { number?: number; title?: string; openOn?: OpenOn; pages?: (SanityImage & { altText?: string; spread?: boolean; panels?: { x?: number; y?: number; width?: number; height?: number }[]; panelsBy?: string })[] }[];
 }
 
 export const COMIC_SERIES_WITH_CHAPTERS_QUERY = `*[_type == "comicSeries"] | order(title asc) {
@@ -33,7 +33,7 @@ export const COMIC_SERIES_WITH_CHAPTERS_QUERY = `*[_type == "comicSeries"] | ord
   coverImage { asset, hotspot, "dimensions": asset->metadata.dimensions },
   "chapters": *[_type == "comicChapter" && series._ref == ^._id] | order(number asc) {
     number, title, openOn,
-    "pages": pages[] { asset, altText, spread, "dimensions": asset->metadata.dimensions }
+    "pages": pages[] { asset, altText, spread, panels[] { x, y, width, height }, panelsBy, "dimensions": asset->metadata.dimensions }
   }
 }`;
 
@@ -57,6 +57,13 @@ function withSocial(cover: ComicImage | undefined, image: SanityImage | undefine
   return { ...cover, social: urlFor(image).ignoreImageParams().width(1200).height(630).fit('fill').bg('f5f1e8').format('jpg').url() };
 }
 
+// A page's panels and who set them (docs/specs/comic-reader-panels.md AC-1).
+function panelsOf(p: { panels?: { x?: number; y?: number; width?: number; height?: number }[]; panelsBy?: string }) {
+  const panelsBy: 'site' | 'star' | undefined = p.panelsBy === 'site' || p.panelsBy === 'star' ? p.panelsBy : undefined;
+  const panels = (p.panels ?? []).map((q) => ({ x: Number(q.x) || 0, y: Number(q.y) || 0, width: Number(q.width) || 0, height: Number(q.height) || 0 }));
+  return panelsBy ? { panels, panelsBy } : {};
+}
+
 export function fromSanity(raw: SanitySeries): ComicSeries {
   return {
     title: raw.title,
@@ -76,7 +83,7 @@ export function fromSanity(raw: SanitySeries): ComicSeries {
       pages: (c.pages ?? []).flatMap((p) => {
         const image = sanityImage(p, PAGE_WIDTHS);
         const thumb = sanityImage(p, THUMB_WIDTHS);
-        return image ? [{ image: { ...image, thumb: thumb && { src: thumb.src, srcset: thumb.srcset } }, altText: p.altText, spread: p.spread === true }] : [];
+        return image ? [{ image: { ...image, thumb: thumb && { src: thumb.src, srcset: thumb.srcset } }, altText: p.altText, spread: p.spread === true, ...panelsOf(p) }] : [];
       }),
     })),
   };

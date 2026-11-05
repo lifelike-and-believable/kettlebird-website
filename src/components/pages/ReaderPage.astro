@@ -18,6 +18,7 @@ import { allPagesHref, playControls, type ControlKind, type PlayControl } from '
 import { pageAnnouncement, pagePreview, shareTitle } from '../../lib/comics/sharing';
 import { readsAs, wideView, type WideView } from '../../lib/comics/spreads';
 import { previewTurn } from '../../lib/preview/turns';
+import { offersPanels, pagePanels } from '../../lib/comics/panels';
 
 
 const { entry, nextImage, preview: inPreview = false, previewUrl } = Astro.props as {
@@ -64,6 +65,9 @@ const sides = wide.kind === 'pair' ? ['left', 'right'] : [wide.kind === 'spread'
 const nextWide = reads.twoUp && wide.nextPath ? readerPages(entry.series).find((e) => e.path === wide.nextPath) : undefined;
 const nextWideImages = nextWide && !inPreview ? wideView(nextWide).pages.map((p) => p.page.image) : [];
 const allPages = allPagesHref(entry);
+// Panel by panel (docs/specs/comic-reader-panels.md): offered in chapters with panels, shown by the script.
+const panelled = offersPanels(entry);
+const panels = pagePanels(entry.page);
 const preview = { ...pagePreview(entry, Astro.site!.href), type: 'article' };
 // Drawn arrowheads: phones draw characters like ⏭ as emoji of their own (design, Layout).
 const ICONS: Record<ControlKind, { viewBox: string; d: string }> = {
@@ -118,9 +122,20 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
       });
     </script>
   )}
-  <div class:list={['reader', { 'reader--pairs': reads.twoUp }]} data-pairs={reads.twoUp ? '' : undefined}>
+  <div class:list={['reader', { 'reader--pairs': reads.twoUp, 'reader--panelled': panelled }]} data-pairs={reads.twoUp ? '' : undefined}>
     <div class="reader__bar">
       <a href={back} class="reader__back">Back to series</a>
+      {panelled && (
+        <button type="button" class="reader__panels" data-panels-toggle aria-pressed="false" hidden>
+          <svg viewBox="0 0 16 22" width="14" height="20" aria-hidden="true" focusable="false">
+            <rect x="1" y="1" width="14" height="20" fill="none" stroke="currentColor" stroke-width="2" />
+            <rect x="3" y="3" width="10" height="7" fill="currentColor" />
+            <rect x="3" y="12" width="4" height="7" fill="none" stroke="currentColor" stroke-width="1.5" />
+            <rect x="9" y="12" width="4" height="7" fill="none" stroke="currentColor" stroke-width="1.5" />
+          </svg>
+          Panel by panel
+        </button>
+      )}
       {allPages && (
         <a href={allPages} class="reader__all" aria-label="All pages in this chapter">
           <span class="reader__grid" aria-hidden="true">{Array.from({ length: 9 }, () => <i></i>)}</span>
@@ -146,10 +161,12 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
         return (
           <div
             class:list={['reader__page', current ? 'is-current' : 'is-other', { 'is-spread': p.page.spread }]}
+            data-panels={current && panelled ? JSON.stringify(panels) : undefined}
             data-side={sides[i]}
             style={`aspect-ratio: ${img.width} / ${img.height}; --page-ratio: ${(img.width / img.height).toFixed(4)};`}
           >
             <p class="reader__loading">Loading page… If it doesn't appear, try refreshing.</p>
+            {current && panelled && <span class="reader__panel-mask" aria-hidden="true"></span>}
             <img
               src={img.src}
               srcset={img.srcset}
@@ -263,6 +280,7 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
   <script>
     import { announcesOnOpen, focusAfterTurn, type NavigationKind, type RememberedTurn } from '../../lib/comics/sharing';
     import { turnDirection, WIDE_MEDIA } from '../../lib/comics/spreads';
+    import { panelAnnouncement, panelFrame, panelsOn, PANELS_OFF, type Panel } from '../../lib/comics/panels';
 
     // Two pages side by side when the width test matches (comic-reader-spread-and-flip AC-3); the
     // styles use the same test, so this picks the links that show.
@@ -276,15 +294,22 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
     const link = (which: 'previous' | 'next') =>
       document.querySelector<HTMLAnchorElement>(`[data-view="${view()}"] [data-turn="${which}"]`);
     const zoomed = () => (window.visualViewport?.scale ?? 1) > 1.01;
+    /** Set by panel by panel: takes a turn itself (true), or lets the page turn (false). */
+    let panelTurn: ((which: 'previous' | 'next') => boolean) | undefined;
+    const turnTo = (which: 'previous' | 'next') => {
+      if (panelTurn?.(which)) return;
+      const target = link(which);
+      if (target) location.assign(target.href);
+    };
 
     document.addEventListener('keydown', (e) => {
       if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey || zoomed()) return;
       const t = e.target as HTMLElement | null;
       if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
-      const target = e.key === 'ArrowRight' ? link('next') : e.key === 'ArrowLeft' ? link('previous') : null;
-      if (target) {
+      const which = e.key === 'ArrowRight' ? 'next' : e.key === 'ArrowLeft' ? 'previous' : null;
+      if (which && (link(which) || panelTurn)) {
         e.preventDefault();
-        location.assign(target.href); // not a click: arrow keys don't move focus (design-comic-share-and-announce)
+        turnTo(which); // not a click: arrow keys don't move focus (design-comic-share-and-announce)
       }
     });
 
@@ -300,8 +325,7 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
       start = null;
       // A turn needs a clearly horizontal swipe; mostly vertical movement is scrolling.
       if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy) * 1.5 || zoomed()) return;
-      const to = dx < 0 ? link('next') : link('previous');
-      if (to) location.assign(to.href);
+      turnTo(dx < 0 ? 'next' : 'previous');
     });
 
     // After a turn with a control, focus that control on the new page; announce each page as it
@@ -338,11 +362,171 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
     });
 
     const announce = document.querySelector<HTMLElement>('[data-announce]');
+    /** Added to the page's announcement when it opens panel by panel. */
+    let panelSuffix = '';
     if (announce && announcesOnOpen(navigation)) {
       const fill = () =>
-        setTimeout(() => { announce.textContent = (view() === 'wide' ? announce.dataset.textWide : announce.dataset.text) ?? ''; }, 500);
+        setTimeout(() => {
+          const text = (view() === 'wide' ? announce.dataset.textWide : announce.dataset.text) ?? '';
+          announce.textContent = panelSuffix ? `${text} ${panelSuffix}` : text;
+        }, 500);
       if (document.readyState === 'complete') fill();
       else window.addEventListener('load', fill, { once: true });
+    }
+
+    // Panel by panel (docs/specs/comic-reader-panels.md AC-11 to AC-15): one page at a time, the
+    // current panel enlarged in the page area. The choice is kept in the browser; the panel, in the
+    // page's history entry; a turn to another page says where to open it.
+    const PANELS_KEY = 'kb-panels';
+    const ARRIVE_KEY = 'kb-panel-arrive';
+    const toggle = document.querySelector<HTMLButtonElement>('[data-panels-toggle]');
+    const sheet = document.querySelector<HTMLElement>('.reader__page.is-current[data-panels]');
+    if (toggle && sheet) {
+      const reader = document.querySelector<HTMLElement>('.reader')!;
+      const img = sheet.querySelector<HTMLImageElement>('img')!;
+      const mask = sheet.querySelector<HTMLElement>('.reader__panel-mask')!;
+      const panels = JSON.parse(sheet.dataset.panels ?? '[]') as Panel[];
+      const headings = [...document.querySelectorAll<HTMLElement>('.reader__location')];
+      headings.forEach((h) => (h.dataset.base = h.textContent ?? ''));
+      const where = (href: string) => {
+        const u = new URL(href, location.href);
+        return u.pathname + u.search;
+      };
+      const stored = (key: string, value?: string) => {
+        try {
+          if (value === undefined) return localStorage.getItem(key);
+          if (value) localStorage.setItem(key, value);
+          else localStorage.removeItem(key);
+        } catch {
+          // Remembering is a convenience only.
+        }
+        return null;
+      };
+      let on = false;
+      let panel = 0;
+      const offered = () => !(pairs && wideScreen.matches);
+      const say = (text: string) => {
+        if (announce) announce.textContent = text;
+      };
+      const place = () => {
+        if (!on || !panels.length) {
+          img.style.transform = '';
+          mask.hidden = true;
+          return;
+        }
+        const w = sheet.clientWidth;
+        const h = sheet.clientHeight;
+        const p = panels[panel];
+        const f = panelFrame(p, w, h);
+        img.style.transform = `translate(${f.x}px, ${f.y}px) scale(${f.scale})`;
+        mask.hidden = false;
+        Object.assign(mask.style, {
+          left: `${(p.x / 100) * w * f.scale + f.x}px`,
+          top: `${(p.y / 100) * h * f.scale + f.y}px`,
+          width: `${(p.width / 100) * w * f.scale}px`,
+          height: `${(p.height / 100) * h * f.scale}px`,
+        });
+      };
+      const label = () => {
+        const suffix = panels.length ? ` · panel ${panel + 1} of ${panels.length}` : ' · whole page';
+        headings.forEach((h) => (h.textContent = on ? `${h.dataset.base}${suffix}` : (h.dataset.base ?? '')));
+        // The controls' full names say whether they step to a panel or a page.
+        for (const which of ['previous', 'next'] as const) {
+          const within = on && panels.length > 0 && (which === 'next' ? panel + 1 < panels.length : panel > 0);
+          document.querySelectorAll<HTMLAnchorElement>(`[data-control="${which}"]`).forEach((a) => {
+            // A control with no page to go to still steps through this page's panels.
+            if (!a.hasAttribute('href')) {
+              a.classList.toggle('is-off', !within);
+              if (within) a.removeAttribute('aria-disabled');
+              else a.setAttribute('aria-disabled', 'true');
+              a.tabIndex = within ? 0 : -1;
+            }
+            const word = which === 'next' ? 'Next' : 'Previous';
+            const name = on ? `${word} ${within ? 'panel' : 'page'}` : (a.dataset.name ?? a.getAttribute('aria-label') ?? '');
+            a.dataset.name ??= a.getAttribute('aria-label') ?? '';
+            a.setAttribute('aria-label', name);
+            const tip = a.querySelector('.reader__control-tip');
+            if (tip) tip.textContent = name;
+          });
+        }
+      };
+      const show = () => {
+        reader.classList.toggle('is-panels', on);
+        toggle.setAttribute('aria-pressed', String(on));
+        label();
+        place();
+        if (on) history.replaceState({ ...(history.state ?? {}), panel }, '');
+      };
+      const setOn = (value: boolean, announceIt: boolean) => {
+        on = value && offered();
+        stored(PANELS_KEY, value ? '1' : '');
+        show();
+        if (announceIt) say(on ? (panels.length ? panelsOn(panel, panels.length) : `Panel by panel. ${PANELS_OFF}.`) : PANELS_OFF);
+      };
+      toggle.addEventListener('click', () => setOn(!on, true));
+      const update = () => {
+        toggle.hidden = !offered();
+        if (!offered() && on) {
+          on = false;
+          show();
+        } else if (offered() && !on && stored(PANELS_KEY) === '1') {
+          on = true;
+          show();
+        }
+      };
+      wideScreen.addEventListener('change', update);
+      window.addEventListener('resize', place);
+      img.addEventListener('load', place);
+
+      // Where to open: the panel kept for this page (a refresh), or where a turn asked, or the first.
+      let arrive: { to: string; at: 'first' | 'last' } | undefined;
+      try {
+        arrive = JSON.parse(sessionStorage.getItem(ARRIVE_KEY) ?? 'null') ?? undefined;
+        sessionStorage.removeItem(ARRIVE_KEY);
+      } catch {
+        arrive = undefined;
+      }
+      const kept = (history.state as { panel?: number } | null)?.panel;
+      if (typeof kept === 'number' && kept < panels.length) panel = kept;
+      else if (arrive?.to === location.pathname + location.search && arrive.at === 'last') panel = Math.max(0, panels.length - 1);
+      on = stored(PANELS_KEY) === '1' && offered();
+      toggle.hidden = !offered();
+      show();
+      if (on) panelSuffix = panels.length ? panelAnnouncement(panel, panels.length) : '';
+
+      const leave = (which: 'previous' | 'next') => {
+        const target = link(which);
+        if (!target) return;
+        try {
+          sessionStorage.setItem(ARRIVE_KEY, JSON.stringify({ to: where(target.href), at: which === 'next' ? 'first' : 'last' }));
+        } catch {
+          // Without storage, the page opens at its first panel.
+        }
+      };
+      panelTurn = (which) => {
+        if (!on) return false;
+        const within = panels.length > 0 && (which === 'next' ? panel + 1 < panels.length : panel > 0);
+        if (within) {
+          panel += which === 'next' ? 1 : -1;
+          show();
+          say(panelAnnouncement(panel, panels.length));
+          return true;
+        }
+        leave(which);
+        return false;
+      };
+      document.querySelectorAll<HTMLAnchorElement>('a[data-control="previous"], a[data-control="next"]').forEach((a) => {
+        const which = a.dataset.control as 'previous' | 'next';
+        const step = (e: Event) => {
+          if (!on) return;
+          if (panelTurn?.(which)) e.preventDefault();
+        };
+        a.addEventListener('click', step);
+        // A control without an address isn't activated by Enter on its own.
+        a.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' && !a.hasAttribute('href')) step(e);
+        });
+      });
     }
 
     // Share this page: the share menu on touch screens, otherwise copy; copy by hand if that fails.
@@ -560,6 +744,42 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
       max-height: calc(100vh - 12.5rem);
       max-width: min(100%, calc((100vh - 12.5rem) * var(--page-ratio, 1.3333)));
     }
+  }
+
+  /* Panel by panel (comic-reader-panels AC-11, AC-12, AC-14). */
+  .reader__panels {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 44px;
+    padding: 0.3rem 0.6rem;
+    border: 2px solid var(--color-ink);
+    background: var(--color-beige);
+    font: 700 1rem 'Nunito', sans-serif;
+    color: var(--color-ink);
+    cursor: pointer;
+  }
+  .reader__panels[hidden] { display: none; }
+  .reader__panels[aria-pressed='true'] { background: var(--color-ink); color: var(--color-beige); }
+  @media (max-width: 699px) {
+    /* The location line keeps two lines, so the page doesn't move from panel to panel. */
+    .reader--panelled .reader__location { min-height: 2.6em; }
+  }
+  @media (min-width: 700px) {
+    .reader__panels { order: 2; }
+  }
+  .reader.is-panels .reader__page.is-current { overflow: hidden; background: var(--color-paper-dark); }
+  .reader.is-panels .reader__page.is-current img { transform-origin: 0 0; transition: transform 0.3s ease; }
+  .reader__panel-mask {
+    position: absolute;
+    z-index: 1;
+    box-shadow: 0 0 0 200vmax var(--color-paper-dark);
+    pointer-events: none;
+    transition: all 0.3s ease;
+  }
+  .reader__panel-mask[hidden] { display: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .reader.is-panels .reader__page.is-current img, .reader__panel-mask { transition: none; }
   }
 
   .reader__loading {
