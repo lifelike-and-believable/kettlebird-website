@@ -14,6 +14,11 @@ derived-from:
   - design-comic-spread-and-flip#settings-per-comic: 64a1be41076a
   - story-comic-reader-flip-and-panels-comic-settings: 91b08e4f2d65
   - story-comic-reader-flip-and-panels-two-page-spread: 3bd1fa1fe9f5
+  - design-comic-panels#flow-star: c8aa7ce926ae
+  - design-comic-panels#what-star-enters: 309998a120e2
+  - design-comic-panels#how-it-works: cce393bb0002
+  - story-comic-reader-flip-and-panels-panels-found: 61aa1e576413
+  - story-comic-reader-flip-and-panels-correct-the-panels: 0e8299e7679c
 ---
 
 # Publishing comic pages and chapters
@@ -61,7 +66,7 @@ Each page has **Alt text**: a sentence or two about what happens on the page, wh
 2. Type its **Alt text**. Until you do, the panel says "Add alt text so people using screen readers can follow the story. You can still publish."
 3. Use **Next page** and **Previous page** to move through the chapter without closing it. Choose **Done** when you've finished.
 
-Below the alt text is **Panels**, marked "Filled in automatically later". You can leave it alone.
+Below **Two-page spread** is **Panels**: the panels the site found on the page, for fans who read panel by panel. See "Panels", below.
 
 The top of the pages shows how many still need alt text ("3 pages need alt text"), and those pages have a yellow "Alt text" mark. You can publish without it, but readers using screen readers won't be able to follow those pages.
 
@@ -107,6 +112,54 @@ A spread always starts on the left. If the page before it would have been on the
 ### Check it
 
 Changing **Open on** or ticking **Two-page spread** changes no page's link, so the editor doesn't warn you about shared links. To check how a chapter pairs up, choose **Preview**: if the comic has **Two pages side by side** ticked, **Computer** shows pairs, however narrow your editor window is; **Phone** shows one page at a time.
+
+## Panels
+
+Fans can read a page panel by panel, each panel enlarged to fit their screen, whenever the reader shows one page at a time (on a phone, and on a laptop in comics without two pages side by side). The site finds the panels for you; you check them, and fix the few it gets wrong. Your changes are saved as you work and go live when you publish the chapter.
+
+### How panels are found
+
+As soon as a page uploads, the editor looks for the light gutters between its panels and numbers them in reading order: top to bottom, and left to right in each row. On a two-page spread, the middle counts as a gap only if you left a light gap there. A page takes about a second. Each page's tile in the grid says what it found, for example "5 panels", or "Shown whole" for a splash page or a page without clear gutters, which shows whole in panel-by-panel reading.
+
+**Publish** waits while panels are being found ("Finding panels on 3 pages…"), as it does for uploads. If it takes more than 20 seconds, **Publish** works again and those pages go live whole. When their panels arrive, the page says "Panels found after publishing. Publish again to use them."
+
+### Check them
+
+Open a page. Its picture shows each panel as a numbered box, and **Panels**, under **Two-page spread**, says "5 panels, found by the site. Check that they match your page."
+
+- If they're right, choose **They're right**.
+- To move a box, drag it. To resize it, drag one of the handles on its corners and edges.
+- To add a panel, drag on the picture where there's no box, or choose **Add panel** for a box in the middle of the page. It's numbered after the last one. A box smaller than 3% of the page isn't kept.
+- To remove a box, click it and choose **Remove**.
+- To change the reading order, click a box and choose **Earlier** or **Later**; or choose **Set the reading order** and click the boxes in the order they're read, then **Finish order**. **Cancel** leaves the order as it was.
+- To show a page whole in panel-by-panel reading, choose **Show this page whole**. To give it panels again, draw them.
+- **Undo** undoes your last change, back to when you opened the page. Nothing asks before a change, because you can always undo it.
+
+Once you've changed or confirmed a page's panels, they're yours: the site never finds panels on that page again. If you replace the picture, the site finds its panels again when they were the site's; if they were yours, it keeps them and says "The picture changed. Check that your panels still match." While the panels are still the site's, **Find panels again** looks again.
+
+With the keyboard, every box is a button, named for example "Panel 2 of 5":
+
+- Tab to a box. The arrow keys move it a little; Shift with Right or Down makes it wider or taller, and with Left or Up narrower or shorter.
+- [ and ] move it earlier or later. Delete removes it. Ctrl+Z (⌘Z on a Mac) undoes.
+- In **Set the reading order**, Tab to each box in turn and press Enter to number it; Escape cancels.
+- **Add panel**, **Show this page whole** and the other actions are buttons. **Set the reading order** and **Show this page whole** can't be used when a page has no boxes.
+
+### Pages from before panels
+
+A chapter you uploaded before panels existed says "12 pages have no panels yet. Find them, then check them before you publish." Until then, those pages read whole. Choose **Find panels**; the chapter shows "Finding panels: 4 of 12 done." as it works. Then check them as above, and publish.
+
+### See it as fans will
+
+Choose **Preview**, then **Phone**, and choose **Panel by panel** in the preview's reader bar. The preview opens at the page you have open. Links don't work in the preview, so **Next** stops at that page's last panel.
+
+### If panels go wrong
+
+| What you see | What to do |
+|---|---|
+| "No panels found: this page shows whole." | Nothing, if the page is a splash. Otherwise, draw its panels. |
+| "Couldn't look for panels" on a tile, or "Couldn't look for panels on this page." | Draw the panels, or leave the page whole. Publishing isn't affected. |
+| "That box was too small to be a panel." | Draw it bigger. |
+| "Panels found after publishing. Publish again to use them." | Check them, then publish the chapter again. |
 
 ## Publish
 

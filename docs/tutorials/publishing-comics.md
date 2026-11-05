@@ -6,7 +6,7 @@ derived-from:
   - docs-publishing-comics#start-a-new-comic: 9745edae4ffc
   - docs-publishing-comics#add-a-chapter: 6b9730bd5db8
   - docs-publishing-comics#add-pages: 0114dfedb96c
-  - docs-publishing-comics#describe-each-page: c096de4c45a0
+  - docs-publishing-comics#describe-each-page: 788001cac137
   - docs-publishing-comics#publish: 0fb6028735a2
   - docs-publishing-comics#if-links-will-change: 9488ad00a0a3
   - docs-publishing-comics#if-something-goes-wrong: c00d73719809

@@ -66,7 +66,7 @@ rendered from with render.mjs). -->
 5. **Set the reading order** numbers the boxes from scratch: Star clicks them in the order they're read (or tabs to each and presses Enter), and the section counts "3 of 5 numbered" (mock-up 10). **Finish order** keeps the order so far, with the rest after it in their old order; **Cancel** or Escape leaves the order as it was.
 6. **Show this page whole** removes all the boxes, so panel by panel always shows the page whole (mock-up 11).
 7. **Undo** undoes the last change to the panels (Ctrl+Z or ⌘Z on the picture does the same), back to when the page was opened. Nothing asks first, because everything can be undone.
-8. After the first change, the section reads "5 panels, set by you." From then on, panels are never found on that page again. While the panels are still the site's, **Find panels again** looks again, for example after the picture was replaced.
+8. After the first change, the section reads "5 panels, set by you." From then on, panels are never found on that page again. While the panels are still the site's, **Find panels again** looks again, for example if Star thinks it missed some. (A replaced picture's panels are found again by themselves while they're the site's; see States and errors.)
 9. **Preview** on **Phone** shows the reader at the page that's open, with **Panel by panel** working as it does for fans (mock-up 12). Links don't work in the preview (design-preview), so **Next** stops at the page's last panel.
 10. Changes are saved as Star works and go live when the chapter is published, like any other change.
 
@@ -111,7 +111,7 @@ The page panel's **Panels** section, under **Two-page spread**, replaces "Panels
 | A box dragged past the picture's edge | Stops at the edge. |
 | A page's picture replaced | Its panels are found again if they were the site's; if they were Star's, they're kept and the section says "The picture changed. Check that your panels still match." |
 | No script | The reader shows whole pages, as now; **Panel by panel** isn't shown. |
-| Wide screen | **Panel by panel** isn't shown; pages pair as now. |
+| Two pages side by side (a wide screen, in a comic with that setting on) | **Panel by panel** isn't shown; pages pair as now. Whenever the reader shows one page at a time, on any screen, it's offered. |
 
 ## Accessibility
 

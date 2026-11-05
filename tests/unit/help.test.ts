@@ -59,7 +59,7 @@ describe('content-editing-help-links#AC-2 rendering', () => {
     expect(byName['site-settings'].sections.map((s) => s.id)).toContain('open-or-close-commissions');
     expect(byName['site-settings'].sections.map((s) => s.id)).toContain('before-you-start-check-your-quick-facts');
     expect(byName['publishing-comics'].sections.map((s) => s.id)).toEqual([
-      'start-a-new-comic', 'add-a-chapter', 'add-pages', 'describe-each-page', 'two-page-spreads-and-how-pages-pair-up', 'publish', 'if-links-will-change', 'remove-a-comic', 'if-something-goes-wrong',
+      'start-a-new-comic', 'add-a-chapter', 'add-pages', 'describe-each-page', 'two-page-spreads-and-how-pages-pair-up', 'panels', 'publish', 'if-links-will-change', 'remove-a-comic', 'if-something-goes-wrong',
     ]);
   });
 
