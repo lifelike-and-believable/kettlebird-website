@@ -1,6 +1,6 @@
 // Pure logic for publishing comic pages in the editor (no `sanity` imports, so the site's Vitest
 // can test it). Spec: docs/specs/comic-publish-pages.md.
-import { aloneBeforeSpread, type OpenOn } from '../../src/lib/comics/pairing';
+import { aloneBeforeSpread, type OpenOn } from './pairing';
 
 export interface FileLike { name: string; type: string }
 export type QueueState = 'waiting' | 'uploading' | 'done' | 'failed' | 'rejected';

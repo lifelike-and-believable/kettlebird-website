@@ -44,7 +44,7 @@ Source: S1.n and S2.n are the two stories' nth criteria; design and docs section
 ## Scope
 
 - In:
-  - `src/lib/comics/pairing.ts` (new, pure, no imports): the groups, shared with the editor. `src/lib/comics/spreads.ts` (new, pure): the wide view's links, controls, location and announcements, and the turn's direction.
+  - `sanity-studio/lib/pairing.ts` (new, pure, no imports): the groups, shared with the site through `src/lib/comics/pairing.ts`. It lives on the editor's side because the Studio's build can't read the site's tsconfig. `src/lib/comics/spreads.ts` (new, pure): the wide view's links, controls, location and announcements, and the turn's direction.
   - `src/lib/comics/model.ts`: `openOn` on chapters and `spread` on pages; the location line for a spread. `src/lib/comics/sharing.ts`: the announcement for a spread. `src/lib/comics/navigation.ts`: the sheet's spread pictures.
   - `src/lib/comics/source.ts`: `openOn` and `spread` from Sanity.
   - `src/components/pages/ReaderPage.astro`: the group's pages, both sets of links, the width test, the page-flip. `src/components/comics/ContactSheet.astro`: wide pictures.

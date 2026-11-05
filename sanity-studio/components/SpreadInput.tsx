@@ -3,7 +3,7 @@
 import { Card, Stack, Text } from '@sanity/ui';
 import { useFormValue, type BooleanInputProps } from 'sanity';
 import { imageSize, pageNote } from '../lib/comic-pages';
-import type { OpenOn } from '../../src/lib/comics/pairing';
+import type { OpenOn } from '../lib/pairing';
 
 type Page = { _key?: string; spread?: boolean; asset?: { _ref?: string } };
 
