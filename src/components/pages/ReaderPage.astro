@@ -438,6 +438,10 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
 <style>
   .reader {
     scroll-margin-top: 0;
+    /* At least a window tall, so the scroll on load (below the reader, before the footer is
+       parsed) can always bring the bar to the top: every page then opens at the same place,
+       with or without the end note (design-comic-spread-and-flip, 2026-11-05). */
+    min-height: 100vh;
     max-width: 960px;
     margin: 0 auto;
     padding: 0.5rem 0.5rem 2rem;
