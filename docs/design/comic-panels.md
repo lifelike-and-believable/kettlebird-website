@@ -67,7 +67,7 @@ rendered from with render.mjs). -->
 6. **Show this page whole** removes all the boxes, so panel by panel always shows the page whole (mock-up 11).
 7. **Undo** undoes the last change to the panels (Ctrl+Z or ⌘Z on the picture does the same), back to when the page was opened. Nothing asks first, because everything can be undone.
 8. After the first change, the section reads "5 panels, set by you." From then on, panels are never found on that page again. While the panels are still the site's, **Find panels again** looks again, for example if Star thinks it missed some. (A replaced picture's panels are found again by themselves while they're the site's; see States and errors.)
-9. **Preview** on **Phone** shows the reader at the page that's open, with **Panel by panel** working as it does for fans (mock-up 12). Links don't work in the preview (design-preview), so **Next** stops at the page's last panel.
+9. **Preview** on **Phone** shows the reader at the page that's open, with **Panel by panel** working as it does for fans (mock-up 12). As in any chapter's preview (design-comic-spread-and-flip, "Settings per comic"), **Previous** and **Next** turn within the chapter, so **Next** steps through the panels and on to the chapter's next page, and stops at its last panel.
 10. Changes are saved as Star works and go live when the chapter is published, like any other change.
 
 ## Page addresses

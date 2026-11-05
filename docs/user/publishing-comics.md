@@ -14,7 +14,7 @@ derived-from:
   - design-comic-spread-and-flip#settings-per-comic: 64a1be41076a
   - story-comic-reader-flip-and-panels-comic-settings: 91b08e4f2d65
   - story-comic-reader-flip-and-panels-two-page-spread: 3bd1fa1fe9f5
-  - design-comic-panels#flow-star: c8aa7ce926ae
+  - design-comic-panels#flow-star: e225a835bdb6
   - design-comic-panels#what-star-enters: 309998a120e2
   - design-comic-panels#how-it-works: cce393bb0002
   - story-comic-reader-flip-and-panels-panels-found: 61aa1e576413
@@ -150,7 +150,7 @@ A chapter you uploaded before panels existed says "12 pages have no panels yet. 
 
 ### See it as fans will
 
-Choose **Preview**, then **Phone**, and choose **Panel by panel** in the preview's reader bar. The preview opens at the page you have open. Links don't work in the preview, so **Next** stops at that page's last panel.
+Choose **Preview**, then **Phone**, and choose **Panel by panel** in the preview's reader bar. The preview opens at the page you have open. **Next** steps through the panels and on to the next page of the chapter; it stops at the chapter's last panel, because the preview doesn't go to other chapters.
 
 ### If panels go wrong
 
