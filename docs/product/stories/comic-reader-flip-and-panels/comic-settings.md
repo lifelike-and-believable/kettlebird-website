@@ -1,6 +1,6 @@
 ---
 id: story-comic-reader-flip-and-panels-comic-settings
-status: draft
+status: approved
 derived-from:
   - epic-comic-reader-flip-and-panels#decisions-from-the-lead: 6c4beced64ec
   - epic-comic-reader-flip-and-panels#outcome: c1426bb16011
