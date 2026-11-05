@@ -52,8 +52,9 @@ test('comic-reader-panels#AC-12 the panel view', async ({ page }) => {
   const after = (await area.boundingBox())!;
   expect(Math.abs(after.height - before.height)).toBeLessThanOrEqual(1);
   expect((await nav(page).boundingBox())!.y).toBeCloseTo(controlsBefore.y + 0, -1);
-  const img = (await page.getByRole('img', { name: 'A lamp.' }).boundingBox())!;
-  expect(img.width).toBeGreaterThan(after.width);
+  // The view zooms in over about 0.3 s (AC-14), so wait for it rather than measure the first frame.
+  const img = page.getByRole('img', { name: 'A lamp.' });
+  await expect.poll(async () => (await img.boundingBox())!.width).toBeGreaterThan(after.width);
   await page.goto('/comics/single-sheets/1/2');
   await expect(heading(page)).toHaveText('Page 2 of 4 · whole page');
 });
