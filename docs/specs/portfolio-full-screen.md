@@ -1,6 +1,9 @@
 ---
 status: draft
 tests-commit: 97f6915c2055257d8298ebca1ec4d3bfcc590872
+unlocks:
+  - tests/e2e/portfolio-full-screen.spec.ts: two corrections found by the first run against the build. "the opening" and "turning" looked for the title with a partial match, which also found the screen reader's announcement (it starts with the title); they now match the title exactly. "leaving" used the browser's own exit, and "opening" read the full-screen element, before the browser had finished entering full screen (it does so a moment after the view appears); both now wait for it. The criteria are unchanged.
+  - tests/unit/full-screen-edges.test.ts (new): mutation testing showed nothing checked pieces with no category or a picture without an asset, the end of an asset id, `fitted` on its own, an exactly diagonal swipe, or Shift with Up and Down. Added; the criteria are unchanged. Two mutants survive as equivalent: a zero pan limit giving -0 instead of 0, and `dx <= 0` where a turn needs at least 50 px.
 ---
 
 # Portfolio: full screen
@@ -60,7 +63,7 @@ Source: S1.n and S2.n are the stories' nth criteria; design and docs sections as
 | # | Criterion | Verified by | Source |
 |---|---|---|---|
 | AC-13 | The view is a modal dialog named "Full screen" that keeps focus inside it; **Close** has focus when it opens. A polite live region says "Night Market, 3 of 12." on opening and each turn, then the picture's alt text when it has one; changing the zoom by a button or key says the new level ("250%"). Controls that can't be used are dashed, `aria-disabled`, and skipped by Tab. | test: unit "accessibility" | S1.1, S2.2, S2.3; design-portfolio-full-screen#accessibility |
-| AC-14 | The gallery, its cards and the dialog otherwise look, load and behave as before. | test: unit "the gallery as before" (the existing gallery-lightbox and line-breaks tests); e2e "the portfolio fits a phone" | S1.6 |
+| AC-14 | The gallery, its cards and the dialog otherwise look, load and behave as before. | manual: review that the existing gallery tests (`gallery-lightbox.test.tsx`, `line-breaks-lightbox.test.tsx`, `portfolio-reflow.spec.ts`) pass with only the reflow check's card count changed | S1.6 |
 
 ## Scope
 

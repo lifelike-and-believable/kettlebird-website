@@ -44,9 +44,9 @@ test('portfolio-full-screen#AC-1 AC-2 opening', async ({ page }) => {
   await expect(page.getByRole('dialog', { name: 'Coming Soon' }).getByRole('button', { name: 'Full screen' })).toHaveCount(0);
   await page.keyboard.press('Escape');
   await open(page, 'Night Market');
-  expect(await page.evaluate(() => document.fullscreenElement?.getAttribute('aria-label'))).toBe('Full screen');
+  await expect.poll(() => page.evaluate(() => document.fullscreenElement?.getAttribute('aria-label'))).toBe('Full screen');
   await expect(bar(page)).toHaveText('1 of 4 · Original Work');
-  await expect(view(page).getByText('Night Market')).toBeVisible();
+  await expect(view(page).getByText('Night Market', { exact: true })).toBeVisible();
   expect(await view(page).evaluate((v) => getComputedStyle(v).touchAction)).toBe('none');
 });
 
@@ -170,7 +170,7 @@ test('portfolio-full-screen#AC-10 AC-11 turning', async ({ page }) => {
   await expect(view(page).getByRole('button', { name: 'Next' })).toHaveAttribute('aria-disabled', 'true');
   await view(page).getByRole('button', { name: 'Previous' }).click();
   await expect(bar(page)).toHaveText('3 of 4 · Original Work');
-  await expect(view(page).getByText('Jungle Eyes')).toBeVisible();
+  await expect(view(page).getByText('Jungle Eyes', { exact: true })).toBeVisible();
   await page.keyboard.press('ArrowLeft');
   await expect(bar(page)).toHaveText('2 of 4 · Original Work');
   // Opened from Fan Work, it turns through Fan Work.
@@ -207,6 +207,7 @@ test('portfolio-full-screen#AC-3 leaving', async ({ page }) => {
   // The browser's own exit does the same.
   await page.getByRole('dialog', { name: 'Late Night Alibi' }).getByRole('button', { name: 'Full screen' }).click();
   await expect(view(page)).toBeVisible();
+  await expect.poll(() => page.evaluate(() => Boolean(document.fullscreenElement))).toBe(true);
   await page.evaluate(() => document.exitFullscreen());
   await expect(view(page)).toHaveCount(0);
   await expect(page.getByRole('dialog', { name: 'Late Night Alibi' })).toBeVisible();
