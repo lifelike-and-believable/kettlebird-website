@@ -1,5 +1,5 @@
 ---
-status: draft
+status: implemented
 tests-commit: 0ed12675670da365fe69644b805879970134fbfa
 unlocks:
   - tests/e2e/portfolio-full-screen.spec.ts: two corrections found by the first run against the build. "the opening" and "turning" looked for the title with a partial match, which also found the screen reader's announcement (it starts with the title); they now match the title exactly. "leaving" used the browser's own exit, and "opening" read the full-screen element, before the browser had finished entering full screen (it does so a moment after the view appears); both now wait for it. The criteria are unchanged.
