@@ -29,6 +29,7 @@ Reading a comic on the site feels like reading Star's printed book. On a wide sc
 - **A wide page can be a two-page spread** (2026-11-05). Star can mark a single page image as a two-page spread. On a wide screen it covers both pages of the open comic; on a narrow screen it is shrunk to fit the screen, as every page is today, and is never split across a page turn.
 - **Spreads pair as Star chooses, per chapter** (2026-11-05). Each chapter either starts with page 1 alone on the right, as in a printed book, or pairs pages from page 1. A page marked as a spread always takes both sides, and the pairing continues after it.
 - **Panels are corrected with a visual tool** (2026-11-05). Star sees the page with its panels drawn on it and moves, resizes, adds, removes and reorders them on the picture itself, not by typing numbers into a form.
+- **Two pages side by side and the page-flip are Star's choice, per comic** (2026-11-05). Each comic has two settings, both off until Star turns them on: show two pages side by side on a wide screen, and turn pages with the page-flip. With two pages side by side off, a page marked as a two-page spread still uses the wide screen's full width, alone.
 
 ## Stories
 
@@ -39,6 +40,7 @@ Proposed; each is written as its own story file, and approved, before work on it
 3. **Read panel by panel.** As a fan on a phone, I want to step through a page one panel at a time, each panel enlarged to fit my screen, and switch back to the whole page whenever I like, so that I can read small panels without pinching and zooming.
 4. **Panels found for me.** As Star, I want the site to find the panels on each page I publish, in reading order, so that panel-by-panel reading works without marking every panel by hand.
 5. **Correct the panels.** As Star, I want to see the panels the site found on a page and fix any that are wrong (move, resize, add, remove, or reorder them) by working on the page itself, so that panel-by-panel reading follows my layout. A page with no usable panels is shown whole.
+6. **Choose how a comic reads.** As Star, I want to choose for each comic whether a wide screen shows two pages side by side and whether pages turn with the page-flip, so that each comic reads the way it was drawn. Both are off until Star turns them on.
 
 ## Dependencies
 

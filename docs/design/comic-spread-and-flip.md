@@ -4,7 +4,7 @@ status: approved
 derived-from:
   - story-comic-reader-flip-and-panels-two-page-spread: 3bd1fa1fe9f5
   - story-comic-reader-flip-and-panels-page-flip: 81730e39874b
-  - epic-comic-reader-flip-and-panels#decisions-from-the-lead: 23c96219e6c7
+  - epic-comic-reader-flip-and-panels#decisions-from-the-lead: 6c4beced64ec
   - design-comic-turn-pages#how-a-page-turn-works: e347e19f1496
   - design-comic-sheet-and-controls#flow: 54dc5fcac36b
   - design-comic-publish-pages#flow: 954976ba8278
