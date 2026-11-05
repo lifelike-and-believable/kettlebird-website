@@ -23,11 +23,13 @@ export interface SanitySeries {
   status?: SeriesStatus;
   type?: SeriesType;
   coverImage?: SanityImage;
+  twoUp?: unknown;
+  pageFlip?: unknown;
   chapters?: { number?: number; title?: string; openOn?: OpenOn; pages?: (SanityImage & { altText?: string; spread?: boolean })[] }[];
 }
 
 export const COMIC_SERIES_WITH_CHAPTERS_QUERY = `*[_type == "comicSeries"] | order(title asc) {
-  title, slug, description, status, type,
+  title, slug, description, status, type, twoUp, pageFlip,
   coverImage { asset, hotspot, "dimensions": asset->metadata.dimensions },
   "chapters": *[_type == "comicChapter" && series._ref == ^._id] | order(number asc) {
     number, title, openOn,
@@ -63,6 +65,9 @@ export function fromSanity(raw: SanitySeries): ComicSeries {
     status: raw.status,
     type: raw.type,
     cover: withSocial(sanityImage(raw.coverImage, COVER_WIDTHS), raw.coverImage),
+    // How it reads: on only when Star ticked it (comic-reader-comic-settings AC-1).
+    twoUp: raw.twoUp === true,
+    pageFlip: raw.pageFlip === true,
     chapters: (raw.chapters ?? []).map((c) => ({
       number: c.number ?? 0,
       title: c.title || undefined,

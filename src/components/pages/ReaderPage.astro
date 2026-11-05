@@ -16,33 +16,52 @@ import {
 } from '../../lib/comics/model';
 import { allPagesHref, playControls, type ControlKind, type PlayControl } from '../../lib/comics/navigation';
 import { pageAnnouncement, pagePreview, shareTitle } from '../../lib/comics/sharing';
-import { wideView } from '../../lib/comics/spreads';
+import { readsAs, wideView, type WideView } from '../../lib/comics/spreads';
+import { previewTurn } from '../../lib/preview/turns';
 
 
-const { entry, nextImage, preview: inPreview = false } = Astro.props as {
+const { entry, nextImage, preview: inPreview = false, previewUrl } = Astro.props as {
   entry: ReaderPage;
   nextImage?: ReaderPage['page']['image'];
   /** In the preview: don't scroll (it would scroll the editor around the preview) or fetch the next page. */
   preview?: boolean;
+  /** In a chapter's preview, its address: turns move within the chapter there (comic-reader-comic-settings AC-9). */
+  previewUrl?: string;
 };
 const back = seriesPath(entry.series.slug!);
 // Two-page spreads (docs/design/comic-spread-and-flip.md, docs/specs/comic-reader-spread-and-flip.md):
 // the page carries its narrow view (this page) and its wide view (its group), and the width test in
 // the styles below shows one. The script picks the same one with WIDE_MEDIA.
-const wide = wideView(entry);
+// How it reads (docs/specs/comic-reader-comic-settings.md): with pairs off, one view only, the narrow
+// one, on every screen; with the flip off, the page doesn't opt in to the page-flip.
+const reads = readsAs(entry.series);
+const single: WideView = {
+  kind: 'right',
+  pages: [entry],
+  previousPath: entry.previousPath,
+  nextPath: entry.nextPath,
+  isLast: entry.isLast,
+  location: locationLine(entry),
+  announcement: pageAnnouncement(entry),
+  controls: playControls(entry),
+};
+const wide = reads.twoUp ? wideView(entry) : single;
 const end = wide.isLast ? endNote(entry.series.status) : undefined;
+// In a chapter's preview, a turn within the chapter goes to the preview's own address; anything
+// else stays inactive, as every preview link is (AC-9).
+const turnHref = (to?: string) => (previewUrl && to ? previewTurn(new URL(previewUrl), entry, to) : to);
+const turnAttrs = (to?: string) => (previewUrl && turnHref(to) ? { 'data-preview-turn': '' } : {});
 /** Shown on both views, or on one: a class that hides it on the other. */
 const only = (narrow: boolean, onWide: boolean) => (narrow && onWide ? '' : narrow ? 'for-narrow' : 'for-wide');
 const controls = playControls(entry);
 // The wide set first: tools that look for a control by its visible word, like the tutorial runner,
 // take the first match, and a laptop shows the wide set. Hidden sets are out of the Tab order and
 // the accessibility tree, so the order changes nothing for readers.
-const views: { view: 'narrow' | 'wide'; controls: PlayControl[] }[] = [
-  { view: 'wide', controls: wide.controls },
-  { view: 'narrow', controls },
-];
+const views: { view: 'narrow' | 'wide'; controls: PlayControl[] }[] = reads.twoUp
+  ? [{ view: 'wide', controls: wide.controls }, { view: 'narrow', controls }]
+  : [{ view: 'narrow', controls }];
 const sides = wide.kind === 'pair' ? ['left', 'right'] : [wide.kind === 'spread' ? 'both' : wide.kind];
-const nextWide = wide.nextPath ? readerPages(entry.series).find((e) => e.path === wide.nextPath) : undefined;
+const nextWide = reads.twoUp && wide.nextPath ? readerPages(entry.series).find((e) => e.path === wide.nextPath) : undefined;
 const nextWideImages = nextWide && !inPreview ? wideView(nextWide).pages.map((p) => p.page.image) : [];
 const allPages = allPagesHref(entry);
 const preview = { ...pagePreview(entry, Astro.site!.href), type: 'article' };
@@ -69,7 +88,13 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
   <!-- Don't draw the page until the scroll below has run, so the site header never flashes on a
        turn, even when the page arrives in pieces. Browsers without render-blocking ignore it. -->
   {!inPreview && <link slot="head" rel="expect" href="#reader-scrolled" {...{ blocking: 'render' }} />}
-  {!inPreview && (
+  {reads.pageFlip && (
+    <style is:inline slot="head">
+      /* This comic turns its pages with the page-flip (comic-reader-comic-settings AC-5). */
+      @media (prefers-reduced-motion: no-preference) { @view-transition { navigation: auto; } }
+    </style>
+  )}
+  {reads.pageFlip && (
     <script is:inline slot="head">
       // The page-flip (docs/specs/comic-reader-spread-and-flip.md AC-11): a turn arrives with its
       // direction, saved by the page it left. Anything else, or a picture that isn't ready, changes
@@ -85,7 +110,7 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
         var ready = Array.prototype.every.call(document.querySelectorAll('.reader__page img'), function (img) {
           return img.offsetParent === null || img.complete;
         });
-        if (!flip || flip.to !== location.pathname || Date.now() - flip.at > 5000 || !ready || !vt.types) {
+        if (!flip || flip.to !== location.pathname + location.search || Date.now() - flip.at > 5000 || !ready || !vt.types) {
           vt.skipTransition();
           return;
         }
@@ -93,7 +118,7 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
       });
     </script>
   )}
-  <div class="reader">
+  <div class:list={['reader', { 'reader--pairs': reads.twoUp }]} data-pairs={reads.twoUp ? '' : undefined}>
     <div class="reader__bar">
       <a href={back} class="reader__back">Back to series</a>
       {allPages && (
@@ -136,16 +161,16 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
               loading={current ? undefined : 'lazy'}
             />
             {current && entry.previousPath && (
-              <a href={entry.previousPath} class="reader__edge reader__edge--prev for-narrow" aria-hidden="true" tabindex="-1">‹</a>
+              <a href={turnHref(entry.previousPath)} {...turnAttrs(entry.previousPath)} class:list={['reader__edge reader__edge--prev', { 'for-narrow': reads.twoUp }]} aria-hidden="true" tabindex="-1">‹</a>
             )}
             {current && entry.nextPath && (
-              <a href={entry.nextPath} class="reader__edge reader__edge--next for-narrow" aria-hidden="true" tabindex="-1">›</a>
+              <a href={turnHref(entry.nextPath)} {...turnAttrs(entry.nextPath)} class:list={['reader__edge reader__edge--next', { 'for-narrow': reads.twoUp }]} aria-hidden="true" tabindex="-1">›</a>
             )}
-            {first && wide.previousPath && (
-              <a href={wide.previousPath} class="reader__edge reader__edge--prev for-wide" aria-hidden="true" tabindex="-1">‹</a>
+            {reads.twoUp && first && wide.previousPath && (
+              <a href={turnHref(wide.previousPath)} {...turnAttrs(wide.previousPath)} class="reader__edge reader__edge--prev for-wide" aria-hidden="true" tabindex="-1">‹</a>
             )}
-            {last && wide.nextPath && (
-              <a href={wide.nextPath} class="reader__edge reader__edge--next for-wide" aria-hidden="true" tabindex="-1">›</a>
+            {reads.twoUp && last && wide.nextPath && (
+              <a href={turnHref(wide.nextPath)} {...turnAttrs(wide.nextPath)} class="reader__edge reader__edge--next for-wide" aria-hidden="true" tabindex="-1">›</a>
             )}
           </div>
         );
@@ -154,7 +179,7 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
     {entry.page.spread && <p class="reader__turn-hint" aria-hidden="true">Turn your phone sideways to see it bigger.</p>}
 
     {views.map(({ view, controls: set }) => set.length > 0 && (
-      <div class={`reader__controls-box for-${view}`} data-view={view}>
+      <div class:list={['reader__controls-box', { [`for-${view}`]: reads.twoUp }]} data-view={view}>
         <nav class="reader__controls" aria-label="Page navigation">
           {set.map((c) => {
             const icon = ICONS[c.kind];
@@ -169,7 +194,8 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
             );
             return c.path ? (
               <a
-                href={c.path}
+                href={TURNS[c.kind] ? turnHref(c.path) : c.path}
+                {...(TURNS[c.kind] ? turnAttrs(c.path) : {})}
                 class={`reader__control reader__control--${c.kind}`}
                 aria-label={c.name}
                 rel={c.kind === 'previous' ? 'prev' : c.kind === 'next' ? 'next' : undefined}
@@ -241,7 +267,9 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
     // Two pages side by side when the width test matches (comic-reader-spread-and-flip AC-3); the
     // styles use the same test, so this picks the links that show.
     const wideScreen = matchMedia(WIDE_MEDIA);
-    const view = () => (wideScreen.matches ? 'wide' : 'narrow');
+    // A comic with two pages side by side off has only the narrow set (comic-reader-comic-settings AC-2).
+    const pairs = document.querySelector('.reader')?.hasAttribute('data-pairs') ?? false;
+    const view = () => (pairs && wideScreen.matches ? 'wide' : 'narrow');
 
     // Arrow keys and swipes follow the same links as Previous page and Next page
     // (design-comic-turn-pages, "How a page turn works"). Reading never needs this script.
@@ -382,11 +410,14 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
       };
       if (!e.viewTransition) return;
       const url = e.activation?.entry?.url;
-      const hrefs = (selector: string) =>
-        [...document.querySelectorAll<HTMLAnchorElement>(selector)].map((a) => new URL(a.href).pathname);
+      const where = (href: string) => {
+        const u = new URL(href);
+        return u.pathname + u.search;
+      };
+      const hrefs = (selector: string) => [...document.querySelectorAll<HTMLAnchorElement>(selector)].map((a) => where(a.href));
       const dir =
         url && e.activation?.navigationType === 'push'
-          ? turnDirection(new URL(url).pathname, {
+          ? turnDirection(where(url), {
               previous: hrefs('a[data-turn="previous"][href], a.reader__edge--prev'),
               next: hrefs('a[data-turn="next"][href], a.reader__edge--next'),
             })
@@ -396,7 +427,7 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
         return;
       }
       try {
-        sessionStorage.setItem('kb-flip', JSON.stringify({ to: new URL(url!).pathname, dir, at: Date.now() }));
+        sessionStorage.setItem('kb-flip', JSON.stringify({ to: where(url!), dir, at: Date.now() }));
       } catch {
         e.viewTransition.skipTransition();
       }
@@ -487,27 +518,27 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
   }
   @media (min-width: 62.5em) and (orientation: landscape) {
     .for-narrow { display: none !important; }
-    .reader { max-width: 1400px; }
+    .reader--pairs { max-width: 1400px; }
     /* Two pages of the same height meeting at the spine, a page alone on its own side, or a spread
        across both (comic-reader-spread-and-flip AC-7). */
-    .reader__book {
+    .reader--pairs .reader__book {
       position: relative;
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       grid-template-rows: minmax(0, 1fr);
       height: calc(100vh - 12.5rem);
     }
-    .reader__book .reader__page {
+    .reader--pairs .reader__book .reader__page {
       height: 100%;
       width: auto;
       max-width: 100%;
       max-height: none;
       margin: 0;
     }
-    .reader__page[data-side='left'] { grid-column: 1; justify-self: end; view-transition-name: kb-left; }
-    .reader__page[data-side='right'] { grid-column: 2; justify-self: start; view-transition-name: kb-right; }
-    .reader__page[data-side='both'] { grid-column: 1 / -1; justify-self: center; view-transition-name: kb-spread; }
-    .reader__book[data-kind='pair']::after {
+    .reader--pairs .reader__page[data-side='left'] { grid-column: 1; justify-self: end; view-transition-name: kb-left; }
+    .reader--pairs .reader__page[data-side='right'] { grid-column: 2; justify-self: start; view-transition-name: kb-right; }
+    .reader--pairs .reader__page[data-side='both'] { grid-column: 1 / -1; justify-self: center; view-transition-name: kb-spread; }
+    .reader--pairs .reader__book[data-kind='pair']::after {
       content: '';
       position: absolute;
       top: 0;
@@ -519,6 +550,12 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
       pointer-events: none;
     }
     .reader__turn-hint { display: none; }
+    /* With two pages side by side off, a spread shows alone, as wide as the page area allows
+       (comic-reader-comic-settings AC-3). */
+    .reader:not(.reader--pairs) .reader__page.is-spread {
+      max-height: calc(100vh - 12.5rem);
+      max-width: min(100%, calc((100vh - 12.5rem) * var(--page-ratio, 1.3333)));
+    }
   }
 
   .reader__loading {
@@ -536,6 +573,8 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
   @media not ((min-width: 62.5em) and (orientation: landscape)) {
     .reader__page.is-current { view-transition-name: kb-page; }
   }
+  /* With two pages side by side off, every screen turns the single page (comic-reader-comic-settings AC-5). */
+  .reader:not(.reader--pairs) .reader__page.is-current { view-transition-name: kb-page; }
   .reader__page img {
     position: relative;
     display: block;
@@ -683,9 +722,6 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
      AC-11): reader pages opt in to cross-document view transitions, unless reduced motion is asked
      for. The page each turn leaves decides whether it plays and which way (the scripts in
      ReaderPage.astro); everything but the turning pages changes at once. 0.4 s in all. */
-  @media (prefers-reduced-motion: no-preference) {
-    @view-transition { navigation: auto; }
-  }
   ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
   ::view-transition-group(*) { animation-duration: 0.4s; }
   ::view-transition-image-pair(*) { perspective: 2400px; }

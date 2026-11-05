@@ -121,6 +121,8 @@ export async function loadPreview(
       const [pubSeries, draftSeries] = await Promise.all([source.published(seriesId), source.draft(seriesId)]);
       series = pubSeries ?? (draftSeries && { ...draftSeries, _id: seriesId });
       if (!pubSeries && draftSeries) context = { ...context, seriesUnpublished: true };
+      // How it reads as it is now, unpublished changes included (comic-reader-comic-settings AC-8).
+      if (series && draftSeries) series = { ...series, twoUp: draftSeries.twoUp, pageFlip: draftSeries.pageFlip };
     }
   }
   const changes0 = previewChanges(published, { ...item, _id: draft?._id ?? id });

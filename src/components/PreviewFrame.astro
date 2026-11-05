@@ -21,7 +21,7 @@ const { info } = Astro.props as { info: PreviewInfo };
         if (!el.dataset.previewChanged) el.dataset.previewChanged = field;
       });
     }
-    document.querySelectorAll<HTMLAnchorElement>('a[href]').forEach((a) => (a.title = LINKS_OFF));
+    document.querySelectorAll<HTMLAnchorElement>('a[href]:not([data-preview-turn])').forEach((a) => (a.title = LINKS_OFF));
   };
   mark();
   // Parts drawn later (the portfolio's carousels) are marked when they appear.
@@ -30,7 +30,9 @@ const { info } = Astro.props as { info: PreviewInfo };
   document.addEventListener(
     'click',
     (event) => {
-      if ((event.target as Element | null)?.closest('a[href]')) event.preventDefault();
+      // Turns within a chapter's preview work (docs/specs/comic-reader-comic-settings.md AC-9).
+      const link = (event.target as Element | null)?.closest('a[href]');
+      if (link && !link.hasAttribute('data-preview-turn')) event.preventDefault();
     },
     true,
   );

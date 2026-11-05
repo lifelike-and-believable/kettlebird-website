@@ -1,6 +1,7 @@
 import { defineArrayMember, defineField, defineType } from 'sanity';
 import { PageItemNav } from '../../components/PageItemNav';
 import { PagesInput } from '../../components/PagesInput';
+import { OpenOnInput } from '../../components/OpenOnInput';
 import { PageGridItem, SpreadInput } from '../../components/SpreadInput';
 import { altTextRule, duplicateChapterMessage, OPEN_ON_FIELD, pageGridSubtitle, SPREAD_FIELD } from '../../lib/comic-pages';
 import { ITEM_NAMES } from '../../lib/editor-content';
@@ -50,7 +51,7 @@ export default defineType({
       description: "Just the name, for example The Long Road. The site adds 'Chapter 2' for you.",
     }),
     // Two-page spreads: how pages pair up on a wide screen (docs/specs/comic-reader-spread-and-flip.md AC-1).
-    defineField({ ...OPEN_ON_FIELD, options: { ...OPEN_ON_FIELD.options, list: [...OPEN_ON_FIELD.options.list] } }),
+    defineField({ ...OPEN_ON_FIELD, options: { ...OPEN_ON_FIELD.options, list: [...OPEN_ON_FIELD.options.list] }, components: { input: OpenOnInput } }),
     defineField({
       name: 'pages',
       title: 'Pages',
