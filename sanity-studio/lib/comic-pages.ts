@@ -217,6 +217,30 @@ export const SPREAD_FIELD = {
   description: "One picture drawn across two facing pages. On a wide screen it covers both pages; on a phone it's shrunk to fit. It's never split across a page turn.",
 } as const;
 
+/** A comic's How it reads group and its two settings (docs/specs/comic-reader-comic-settings.md AC-1). */
+export const HOW_IT_READS = { name: 'howItReads', title: 'How it reads', description: 'Preview a chapter to see how it reads.' } as const;
+
+export const TWO_UP_FIELD = {
+  name: 'twoUp',
+  title: 'Two pages side by side',
+  type: 'boolean',
+  fieldset: 'howItReads',
+  initialValue: false,
+  description: 'On a laptop, or a tablet held sideways, show facing pages together, like an open comic. Off: one page at a time on every screen.',
+} as const;
+
+export const PAGE_FLIP_FIELD = {
+  name: 'pageFlip',
+  title: 'Page-flip',
+  type: 'boolean',
+  fieldset: 'howItReads',
+  initialValue: false,
+  description: 'Turn pages with an animation of a page turning over. Off: pages change at once.',
+} as const;
+
+/** Under a chapter's Open on when its comic has pairs off (AC-7). */
+export const OPEN_ON_OFF_NOTE = "Two pages side by side is off for this comic, so this has no effect. Turn it on in the comic's How it reads.";
+
 export const WIDE_PICTURE_QUESTION =
   'This picture is wider than it is tall. Is it a two-page spread? If so, tick Two-page spread; otherwise it shows small, on one side.';
 
@@ -225,11 +249,14 @@ export function pageNote(
   pages: { spread?: boolean; width?: number; height?: number }[],
   openOn: OpenOn | undefined,
   page: number,
+  /** The comic's Two pages side by side; the note about a page left alone only matters with it on. */
+  twoUp = true,
 ): string | undefined {
   const current = pages[page - 1];
   if (!current) return undefined;
   const side = openOn === 'left' ? 'left' : 'right';
   if (current.spread) {
+    if (!twoUp) return undefined;
     const alone = aloneBeforeSpread(pages.map((p) => Boolean(p.spread)), side, page);
     return alone ? `This chapter opens on the ${side}, so page ${alone} shows alone on the left, before this spread.` : undefined;
   }

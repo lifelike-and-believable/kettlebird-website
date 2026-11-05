@@ -1,7 +1,7 @@
 import { defineField, defineType } from 'sanity';
 import { ChaptersList } from '../../components/ChaptersList';
 import { MissingSummary } from '../../components/MissingSummary';
-import { SERIES_SLUG_MESSAGE } from '../../lib/comic-pages';
+import { HOW_IT_READS, PAGE_FLIP_FIELD, SERIES_SLUG_MESSAGE, TWO_UP_FIELD } from '../../lib/comic-pages';
 import { fieldText, ITEM_NAMES, listDetail, requiredMessage, SERIES_KIND, SERIES_STATUS } from '../../lib/editor-content';
 
 // A comic series. Labels and help: design-organised-editor (Comics); the chapters list and Add
@@ -11,6 +11,8 @@ export default defineType({
   title: ITEM_NAMES.comicSeries,
   type: 'document',
   components: { input: MissingSummary },
+  // How it reads (docs/specs/comic-reader-comic-settings.md AC-1): two tick boxes after Kind.
+  fieldsets: [{ ...HOW_IT_READS, options: { collapsible: false } }],
   fields: [
     defineField({
       name: 'title',
@@ -48,6 +50,8 @@ export default defineType({
       ...fieldText('comicSeries', 'type'),
       options: { list: SERIES_KIND },
     }),
+    defineField({ ...TWO_UP_FIELD }),
+    defineField({ ...PAGE_FLIP_FIELD }),
     // Not stored: shows this series' chapters and Add chapter (comic-publish-pages AC-11).
     defineField({
       name: 'chapters',

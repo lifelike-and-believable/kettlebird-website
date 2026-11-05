@@ -17,6 +17,9 @@ const block = (text: string) => ({ _type: 'block', _key: text.slice(0, 8), style
 const storyRef = (id: string) => ({ _type: 'reference', _ref: id });
 
 export const FIXTURE_PUBLISHED: RawDoc[] = [
+  // A comic with pairs off and the flip on, whose draft turns pairs on, and a chapter of it
+  // (docs/specs/comic-reader-comic-settings.md AC-8, AC-9).
+  { _id: 'series-sheets', _type: 'comicSeries', title: 'Single Sheets', slug: { current: 'single-sheets' }, status: 'ongoing', type: 'original', twoUp: false, pageFlip: true },
   // Stories (docs/specs/story-reader-pages.md AC-12): a one-shot, and a story in chapters.
   { _id: 'story-song', _type: 'writtenWork', title: "The Kettle's Song", slug: { current: 'the-kettles-song' }, rating: 'teen', publishDate: '2026-10-01', content: [block('Published text.')] },
   { _id: 'story-road', _type: 'writtenWork', title: 'The Long Road', slug: { current: 'the-long-road' }, rating: 'general', status: 'inProgress', publishDate: '2026-09-01' },
@@ -38,6 +41,18 @@ export const FIXTURE_PUBLISHED: RawDoc[] = [
 ];
 
 export const FIXTURE_DRAFTS: RawDoc[] = [
+  { _id: 'drafts.series-sheets', _type: 'comicSeries', title: 'Single Sheets', slug: { current: 'single-sheets' }, status: 'ongoing', type: 'original', twoUp: true, pageFlip: true },
+  {
+    _id: 'drafts.sheets-1',
+    _type: 'comicChapter',
+    number: 1,
+    series: { _ref: 'series-sheets' },
+    pages: [
+      { _key: 's1', ...img('image-Sheet1aaaaaaaaaaaaaaaaaa-800x1200-png'), altText: 'A lamp.' },
+      { _key: 's2', ...img('image-Sheet2aaaaaaaaaaaaaaaaaa-800x1200-png'), altText: 'A window.' },
+      { _key: 's3', ...img('image-Sheet3aaaaaaaaaaaaaaaaaa-800x1200-png'), altText: 'A door.' },
+    ],
+  },
   // A Mature draft of a published one-shot: the preview shows its text without asking first.
   { _id: 'drafts.story-song', _type: 'writtenWork', title: "The Kettle's Song", slug: { current: 'the-kettles-song' }, rating: 'mature', publishDate: '2026-10-01', content: [block('Draft text.')] },
   { _id: 'drafts.road-2', _type: 'storyChapter', story: storyRef('story-road'), number: 2, title: 'Over the Ridge', publishDate: '2026-10-20', content: [block('The ridge was steeper.')] },

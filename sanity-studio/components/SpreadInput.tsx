@@ -3,6 +3,7 @@
 import { Card, Stack, Text } from '@sanity/ui';
 import { useFormValue, type BooleanInputProps } from 'sanity';
 import { imageSize, pageNote } from '../lib/comic-pages';
+import { useComicTwoUp } from './useComicTwoUp';
 import type { OpenOn } from '../lib/pairing';
 
 type Page = { _key?: string; spread?: boolean; asset?: { _ref?: string } };
@@ -10,12 +11,14 @@ type Page = { _key?: string; spread?: boolean; asset?: { _ref?: string } };
 export function SpreadInput(props: BooleanInputProps) {
   const pages = (useFormValue(['pages']) as Page[] | undefined) ?? [];
   const openOn = useFormValue(['openOn']) as OpenOn | undefined;
+  // The note about a page left alone only matters when the comic shows pairs (comic-reader-comic-settings AC-7).
+  const twoUp = useComicTwoUp();
   const item = props.path[props.path.length - 2];
   const key = typeof item === 'object' && item && '_key' in item ? item._key : undefined;
   const index = pages.findIndex((p) => p._key === key);
   const note =
     index >= 0
-      ? pageNote(pages.map((p) => ({ spread: p.spread, ...imageSize(p.asset?._ref) })), openOn, index + 1)
+      ? pageNote(pages.map((p) => ({ spread: p.spread, ...imageSize(p.asset?._ref) })), openOn, index + 1, twoUp !== false)
       : undefined;
   return (
     <Stack space={3}>

@@ -67,7 +67,7 @@ const info = result?.info;
 {model?.page === 'about' && <AboutPage settings={model.settings} previewInfo={info} />}
 {model?.page === 'home' && <HomePage settings={model.settings} previewInfo={info} />}
 {model?.page === 'series' && <SeriesPage series={model.series} previewInfo={info} />}
-{model?.page === 'reader' && <ReaderPage entry={model.entry} preview previewInfo={info} />}
+{model?.page === 'reader' && <ReaderPage entry={model.entry} preview previewInfo={info} previewUrl={Astro.url.href} />}
 {model?.page === 'portfolio' && <PortfolioPage items={model.items} focusId={model.focusId} openId={model.openId} preview previewInfo={info} />}
 {model?.page === 'writing' && <WritingPage stories={model.stories} previewInfo={info} />}
 {model?.page === 'story' && <StoryPage story={model.story} previewInfo={info} />}

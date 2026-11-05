@@ -23,6 +23,9 @@ export const FIXTURE_SERIES: ComicSeries[] = [
     description: 'A fox and a kettle set out across the hills.',
     status: 'ongoing',
     type: 'original',
+    // How it reads (docs/specs/comic-reader-comic-settings.md): on, for the reading tutorial's pairs.
+    twoUp: true,
+    pageFlip: true,
     cover: page('Kettle Tales cover', 500, 700),
     chapters: [
       // Deliberately out of order: the site sorts by number.
@@ -69,6 +72,8 @@ export const FIXTURE_SERIES: ComicSeries[] = [
     description: 'Facing pages and a spread.',
     status: 'ongoing',
     type: 'original',
+    twoUp: true,
+    pageFlip: true,
     chapters: [
       {
         number: 1,
@@ -87,6 +92,22 @@ export const FIXTURE_SERIES: ComicSeries[] = [
         title: 'Left First',
         openOn: 'left',
         pages: [p('OB 2-1', 'Morning.'), p('OB 2-2', 'Breakfast.'), p('OB 2-3', 'The road.'), p('OB 2-4', 'A bridge.')],
+      },
+    ],
+  },
+  // One page at a time with the page-flip (comic-reader-comic-settings): a spread shows alone.
+  {
+    slug: 'single-sheets',
+    title: 'Single Sheets',
+    description: 'One page at a time.',
+    status: 'ongoing',
+    type: 'original',
+    twoUp: false,
+    pageFlip: true,
+    chapters: [
+      {
+        number: 1,
+        pages: [p('SS 1', 'A lamp.'), p('SS 2', 'A window.'), spread('SS 3 spread', 'The whole town.'), p('SS 4', 'A door.')],
       },
     ],
   },
