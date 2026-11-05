@@ -23,6 +23,10 @@ export interface ComicPage {
   altText?: string;
   /** One picture across two facing pages (docs/specs/comic-reader-spread-and-flip.md). */
   spread?: boolean;
+  /** Its panels, in percent of the picture, in reading order (docs/specs/comic-reader-panels.md AC-1). */
+  panels?: { x: number; y: number; width: number; height: number }[];
+  /** Who set the panels: found by the site, or set (or confirmed) by Star. Missing: never looked at. */
+  panelsBy?: 'site' | 'star';
 }
 
 

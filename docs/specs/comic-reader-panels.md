@@ -1,6 +1,8 @@
 ---
 status: draft
 tests-commit: f22415712e836564216d6eee8590f0d2a1761f01
+unlocks:
+  - tests/e2e/comic-panels-edges.spec.ts (new): a screenshot of the build showed that on a comic's newest page, Next (unusable for pages) couldn't step through the page's remaining panels. Added; the criteria are unchanged.
 ---
 
 # Comic reader: panels
