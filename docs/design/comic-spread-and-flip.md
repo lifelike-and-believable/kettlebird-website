@@ -1,6 +1,6 @@
 ---
 id: design-comic-spread-and-flip
-status: draft
+status: approved
 derived-from:
   - story-comic-reader-flip-and-panels-two-page-spread: 3bd1fa1fe9f5
   - story-comic-reader-flip-and-panels-page-flip: 81730e39874b
