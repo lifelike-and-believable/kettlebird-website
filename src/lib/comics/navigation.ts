@@ -34,6 +34,8 @@ export interface SheetPicture {
   path: string;
   name: string;
   marked: boolean;
+  /** A two-page spread: twice as wide, numbered "5 · spread" (docs/specs/comic-reader-spread-and-flip.md AC-9). */
+  spread: boolean;
   image: ComicImage;
 }
 
@@ -128,8 +130,9 @@ function sheet(series: ComicSeries, chapter: ComicChapter, path: string, marked?
       const number = i + 1;
       const isMarked = marked?.pageNumber === number;
       const alt = page.altText?.trim();
-      const name = `Page ${number}${alt ? `: ${alt}` : ''}${isMarked ? ' You were here' : ''}`;
-      return { number, anchor: `page-${number}`, path: pagePath(slug, chapter.number, number), name, marked: isMarked, image: page.image };
+      const spread = Boolean(page.spread);
+      const name = `Page ${number}${spread ? ', two-page spread' : ''}${alt ? `: ${alt}` : ''}${isMarked ? ' You were here' : ''}`;
+      return { number, anchor: `page-${number}`, path: pagePath(slug, chapter.number, number), name, marked: isMarked, spread, image: page.image };
     }),
     chapterList: withList
       ? {

@@ -1,5 +1,8 @@
 // Comic reader model: series, chapters, pages, addresses, and labels.
 // Spec: docs/specs/comic-reader-start-and-turn.md. Pure functions only; data loading is in source.ts.
+import type { OpenOn } from './pairing';
+
+export type { OpenOn };
 
 export type SeriesStatus = 'ongoing' | 'complete' | 'hiatus';
 export type SeriesType = 'original' | 'fancomic';
@@ -18,11 +21,16 @@ export interface ComicImage {
 export interface ComicPage {
   image: ComicImage;
   altText?: string;
+  /** One picture across two facing pages (docs/specs/comic-reader-spread-and-flip.md). */
+  spread?: boolean;
 }
+
 
 export interface ComicChapter {
   number: number;
   title?: string;
+  /** How pages pair on a wide screen; the right when missing. */
+  openOn?: OpenOn;
   pages: ComicPage[];
 }
 
@@ -119,8 +127,11 @@ export function firstPagePath(series: ComicSeries): string | undefined {
   return readerPages(series)[0]?.path;
 }
 
+/** " · two-page spread" after a spread page's place. */
+export const SPREAD_MARK = ' · two-page spread';
+
 export function locationLine(entry: ReaderPage): string {
-  const pages = `Page ${entry.pageNumber} of ${entry.pageCount}`;
+  const pages = `Page ${entry.pageNumber} of ${entry.pageCount}${entry.page.spread ? SPREAD_MARK : ''}`;
   return showsChapterList(entry.series) ? `${chapterLabel(entry.chapter)} · ${pages}` : pages;
 }
 
