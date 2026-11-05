@@ -154,10 +154,14 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
     left: 1rem;
     font-family: 'DM Mono', monospace;
     font-weight: 500;
-    font-size: 1.5rem;
+    /* Capped by the screen's width, as page titles are, so it stays on one line at phone width with
+       large text; it can still wrap between words rather than run off the screen. */
+    font-size: min(1.5rem, 7vw);
     letter-spacing: 0.02em;
     color: var(--color-ink, #2b2b2b);
     padding: 0.2rem 1rem;
+    max-width: calc(100% - 2rem);
+    overflow-wrap: break-word;
     background-repeat: no-repeat;
     background-position: center;
     background-size: 100% 100%;
@@ -183,6 +187,8 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
     flex: 1;
+    /* Narrower than a card on a small screen with large text: the track scrolls, the page doesn't. */
+    min-width: 0;
     padding-bottom: 0.25rem;
   }
 
@@ -192,12 +198,13 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
 
   :global(.carousel__arrow) {
     flex-shrink: 0;
-    width: 2.5rem;
-    height: 2.5rem;
+    /* Smaller on a narrow screen with large text, leaving room for the pictures. */
+    width: min(2.5rem, 12vw);
+    height: min(2.5rem, 12vw);
     background: var(--color-ink, #2b2b2b);
     color: var(--color-beige, #f5f1e8);
     border: none;
-    font-size: 1.6rem;
+    font-size: min(1.6rem, 8vw);
     line-height: 1;
     cursor: pointer;
     font-family: 'Nunito', sans-serif;
@@ -221,8 +228,9 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
     padding: 0;
     cursor: pointer;
     flex-shrink: 0;
-    width: 220px;
-    height: 220px;
+    /* At most the track's width, so a whole piece shows on a small screen with large text. */
+    width: min(220px, 100%);
+    aspect-ratio: 1;
     scroll-snap-align: start;
     transition: transform 0.18s;
   }
