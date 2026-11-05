@@ -3,7 +3,7 @@ id: story-comic-reader-flip-and-panels-two-page-spread
 status: approved
 derived-from:
   - epic-comic-reader-flip-and-panels#outcome: c1426bb16011
-  - epic-comic-reader-flip-and-panels#decisions-from-the-lead: 23c96219e6c7
+  - epic-comic-reader-flip-and-panels#decisions-from-the-lead: 6c4beced64ec
   - requirements-comics#REQ-comics-2: d738742f9302
   - persona-fan#goals: 2b047e4cae5d
   - persona-artist#goals: f3044c738f84
