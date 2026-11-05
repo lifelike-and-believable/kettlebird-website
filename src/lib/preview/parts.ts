@@ -11,6 +11,7 @@ const FIELD_PARTS: Partial<Record<PreviewKind, Record<string, string>>> = {
   aboutPage: { portrait: 'about-portrait', bio: 'about-bio', statement: 'about-statement', facts: 'about-facts' },
   comicSeries: { title: 'series-title', description: 'series-description', coverImage: 'series-cover', status: 'series-tags', type: 'series-tags' },
   comicChapter: { pages: 'reader-page', title: 'reader-location', number: 'reader-location' },
+  storyChapter: { content: 'story-text', title: 'chapter-title', number: 'chapter-title' },
 };
 
 /** Items shown as one card: any change outlines the card. */

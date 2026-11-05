@@ -1,5 +1,11 @@
 ---
 status: draft
+tests-commit:
+  - e766045b377b34d73837f32619dcb4480cf13e6b
+unlocks:
+  - tests/unit/story-editor.test.ts, tests/unit/help.test.ts, tests/unit/preview.test.ts: a story's chapter is previewable now (AC-12), so it is among the previewable kinds, and its help link sits beside Preview like every other item's. story-reader-editor AC-11 said it had no preview yet; the help and preview specs' criteria are unchanged.
+  - tests/unit/line-breaks.test.ts: the Writing page takes the story model (AC-2) rather than the old query's items, so the test passes a story in that shape. What it checks, line breaks in a story's short description, is unchanged.
+  - tests/unit/stories-edges.test.ts (new): mutation testing showed nothing checked look-alike site names for Also on …, a story dated later than its chapters, stories with the same date, Read the newest chapter with exactly two chapters, a chapter that isn't shown, spans without marks, other objects with text, a symbol line split across spans, a description of only spaces, addresses with /writing/ further in, or the cover's widths and link-preview picture. Added; the criteria are unchanged.
 ---
 
 # Stories on the site

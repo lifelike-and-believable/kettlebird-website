@@ -10,10 +10,11 @@ export type PreviewKind =
   | 'homePage'
   | 'contactSettings'
   | 'writtenWork'
+  | 'storyChapter'
   | 'product'
   | 'commissionType';
 
-export type PreviewPage = 'portfolio' | 'reader' | 'series' | 'commissions' | 'about' | 'home' | 'writing' | 'shop';
+export type PreviewPage = 'portfolio' | 'reader' | 'series' | 'commissions' | 'about' | 'home' | 'writing' | 'story' | 'chapter' | 'shop';
 
 export const PREVIEW_KINDS: PreviewKind[] = [
   'galleryItem',
@@ -24,6 +25,7 @@ export const PREVIEW_KINDS: PreviewKind[] = [
   'homePage',
   'contactSettings',
   'writtenWork',
+  'storyChapter',
   'product',
   'commissionType',
 ];
@@ -42,6 +44,8 @@ export const PREVIEW_MESSAGES = {
   noPicture: 'Add the picture to preview it.',
   noAddress: 'Add a web address so readers can find this comic. The preview needs it too.',
   noPages: 'Add a page to preview this chapter.',
+  noStoryAddress: 'Add a web address so readers can find this story. The preview needs it too.',
+  noChapterText: "Add the chapter's text to preview it.",
 } as const;
 
 export interface PreviewTarget {
@@ -66,6 +70,10 @@ export interface TargetContext {
   opened?: boolean;
   /** For the about page: the first changed part, to scroll to. */
   firstChanged?: string;
+  /** For a story's chapter: its story (draft if never published), if it has one. */
+  story?: RawDoc;
+  /** For a story: whether it has published chapters with text. */
+  storyHasChapters?: boolean;
 }
 
 export function isPreviewKind(kind: string): kind is PreviewKind {
@@ -111,8 +119,20 @@ export function previewTarget(doc: RawDoc, context: TargetContext = {}): Preview
       return { page: 'home', name: 'the home page', anchor: 'artist-text' };
     case 'contactSettings':
       return { page: 'home', name: 'the home page, scrolled to the social links and footer', anchor: 'social-links' };
-    case 'writtenWork':
-      return { page: 'writing', name: 'the Writing page', anchor: `item-${doc._id}` };
+    case 'writtenWork': {
+      // A story with text or chapters previews as its own page (story-reader-pages AC-12).
+      if (list(doc.content).length === 0 && !context.storyHasChapters) return { page: 'writing', name: 'the Writing page', anchor: `item-${doc._id}` };
+      const name = `the ${text(doc.title)} story page`;
+      return slugOf(doc) ? { page: 'story', name } : { page: 'story', name, message: PREVIEW_MESSAGES.noStoryAddress };
+    }
+    case 'storyChapter': {
+      const number = typeof doc.number === 'number' ? doc.number : 0;
+      const title = text(doc.title).trim();
+      const name = `the page for ${title ? `Chapter ${number}: ${title}` : `Chapter ${number}`}`;
+      if (!slugOf(context.story)) return { page: 'chapter', name, message: PREVIEW_MESSAGES.noStoryAddress };
+      if (list(doc.content).length === 0) return { page: 'chapter', name, message: PREVIEW_MESSAGES.noChapterText };
+      return { page: 'chapter', name };
+    }
     case 'product':
       return { page: 'shop', name: 'the shop', anchor: `item-${doc._id}` };
     case 'commissionType':

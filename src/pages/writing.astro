@@ -1,13 +1,9 @@
 ---
+// The Writing page, from the stories source (docs/specs/story-reader-pages.md AC-2).
 import WritingPage from '../components/pages/WritingPage.astro';
-import { getAllWrittenWorks, type WrittenWork } from '../lib/queries';
+import { getStories } from '../lib/stories/source';
 
-let works: WrittenWork[] = [];
-try {
-  works = await getAllWrittenWorks();
-} catch (e) {
-  console.warn('[writing] Could not fetch written works:', e);
-}
+const stories = await getStories();
 ---
 
-<WritingPage works={works} />
+<WritingPage stories={stories} />

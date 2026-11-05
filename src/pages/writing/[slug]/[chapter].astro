@@ -1,0 +1,17 @@
+---
+// Chapter pages, one per shown chapter of a story with a page (docs/specs/story-reader-pages.md AC-1, AC-8).
+import StoryChapterPage from '../../../components/pages/StoryChapterPage.astro';
+import { hasPage, shownChapters, type Story, type StoryChapter } from '../../../lib/stories/model';
+import { getStories } from '../../../lib/stories/source';
+
+export async function getStaticPaths() {
+  const stories = await getStories();
+  return stories
+    .filter(hasPage)
+    .flatMap((story) => shownChapters(story).map((chapter) => ({ params: { slug: story.slug!, chapter: String(chapter.number) }, props: { story, chapter } })));
+}
+
+const { story, chapter } = Astro.props as { story: Story; chapter: StoryChapter };
+---
+
+<StoryChapterPage story={story} chapter={chapter} />

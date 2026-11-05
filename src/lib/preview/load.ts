@@ -8,7 +8,9 @@ import type { TypeCard } from '../../components/settings/CommissionsContent.astr
 import { commissionTypeCards } from '../commission-cards';
 import { readerPages, type ComicSeries, type ReaderPage } from '../comics/model';
 import { fromSanity, type SanitySeries } from '../comics/source';
-import type { CommissionType, GalleryItem, Product, WrittenWork } from '../queries';
+import type { CommissionType, GalleryItem, Product } from '../queries';
+import type { Story, StoryChapter } from '../stories/model';
+import { fromSanity as storyFromSanity, type SanityStory } from '../stories/source';
 import { readSettings, type RawSettings, type Settings } from '../site-settings';
 import { picture } from '../site-settings-source';
 import { overlay, previewChanges, type PreviewChanges } from './changes';
@@ -35,7 +37,9 @@ export type PreviewModel =
   | { page: 'series'; series: ComicSeries }
   | { page: 'reader'; entry: ReaderPage }
   | { page: 'portfolio'; items: GalleryItem[]; focusId: string; openId?: string }
-  | { page: 'writing'; works: WrittenWork[] }
+  | { page: 'writing'; stories: Story[] }
+  | { page: 'story'; story: Story }
+  | { page: 'chapter'; story: Story; chapter: StoryChapter }
   | { page: 'shop'; products: Product[] }
   | { page: 'message' };
 
@@ -50,6 +54,8 @@ export interface PreviewSource {
   publishedOfType(types: string[]): Promise<RawDoc[]>;
   /** A series' published chapters, with their pages' sizes. */
   chapters(seriesId: string): Promise<RawDoc[]>;
+  /** A story's published chapters. */
+  storyChapters(storyId: string): Promise<RawDoc[]>;
 }
 
 const SETTINGS_TYPES = ['commissionSettings', 'aboutPage', 'homePage', 'contactSettings'];
@@ -65,6 +71,13 @@ function outlinedParts(kind: PreviewKind, id: string, changes: PreviewChanges): 
     const selector = partSelector(kind, field, id);
     return selector ? [{ field, selector }] : [];
   });
+}
+
+const hasText = (doc: RawDoc) => Array.isArray(doc.content) && doc.content.length > 0;
+
+/** A story in the site's model, with these chapters (story-reader-pages AC-12). */
+function storyFrom(story: RawDoc, chapters: RawDoc[]): Story {
+  return storyFromSanity({ ...story, chapters: [...chapters].sort((a, b) => Number(a.number ?? 0) - Number(b.number ?? 0)) } as unknown as SanityStory);
 }
 
 function seriesFrom(series: RawDoc, chapters: RawDoc[]): ComicSeries {
@@ -89,6 +102,19 @@ export async function loadPreview(
   const opened = url.searchParams.get('opened') === '1';
   let context: Parameters<typeof previewChanges>[2] = {};
   let series: RawDoc | undefined;
+  let story: RawDoc | undefined;
+  let storyChapters: RawDoc[] = [];
+  if (kind === 'writtenWork') storyChapters = await source.storyChapters(id);
+  if (kind === 'storyChapter') {
+    const storyId = ref(item.story);
+    if (storyId) {
+      const [pubStory, draftStory] = await Promise.all([source.published(storyId), source.draft(storyId)]);
+      // The story's draft when it has never been published, as for comic chapters.
+      story = pubStory ?? (draftStory && { ...draftStory, _id: storyId });
+      if (!pubStory && draftStory) context = { ...context, storyUnpublished: true };
+      if (story) storyChapters = await source.storyChapters(storyId);
+    }
+  }
   if (kind === 'comicChapter') {
     const seriesId = ref(item.series);
     if (seriesId) {
@@ -98,7 +124,9 @@ export async function loadPreview(
     }
   }
   const changes0 = previewChanges(published, { ...item, _id: draft?._id ?? id });
-  const target = previewTarget(item, { series, page, opened, firstChanged: changes0.outlined[0] });
+  const target = previewTarget(item, {
+    series, page, opened, firstChanged: changes0.outlined[0], story, storyHasChapters: storyChapters.some(hasText),
+  });
   const base = { name: target.name, anchor: target.anchor };
   if (target.message) {
     return { model: { page: 'message' }, info: { ...base, notes: [], outlined: [], message: target.message } };
@@ -141,9 +169,21 @@ export async function loadPreview(
       model = { page: 'portfolio', items, focusId: id, openId: opened ? id : undefined };
       break;
     }
-    case 'writtenWork':
-      model = { page: 'writing', works: overlay(await source.publishedOfType(['writtenWork']), item) as unknown as WrittenWork[] };
+    case 'writtenWork': {
+      if (target.page === 'story') {
+        model = { page: 'story', story: storyFrom(item, storyChapters) };
+        break;
+      }
+      const [stories, chapters] = await Promise.all([source.publishedOfType(['writtenWork']), source.publishedOfType(['storyChapter'])]);
+      model = { page: 'writing', stories: overlay(stories, item).map((s) => storyFrom(s, chapters.filter((c) => ref(c.story) === s._id))) };
       break;
+    }
+    case 'storyChapter': {
+      const shown = storyFrom(story!, overlay(storyChapters, item));
+      const chapter = shown.chapters.find((c) => c.number === item.number)!;
+      model = { page: 'chapter', story: shown, chapter };
+      break;
+    }
     case 'product':
       model = { page: 'shop', products: overlay(await source.publishedOfType(['product']), item) as unknown as Product[] };
       break;
@@ -158,7 +198,11 @@ const NOT_DRAFT = '!(_id in path("drafts.**"))';
 const PAGE_PROJECTION = 'pages[]{ _key, asset, altText, "dimensions": asset->metadata.dimensions }';
 const COVER_PROJECTION = 'coverImage{ asset, hotspot, "dimensions": asset->metadata.dimensions }';
 const project = (type: string | undefined) =>
-  type === 'comicChapter' ? `{ ..., "pages": ${PAGE_PROJECTION} }` : type === 'comicSeries' ? `{ ..., "coverImage": ${COVER_PROJECTION} }` : '';
+  type === 'comicChapter'
+    ? `{ ..., "pages": ${PAGE_PROJECTION} }`
+    : type === 'comicSeries' || type === 'writtenWork'
+      ? `{ ..., "coverImage": ${COVER_PROJECTION} }`
+      : '';
 
 /** Reads with the preview token. Called only when a preview is requested, never at build time. */
 export function sanitySource(token: string, projectId: string, dataset: string): PreviewSource {
@@ -178,6 +222,8 @@ export function sanitySource(token: string, projectId: string, dataset: string):
         `*[_type == "comicChapter" && series._ref == $seriesId && ${NOT_DRAFT}] | order(number asc) { ..., "pages": ${PAGE_PROJECTION} }`,
         { seriesId },
       ),
+    storyChapters: (storyId) =>
+      client.fetch<RawDoc[]>(`*[_type == "storyChapter" && story._ref == $storyId && ${NOT_DRAFT}] | order(number asc)`, { storyId }),
   };
 }
 
@@ -197,5 +243,6 @@ export function fixtureSource(fixtures: { key: string; published: RawDoc[]; draf
       const inline = ((series?.chapters as RawDoc[] | undefined) ?? []).map((c, i) => ({ ...c, _id: `${seriesId}-chapter-${i}`, _type: 'comicChapter' }));
       return inline;
     },
+    storyChapters: async (storyId) => fixtures.published.filter((d) => d._type === 'storyChapter' && ref(d.story) === storyId),
   };
 }

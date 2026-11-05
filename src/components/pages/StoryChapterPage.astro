@@ -1,0 +1,46 @@
+---
+// A chapter's page (src/pages/writing/[slug]/[chapter].astro and the preview route): the story's title,
+// the chapter as the h1, Before you read, navigation, the text, navigation again.
+// Design: docs/design/story-reader.md. Spec: docs/specs/story-reader-pages.md AC-5, AC-6, AC-8, AC-9, AC-12.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BeforeYouRead from '../stories/BeforeYouRead.astro';
+import ChapterNav from '../stories/ChapterNav.astro';
+import StoryGate from '../stories/StoryGate.astro';
+import StoryText from '../stories/StoryText.astro';
+import type { PreviewInfo } from '../../lib/preview/load';
+import { chapterLabel, chapterNav, chapterTabTitle, storyPath, type Story, type StoryChapter } from '../../lib/stories/model';
+import { chapterPreview } from '../../lib/stories/sharing';
+
+const { story, chapter, previewInfo } = Astro.props as { story: Story; chapter: StoryChapter; previewInfo?: PreviewInfo };
+const preview = chapterPreview(story, chapter, Astro.site!.href);
+const nav = chapterNav(story, chapter.number);
+const label = chapterLabel(chapter);
+---
+
+<BaseLayout
+  previewInfo={previewInfo}
+  title={chapterTabTitle(story, chapter)}
+  description={preview.description}
+  canonical={preview.url}
+  preview={{ ...preview, type: 'article' }}
+>
+  <div class="chapter">
+    <header class="chapter__top">
+      <p class="chapter__story"><a href={storyPath(story.slug!)}>{story.title}</a></p>
+      <h1 class="chapter__title" data-part="chapter-title">{label}</h1>
+    </header>
+    <BeforeYouRead story={story} gate={!previewInfo} />
+    <ChapterNav nav={nav} />
+    <StoryText text={chapter.text} label={label} />
+    {!previewInfo && <StoryGate />}
+    <ChapterNav nav={nav} end />
+  </div>
+</BaseLayout>
+
+<style>
+  .chapter { max-width: 1100px; margin: 0 auto; padding: 1.5rem 1rem 4rem; }
+  .chapter__top { max-width: 65ch; margin: 0 auto; }
+  .chapter__story { margin: 0 0 0.25rem; }
+  .chapter__story a { font-family: 'Nunito', sans-serif; font-weight: 700; color: var(--color-ink); }
+  .chapter__title { margin: 0; overflow-wrap: break-word; }
+</style>

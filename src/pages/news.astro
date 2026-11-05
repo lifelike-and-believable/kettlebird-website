@@ -1,7 +1,11 @@
 ---
+// The news page: art and stories, newest first, with a story's later chapters as their own entries
+// (docs/specs/story-reader-pages.md AC-10).
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getNewsFeed, type NewsPost } from '../lib/queries';
 import { urlFor } from '../lib/sanity';
+import { newsEntries } from '../lib/stories/sharing';
+import { getStories } from '../lib/stories/source';
 
 let posts: NewsPost[] = [];
 try {
@@ -9,6 +13,7 @@ try {
 } catch (e) {
   console.warn('[news] Could not fetch news feed:', e);
 }
+const entries = newsEntries(posts, await getStories());
 
 const TYPE_LABELS: Record<string, string> = {
   writtenWork: 'Writing',
@@ -38,26 +43,23 @@ function formatDate(dateStr?: string) {
       <p class="page-subtitle">What's new from the kettle</p>
     </header>
 
-    {posts.length === 0 ? (
+    {entries.length === 0 ? (
       <div class="empty-state">
         <p class="empty-state__text">Nothing posted yet — stay tuned!</p>
         <div class="empty-state__doodle" aria-hidden="true">📰</div>
       </div>
     ) : (
       <ol class="news-feed" reversed>
-        {posts.map((post) => {
-          const imgUrl = post.coverImage?.asset
-            ? urlFor(post.coverImage).width(300).height(300).fit('crop').auto('format').url()
-            : null;
-
-          const typeColor = TYPE_COLORS[post._type] ?? 'var(--color-yellow)';
-          const typeLabel = TYPE_LABELS[post._type] ?? post._type;
-
-          const href = post._type === 'writtenWork'
-            ? (post.externalLink ?? `/writing`)
-            : `/portfolio`;
-
-          const isExternal = post._type === 'writtenWork' && !!post.externalLink;
+        {entries.map((entry) => {
+          const type = entry.kind === 'post' ? entry.post._type : 'writtenWork';
+          const imgUrl = entry.kind === 'post'
+            ? (entry.post.coverImage?.asset ? urlFor(entry.post.coverImage).width(300).height(300).fit('crop').auto('format').url() : null)
+            : entry.story.cover?.src ?? null;
+          const title = entry.kind === 'post' ? entry.post.title : entry.title;
+          const excerpt = entry.kind === 'post' ? entry.post.excerpt : undefined;
+          const isExternal = entry.kind === 'post' && entry.external;
+          const typeColor = TYPE_COLORS[type] ?? 'var(--color-yellow)';
+          const typeLabel = TYPE_LABELS[type] ?? type;
 
           return (
             <li class="news-item">
@@ -69,23 +71,23 @@ function formatDate(dateStr?: string) {
               <div class="news-item__body">
                 <div class="news-item__meta">
                   <span class="news-item__type" style={`background: ${typeColor}`}>{typeLabel}</span>
-                  {post.publishDate && (
-                    <time class="news-item__date" datetime={post.publishDate}>
-                      {formatDate(post.publishDate)}
+                  {entry.date && (
+                    <time class="news-item__date" datetime={entry.date}>
+                      {formatDate(entry.date)}
                     </time>
                   )}
                 </div>
                 <h2 class="news-item__title">
                   <a
-                    href={href}
+                    href={entry.href}
                     class="news-item__link"
                     {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
                   >
-                    {post.title}
+                    {title}
                     {isExternal && <span class="external-icon" aria-label="(opens externally)">↗</span>}
                   </a>
                 </h2>
-                {post.excerpt && <p class="news-item__excerpt">{post.excerpt}</p>}
+                {excerpt && <p class="news-item__excerpt">{excerpt}</p>}
               </div>
             </li>
           );
