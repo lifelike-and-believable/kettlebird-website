@@ -45,7 +45,7 @@ rendered from with render.mjs). -->
 
 1. On a phone, the reader bar has **Panel by panel** beside **All pages** (mock-up 1). It shows on every page of a chapter where Star has panels on at least one page.
 2. Choosing it zooms into the page's first panel, enlarged to fit the space between the bar and the controls (mock-up 2). The bar reads "Chapter 2: The Long Road · Page 4 of 12 · panel 1 of 5". The button is pressed (dark), and the choice is remembered on that browser.
-3. **Next**, swiping left or the right arrow key moves to the next panel: the view slides and zooms from one panel to the next, in about 0.3 seconds (mock-up 3). After the page's last panel, it turns to the next page, with the page-flip, and opens on its first panel.
+3. **Next**, swiping left or the right arrow key moves to the next panel: the view slides and zooms from one panel to the next, in about 0.3 seconds (mock-up 3). After the page's last panel, it turns to the next page (with the page-flip, if Star has turned it on for the comic) and opens on its first panel.
 4. **Previous**, swiping right or the left arrow key goes back a panel; from a page's first panel, to the last panel of the page before.
 5. A page without panels shows whole, "Page 6 of 12 · whole page", and one turn moves past it (mock-up 4).
 6. Choosing **Panel by panel** again shows the whole page, at the panel the fan was on; the button is no longer pressed.
@@ -90,7 +90,7 @@ The page panel's **Panels** section, under **Two-page spread**, replaces "Panels
 - **Fitting:** the panel is scaled to fit the page area (the same space a whole page has now), centred, with a margin of 4% of the page's width around it in the page area's colour, so its border shows. Nothing of the page outside the panel is visible.
 - **Moving between panels:** the view pans and zooms from one panel's frame to the next, about 0.3 seconds, never more than 0.4. Under reduced motion, the view changes at once.
 - **Spreads:** a two-page spread's panels are stepped through the same way, on its single picture.
-- **Turning pages:** the last panel to the next page plays the narrow page-flip (design-comic-spread-and-flip) between the two panel views.
+- **Turning pages:** the last panel to the next page plays the narrow page-flip (design-comic-spread-and-flip) between the two panel views, when the comic has the page-flip on (story-comic-reader-flip-and-panels-comic-settings); otherwise the next page's first panel shows at once.
 - **The controls** keep their places and captions. Their full names say "Next panel" and "Previous panel" when the next step is a panel on the same page, and "Next page" and "Previous page" when it's a page.
 
 ## Layout
