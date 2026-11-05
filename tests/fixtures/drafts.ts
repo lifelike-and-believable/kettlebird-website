@@ -17,6 +17,12 @@ const block = (text: string) => ({ _type: 'block', _key: text.slice(0, 8), style
 const storyRef = (id: string) => ({ _type: 'reference', _ref: id });
 
 export const FIXTURE_PUBLISHED: RawDoc[] = [
+  // Art pieces for the portfolio's preview (docs/specs/portfolio-full-screen.md): a large picture, one in
+  // two sections, one without a picture; the draft piece-moon comes after them in Original Work.
+  { _id: 'piece-lantern', _type: 'galleryItem', title: 'Night Market', image: { _type: 'image', asset: { _ref: 'image-Lantern1aaaaaaaaaaaaaaaa-3000x2000-jpg' } }, category: ['original'], altText: 'Lanterns over the river stalls.' },
+  { _id: 'piece-alibi', _type: 'galleryItem', title: 'Late Night Alibi', image: { _type: 'image', asset: { _ref: 'image-Alibi1aaaaaaaaaaaaaaaaaa-1200x1200-jpg' } }, category: ['original', 'fanart'] },
+  { _id: 'piece-blank', _type: 'galleryItem', title: 'Coming Soon', category: ['original'] },
+  { _id: 'piece-jungle', _type: 'galleryItem', title: 'Jungle Eyes', image: { _type: 'image', asset: { _ref: 'image-Jungle1aaaaaaaaaaaaaaaaa-1600x2000-jpg' } }, category: ['original'] },
   // A comic with pairs off and the flip on, whose draft turns pairs on, and a chapter of it
   // (docs/specs/comic-reader-comic-settings.md AC-8, AC-9).
   { _id: 'series-sheets', _type: 'comicSeries', title: 'Single Sheets', slug: { current: 'single-sheets' }, status: 'ongoing', type: 'original', twoUp: false, pageFlip: true },

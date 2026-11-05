@@ -9,7 +9,7 @@ for (const width of [390, 320]) {
   test(`the portfolio with art fits a ${width} px phone with text at 200%`, async ({ page }) => {
     await page.setViewportSize({ width, height: 800 });
     await page.goto(PIECE);
-    await expect(page.locator('.gallery-card')).toHaveCount(1);
+    await expect(page.locator('.gallery-card').first()).toBeVisible();
     await page.evaluate(() => { document.documentElement.style.fontSize = '200%'; });
     for (const selector of ['.folder-label', '.gallery-card', '.carousel']) {
       const right = await page.locator(selector).first().evaluate((e) => e.getBoundingClientRect().right);
