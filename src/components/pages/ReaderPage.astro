@@ -112,7 +112,7 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
       )}
     </div>
 
-    <div class="reader__book" data-reader-page data-part="reader-page" data-kind={wide.kind} class:list={[{ 'is-newest': wide.isLast }]}>
+    <div class="reader__book" data-reader-page data-part="reader-page" data-kind={wide.kind}>
       {wide.pages.map((p, i) => {
         const current = p.path === entry.path;
         const img = p.page.image;
@@ -497,8 +497,6 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
       grid-template-rows: minmax(0, 1fr);
       height: calc(100vh - 12.5rem);
     }
-    /* The newest pages leave room for the end note on the first screen. */
-    .reader__book.is-newest { height: calc(100vh - 18rem); }
     .reader__book .reader__page {
       height: 100%;
       width: auto;

@@ -102,7 +102,7 @@ Revised after a persona walkthrough. -->
 - **A spread page:** one picture across both sides, the width of two pages, no shadow (mock-up 3).
 - **The bar and the controls** stay where they are now. "Pages 2–3 of 12" replaces "Page 2 of 12" for a pair.
 - **The edge arrows** (design-comic-turn-pages, wide screens, mouse only) sit at the outer edges of the pair or the spread.
-- **On the newest pair or page**, the pages are shortened so that the end note and its **Back to series** fit on the first screen of an 800 px tall laptop (mock-ups 6 and 10).
+- **On the newest pair or page**, the pages keep the same size and place as on every other page; the end note and its **Back to series** sit under the controls, a short scroll down on a laptop (mock-ups 6 and 10). The lead's decision (2026-11-05): the pages never change size at the end.
 
 ## States and errors
 
@@ -142,7 +142,7 @@ A walkthrough for persona-fan and persona-artist (2026-11-05), which opened ever
   - the width test in text-size units, for 200% text;
   - "pages" in the controls' full names only for a pair;
   - the edge arrows at the pair's outer edges;
-  - the end note on the first screen.
+  - the end note on the first screen (since replaced: the lead decided the pages keep their size at the end, 2026-11-05).
 
 ## Mock-ups
 
