@@ -14,7 +14,7 @@ import { visit } from 'unist-util-visit';
 
 /** The guides built into /help, in the order Star needs them (design-help-links). */
 /** Guides in docs/user written for fans, not Star; they aren't help pages. Every other guide must be in GUIDE_NAMES. */
-export const FAN_GUIDES = ['reading-comics'] as const;
+export const FAN_GUIDES = ['reading-comics', 'viewing-artwork'] as const;
 
 export const GUIDE_NAMES = ['getting-started', 'editing-your-site', 'publishing-comics', 'publishing-stories', 'site-settings', 'previewing', 'going-live'] as const;
 
