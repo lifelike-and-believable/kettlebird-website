@@ -18,8 +18,6 @@ chapters, on the site with the editor. Written from design-story-reader. -->
 
 Your stories can be read right on the site, in one comfortable column, on a phone or a computer. You put a story up by pasting it in from Google Docs or Word, and a long story can go up a chapter at a time, the way comic chapters do.
 
-**Stories on the site** arrive with a later update to the editor; until then, the Writing page works as it does now, and this guide is for when they're there.
-
 Everything here happens in the editor, at `kettlebird.com/studio`, in **Writing**. **Publish** is at the bottom of the open item, and the status at the top right says when your change is live ([When your change is live](going-live.md)).
 
 ## Start a new story

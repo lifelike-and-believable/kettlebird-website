@@ -36,7 +36,8 @@ describe('line breaks in descriptions', () => {
   });
 
   it('shows line breaks in a story\'s short description', async () => {
-    const html = await render(WritingPage, { works: [{ _id: 'w', title: 'Story', slug: { current: 'story' }, excerpt: TEXT }] });
+    // The Writing page takes the story model since story-reader-pages AC-2.
+    const html = await render(WritingPage, { stories: [{ id: 'w', title: 'Story', slug: 'story', description: TEXT, genres: [], text: [], chapters: [] }] });
     expect(html).toMatch(SHOWN);
   });
 

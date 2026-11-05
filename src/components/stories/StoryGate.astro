@@ -1,0 +1,25 @@
+---
+// Mature and Explicit stories ask first (docs/specs/story-reader-pages.md AC-6). Placed right after the
+// guarded content, so it runs before the page is first painted: unless this browser has continued before,
+// the content is hidden and Continue to the story shown. The choice covers every Mature or Explicit story.
+import { GATE_STORAGE_KEY } from '../../lib/stories/model';
+---
+<script is:inline define:vars={{ key: GATE_STORAGE_KEY }}>
+  (function () {
+    var button = document.querySelector('[data-story-continue]');
+    var gated = document.querySelectorAll('[data-story-gated]');
+    if (!button || !gated.length) return;
+    var remembered = false;
+    try { remembered = localStorage.getItem(key) === '1'; } catch (e) { /* storage blocked: ask each time */ }
+    if (remembered) { button.remove(); return; }
+    gated.forEach(function (el) { el.hidden = true; });
+    button.hidden = false;
+    button.addEventListener('click', function () {
+      try { localStorage.setItem(key, '1'); } catch (e) { /* still show the text */ }
+      gated.forEach(function (el) { el.hidden = false; });
+      button.remove();
+      var start = document.querySelector('[data-story-start]');
+      if (start) start.focus();
+    });
+  })();
+</script>

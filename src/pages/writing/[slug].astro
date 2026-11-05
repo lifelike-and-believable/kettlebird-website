@@ -1,0 +1,16 @@
+---
+// Story pages, one per story with a page (docs/specs/story-reader-pages.md AC-1). The page itself is
+// src/components/pages/StoryPage.astro.
+import StoryPage from '../../components/pages/StoryPage.astro';
+import { hasPage, type Story } from '../../lib/stories/model';
+import { getStories } from '../../lib/stories/source';
+
+export async function getStaticPaths() {
+  const stories = await getStories();
+  return stories.filter(hasPage).map((story) => ({ params: { slug: story.slug! }, props: { story } }));
+}
+
+const { story } = Astro.props as { story: Story };
+---
+
+<StoryPage story={story} />

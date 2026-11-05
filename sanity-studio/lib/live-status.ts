@@ -23,7 +23,17 @@ const SLOW_AFTER = 5 * MINUTE;
 const FAILED_AFTER = 15 * MINUTE;
 
 /** The latest published change, as the editor's query returns it. */
-export interface Change { _type: string; _updatedAt: string; slug?: string; seriesSlug?: string; number?: number }
+export interface Change {
+  _type: string;
+  _updatedAt: string;
+  slug?: string;
+  seriesSlug?: string;
+  number?: number;
+  /** A chapter's story's web address (story-reader-pages AC-12). */
+  storySlug?: string;
+  /** A story: whether it has a page on the site (text or chapters). */
+  hasPage?: boolean;
+}
 /** The site's /build-info.json. */
 export interface BuildInfo { contentReadAt: string; builtAt: string }
 export interface StatusInput {
@@ -96,13 +106,18 @@ export function viewOnSitePath(change: Change): string {
     return change.number === undefined ? `/comics/${change.seriesSlug}` : `/comics/${change.seriesSlug}/${change.number}/1`;
   }
   if (change._type === 'comicSeries') return change.slug ? `/comics/${change.slug}` : '/comics';
+  // A story's page or a chapter's, once it has one (story-reader-pages AC-12).
+  if (change._type === 'writtenWork' && change.slug && change.hasPage) return `/writing/${change.slug}`;
+  if (change._type === 'storyChapter' && change.storySlug && change.number !== undefined) return `/writing/${change.storySlug}/${change.number}`;
   return PAGES[change._type] ?? '/';
 }
 
 /** The editor's query: the latest published change, the removal record, and the changes since a time. */
 export const LATEST_QUERY = `{
   "latest": *[_type in $types && !(_id in path("drafts.**"))] | order(_updatedAt desc)[0]{
-    _type, _updatedAt, "slug": slug.current, "seriesSlug": series->slug.current, number
+    _type, _updatedAt, "slug": slug.current, "seriesSlug": series->slug.current, number,
+    "storySlug": story->slug.current,
+    "hasPage": count(content) > 0 || count(*[_type == "storyChapter" && story._ref == ^._id && count(content) > 0]) > 0
   },
   "removedAt": *[_id == $statusId][0]._updatedAt,
   "pending": count(*[_type in $types && !(_id in path("drafts.**")) && _updatedAt > $since])

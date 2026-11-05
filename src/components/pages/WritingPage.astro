@@ -1,13 +1,14 @@
 ---
-import Lines from '../Lines.astro';
 // The Writing page. Rendered by src/pages/writing.astro and by the preview route
-// (docs/specs/content-editing-preview.md).
+// (docs/specs/content-editing-preview.md). Cards from the story model: a story with a page has Read,
+// and its title and cover link to it (docs/specs/story-reader-pages.md AC-2).
+import Lines from '../Lines.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import type { PreviewInfo } from '../../lib/preview/load';
-import type { WrittenWork } from '../../lib/queries';
-import { urlFor } from '../../lib/sanity';
+import { alsoOn, cardLine, hasPage, ratingLine, sortForWriting, storyPath, type Story } from '../../lib/stories/model';
 
-const { works } = Astro.props as { works: WrittenWork[] };
+const { stories } = Astro.props as { stories: Story[] };
+const works = sortForWriting(stories);
 
 const GENRE_COLORS = ['--color-yellow', '--color-green', '--color-orange'];
 /** In the preview route: what the preview shows and outlines (docs/specs/content-editing-preview.md). */
@@ -34,31 +35,37 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
     ) : (
       <ul class="works-list">
         {works.map((work) => {
-          const imgUrl = work.coverImage?.asset
-            ? urlFor(work.coverImage).width(400).height(560).fit('crop').auto('format').url()
-            : null;
+          const page = hasPage(work) ? storyPath(work.slug!) : undefined;
+          const rating = ratingLine(work.rating);
+          const line = cardLine(work);
+          const cover = work.cover
+            ? <img src={work.cover.src} srcset={work.cover.srcset} sizes="200px" alt="" class="work-card__img" width={work.cover.width} height={work.cover.height} loading="lazy" />
+            : <div class="work-card__cover-placeholder" aria-hidden="true">📖</div>;
 
           return (
-            <li class="work-card" id={`item-${work._id}`} data-part={`item-${work._id}`}>
+            <li class="work-card" id={`item-${work.id}`} data-part={`item-${work.id}`}>
               <div class="work-card__cover">
-                {imgUrl
-                  ? <img src={imgUrl} alt={work.title} class="work-card__img" width={400} height={560} loading="lazy" />
-                  : <div class="work-card__cover-placeholder" aria-hidden="true">📖</div>
-                }
+                {page ? <a href={page} tabindex="-1" aria-hidden="true">{cover}</a> : cover}
               </div>
               <div class="work-card__body">
-                <h2 class="work-card__title">{work.title}</h2>
-                {work.genre && work.genre.length > 0 && (
-                  <ul class="tag-list" aria-label="Genres">
-                    {work.genre.map((g, i) => (
+                <h2 class="work-card__title">{page ? <a href={page}>{work.title}</a> : work.title}</h2>
+                {(work.genres.length > 0 || rating) && (
+                  <ul class="tag-list" aria-label="About this story">
+                    {work.genres.map((g, i) => (
                       <li class="tag" style={`background: var(${GENRE_COLORS[i % GENRE_COLORS.length]})`}>{g}</li>
                     ))}
+                    {rating && <li class="tag tag--rating">{rating}</li>}
                   </ul>
                 )}
-                {work.excerpt && <p class="work-card__excerpt"><Lines text={work.excerpt} /></p>}
+                {line && <p class="work-card__line">{line}</p>}
+                {work.description && <p class="work-card__excerpt"><Lines text={work.description} /></p>}
                 <div class="work-card__actions">
-                  {work.externalLink && (
-                    <a href={work.externalLink} target="_blank" rel="noopener noreferrer" class="btn">
+                  {page && <a href={page} class="btn">Read</a>}
+                  {page && work.link && (
+                    <a href={work.link} target="_blank" rel="noopener noreferrer" class="work-card__also">{alsoOn(work.link)}</a>
+                  )}
+                  {!page && work.link && (
+                    <a href={work.link} target="_blank" rel="noopener noreferrer" class="btn">
                       Read it →
                     </a>
                   )}
@@ -73,6 +80,13 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
 </BaseLayout>
 
 <style>
+  .work-card__title a { color: inherit; }
+  .work-card__line { margin: 0.25rem 0; font-family: 'DM Mono', monospace; font-size: 0.9rem; }
+  .tag--rating { background: var(--color-beige); }
+  .work-card__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1rem; }
+  .work-card__also { font-family: 'Nunito', sans-serif; font-weight: 700; color: var(--color-ink); }
+  .work-card__cover a { display: block; height: 100%; }
+
   .writing-page {
     max-width: 1100px;
     margin: 0 auto;
@@ -130,7 +144,8 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
 
   .work-card {
     display: grid;
-    grid-template-columns: 160px 1fr;
+    /* minmax(0, …): a card never makes the page scroll sideways (story-reader-pages AC-13). */
+    grid-template-columns: 160px minmax(0, 1fr);
     gap: 1.5rem;
     border: 3px solid var(--color-ink, #2b2b2b);
     background: var(--color-beige, #f5f1e8);
@@ -234,7 +249,7 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
 
   @media (max-width: 540px) {
     .work-card {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
     }
 
     .work-card__cover {

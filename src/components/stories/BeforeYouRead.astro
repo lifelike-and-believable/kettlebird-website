@@ -1,0 +1,37 @@
+---
+// Before you read: the rating and content notes before a story's text, and on a Mature or Explicit
+// story, Continue to the story (docs/specs/story-reader-pages.md AC-5, AC-6; design-story-reader, Layout).
+// The text it guards follows it in the page with data-story-gated; StoryGate.astro hides it until the
+// fan continues. Without scripts, the button stays hidden and the text shows.
+import Lines from '../Lines.astro';
+import { beforeYouRead, gateLine, type Story } from '../../lib/stories/model';
+
+const { story, gate = true } = Astro.props as { story: Story; gate?: boolean };
+const box = beforeYouRead(story);
+const asks = gate ? gateLine(story) : undefined;
+---
+{box && (
+  <section class="before-you-read" aria-labelledby="before-you-read" data-part="story-before">
+    <h2 id="before-you-read">Before you read</h2>
+    {asks && <p class="before-you-read__ask">{asks}</p>}
+    {!asks && <p class="before-you-read__rating">{box.rating}</p>}
+    {box.notes && <p class="before-you-read__notes"><Lines text={box.notes} /></p>}
+    {asks && <button type="button" class="highlighter-btn" data-story-continue hidden>Continue to the story</button>}
+  </section>
+)}
+
+<style>
+  .before-you-read {
+    max-width: 65ch;
+    margin: 1.5rem auto;
+    padding: 1rem 1.25rem;
+    border: 3px solid var(--color-ink);
+    background: var(--color-beige);
+  }
+  .before-you-read h2 { font-size: 1.15rem; margin: 0 0 0.5rem; }
+  .before-you-read p { margin: 0.25rem 0; }
+  .before-you-read__rating { font-family: 'Nunito', sans-serif; font-weight: 700; }
+  .before-you-read__ask { font-weight: 600; }
+  .before-you-read button { margin-top: 0.75rem; }
+  .before-you-read button[hidden] { display: none; }
+</style>

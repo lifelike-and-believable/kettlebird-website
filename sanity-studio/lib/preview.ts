@@ -11,6 +11,8 @@ export const PREVIEWABLE_TYPES: string[] = [
   'homePage',
   'contactSettings',
   'writtenWork',
+  // Since story-reader-pages AC-12.
+  'storyChapter',
   'product',
   'commissionType',
 ];

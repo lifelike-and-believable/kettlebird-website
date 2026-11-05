@@ -18,10 +18,11 @@ import {
 } from '../../sanity-studio/lib/preview';
 
 const doc = (type: string, fields: Record<string, unknown> = {}, id = `${type}-1`): RawDoc => ({ _id: id, _type: type, ...fields });
-const ALL = ['galleryItem', 'comicChapter', 'comicSeries', 'commissionSettings', 'aboutPage', 'homePage', 'contactSettings', 'writtenWork', 'product', 'commissionType'];
+// A story's chapter joined these with story-reader-pages AC-12.
+const ALL = ['galleryItem', 'comicChapter', 'comicSeries', 'commissionSettings', 'aboutPage', 'homePage', 'contactSettings', 'writtenWork', 'storyChapter', 'product', 'commissionType'];
 
 describe('content-editing-preview#AC-1 previewable types', () => {
-  it('the editor and the site agree on the ten kinds of item', () => {
+  it('the editor and the site agree on the kinds of item', () => {
     expect([...PREVIEWABLE_TYPES].sort()).toEqual([...ALL].sort());
     expect([...PREVIEW_KINDS].sort()).toEqual([...ALL].sort());
     for (const t of ALL) {

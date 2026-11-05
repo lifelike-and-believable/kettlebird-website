@@ -1,0 +1,30 @@
+---
+// A story's or chapter's text in the reading column (docs/specs/story-reader-pages.md AC-4, AC-13).
+// The article takes focus when Continue to the story reveals it.
+import { storyHtml } from '../../lib/stories/text';
+import type { TextBlock } from '../../lib/stories/model';
+
+const { text, label } = Astro.props as { text: TextBlock[]; label: string };
+---
+<article class="story-text" aria-label={label} tabindex="-1" data-story-start data-story-gated data-part="story-text" set:html={storyHtml(text)} />
+
+<style>
+  .story-text {
+    max-width: 65ch;
+    margin: 0 auto;
+    font-size: 1.125rem;
+    line-height: 1.7;
+    overflow-wrap: break-word;
+  }
+  .story-text:focus { outline: none; }
+  .story-text:focus-visible { outline: 3px solid var(--color-ink); outline-offset: 4px; }
+  .story-text :global(p) { margin: 0 0 1em; }
+  .story-text :global(hr.scene-break) {
+    border: none;
+    margin: 2em 0;
+    text-align: center;
+    height: auto;
+  }
+  .story-text :global(hr.scene-break)::after { content: '⁂'; font-size: 1.4em; }
+  .story-text[hidden] { display: none; }
+</style>

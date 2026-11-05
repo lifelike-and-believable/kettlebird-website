@@ -1,0 +1,124 @@
+---
+// A story's page (src/pages/writing/[slug].astro and the preview route): the top, Before you read, then
+// the text (a one-shot) or Start reading and the chapter list. Design: docs/design/story-reader.md.
+// Spec: docs/specs/story-reader-pages.md AC-3, AC-5 to AC-7, AC-9, AC-12.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Lines from '../Lines.astro';
+import BeforeYouRead from '../stories/BeforeYouRead.astro';
+import StoryGate from '../stories/StoryGate.astro';
+import StoryText from '../stories/StoryText.astro';
+import type { PreviewInfo } from '../../lib/preview/load';
+import {
+  alsoOn, chapterLabel, chapterPath, inChapters, ratingLine, readNewestPath, shownChapters, startReadingPath,
+  STATUS_TITLES, storyTabTitle, type Story,
+} from '../../lib/stories/model';
+import { storyPreview } from '../../lib/stories/sharing';
+
+const { story, previewInfo } = Astro.props as { story: Story; previewInfo?: PreviewInfo };
+const preview = storyPreview(story, Astro.site!.href);
+const chapters = shownChapters(story);
+const byChapter = inChapters(story);
+const start = startReadingPath(story);
+const newest = readNewestPath(story);
+const rating = ratingLine(story.rating);
+const formatDate = (date?: string) =>
+  date ? new Date(`${date}T12:00:00Z`).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' }) : '';
+---
+
+<BaseLayout
+  previewInfo={previewInfo}
+  title={storyTabTitle(story)}
+  description={preview.description}
+  canonical={preview.url}
+  preview={{ ...preview, type: 'article' }}
+>
+  <div class="story">
+    <header class="story__top">
+      <h1 class="story__title" data-part="story-title">{story.title}</h1>
+      {story.cover && (
+        <div class="story__cover" data-part="story-cover">
+          <img src={story.cover.src} srcset={story.cover.srcset} sizes="(max-width: 700px) 30vw, 300px" alt="" width={story.cover.width} height={story.cover.height} />
+        </div>
+      )}
+      <div class="story__details">
+        <ul class="story__tags" aria-label="About this story" data-part="story-tags">
+          {story.genres.map((g) => <li class="tag">{g}</li>)}
+          {rating && <li class="tag tag--rating">{rating}</li>}
+          {byChapter && story.status && <li class="tag tag--status" data-status={story.status}>{STATUS_TITLES[story.status]}</li>}
+        </ul>
+        {story.description && <p class="story__description" data-part="story-description"><Lines text={story.description} /></p>}
+      </div>
+    </header>
+
+    <BeforeYouRead story={story} gate={!previewInfo} />
+
+    {byChapter ? (
+      <section class="story__chapters" data-story-gated>
+        <p class="story__start" tabindex="-1" data-story-start>
+          <a class="highlighter-btn" href={start}>Start reading</a>
+          {newest && <a class="story__newest" href={newest}>Read the newest chapter</a>}
+        </p>
+        <h2 id="chapters">Chapters</h2>
+        <ol class="chapter-list" aria-labelledby="chapters">
+          {chapters.map((c) => (
+            <li>
+              <a href={chapterPath(story.slug!, c.number)}>{chapterLabel(c)}</a>
+              {c.date && <time datetime={c.date}>{formatDate(c.date)}</time>}
+            </li>
+          ))}
+        </ol>
+      </section>
+    ) : (
+      <StoryText text={story.text} label={story.title} />
+    )}
+    {!previewInfo && <StoryGate />}
+
+    <p class="story__end">
+      <a href="/writing">Back to Writing</a>
+      {story.link && <a href={story.link} rel="noopener noreferrer">{alsoOn(story.link)}</a>}
+    </p>
+  </div>
+</BaseLayout>
+
+<style>
+  .story { max-width: 1100px; margin: 0 auto; padding: 1.5rem 1rem 4rem; }
+  .story__top {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    gap: 0.75rem 1rem;
+    align-items: start;
+    max-width: 65ch;
+    margin: 0 auto;
+  }
+  .story__title { grid-column: 1 / -1; margin: 0; overflow-wrap: break-word; }
+  .story__cover img { display: block; width: 100%; height: auto; border: 3px solid var(--color-ink); }
+  .story__details { display: flex; flex-direction: column; gap: 0.75rem; grid-column: 2; }
+  .story__top:not(:has(.story__cover)) .story__details { grid-column: 1 / -1; }
+  .story__tags { display: flex; flex-wrap: wrap; gap: 0.4rem; list-style: none; margin: 0; padding: 0; }
+  .tag { font-family: 'DM Mono', monospace; font-size: 0.85rem; padding: 0.15rem 0.6rem; border: 2px solid var(--color-ink); background: var(--color-beige); }
+  .tag--rating { background: var(--color-yellow); }
+  .tag--status { background: var(--color-green); }
+  .story__description { margin: 0; }
+  .story__chapters { max-width: 65ch; margin: 0 auto; }
+  .story__chapters[hidden] { display: none; }
+  .story__start { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.75rem; margin: 0 0 1rem; }
+  .story__start:focus { outline: none; }
+  .story__newest { display: inline-flex; align-items: center; min-height: 44px; font-family: 'Nunito', sans-serif; font-weight: 700; color: var(--color-ink); }
+  .story__chapters h2 { margin: 1rem 0 0.5rem; }
+  .chapter-list { padding-left: 0; list-style: none; margin: 0; border-top: 2px solid var(--color-ink); }
+  .chapter-list li { display: flex; flex-direction: column; padding: 0.75rem 0; border-bottom: 2px solid var(--color-ink); }
+  .chapter-list a { font-family: 'Nunito', sans-serif; font-weight: 700; color: var(--color-ink); }
+  .chapter-list time { font-size: 0.9rem; color: var(--color-ink-light); }
+  .story__end { max-width: 65ch; margin: 2rem auto 0; display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; }
+  .story__end a { font-family: 'Nunito', sans-serif; font-weight: 700; color: var(--color-ink); min-height: 44px; display: inline-flex; align-items: center; }
+
+  @media (min-width: 700px) {
+    .story__top { max-width: 900px; grid-template-columns: 300px 1fr; gap: 1rem 2rem; }
+    .story__title { grid-column: 2; grid-row: 1; }
+    .story__cover { grid-column: 1; grid-row: 1 / span 2; }
+    .story__details { grid-column: 2; }
+    .story__top:not(:has(.story__cover)) { max-width: 65ch; }
+    .story__top:not(:has(.story__cover)) .story__title,
+    .story__top:not(:has(.story__cover)) .story__details { grid-column: 1 / -1; }
+  }
+</style>

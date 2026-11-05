@@ -1,11 +1,16 @@
 ---
 // Not-found page, used by src/pages/404.astro and the preview route (design-comic-start-reading, "States and errors"). When the address belongs to a series
-// that still exists, a small script adds a link back to it (design-comic-share-and-announce, Flow).
+// or story that still exists, a small script adds a link back to it (design-comic-share-and-announce, Flow;
+// docs/specs/story-reader-pages.md AC-11).
 // Spec: docs/specs/comic-reader-share-and-announce.md (AC-4).
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getComicSeries } from '../../lib/comics/source';
+import { hasPage } from '../../lib/stories/model';
+import { getStories } from '../../lib/stories/source';
 
 const series = (await getComicSeries()).flatMap((s) => (s.slug ? [{ slug: s.slug, title: s.title }] : []));
+// Stories with pages, for Back to <story> (docs/specs/story-reader-pages.md AC-11).
+const stories = (await getStories()).filter(hasPage).map((s) => ({ slug: s.slug!, title: s.title }));
 ---
 
 <BaseLayout title="Page not found · Kettlebird Creations" description="There's nothing at this address.">
@@ -15,16 +20,20 @@ const series = (await getComicSeries()).flatMap((s) => (s.slug ? [{ slug: s.slug
     <p class="not-found__links">
       <a href="" data-series-link hidden></a>
       <a href="/comics">Comics</a>
+      <a href="/writing">Writing</a>
     </p>
   </section>
   <script type="application/json" id="kb-series" set:html={JSON.stringify(series)} />
+  <script type="application/json" id="kb-stories" set:html={JSON.stringify(stories)} />
 </BaseLayout>
 
 <script>
   import { seriesForMissingPath } from '../../lib/comics/sharing';
+  import { storyForMissingPath } from '../../lib/stories/sharing';
 
   const list = JSON.parse(document.getElementById('kb-series')?.textContent ?? '[]');
-  const found = seriesForMissingPath(location.pathname, list);
+  const stories = JSON.parse(document.getElementById('kb-stories')?.textContent ?? '[]');
+  const found = seriesForMissingPath(location.pathname, list) ?? storyForMissingPath(location.pathname, stories);
   const link = document.querySelector<HTMLAnchorElement>('[data-series-link]');
   if (found && link) {
     link.href = found.path;

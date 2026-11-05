@@ -13,6 +13,8 @@ import PortfolioPage from '../../../components/pages/PortfolioPage.astro';
 import ReaderPage from '../../../components/pages/ReaderPage.astro';
 import SeriesPage from '../../../components/pages/SeriesPage.astro';
 import ShopPage from '../../../components/pages/ShopPage.astro';
+import StoryChapterPage from '../../../components/pages/StoryChapterPage.astro';
+import StoryPage from '../../../components/pages/StoryPage.astro';
 import WritingPage from '../../../components/pages/WritingPage.astro';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { fixtureSource, loadPreview, sanitySource, type PreviewSource } from '../../../lib/preview/load';
@@ -67,7 +69,9 @@ const info = result?.info;
 {model?.page === 'series' && <SeriesPage series={model.series} previewInfo={info} />}
 {model?.page === 'reader' && <ReaderPage entry={model.entry} preview previewInfo={info} />}
 {model?.page === 'portfolio' && <PortfolioPage items={model.items} focusId={model.focusId} openId={model.openId} preview previewInfo={info} />}
-{model?.page === 'writing' && <WritingPage works={model.works} previewInfo={info} />}
+{model?.page === 'writing' && <WritingPage stories={model.stories} previewInfo={info} />}
+{model?.page === 'story' && <StoryPage story={model.story} previewInfo={info} />}
+{model?.page === 'chapter' && <StoryChapterPage story={model.story} chapter={model.chapter} previewInfo={info} />}
 {model?.page === 'shop' && <ShopPage products={model.products} previewInfo={info} />}
 
 <style>

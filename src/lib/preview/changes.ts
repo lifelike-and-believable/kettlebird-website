@@ -15,6 +15,8 @@ export interface ChangeContext {
   otherSections?: string[];
   /** For a chapter: its series has never been published. */
   seriesUnpublished?: boolean;
+  /** For a story's chapter: its story has never been published (story-reader-pages AC-12). */
+  storyUnpublished?: boolean;
   /** For a chapter: another chapter in the series has this chapter's number. */
   duplicateNumber?: number;
 }
@@ -66,6 +68,7 @@ export function previewChanges(published: RawDoc | undefined, draft: RawDoc, con
   }
   if (context.otherSections?.length) notes.push(`Also in: ${context.otherSections.join(', ')}`);
   if (context.seriesUnpublished) notes.push("The series isn't published yet; it's shown as it will be.");
+  if (context.storyUnpublished) notes.push("The story isn't published yet; it's shown as it will be.");
   if (context.duplicateNumber !== undefined) {
     notes.push(`Chapter ${context.duplicateNumber} already exists in this series; publishing is blocked until you change one`);
   }

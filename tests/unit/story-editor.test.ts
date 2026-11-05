@@ -181,7 +181,8 @@ describe('story-reader-editor#AC-11 AC-12 help and live status', () => {
   it('links stories and chapters to the stories guide', () => {
     expect(ITEM_HELP.writtenWork).toEqual({ text: 'Help: Start a new story', path: '/help/publishing-stories#start-a-new-story' });
     expect(ITEM_HELP.storyChapter).toEqual({ text: 'Help: Add a chapter to a story', path: '/help/publishing-stories#add-a-chapter-to-a-story' });
-    expect(isPreviewable('storyChapter')).toBe(false);
+    // A chapter has a preview since story-reader-pages AC-12.
+    expect(isPreviewable('storyChapter')).toBe(true);
   });
 
   it('counts chapters as content, and opens the Writing page for them until story pages exist', () => {
