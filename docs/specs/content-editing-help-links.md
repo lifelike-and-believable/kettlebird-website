@@ -6,6 +6,7 @@ unlocks:
   - tests/unit/help.test.ts, tests/e2e/help.spec.ts: the guides' list, titles and summaries gained Putting stories on the site (docs-publishing-stories), as the lead's rule that every new guide joins the online help requires; "the six guides" in test names became "the guides". The criteria are unchanged.
   - tests/e2e/help.spec.ts: the check that a help page shows none of its guide's comments looked for any HTML comment, and the site's own header has one; it now looks for the guide's comment itself. The criterion is unchanged. It also checks /help's page title, after the pull request's deployment showed it read "Help · Help · Kettlebird Creations".
   - tests/unit/help-edges.test.ts (new): mutation testing showed nothing checked a guide without front matter, a title or a summary, front matter that isn't at the start, addresses that only contain a guide's file name, one wrapper per table, or help addresses with something before or after them; the pull request's deployment then showed a table with an empty first header cell named ", open, closed". Added; the criteria are unchanged.
+  - tests/unit/help.test.ts: the list of the comics guide's sections gained Two-page spreads and how pages pair up, which design-comic-spread-and-flip adds to the guide. The criterion is unchanged.
 ---
 
 # Help where I'm working
