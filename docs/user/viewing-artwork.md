@@ -1,6 +1,6 @@
 ---
 id: docs-viewing-artwork
-status: draft
+status: approved
 summary: Look through Star's art in the portfolio, and see any piece full screen, zoomed in on its details.
 derived-from:
   - design-portfolio-full-screen#how-it-works: a1a71c5c3e3f
