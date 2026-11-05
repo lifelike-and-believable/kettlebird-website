@@ -39,7 +39,7 @@ function cover(image: SanityImage | undefined): StoryImage | undefined {
     width: image.dimensions?.width ?? 500,
     height: image.dimensions?.height ?? 700,
     // Link previews: the whole cover on a paper-coloured 1200 × 630 background, as comics do.
-    social: urlFor(image).width(1200).height(630).fit('fill').bg('f5f1e8').format('jpg').url(),
+    social: urlFor(image).ignoreImageParams().width(1200).height(630).fit('fill').bg('f5f1e8').format('jpg').url(),
   };
 }
 

@@ -52,7 +52,7 @@ function sanityImage(image: SanityImage | undefined, widths: number[]): ComicIma
 // background, so a tall cover isn't cut to a strip.
 function withSocial(cover: ComicImage | undefined, image: SanityImage | undefined): ComicImage | undefined {
   if (!cover || !image?.asset) return cover;
-  return { ...cover, social: urlFor(image).width(1200).height(630).fit('fill').bg('f5f1e8').format('jpg').url() };
+  return { ...cover, social: urlFor(image).ignoreImageParams().width(1200).height(630).fit('fill').bg('f5f1e8').format('jpg').url() };
 }
 
 export function fromSanity(raw: SanitySeries): ComicSeries {
