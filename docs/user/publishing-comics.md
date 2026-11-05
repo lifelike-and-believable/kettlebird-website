@@ -8,6 +8,10 @@ derived-from:
   - story-comic-reader-publish-pages: c43f60cc7f9f
   - design-comic-start-reading#what-star-enters: f8ef076087b9
   - design-organised-editor#sections-and-fields: 20d25885468d
+  - design-comic-spread-and-flip#flow-star: 3ac22d982a26
+  - design-comic-spread-and-flip#what-star-enters: 16e88bf6624e
+  - design-comic-spread-and-flip#how-it-works: c145d0b6b751
+  - story-comic-reader-flip-and-panels-two-page-spread: 3bd1fa1fe9f5
 ---
 
 # Publishing comic pages and chapters
@@ -58,6 +62,38 @@ Each page has **Alt text**: a sentence or two about what happens on the page, wh
 Below the alt text is **Panels**, marked "Filled in automatically later". You can leave it alone.
 
 The top of the pages shows how many still need alt text ("3 pages need alt text"), and those pages have a yellow "Alt text" mark. You can publish without it, but readers using screen readers won't be able to follow those pages.
+
+## Two-page spreads and how pages pair up
+
+On a laptop, or a tablet held sideways, readers see two pages side by side, like an open comic. On a phone, they see one page at a time, as always. You don't need to do anything for this: most chapters need no changes.
+
+### How pages pair up
+
+Each chapter has **Open on**, under its **Title**:
+
+- **The right, like a printed comic** (already chosen): page 1 shows alone on the right, then pages 2 and 3 face each other, then 4 and 5.
+- **The left, pairing from page 1**: pages 1 and 2 face each other, then 3 and 4.
+
+If a chapter's last page has no page facing it, it shows alone on its own side. A spread (below) takes both sides, and the page after it starts a new pair on the left.
+
+### Add a two-page spread
+
+A two-page spread is one picture drawn across two facing pages. To add one:
+
+1. Upload it as one wide picture, then drag it into its place among the chapter's pages. (In a new chapter, you can instead name the file so it sorts into place.)
+2. Open it and tick **Two-page spread**, under **Alt text**. In the pages grid it now shows twice as wide, marked "Two-page spread".
+
+On a wide screen, a spread covers both sides and is never split across a page turn. On a phone, it's shrunk to fit the screen, with "Turn your phone sideways to see it bigger." under it. A spread is still one page, with one link, and readers see "Page 5 of 12 · two-page spread" above it.
+
+If you upload a picture that's wider than it is tall and don't tick the box, the page panel asks: "This picture is wider than it is tall. Is it a two-page spread? If so, tick **Two-page spread**; otherwise it shows small, on one side."
+
+### A page left alone
+
+A spread always starts on the left. If the page before it would have been on the left, that page shows alone on the left, and the spread's page panel says so under the tick box, for example "This chapter opens on the right, so page 4 shows alone on the left, before this spread." That's allowed. To close the gap, move a page, or change the chapter's **Open on**.
+
+### Check it
+
+Changing **Open on** or ticking **Two-page spread** changes no page's link, so the editor doesn't warn you about shared links. To check how a chapter pairs up, choose **Preview**: **Computer** always shows pairs, however narrow your editor window is, and **Phone** shows one page at a time.
 
 ## Publish
 
