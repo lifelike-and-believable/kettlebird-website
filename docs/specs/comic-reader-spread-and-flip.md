@@ -1,5 +1,5 @@
 ---
-status: draft
+status: implemented
 tests-commit: 361da635dbf727c09cabbdc05507b53bc424b53d
 unlocks:
   - tests/e2e/comic-spread-and-flip.spec.ts: three corrections found by the first run against the build. The pair-layout accessibility check counted a moderate heading-order finding in the site's footer; it now counts serious and critical findings, like the other reader tests. The sideways-phone check wanted the spread within 40 px of the window's width, but the site's side margins are wider; it now compares with the reader's own width. The flip recorder read a transition's types before the page's handler had added them; it now reads them once the transition is ready. The criteria are unchanged.
