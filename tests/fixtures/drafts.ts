@@ -48,8 +48,8 @@ export const FIXTURE_DRAFTS: RawDoc[] = [
     number: 1,
     series: { _ref: 'series-sheets' },
     pages: [
-      { _key: 's1', ...img('image-Sheet1aaaaaaaaaaaaaaaaaa-800x1200-png'), altText: 'A lamp.' },
-      { _key: 's2', ...img('image-Sheet2aaaaaaaaaaaaaaaaaa-800x1200-png'), altText: 'A window.' },
+      { _key: 's1', ...img('image-Sheet1aaaaaaaaaaaaaaaaaa-800x1200-png'), altText: 'A lamp.', panelsBy: 'site', panels: [{ x: 5, y: 3, width: 90, height: 45 }, { x: 5, y: 52, width: 90, height: 45 }] },
+      { _key: 's2', ...img('image-Sheet2aaaaaaaaaaaaaaaaaa-800x1200-png'), altText: 'A window.', panelsBy: 'site', panels: [{ x: 5, y: 3, width: 90, height: 45 }, { x: 5, y: 52, width: 90, height: 45 }] },
       { _key: 's3', ...img('image-Sheet3aaaaaaaaaaaaaaaaaa-800x1200-png'), altText: 'A door.' },
     ],
   },

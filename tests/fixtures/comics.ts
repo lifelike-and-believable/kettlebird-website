@@ -15,6 +15,9 @@ function page(label: string, width = 800, height = 1200): ComicImage {
 const p = (label: string, altText?: string) => ({ image: page(label), altText });
 // A two-page spread: one wide picture (docs/specs/comic-reader-spread-and-flip.md).
 const spread = (label: string, altText?: string) => ({ image: page(label, 1600, 1200), altText, spread: true });
+// Panels, in percent of the picture, found by the site (docs/specs/comic-reader-panels.md).
+const box = (x: number, y: number, width: number, height: number) => ({ x, y, width, height });
+const panelled = <T extends object>(pg: T, ...panels: ReturnType<typeof box>[]) => ({ ...pg, panels, panelsBy: 'site' as const });
 
 export const FIXTURE_SERIES: ComicSeries[] = [
   {
@@ -79,7 +82,7 @@ export const FIXTURE_SERIES: ComicSeries[] = [
         number: 1,
         title: 'Facing Pages',
         pages: [
-          p('OB 1-1', 'A door opens.'),
+          panelled(p('OB 1-1', 'A door opens.'), box(5, 3, 90, 45), box(5, 52, 90, 45)),
           p('OB 1-2', 'A hall of mirrors.'),
           p('OB 1-3', 'The fox sees itself.'),
           p('OB 1-4', 'A window.'),
@@ -107,7 +110,12 @@ export const FIXTURE_SERIES: ComicSeries[] = [
     chapters: [
       {
         number: 1,
-        pages: [p('SS 1', 'A lamp.'), p('SS 2', 'A window.'), spread('SS 3 spread', 'The whole town.'), p('SS 4', 'A door.')],
+        pages: [
+          panelled(p('SS 1', 'A lamp.'), box(5, 3, 90, 45), box(5, 52, 90, 45)),
+          p('SS 2', 'A window.'),
+          panelled(spread('SS 3 spread', 'The whole town.'), box(3, 5, 45, 90), box(52, 5, 45, 90)),
+          panelled(p('SS 4', 'A door.'), box(5, 3, 43, 45), box(52, 3, 43, 45), box(5, 52, 90, 45)),
+        ],
       },
     ],
   },
