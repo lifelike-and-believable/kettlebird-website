@@ -41,6 +41,16 @@ export const FIXTURE_DRAFTS: RawDoc[] = [
     type: 'original',
     chapters: [{ number: 1, title: 'The Kettle', pages: [{ ...img('image-Kettle1aaaaaaaaaaaaaaaaa-800x1200-png'), altText: 'A fox looks up at a kettle.' }] }],
   },
+  // An art piece never published, with a long title, for the portfolio at phone width with large
+  // text (tests/e2e/portfolio-reflow.spec.ts).
+  {
+    _id: 'drafts.piece-moon',
+    _type: 'galleryItem',
+    title: 'Crooked Moon Party Portrait',
+    image: img('image-Moon1aaaaaaaaaaaaaaaaaaa-800x1200-png'),
+    category: ['original'],
+    altText: 'Friends at a party under a crooked moon.',
+  },
   // A series never published, and a chapter in it.
   { _id: 'drafts.series-new', _type: 'comicSeries', title: 'New Story', slug: { current: 'new-story' }, status: 'ongoing', type: 'original' },
   {
