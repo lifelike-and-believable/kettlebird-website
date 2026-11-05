@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Two-page spread and page-flip: mock-ups</title>
+<!-- Source for the PNG mock-ups beside this file (docs/design/comic-spread-and-flip.md). Built to
+     match the reader page (src/pages/comics/[slug]/[chapter]/[page].astro): its fonts, colours,
+     borders, reader bar and controls (design-comic-sheet-and-controls). Comic pages are placeholders.
+     Render: node render.mjs -->
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --ink:#2b2b2b; --ink-light:#595959; --beige:#f5f1e8; --paper-dark:#e8e3d8; --yellow:#f4ce6a; --focus:#4a4063; }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 24px; background: #9ca3af; font-family: 'DM Sans', sans-serif; display: flex; flex-wrap: wrap; gap: 32px; align-items: flex-start; }
+  .wrap h6 { margin: 0 0 6px; font: 600 13px/1.4 system-ui; color: #111827; max-width: 560px; }
+  .screen { width: 390px; height: 844px; overflow: hidden; position: relative; color: var(--ink); container-type: inline-size;
+    background: var(--beige) url('../../../../public/assets/images/Paper_2_Tileable.png'); background-size: 400px 400px; }
+  .screen.wide { width: 1280px; height: 800px; }
+
+  /* Site header, as built (design-phone-header) */
+  .site-header { position: relative; z-index: 2; }
+  .site-header::before { content: ''; position: absolute; inset: 0 0 -2.2cqw 0; z-index: -1;
+    background: url('../../../../public/assets/images/Paper_1_Torn.png') no-repeat center bottom / auto max(30cqw, 100%); }
+  .hdr { display: flex; align-items: center; justify-content: space-between; padding: .875rem 1rem max(2.25rem, calc(22px + 3.1cqw)); }
+  .hdr b { font: 700 2.5rem/1.1 'Nunito', sans-serif; display: block; }
+  .hdr small { font: 600 1.0625rem/1.25 'Nunito', sans-serif; }
+  .menu { width: 44px; height: 44px; border: 2px solid var(--ink); }
+  .wide .hdr { display: block; padding: 2rem 1rem calc(max(2.25rem, calc(22px + 3.1cqw)) + 0px); }
+  .wide .hdr b { font-size: 5.5rem; }
+  .wide .menu { display: none; }
+  .wide .hdr small { font-size: 2.5rem; }
+  .scrolled .site-header { display: none; } /* the reader opens scrolled past the header */
+
+  /* Reader */
+  .reader { max-width: 960px; margin: 0 auto; padding: .5rem .5rem 2rem; }
+  .bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .25rem 1rem; padding: .5rem .25rem; }
+  .bar a { font: 700 1rem 'Nunito', sans-serif; color: var(--ink); }
+  .loc { font: 500 .95rem 'DM Mono', monospace; margin: 0; }
+  .allpages { display: inline-flex; align-items: center; gap: .4rem; border: 2px solid var(--ink); padding: .3rem .6rem; text-decoration: none; background: var(--beige); min-height: 44px; }
+  .grid-icon { display: inline-grid; grid-template-columns: repeat(3, 5px); gap: 2px; }
+  .grid-icon i { width: 5px; height: 5px; background: var(--ink); display: block; }
+  .page { margin: 0 auto; background: var(--paper-dark); border: 1px solid #0002; display: flex; align-items: center; justify-content: center;
+    font: 600 1.6rem 'Nunito', sans-serif; color: #2b2b2b99; }
+  .phone .page { width: 100%; height: 520px; }
+  .wide .page { width: 440px; height: 620px; }
+
+  /* Player-style controls */
+  .controls { display: grid; grid-template-columns: repeat(4, 1fr); gap: .5rem; max-width: 640px; margin: 1rem auto 0; }
+  .ctl { min-height: 56px; border: 3px solid var(--ink); background: var(--beige); color: var(--ink); text-decoration: none;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; position: relative; }
+  .ctl .sym { display: flex; align-items: center; justify-content: center; height: 30px; line-height: 0; }
+  .ctl .cap { font: 600 .78rem/1 'Nunito', sans-serif; }
+  /* With enlarged text on a narrow phone, the row wraps to two by two: Previous | Next, then First | Newest. */
+  .controls.wrapped { grid-template-columns: 1fr 1fr; }
+  .controls.wrapped .ctl:nth-child(1) { order: 3; } .controls.wrapped .ctl:nth-child(2) { order: 1; }
+  .controls.wrapped .ctl:nth-child(3) { order: 2; } .controls.wrapped .ctl:nth-child(4) { order: 4; }
+  .ctl.off { border-style: dashed; border-color: #2b2b2b66; color: #2b2b2b66; background: transparent; }
+  .ctl.focus { outline: 3px solid var(--focus); outline-offset: 3px; }
+  .tip { position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%); white-space: nowrap; background: var(--ink); color: var(--beige);
+    font: 600 .8rem 'Nunito', sans-serif; padding: .25rem .5rem; }
+  .end { text-align: center; margin-top: .75rem; }
+  .end p { margin: 0 0 .25rem; }
+  .end b { font: 700 1rem 'Nunito', sans-serif; }
+
+  /* Contact sheet */
+  .sheet { max-width: 1100px; margin: 0 auto; padding: .5rem 1rem 2rem; }
+  .sheet .bar { padding: .5rem 0; }
+  .sheet h1 { font: 700 1.5rem/1.2 'Nunito', sans-serif; margin: .25rem 0 .1rem; }
+  .sheet .count { font: 500 .9rem 'DM Mono', monospace; margin: 0 0 1rem; color: var(--ink-light); }
+  .thumbs { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: .6rem; }
+  .wide .thumbs { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem; }
+  .thumb { text-decoration: none; color: var(--ink); display: block; }
+  .thumb .img { aspect-ratio: 2 / 3; background: var(--paper-dark); border: 2px solid var(--ink); display: flex; align-items: center; justify-content: center;
+    font: 600 .8rem 'Nunito', sans-serif; color: #2b2b2b80; }
+  .thumb .num { display: block; text-align: center; font: 500 .85rem 'DM Mono', monospace; margin-top: .25rem; }
+  .thumb.here .img { border: 4px solid var(--ink); outline: 3px solid var(--yellow); outline-offset: -7px; }
+  .thumb.here .num { font-weight: 700; }
+  .thumb.here .num::after { content: ' · You were here'; font-family: 'Nunito', sans-serif; }
+  .sheet-foot { margin-top: 1.25rem; display: flex; justify-content: space-between; font: 700 1rem 'Nunito', sans-serif; }
+  .sheet-foot a { color: var(--ink); }
+
+  /* Chapter navigation on the sheet: previous and next chapter, and a fold-out list of chapters */
+  .chapnav { display: flex; justify-content: space-between; gap: 1rem; margin: 0 0 .75rem; font: 700 .95rem 'Nunito', sans-serif; }
+  .chapnav a { color: var(--ink); }
+  details.chapters { margin: 0 0 1rem; border: 2px solid var(--ink); background: var(--beige); }
+  details.chapters summary { cursor: pointer; padding: .5rem .75rem; font: 700 .95rem 'Nunito', sans-serif; list-style: none; display: flex; justify-content: space-between; min-height: 44px; align-items: center; }
+  details.chapters summary::after { content: '▾'; }
+  details.chapters[open] summary::after { content: '▴'; }
+  details.chapters ol { margin: 0; padding: 0 .75rem .5rem; list-style: none; border-top: 1px solid #2b2b2b33; }
+  details.chapters li { padding: .45rem 0; border-bottom: 1px solid #2b2b2b22; font: 600 .95rem 'Nunito', sans-serif; display: flex; justify-content: space-between; }
+  details.chapters li a { color: var(--ink); }
+  details.chapters li small { color: var(--ink-light); font: 500 .8rem 'DM Mono', monospace; white-space: nowrap; margin-left: .5rem; }
+  details.chapters li.here { font-weight: 800; }
+
+  /* Two-page spread (design-comic-spread-and-flip) */
+  .wide .reader { max-width: 1240px; }
+  .spread { display: flex; justify-content: center; margin: 0 auto; perspective: 2400px; }
+  .spread .side { width: 430px; height: 600px; display: flex; }
+  .spread .side .page { width: 100%; height: 100%; margin: 0; }
+  .spread .left .page { border-right: 0; box-shadow: inset -14px 0 18px -14px #0004; }
+  .spread .right .page { box-shadow: inset 14px 0 18px -14px #0004; }
+  .spread .wide-page { width: 860px; height: 600px; margin: 0; }
+  .turning { transform-origin: left center; transform: rotateY(-62deg); box-shadow: -30px 0 40px #0003; position: relative; z-index: 2; }
+  .hint { font: 600 .9rem 'Nunito', sans-serif; text-align: center; margin: .5rem 0 0; color: var(--ink-light); }
+  .phone .wide-shrunk { width: 100%; height: 252px; margin: 0 auto; }
+  .spread.short .side { height: 470px; width: 336px; }
+  .screen.landscape { width: 844px; height: 390px; }
+  .landscape .reader { max-width: none; }
+
+  /* Editor (Sanity Studio as built: design-comic-publish-pages) */
+  .ed { width: 1180px; background: #f3f4f6; font: 14px/1.45 system-ui, sans-serif; color: #111827; border: 1px solid #d1d5db; position: relative; }
+  .ed .top { display: flex; justify-content: space-between; padding: 8px 16px; background: #fff; border-bottom: 1px solid #d1d5db; font-weight: 700; }
+  .ed .doc { padding: 18px 24px; }
+  .ed .field { margin-bottom: 18px; }
+  .ed label { font-weight: 600; display: block; margin-bottom: 2px; }
+  .ed .help { color: #4b5563; font-size: 13px; margin: 0 0 6px; }
+  .ed .input { background: #fff; border: 1px solid #d1d5db; border-radius: 4px; padding: 8px 10px; }
+  .ed .radio { display: flex; gap: 8px; align-items: flex-start; margin: 6px 0; }
+  .ed .radio i { width: 16px; height: 16px; border: 2px solid #6b7280; border-radius: 50%; flex: none; margin-top: 2px; }
+  .ed .radio i.on { border-color: #2563eb; box-shadow: inset 0 0 0 3px #fff; background: #2563eb; }
+  .ed .check { width: 18px; height: 18px; border: 2px solid #2563eb; background: #2563eb; border-radius: 3px; flex: none; color: #fff; font-size: 13px; line-height: 14px; text-align: center; }
+  .ed .grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; }
+  .ed .th { background: #fff; border: 1px solid #d1d5db; border-radius: 4px; padding: 6px; font-size: 12px; }
+  .ed .th .img { aspect-ratio: 2/3; background: #e5e7eb; display: flex; align-items: center; justify-content: center; color: #6b7280; }
+  .ed .th.spr { grid-column: span 2; }
+  .ed .th.spr .img { aspect-ratio: 4/3; }
+  .ed .tag { display: inline-block; background: #dbeafe; color: #1e3a8a; border-radius: 3px; padding: 0 6px; font-size: 11px; font-weight: 600; margin-left: 4px; }
+  .ed .panel { position: absolute; inset: 70px 60px 40px; background: #fff; border-radius: 8px; box-shadow: 0 10px 30px #0004; display: grid; grid-template-columns: 1.3fr 1fr; gap: 24px; padding: 24px; }
+  .ed .big { background: #e5e7eb; display: flex; align-items: center; justify-content: center; color: #6b7280; font-weight: 600; }
+  .ed .btn { display: inline-block; padding: 7px 14px; border-radius: 4px; border: 1px solid #d1d5db; background: #fff; font-weight: 600; }
+</style>
+</head>
+
+<body>
+<div class="wrap"><h6>1 · A laptop: pages 2 and 3 facing, like an open comic; Next turns to pages 4 and 5</h6>
+<div class="screen wide scrolled" id="m1"><div class="reader"><div class="bar"><a href="#">Back to series</a><a class="allpages" href="#"><span class="grid-icon"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>All pages</a><p class="loc">Chapter 2: The Long Road · Pages 2–3 of 12</p></div><div class="spread"><div class="side left"><div class="page">Page 2</div></div><div class="side right"><div class="page">Page 3</div></div></div><nav class="controls"><a class="ctl"><span class="sym"><svg viewBox="0 0 32 24" width="30" height="22" aria-hidden="true"><path d="M30 4 L18 12 L30 20 Z M16 4 L4 12 L16 20 Z" fill="currentColor"/></svg></span><span class="cap">First</span></a><a class="ctl"><span class="sym"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M17 4 L5 12 L17 20 Z" fill="currentColor"/></svg></span><span class="cap">Previous</span></a><a class="ctl"><span class="sym"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M7 4 L19 12 L7 20 Z" fill="currentColor"/></svg></span><span class="cap">Next</span></a><a class="ctl"><span class="sym"><svg viewBox="0 0 32 24" width="30" height="22" aria-hidden="true"><path d="M2 4 L14 12 L2 20 Z M16 4 L28 12 L16 20 Z" fill="currentColor"/></svg></span><span class="cap">Newest</span></a></nav></div></div></div>
+
+<div class="wrap"><h6>2 · The chapter opens like a book: page 1 alone on the right (the chapter opens on the right)</h6>
+<div class="screen wide scrolled" id="m2"><div class="reader"><div class="bar"><a href="#">Back to series</a><a class="allpages" href="#"><span class="grid-icon"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>All pages</a><p class="loc">Chapter 2: The Long Road · Page 1 of 12</p></div><div class="spread"><div class="side left"></div><div class="side right"><div class="page">Page 1</div></div></div><nav class="controls"><a class="ctl"><span class="sym"><svg viewBox="0 0 32 24" width="30" height="22" aria-hidden="true"><path d="M30 4 L18 12 L30 20 Z M16 4 L4 12 L16 20 Z" fill="currentColor"/></svg></span><span class="cap">First</span></a><a class="ctl"><span class="sym"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M17 4 L5 12 L17 20 Z" fill="currentColor"/></svg></span><span class="cap">Previous</span></a><a class="ctl"><span class="sym"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M7 4 L19 12 L7 20 Z" fill="currentColor"/></svg></span><span class="cap">Next</span></a><a class="ctl"><span class="sym"><svg viewBox="0 0 32 24" width="30" height="22" aria-hidden="true"><path d="M2 4 L14 12 L2 20 Z M16 4 L28 12 L16 20 Z" fill="currentColor"/></svg></span><span class="cap">Newest</span></a></nav></div></div></div>
+
+<div class="wrap"><h6>3 · A page Star marked as a two-page spread: one wide picture across both sides</h6>
+<div class="screen wide scrolled" id="m3"><div class="reader"><div class="bar"><a href="#">Back to series</a><a class="allpages" href="#"><span class="grid-icon"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>All pages</a><p class="loc">Chapter 2: The Long Road · Page 5 of 12 · two-page spread</p></div><div class="spread"><div class="page wide-page">Page 5 (two-page spread)</div></div><nav class="controls"><a class="ctl"><span class="sym"><svg viewBox="0 0 32 24" width="30" height="22" aria-hidden="true"><path d="M30 4 L18 12 L30 20 Z M16 4 L4 12 L16 20 Z" fill="currentColor"/></svg></span><span class="cap">First</span></a><a class="ctl"><span class="sym"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M17 4 L5 12 L17 20 Z" fill="currentColor"/></svg></span><span class="cap">Previous</span></a><a class="ctl"><span class="sym"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M7 4 L19 12 L7 20 Z" fill="currentColor"/></svg></span><span class="cap">Next</span></a><a class="ctl"><span class="sym"><svg viewBox="0 0 32 24" width="30" height="22" aria-hidden="true"><path d="M2 4 L14 12 L2 20 Z M16 4 L28 12 L16 20 Z" fill="currentColor"/></svg></span><span class="cap">Newest</span></a></nav></div></div></div>
+
+<div class="wrap"><h6>4 · The same spread on a phone: shrunk to fit the screen, as every page is; turning the phone sideways shows it bigger</h6>
+<div class="screen phone scrolled" id="m4"><div class="reader"><div class="bar"><a href="#">Back to series</a><a class="allpages" href="#"><span class="grid-icon"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>All pages</a><p class="loc" style="flex-basis:100%">Chapter 2: The Long Road · Page 5 of 12 · two-page spread</p></div><div class="page wide-shrunk">Page 5 (spread)</div><p class="hint">Turn your phone sideways to see it bigger.</p><nav class="controls"><a class="ctl"><span class="sym"><svg viewBox="0 0 32 24" width="30" height="22" aria-hidden="true"><path d="M30 4 L18 12 L30 20 Z M16 4 L4 12 L16 20 Z" fill="currentColor"/></svg></span><span class="cap">First</span></a><a class="ctl"><span class="sym"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M17 4 L5 12 L17 20 Z" fill="currentColor"/></svg></span><span class="cap">Previous</span></a><a class="ctl"><span class="sym"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M7 4 L19 12 L7 20 Z" fill="currentColor"/></svg></span><span class="cap">Next</span></a><a class="ctl"><span class="sym"><svg viewBox="0 0 32 24" width="30" height="22" aria-hidden="true"><path d="M2 4 L14 12 L2 20 Z M16 4 L28 12 L16 20 Z" fill="currentColor"/></svg></span><span class="cap">Newest</span></a></nav></div></div></div>
+
+<div class="wrap"><h6>5 · Mid-turn on a laptop: page 7 turns over to the left around the spine, showing page 9 beneath; its back, page 8, lands on page 6 (about 0.4 seconds)</h6>
+<div class="screen wide scrolled" id="m5"><div class="reader"><div class="bar"><a href="#">Back to series</a><a class="allpages" href="#"><span class="grid-icon"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>All pages</a><p class="loc">Chapter 2: The Long Road · Pages 6–7 of 12</p></div><div class="spread"><div class="side left"><div class="page">Page 6</div></div><div class="side right" style="position:relative"><div class="page" style="position:absolute;inset:0">Page 9</div><div class="page turning" style="width:100%">Page 7</div></div></div><nav class="controls"><a class="ctl"><span class="sym"><svg viewBox="0 0 32 24" width="30" height="22" aria-hidden="true"><path d="M30 4 L18 12 L30 20 Z M16 4 L4 12 L16 20 Z" fill="currentColor"/></svg></span><span class="cap">First</span></a><a class="ctl"><span class="sym"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M17 4 L5 12 L17 20 Z" fill="currentColor"/></svg></span><span class="cap">Previous</span></a><a class="ctl"><span class="sym"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M7 4 L19 12 L7 20 Z" fill="currentColor"/></svg></span><span class="cap">Next</span></a><a class="ctl"><span class="sym"><svg viewBox="0 0 32 24" width="30" height="22" aria-hidden="true"><path d="M2 4 L14 12 L2 20 Z M16 4 L28 12 L16 20 Z" fill="currentColor"/></svg></span><span class="cap">Newest</span></a></nav></div></div></div>
+
+<div class="wrap"><h6>6 · A chapter that ends on a left-hand page: the last page alone on the left; the end note under the controls</h6>
+<div class="screen wide scrolled" id="m6"><div class="reader"><div class="bar"><a href="#">Back to series</a><a class="allpages" href="#"><span class="grid-icon"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>All pages</a><p class="loc">Chapter 4: Homeward · Page 6 of 6</p></div><div class="spread short"><div class="side left"><div class="page">Page 6</div></div><div class="side right"></div></div><nav class="controls"><a class="ctl"><span class="sym"><svg viewBox="0 0 32 24" width="30" height="22" aria-hidden="true"><path d="M30 4 L18 12 L30 20 Z M16 4 L4 12 L16 20 Z" fill="currentColor"/></svg></span><span class="cap">First</span></a><a class="ctl"><span class="sym"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M17 4 L5 12 L17 20 Z" fill="currentColor"/></svg></span><span class="cap">Previous</span></a><span class="ctl off"><span class="sym"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M7 4 L19 12 L7 20 Z" fill="currentColor"/></svg></span><span class="cap">Next</span></span><span class="ctl off"><span class="sym"><svg viewBox="0 0 32 24" width="30" height="22" aria-hidden="true"><path d="M2 4 L14 12 L2 20 Z M16 4 L28 12 L16 20 Z" fill="currentColor"/></svg></span><span class="cap">Newest</span></span></nav><div class="end"><p><b>You're all caught up!</b></p><p>New pages are on the way.</p><a href="#" style="font:700 1rem Nunito,sans-serif;color:#2b2b2b">Back to series</a></div></div></div></div>
+
+<div class="wrap"><h6>10 · The newest page in a pair: on a laptop, pages 4 and 5 show, so Next and Newest can't be used and the end note shows; on a phone, page 4 still has Next</h6>
+<div class="screen wide scrolled" id="m10"><div class="reader"><div class="bar"><a href="#">Back to series</a><a class="allpages" href="#"><span class="grid-icon"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>All pages</a><p class="loc">Chapter 4: Homeward · Pages 4–5 of 5</p></div><div class="spread short"><div class="side left"><div class="page">Page 4</div></div><div class="side right"><div class="page">Page 5</div></div></div><nav class="controls"><a class="ctl"><span class="sym"><svg viewBox="0 0 32 24" width="30" height="22" aria-hidden="true"><path d="M30 4 L18 12 L30 20 Z M16 4 L4 12 L16 20 Z" fill="currentColor"/></svg></span><span class="cap">First</span></a><a class="ctl"><span class="sym"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M17 4 L5 12 L17 20 Z" fill="currentColor"/></svg></span><span class="cap">Previous</span></a><span class="ctl off"><span class="sym"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M7 4 L19 12 L7 20 Z" fill="currentColor"/></svg></span><span class="cap">Next</span></span><span class="ctl off"><span class="sym"><svg viewBox="0 0 32 24" width="30" height="22" aria-hidden="true"><path d="M2 4 L14 12 L2 20 Z M16 4 L28 12 L16 20 Z" fill="currentColor"/></svg></span><span class="cap">Newest</span></span></nav><div class="end"><p><b>You're all caught up!</b></p><p>New pages are on the way.</p><a href="#" style="font:700 1rem Nunito,sans-serif;color:#2b2b2b">Back to series</a></div></div></div></div>
+
+<div class="wrap"><h6>12 · A phone held sideways, on a two-page spread: the picture fills the width; the controls are below it, a short scroll away</h6>
+<div class="screen landscape scrolled" id="m12"><div class="reader"><div class="bar"><a href="#">Back to series</a><a class="allpages" href="#"><span class="grid-icon"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>All pages</a><p class="loc">Chapter 2: The Long Road · Page 5 of 12 · two-page spread</p></div><div class="page" style="width:100%;height:560px">Page 5 (spread)</div><nav class="controls"><a class="ctl"><span class="sym"><svg viewBox="0 0 32 24" width="30" height="22" aria-hidden="true"><path d="M30 4 L18 12 L30 20 Z M16 4 L4 12 L16 20 Z" fill="currentColor"/></svg></span><span class="cap">First</span></a><a class="ctl"><span class="sym"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M17 4 L5 12 L17 20 Z" fill="currentColor"/></svg></span><span class="cap">Previous</span></a><a class="ctl"><span class="sym"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M7 4 L19 12 L7 20 Z" fill="currentColor"/></svg></span><span class="cap">Next</span></a><a class="ctl"><span class="sym"><svg viewBox="0 0 32 24" width="30" height="22" aria-hidden="true"><path d="M2 4 L14 12 L2 20 Z M16 4 L28 12 L16 20 Z" fill="currentColor"/></svg></span><span class="cap">Newest</span></a></nav></div></div></div>
+
+<div class="wrap"><h6>7 · All pages on a laptop, opened from page 4 (alone on the left, before the spread): page 4 is marked; the spread is one picture twice as wide, "5 · spread"</h6>
+<div class="screen wide scrolled" id="m7"><div class="sheet"><div class="bar"><a href="#">← Back to page 4</a><a href="#">Back to series</a></div><h1>Kettle Tales · Chapter 2: The Long Road</h1><p class="count">12 pages</p><details class="chapters"><summary>Chapter 2 of 6 · All chapters</summary></details><ul class="thumbs" style="grid-template-columns:repeat(8,1fr)"><li><a class="thumb"><span class="img">Page 1</span><span class="num">1</span></a></li><li><a class="thumb"><span class="img">Page 2</span><span class="num">2</span></a></li><li><a class="thumb"><span class="img">Page 3</span><span class="num">3</span></a></li><li><a class="thumb here"><span class="img">Page 4</span><span class="num">4</span></a></li><li style="grid-column:span 2"><a class="thumb"><span class="img" style="aspect-ratio:4/3">Page 5</span><span class="num">5 · spread</span></a></li><li><a class="thumb"><span class="img">Page 6</span><span class="num">6</span></a></li><li><a class="thumb"><span class="img">Page 7</span><span class="num">7</span></a></li><li><a class="thumb"><span class="img">Page 8</span><span class="num">8</span></a></li><li><a class="thumb"><span class="img">Page 9</span><span class="num">9</span></a></li><li><a class="thumb"><span class="img">Page 10</span><span class="num">10</span></a></li><li><a class="thumb"><span class="img">Page 11</span><span class="num">11</span></a></li><li><a class="thumb"><span class="img">Page 12</span><span class="num">12</span></a></li></ul><div class="chapnav"><a href="#">← Chapter 1</a><a href="#">Chapter 3 →</a></div><div class="sheet-foot"><a href="#">← Back to page 4</a><a href="#">Back to series</a></div></div></div></div>
+
+<div class="wrap"><h6>8 · The editor: a chapter's "Open on" field, under Title; a spread page shows wide in the grid</h6>
+<div class="ed" id="m8"><div class="top"><span>Kettle Tales · Chapter 2: The Long Road</span><span style="display:flex;gap:10px;align-items:center;font-weight:600"><span>● Live · 2:41 pm</span><span class="btn">Preview</span><span class="btn" style="background:#2563eb;color:#fff;border-color:#2563eb">Publish</span></span></div><div class="doc">
+<div class="field"><label>Chapter</label><div class="input" style="width:120px">2</div></div>
+<div class="field"><label>Title</label><div class="input">The Long Road</div></div>
+<div class="field"><label>Open on</label><p class="help">How pages pair up on a wide screen. A printed comic opens on the right, so its facing pages are 2 and 3, 4 and 5.</p>
+<div class="radio"><i class="on"></i><span><b>The right, like a printed comic</b><br><span class="help">Page 1 alone on the right, then 2 and 3, 4 and 5.</span></span></div>
+<div class="radio"><i></i><span><b>The left, pairing from page 1</b><br><span class="help">Pages 1 and 2 together, then 3 and 4.</span></span></div></div>
+<div class="field"><div style="display:flex;justify-content:space-between;align-items:end"><div><label>Pages</label><p class="help">In reading order. Drag to reorder. Upload the original files, as they are; the site shows them at screen size.</p></div><div style="display:flex;gap:10px;align-items:center"><span style="background:#fef3c7;color:#92400e;border-radius:4px;padding:4px 10px">⚠ 1 page needs alt text</span><span class="btn" style="background:#2563eb;color:#fff;border-color:#2563eb">Upload pages</span></div></div><div class="grid"><div class="th"><div class="img">KT 2-1</div>1 · page-01.png</div><div class="th"><div class="img">KT 2-2</div>2 · page-02.png</div><div class="th"><div class="img">KT 2-3</div>3 · page-03.png</div><div class="th"><div class="img">KT 2-4</div>4 · page-04.png</div><div class="th spr"><div class="img">KT 2-5</div>5 · page-05.png <span class="tag">Two-page spread</span></div><div class="th"><div class="img">KT 2-6</div>6 · page-06.png</div><div class="th"><div class="img">KT 2-7</div>7 · page-07.png</div><div class="th"><div class="img">KT 2-8</div>8 · page-08.png</div><div class="th"><div class="img">KT 2-9</div>9 · page-09.png</div><div class="th"><div class="img">KT 2-10</div>10 · page-10.png</div><div class="th"><div class="img">KT 2-11</div>11 · page-11.png</div><div class="th"><div class="img">KT 2-12</div>12 · page-12.png</div></div></div>
+</div></div></div>
+
+<div class="wrap"><h6>9 · The editor: a page open, with "Two-page spread" ticked</h6>
+<div class="ed" id="m9" style="height:600px"><div class="top"><span>Kettle Tales · Chapter 2: The Long Road</span><span style="display:flex;gap:10px;align-items:center;font-weight:600"><span>● Live · 2:41 pm</span><span class="btn">Preview</span><span class="btn" style="background:#2563eb;color:#fff;border-color:#2563eb">Publish</span></span></div>
+<div class="panel"><div class="big">KT 2-5 (one wide picture)</div><div>
+<div style="font-weight:700;font-size:16px;margin-bottom:12px">Chapter 2: The Long Road · Page 5 of 12</div>
+<div class="field"><label>Alt text</label><p class="help">What happens on this page, for people using screen readers.</p><div class="input" style="height:70px">The fox and the kettle at the top of the ridge, the whole valley spread out below them.</div></div>
+<div class="field"><div class="radio" style="align-items:center"><span class="check">✓</span><b>Two-page spread</b></div><p class="help">One picture drawn across two facing pages. On a wide screen it covers both pages; on a phone it's shrunk to fit. It's never split across a page turn.</p><p class="help" style="background:#eff6ff;border-radius:4px;padding:6px 8px;color:#1e3a8a">This chapter opens on the right, so page 4 shows alone on the left, before this spread.</p></div>
+<div class="field"><label>Panels ▸</label><p class="help">Filled in automatically later.</p></div>
+<div><span class="btn">‹ Previous page</span> <span class="btn">Next page ›</span> <span class="btn" style="float:right">Done</span></div>
+</div></div></div></div>
+<div class="wrap"><h6>11 · The editor: a wide picture, not ticked as a spread; the page panel asks</h6>
+<div class="ed" id="m11" style="height:560px"><div class="top"><span>Kettle Tales · Chapter 2: The Long Road</span><span style="display:flex;gap:10px;align-items:center;font-weight:600"><span>● Live · 2:41 pm</span><span class="btn">Preview</span><span class="btn" style="background:#2563eb;color:#fff;border-color:#2563eb">Publish</span></span></div>
+<div class="panel"><div class="big">KT 2-9 (one wide picture)</div><div>
+<div style="font-weight:700;font-size:16px;margin-bottom:12px">Chapter 2: The Long Road · Page 9 of 12</div>
+<div class="field"><label>Alt text</label><p class="help">What happens on this page, for people using screen readers.</p><div class="input" style="height:70px">The fair from above, every stall lit.</div></div>
+<div class="field"><p style="background:#fef3c7;color:#92400e;border-radius:4px;padding:8px 10px;margin:0 0 8px">This picture is wider than it is tall. Is it a two-page spread? If so, tick <b>Two-page spread</b>; otherwise it shows small, on one side.</p><div class="radio" style="align-items:center"><span class="check" style="background:#fff;color:#fff"></span><b>Two-page spread</b></div></div>
+<div class="field"><label>Panels ▸</label><p class="help">Filled in automatically later.</p></div>
+<div><span class="btn">‹ Previous page</span> <span class="btn">Next page ›</span> <span class="btn" style="float:right">Done</span></div>
+</div></div></div></div>
+</body>
+</html>
