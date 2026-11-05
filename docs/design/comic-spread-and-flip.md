@@ -3,6 +3,7 @@ id: design-comic-spread-and-flip
 status: approved
 derived-from:
   - story-comic-reader-flip-and-panels-two-page-spread: 3bd1fa1fe9f5
+  - story-comic-reader-flip-and-panels-comic-settings: 91b08e4f2d65
   - story-comic-reader-flip-and-panels-page-flip: 81730e39874b
   - epic-comic-reader-flip-and-panels#decisions-from-the-lead: 6c4beced64ec
   - design-comic-turn-pages#how-a-page-turn-works: e347e19f1496
@@ -20,6 +21,8 @@ Mock-ups are in docs/design/mockups/comic-spread-and-flip/ (PNG images, and mock
 are rendered from with render.mjs). Cross-document view transitions checked in Chromium 153 (2026-11-05).
 Revised after a persona walkthrough. -->
 
+**Settings per comic (story 6).** Everything in this design about pairs (the width test, pairing, page addresses showing a pair, both sets of links, the layout and announcements of pairs) applies only to a comic with **Two pages side by side** on; everything about the page-flip applies only to a comic with **Page-flip** on. Both are off until Star turns them on. "Settings per comic", below, says what a comic shows with either off.
+
 ## Personas
 
 - persona-fan: reads on a phone most of the time, and on a laptop or tablet when there's time for a long read. On a wide screen, the reader should look like an open comic; on a phone, it stays one page at a time, as now.
@@ -29,6 +32,8 @@ Revised after a persona walkthrough. -->
 
 - A page image can be marked as a two-page spread; it covers both sides on a wide screen and is shrunk to fit on a narrow one (2026-11-05).
 - Each chapter chooses how its pages pair: opening on the right like a printed comic, or pairing from page 1 (2026-11-05).
+- Two pages side by side and the page-flip are settings of each comic, both off until Star turns them on; with two pages side by side off, a two-page spread still uses the wide screen's full width, alone (2026-11-05; story 6, "Settings per comic" below).
+- The pages never change size at the end of a comic (2026-11-05).
 
 ## How it works
 
@@ -63,7 +68,7 @@ Revised after a persona walkthrough. -->
 2. For a two-page spread, Star uploads it as one wide picture, in its place among the pages, opens it, and ticks **Two-page spread** (mock-up 9). In the pages grid, it shows twice as wide, marked "Two-page spread" (mock-up 8).
 3. If a spread leaves the page before it alone on the left, the page panel says so under the tick box: "This chapter opens on the right, so page 4 shows alone on the left, before this spread." (mock-up 9). Star can leave it, or move a page or change **Open on** to close the gap.
 4. If Star uploads a picture wider than it is tall and doesn't tick **Two-page spread**, the page panel asks: "This picture is wider than it is tall. Is it a two-page spread? If so, tick **Two-page spread**; otherwise it shows small, on one side." (mock-up 11).
-5. **Preview** on a chapter: **Computer** always shows pairs (the reader at a laptop's 1280 × 800, scaled to fit), and **Phone** shows one page at a time, whatever the size of the editor's window (design-preview).
+5. **Preview** on a chapter: **Computer** shows pairs, when the comic has **Two pages side by side** on, at a laptop's 1280 × 800, scaled to fit, and **Phone** shows one page at a time, whatever the size of the editor's window (design-preview).
 6. Publishing works as now. Ticking or unticking **Two-page spread**, or changing **Open on**, changes no page's address, so it needs no shared-link warning.
 
 ## What Star enters
@@ -80,6 +85,20 @@ Revised after a persona walkthrough. -->
 |---|---|
 | Two-page spread (a tick box) | One picture drawn across two facing pages. On a wide screen it covers both pages; on a phone it's shrunk to fit. It's never split across a page turn. |
 
+## Settings per comic
+
+Story 6 makes both features Star's choice, per comic.
+
+- **Where:** in the comic's own page in the editor, after **Kind**, a group headed **How it reads** with two tick boxes (mock-up 13):
+  - **Two pages side by side**: "On a laptop, or a tablet held sideways, show facing pages together, like an open comic. Off: one page at a time on every screen."
+  - **Page-flip**: "Turn pages with an animation of a page turning over. Off: pages change at once."
+- **Both off**, for a new comic and for every comic that exists today. Nothing else about a comic changes when Star turns them on or off: no address changes, so the editor never asks about shared links. A change goes live when the comic itself is published (publishing a chapter doesn't publish its comic's settings).
+- **Two pages side by side off:** every screen shows one page at a time, as before story 1. The bar reads "Page 5 of 12"; **Next** and **Previous** move one page; the edge arrows, keys and swipes follow them. A page marked **Two-page spread** shows alone, as wide as the reader allows (the width of two pages on a laptop), with the bar reading "Page 5 of 12 · two-page spread" (mock-up 14). **All pages** still shows a spread twice as wide. Narrow screens (a phone or tablet held upright, or text at 200%) behave as now: the spread is shrunk to fit, with the hint to turn the phone sideways.
+- **In the chapters of such a comic,** **Open on** stays, with its choice kept and still changeable, under a note: "Two pages side by side is off for this comic, so this has no effect. Turn it on in the comic's How it reads." (mock-up 15). The page panel's note about a page left alone before a spread doesn't show. The question about a wide picture that isn't ticked still shows, since a spread is shown wider either way. These notes follow the comic's current setting, published or not.
+- **Page-flip off:** pages change at once, as before story 2, whatever the system's motion setting. **Page-flip on** still gives way to reduced motion.
+- **Page-flip on, pairs off:** every turn is the narrow screen's turn, a single page turning over around its left edge (see "What turns"), including a spread shown alone.
+- **Preview:** a chapter's preview uses its comic's settings as they are now, published or not (a second exception to design-preview's "this item's unpublished changes only"): **Computer** shows pairs only when **Two pages side by side** is on. So that Star can see the turns, **Previous** and **Next** work in a chapter's preview, moving between that chapter's pages (another exception to "links don't work in the preview"), and the flip plays when **Page-flip** is on. A comic's own preview shows its series page, so **How it reads** ends with "Preview a chapter to see how it reads." as a reminder.
+
 ## The page-flip
 
 - **Where it plays:** in browsers with cross-document view transitions (Chrome, Edge, Safari 18.2 and later, and others as they add them). Other browsers change pages without it, as now.
@@ -92,7 +111,7 @@ Revised after a persona walkthrough. -->
   - **A spread page:** turns as one wide sheet, around the spine, onto the next pair (or from the previous one).
   - **A page alone on one side** (page 1 on the right, a last page on the left): turns as half a sheet; the empty side stays empty until the turn ends.
   - **Into another chapter:** the same turn; the next chapter's first pair or page is beneath.
-  - **Narrow screens:** there's no spine, so the single page turns over around its left edge, like the top sheet of a pad, with the next page beneath; back, the previous page turns in from the left.
+  - **Narrow screens, and every screen when pairs are off:** there's no spine, so the single page turns over around its left edge, like the top sheet of a pad, with the next page beneath; back, the previous page turns in from the left.
 - **Everything else stays:** the turn is drawn over an ordinary move to the next address, so focus, announcements, the address bar, the back button and preloading work as they do now.
 
 ## Layout
@@ -160,13 +179,30 @@ A walkthrough for persona-fan and persona-artist (2026-11-05), which opened ever
 | 10 | The newest page in a pair: **Next** and **Newest** unusable, the end note | `mockups/comic-spread-and-flip/10-newest-in-pair.png` |
 | 11 | The editor: a wide picture not ticked, and the question | `mockups/comic-spread-and-flip/11-editor-wide-picture.png` |
 | 12 | A phone held sideways on a spread | `mockups/comic-spread-and-flip/12-phone-sideways.png` |
+| 13 | The editor: a comic's **How it reads**, both off | `mockups/comic-spread-and-flip/13-editor-how-it-reads.png` |
+| 14 | A laptop, two pages side by side off: a spread alone, as wide as the reader allows | `mockups/comic-spread-and-flip/14-spread-alone.png` |
+| 15 | The editor: **Open on** with its note, in a comic with two pages side by side off | `mockups/comic-spread-and-flip/15-editor-open-on-off.png` |
+
+## Persona walkthrough: story 6
+
+A walkthrough for persona-artist and persona-fan (2026-11-05) of "Settings per comic" found three blocking problems and six others. Addressed: the preview (a chapter's preview uses the comic's current settings, and **Previous** and **Next** turn within it); the "only when on" rule moved to the top and the preview step corrected; the turn with pairs off; **Open on** still changeable; notes follow the current setting; narrow screens unchanged; the guides; the checks for the spec; and the comic's real fields in mock-up 13.
 
 ## For the guide
+
+- Story 6 adds to both: Star's guide says where **How it reads** is and what each setting does, that both start off, that the comic itself must be published, and how to try them in a chapter's preview; the fans' guide says that some comics show two pages side by side, and turn with the page-flip, when Star has chosen to.
 
 - **Star's comics guide** (`docs/user/publishing-comics.md`) gains a section, **Two-page spreads and how pages pair up**: what **Open on** does, when to tick **Two-page spread**, how a spread is uploaded (one wide picture in its place), the note about a page left alone, and what fans see on a laptop and on a phone. It's a section of an existing guide, so the online help gains no new guide.
 - **The fans' guide** (`docs/user/reading-comics.md`, a fans' guide) gains a section on reading on a wide screen: pairs and "Pages 2–3", spreads, turning a phone sideways for a spread, and that the page-turn is skipped when reduced motion is on.
 
 ## For the spec to check
+
+- Both settings off by default, for a comic saved before story 6, and every combination of the two.
+- A spread alone at the reader's width with pairs off, and the bar's wording.
+- **Open on**'s note and the hidden page-alone note with pairs off.
+- The preview following the comic's unpublished settings, and **Previous** and **Next** turning within the chapter in the preview.
+- **Page-flip** off overriding the system's motion setting, and on giving way to reduced motion.
+- The turn with pairs off on a wide screen.
+- Pairs off with no script: one set of links, the narrow one, on every screen.
 
 - Cross-document view transitions in Chrome and Safari, the fallback elsewhere, and skipping the turn when the next picture isn't ready.
 - The 1000 px and landscape test for pairs, at 200% text and 400% zoom.

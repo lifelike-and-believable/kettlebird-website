@@ -9,7 +9,7 @@ derived-from:
   - epic-comic-reader-flip-and-panels#decisions-from-the-lead: 6c4beced64ec
   - epic-comic-reader-flip-and-panels#open-questions: 6ac1fe3cee57
   - design-comic-spread-and-flip#how-it-works: c145d0b6b751
-  - design-comic-spread-and-flip#the-page-flip: d08a0fb16da8
+  - design-comic-spread-and-flip#the-page-flip: 2ad0e062a153
   - design-comic-publish-pages#flow: 954976ba8278
   - design-preview#flow: 257ebbac18cb
   - persona-fan#context-of-use: 38883e5abc09

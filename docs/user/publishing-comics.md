@@ -8,9 +8,11 @@ derived-from:
   - story-comic-reader-publish-pages: c43f60cc7f9f
   - design-comic-start-reading#what-star-enters: f8ef076087b9
   - design-organised-editor#sections-and-fields: 20d25885468d
-  - design-comic-spread-and-flip#flow-star: 3ac22d982a26
+  - design-comic-spread-and-flip#flow-star: 8a29fdafa90d
   - design-comic-spread-and-flip#what-star-enters: 16e88bf6624e
   - design-comic-spread-and-flip#how-it-works: c145d0b6b751
+  - design-comic-spread-and-flip#settings-per-comic: 64a1be41076a
+  - story-comic-reader-flip-and-panels-comic-settings: 91b08e4f2d65
   - story-comic-reader-flip-and-panels-two-page-spread: 3bd1fa1fe9f5
 ---
 
@@ -65,7 +67,18 @@ The top of the pages shows how many still need alt text ("3 pages need alt text"
 
 ## Two-page spreads and how pages pair up
 
-On a laptop, or a tablet held sideways, readers see two pages side by side, like an open comic. On a phone, they see one page at a time, as always. You don't need to do anything for this: most chapters need no changes.
+A comic can show two pages side by side on a laptop, or a tablet held sideways, like an open comic; on a phone, readers always see one page at a time. A comic can also turn its pages, on any screen, with an animation of a page turning over; it's skipped for readers who've asked their device to reduce motion, and in older browsers.
+
+### Turn them on for a comic
+
+Both are off for every comic until you turn them on, comic by comic:
+
+1. Open the comic under **Comics**.
+2. Under **How it reads**, tick **Two pages side by side**, **Page-flip**, or both.
+3. Publish the comic itself (publishing a chapter doesn't publish its comic's settings). No page's link changes, so the editor doesn't warn you about shared links.
+4. To see how it reads before you publish, open a chapter and choose **Preview**: **Computer** shows pairs if **Two pages side by side** is ticked, and **Previous** and **Next** turn pages in the preview, with the page-flip if it's ticked.
+
+With **Two pages side by side** off, every screen shows one page at a time. A page you've marked as a two-page spread still shows wide on a laptop, on its own. Each chapter's **Open on** then has no effect, and says so; the choice is kept for if you turn pairs on later.
 
 ### How pages pair up
 
@@ -93,7 +106,7 @@ A spread always starts on the left. If the page before it would have been on the
 
 ### Check it
 
-Changing **Open on** or ticking **Two-page spread** changes no page's link, so the editor doesn't warn you about shared links. To check how a chapter pairs up, choose **Preview**: **Computer** always shows pairs, however narrow your editor window is, and **Phone** shows one page at a time.
+Changing **Open on** or ticking **Two-page spread** changes no page's link, so the editor doesn't warn you about shared links. To check how a chapter pairs up, choose **Preview**: if the comic has **Two pages side by side** ticked, **Computer** shows pairs, however narrow your editor window is; **Phone** shows one page at a time.
 
 ## Publish
 

@@ -18,7 +18,9 @@ derived-from:
   - story-comic-reader-assistive-technology: 1db666e12004
   - design-comic-spread-and-flip#flow-a-fan: 4feac2263d70
   - design-comic-spread-and-flip#how-it-works: c145d0b6b751
-  - design-comic-spread-and-flip#the-page-flip: d08a0fb16da8
+  - design-comic-spread-and-flip#settings-per-comic: 64a1be41076a
+  - story-comic-reader-flip-and-panels-comic-settings: 91b08e4f2d65
+  - design-comic-spread-and-flip#the-page-flip: 2ad0e062a153
   - design-comic-spread-and-flip#accessibility: a08b94a31151
   - story-comic-reader-flip-and-panels-page-flip: 81730e39874b
   - story-comic-reader-flip-and-panels-two-page-spread: 3bd1fa1fe9f5
@@ -68,14 +70,14 @@ If you've zoomed in to look at a panel, swipes and arrow keys move around the pa
 
 ## Reading on a wide screen
 
-On a laptop, or a tablet held sideways, the reader shows two pages side by side, like an open comic. The bar at the top says which, for example "Chapter 2: The Long Road · Pages 2–3 of 12". **Next**, the right arrow key and swiping left turn to the next pages; **Previous**, the left arrow key and swiping right turn back. On a phone, or with your text made much larger, you see one page at a time, as before.
+On a laptop, or a tablet held sideways, some comics show two pages side by side, like an open comic: Star chooses, comic by comic. The bar at the top says which, for example "Chapter 2: The Long Road · Pages 2–3 of 12". **Next**, the right arrow key and swiping left turn to the next pages; **Previous**, the left arrow key and swiping right turn back. On a phone, or with your text made much larger, you see one page at a time, as before.
 
 - The first page of a chapter often shows alone on the right, like the first page of a printed comic, and a chapter's last page may show alone on its side.
-- A two-page spread is one picture Star drew across two facing pages. On a wide screen it covers both sides, and the bar says "Page 5 of 12 · two-page spread".
+- A two-page spread is one picture Star drew across two facing pages. On a wide screen it covers both sides, and the bar says "Page 5 of 12 · two-page spread". On a comic that shows one page at a time, a spread still shows wide, on its own.
 - On a phone, a spread is shrunk to fit, with "Turn your phone sideways to see it bigger." under it. Held sideways, the spread fills the width, and the buttons are a short scroll below it.
 - In **All pages**, a spread's picture is twice as wide (on a phone, it takes two of the three places in a row), marked "5 · spread".
-- Every page keeps its own address, so links work on any screen. A link to page 3 opens pages 2 and 3 on a laptop, and page 3 on a phone.
-- In most up-to-date browsers, turning shows the page turning over, in under half a second. If your device is set to reduce motion, or a page isn't ready yet, the page changes straight away instead.
+- Every page keeps its own address, so links work on any screen. On those comics, a link to page 3 opens pages 2 and 3 on a laptop, and page 3 on a phone.
+- On comics where Star has turned it on, turning shows the page turning over, in under half a second, in most up-to-date browsers. If your device is set to reduce motion, or a page isn't ready yet, the page changes straight away instead.
 - With a screen reader, you hear both pages, for example "Chapter 2: The Long Road, pages 2 and 3 of 12.", then what each page shows, left before right. A spread is announced as, for example, "Page 5 of 12, two-page spread.", then what it shows. The buttons' full names say "Next pages" when they lead to two pages, and "Next page" otherwise.
 
 ## See all the pages in a chapter
