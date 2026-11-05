@@ -1,11 +1,12 @@
 ---
 id: design-comic-panels
-status: draft
+status: approved
 derived-from:
   - story-comic-reader-flip-and-panels-read-panel-by-panel: 0cd610fa0545
   - story-comic-reader-flip-and-panels-panels-found: 61aa1e576413
   - story-comic-reader-flip-and-panels-correct-the-panels: 0e8299e7679c
-  - epic-comic-reader-flip-and-panels#decisions-from-the-lead: 23c96219e6c7
+  - story-comic-reader-flip-and-panels-comic-settings: 91b08e4f2d65
+  - epic-comic-reader-flip-and-panels#decisions-from-the-lead: 6c4beced64ec
   - epic-comic-reader-flip-and-panels#open-questions: 6ac1fe3cee57
   - design-comic-spread-and-flip#how-it-works: c145d0b6b751
   - design-comic-spread-and-flip#the-page-flip: d08a0fb16da8
