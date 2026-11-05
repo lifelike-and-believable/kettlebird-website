@@ -1,5 +1,5 @@
 ---
-status: draft
+status: implemented
 tests-commit: 0ce321fdcfd6a7cb30431a5c8ff79063416f0797
 unlocks:
   - tests/unit/comic-settings-edges.test.ts (new): mutation testing showed nothing checked a preview turn to an address in the chapter that isn't a page number (its sheet, page 0, a padded number, a page's own sheet). Added; the criteria are unchanged.
