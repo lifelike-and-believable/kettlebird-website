@@ -128,7 +128,18 @@ test('comic-reader-spread-and-flip#AC-4 AC-7 the newest page in a pair', async (
   await expect(page.getByText("You're all caught up!")).toBeVisible();
   const back = page.locator('.reader__end a', { hasText: 'Back to series' });
   await expect(back).toBeVisible();
-  expect(await back.evaluate((a) => a.getBoundingClientRect().bottom <= window.innerHeight)).toBe(true);
+  // The pages keep the size and place they have on every other pair (the lead's decision, 2026-11-05).
+  // Measured from the reader's top, since a shorter page can't always scroll the reader to the top.
+  const inReader = (alt: string) =>
+    page.getByRole('img', { name: alt, exact: true }).evaluate((img) => {
+      const r = img.getBoundingClientRect();
+      return { top: r.top - img.closest('.reader')!.getBoundingClientRect().top, height: r.height };
+    });
+  const atEnd = await inReader('The road.');
+  await page.goto(`${BOOK}/2/1`);
+  const before = await inReader('Morning.');
+  expect(Math.abs(atEnd.height - before.height)).toBeLessThanOrEqual(1);
+  expect(Math.abs(atEnd.top - before.top)).toBeLessThanOrEqual(1);
 
   await page.setViewportSize(PHONE);
   await page.goto(`${BOOK}/2/3`);
