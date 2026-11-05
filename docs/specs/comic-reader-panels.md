@@ -3,6 +3,7 @@ status: draft
 tests-commit: f22415712e836564216d6eee8590f0d2a1761f01
 unlocks:
   - tests/e2e/comic-panels-edges.spec.ts (new): a screenshot of the build showed that on a comic's newest page, Next (unusable for pages) couldn't step through the page's remaining panels. Added; the criteria are unchanged.
+  - tests/unit/comic-panels-edges.test.ts (new): mutation testing showed nothing checked finding panels on an unreadable or blank picture, a dark background, a gutter just too thin or too marked, exactly 12 panels, the 3% and 70% limits, the editor's steps with nothing selected or at the ends of the order, picking outside the order, undoing a confirm, a panel with no width, or a tall panel's frame. Added; the criteria are unchanged.
 ---
 
 # Comic reader: panels
@@ -67,8 +68,8 @@ Source: S3.n, S4.n and S5.n are the stories' nth criteria; design and docs secti
 ## Scope
 
 - In:
-  - `sanity-studio/lib/panels.ts` (new, pure): `findPanels`, the panel editor's steps, the editor's words. `sanity-studio/components/PanelsInput.tsx` (new): the drawing area and the section. `sanity-studio/components/PagesInput.tsx`: finding panels after upload, tile captions, the older-pages banner. `sanity-studio/actions`: **Publish** waiting.
-  - `sanity-studio/schemas/objects/comicChapter.ts`: `panelsBy`, and the **Panels** input in place of the plain list.
+  - `sanity-studio/lib/panels.ts` (new, pure): `findPanels`, the panel editor's steps, the editor's words. `sanity-studio/components/PanelsTool.tsx` (new, shown by `PageItemNav.tsx`): the drawing area and the section; `findOnPage.ts` (new): reading a page's picture into a canvas; `lib/upload-store.ts`: which pages are being looked at. `sanity-studio/components/PagesInput.tsx`: finding panels after upload, tile captions, the older-pages banner. `sanity-studio/actions`: **Publish** waiting.
+  - `sanity-studio/schemas/objects/comicChapter.ts`: `panels` and `panelsBy`, kept out of the plain form; tile captions.
   - `src/lib/comics/model.ts`, `source.ts`: `panels` and `panelsBy` on a page. `src/lib/comics/panels.ts` (new, pure): the panel frame, steps, location, names and announcements.
   - `src/components/pages/ReaderPage.astro`: **Panel by panel**, the panel view and its script.
   - `tests/fixtures/comics.ts`, `tests/fixtures/drafts.ts`: pages with panels, a page without, in a comic with pairs off.

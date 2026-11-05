@@ -4,6 +4,7 @@ import { PagesInput } from '../../components/PagesInput';
 import { OpenOnInput } from '../../components/OpenOnInput';
 import { PageGridItem, SpreadInput } from '../../components/SpreadInput';
 import { altTextRule, duplicateChapterMessage, OPEN_ON_FIELD, pageGridSubtitle, SPREAD_FIELD } from '../../lib/comic-pages';
+import { tileCaption } from '../../lib/panels';
 import { ITEM_NAMES } from '../../lib/editor-content';
 
 // A chapter of a comic series and its pages, in reading order.
@@ -65,11 +66,15 @@ export default defineType({
           components: { input: PageItemNav, item: PageGridItem },
           // Pages without alt text are marked in the grid (design: "Missing alt text").
           preview: {
-            select: { media: 'asset', altText: 'altText', spread: 'spread', filename: 'asset.originalFilename' },
-            prepare: ({ media, altText, spread, filename }) => ({
+            select: { media: 'asset', altText: 'altText', spread: 'spread', filename: 'asset.originalFilename', panels: 'panels', panelsBy: 'panelsBy' },
+            prepare: ({ media, altText, spread, filename, panels, panelsBy }) => ({
               media,
               title: filename,
-              subtitle: pageGridSubtitle({ spread: Boolean(spread), altText: altText ? String(altText) : undefined }),
+              // What the tile says about the page: spread, alt text, and its panels (comic-reader-panels AC-4).
+              subtitle: [
+                pageGridSubtitle({ spread: Boolean(spread), altText: altText ? String(altText) : undefined }),
+                tileCaption({ panels: Array.isArray(panels) ? panels : [], panelsBy: panelsBy === 'site' || panelsBy === 'star' ? panelsBy : undefined }),
+              ].filter(Boolean).join(' · '),
             }),
           },
           fields: [
@@ -84,11 +89,13 @@ export default defineType({
             }),
             // The note about a page left alone, or the question about a wide picture, shows under it (PageItemNav).
             defineField({ ...SPREAD_FIELD, components: { input: SpreadInput } }),
+            // Panels: found by the site and corrected in the page panel's Panels section, not here
+            // (docs/specs/comic-reader-panels.md AC-1, AC-7).
             defineField({
               name: 'panels',
               title: 'Panels',
               type: 'array',
-              description: 'Filled in automatically later.',
+              hidden: true,
               of: [
                 defineArrayMember({
                   type: 'object',
@@ -102,6 +109,7 @@ export default defineType({
                 }),
               ],
             }),
+            defineField({ name: 'panelsBy', title: 'Panels set by', type: 'string', hidden: true }),
           ],
         }),
       ],

@@ -4,6 +4,7 @@ import { Button, Flex, Stack } from '@sanity/ui';
 import { useContext } from 'react';
 import type { ObjectInputProps } from 'sanity';
 import { PagesContext } from './PagesInput';
+import { PanelsTool } from './PanelsTool';
 
 export function PageItemNav(props: ObjectInputProps) {
   const pages = useContext(PagesContext);
@@ -18,6 +19,8 @@ export function PageItemNav(props: ObjectInputProps) {
   return (
     <Stack space={4}>
       {props.renderDefault(props)}
+      {/* The page's panels, under Two-page spread (docs/specs/comic-reader-panels.md AC-7). */}
+      <PanelsTool value={(props.value ?? {}) as never} onChange={props.onChange as never} />
       {index >= 0 && (
         <Flex gap={2} justify="space-between">
           <Button icon={ArrowLeftIcon} text="Previous page" mode="ghost" disabled={index === 0} onClick={() => go(-1)} />

@@ -4,12 +4,14 @@
 import { UploadIcon, WarningOutlineIcon } from '@sanity/icons';
 import { Box, Button, Card, Flex, Stack, Text } from '@sanity/ui';
 import { createContext, useCallback, useEffect, useMemo, useRef, useState, type DragEvent } from 'react';
-import { insert, setIfMissing, useClient, useFormValue, type ArrayOfObjectsInputProps, type Path } from 'sanity';
+import { insert, set, setIfMissing, useClient, useFormValue, type ArrayOfObjectsInputProps, type Path } from 'sanity';
 import {
   altTextMessage, DID_NOT_UPLOAD, isAcceptedImage, MAX_PARALLEL_UPLOADS, missingAltCount, NOT_AN_IMAGE,
   retryable, sortByFileName, type PageLike, type QueueItem,
 } from '../lib/comic-pages';
-import { setQueue } from '../lib/upload-store';
+import { setFinding, setQueue, useFinding } from '../lib/upload-store';
+import { FIND_WAIT_MS, findingProgress, FOUND_AFTER_PUBLISHING, olderPagesBanner, shouldFind } from '../lib/panels';
+import { assetUrl, findOnPage, storedPanels } from './findOnPage';
 
 interface Entry extends QueueItem { id: string; file: File; assetId?: string; flushed?: boolean }
 
@@ -30,6 +32,35 @@ export function PagesInput(props: ArrayOfObjectsInputProps) {
   const fileInput = useRef<HTMLInputElement>(null);
   const entriesRef = useRef(entries);
   entriesRef.current = entries;
+
+  // Finding panels (docs/specs/comic-reader-panels.md AC-4 to AC-6): on new pages as they're added,
+  // and on older pages when Star asks; never on pages Star has set. A few at a time.
+  const finding = useFinding(docId);
+  const [batch, setBatch] = useState<{ done: number; total: number }>();
+  // Panels that arrived after Publish stopped waiting for them are a change to publish next time.
+  const [late, setLate] = useState(false);
+  const { projectId, dataset } = client.config();
+  const find = useCallback(async (pages: { _key: string; asset?: { _ref?: string } }[], counted: boolean) => {
+    if (!docId || !pages.length) return;
+    const keys = pages.map((p) => p._key);
+    setFinding(docId, (f) => ({ ...f, keys: [...f.keys, ...keys], failed: f.failed.filter((k) => !keys.includes(k)) }));
+    if (counted) setBatch({ done: 0, total: pages.length });
+    const queue = [...pages];
+    const started = Date.now();
+    const worker = async () => {
+      for (let page = queue.shift(); page; page = queue.shift()) {
+        const ref = page.asset?._ref;
+        const found = await findOnPage(ref && assetUrl(ref, projectId!, dataset!, 400));
+        if (found === 'failed') setFinding(docId, (f) => ({ ...f, failed: [...f.failed, page!._key] }));
+        else onChange([set(storedPanels(found), [{ _key: page._key }, 'panels']), set('site', [{ _key: page._key }, 'panelsBy'])]);
+        setFinding(docId, (f) => ({ ...f, keys: f.keys.filter((k) => k !== page!._key) }));
+        if (counted) setBatch((b) => b && { ...b, done: b.done + 1 });
+        if (found !== 'failed' && Date.now() - started > FIND_WAIT_MS) setLate(true);
+      }
+    };
+    await Promise.all([worker(), worker(), worker()]);
+    if (counted) setBatch(undefined);
+  }, [docId, onChange, projectId, dataset]);
 
   const update = useCallback((id: string, change: Partial<Entry>) => {
     setEntries((all) => all.map((e) => (e.id === id ? { ...e, ...change } : e)));
@@ -73,9 +104,10 @@ export function PagesInput(props: ArrayOfObjectsInputProps) {
     if (!ready.length) return;
     const items = ready.map((e) => ({ _type: 'image', _key: newKey(), asset: { _type: 'reference', _ref: e.assetId } }));
     onChange([setIfMissing([]), insert(items, 'after', [-1])]);
+    void find(items, false);
     const ids = new Set(ready.map((e) => e.id));
     setEntries((all) => all.map((e) => (ids.has(e.id) ? { ...e, flushed: true } : e)));
-  }, [entries, onChange]);
+  }, [entries, onChange, find]);
 
   // Once nothing is waiting or uploading, forget the added pages, so the next batch counts from zero.
   useEffect(() => {
@@ -131,6 +163,9 @@ export function PagesInput(props: ArrayOfObjectsInputProps) {
   };
 
   const altMessage = altTextMessage(missingAltCount(value));
+  const unlooked = (value as { _key: string; asset?: { _ref?: string }; panelsBy?: 'site' | 'star' }[])
+    .filter((p) => p.asset?._ref && !p.panelsBy && shouldFind(p) && !finding.keys.includes(p._key));
+  const banner = olderPagesBanner(unlooked.length);
   const pending = entries.filter((e) => !e.flushed);
   const context = useMemo(() => ({ keys: value.map((p) => p._key), open: onItemOpen, close: onItemClose }), [value, onItemOpen, onItemClose]);
 
@@ -154,6 +189,24 @@ export function PagesInput(props: ArrayOfObjectsInputProps) {
             </Card>
           )}
         </Flex>
+
+        {late && (
+          <Card tone="caution" padding={3} radius={2} border>
+            <Text size={1}>{FOUND_AFTER_PUBLISHING}</Text>
+          </Card>
+        )}
+        {batch ? (
+          <Card tone="primary" padding={3} radius={2} border>
+            <Text size={1} role="status">{findingProgress(batch.done, batch.total)}</Text>
+          </Card>
+        ) : banner && !busy && finding.keys.length === 0 ? (
+          <Card tone="primary" padding={3} radius={2} border>
+            <Flex align="center" gap={3} wrap="wrap">
+              <Text size={1}>{banner}</Text>
+              <Button text="Find panels" tone="primary" disabled={readOnly} onClick={() => void find(unlooked, true)} />
+            </Flex>
+          </Card>
+        ) : null}
 
         {pending.length > 0 && (
           <Stack space={2} as="ul" aria-label="Uploads" style={{ listStyle: 'none', padding: 0, margin: 0 }}>
