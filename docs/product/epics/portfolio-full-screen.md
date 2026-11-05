@@ -25,10 +25,10 @@ A fan looking at one of Star's pieces in the portfolio can open it full screen, 
 
 ## Stories
 
-Each is written as its own story file, and approved, before work on it starts.
+Each is written as its own story file, and approved, before work on it starts. Written stories show their id.
 
-1. **View a piece full screen.** As a fan, I want to open a portfolio piece full screen, at the best size for my screen, and zoom and pan to see its details, so that I can look at Star's art properly, not just as a dialog's picture. The browser's own full-screen mode is used where it exists (it hides the browser's bars); elsewhere, such as Safari on an iPhone, the piece fills the window. Escape, a **Close** control, or the browser's own way out of full screen returns to the piece's dialog.
-2. **Move between pieces full screen.** As a fan, I want to go to the next or previous piece while full screen, with arrow keys, swipes or on-screen controls, so that I can look through Star's work one piece after another. The order is the gallery's: the pieces of the section the piece was opened from, as filtered.
+1. **View a piece full screen** (`story-portfolio-full-screen-view-a-piece-full-screen`). As a fan, I want to open a portfolio piece full screen, at the best size for my screen, and zoom and pan to see its details, so that I can look at Star's art properly, not just as a dialog's picture. The browser's own full-screen mode is used where it exists (it hides the browser's bars); elsewhere, such as Safari on an iPhone, the piece fills the window. Escape, a **Close** control, or the browser's own way out of full screen returns to the piece's dialog.
+2. **Move between pieces full screen** (`story-portfolio-full-screen-move-between-pieces-full-screen`). As a fan, I want to go to the next or previous piece while full screen, with arrow keys, swipes or on-screen controls, so that I can look through Star's work one piece after another. The order is the gallery's: the pieces of the section the piece was opened from, as filtered.
 
 ## Dependencies
 
