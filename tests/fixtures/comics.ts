@@ -13,6 +13,8 @@ function page(label: string, width = 800, height = 1200): ComicImage {
 }
 
 const p = (label: string, altText?: string) => ({ image: page(label), altText });
+// A two-page spread: one wide picture (docs/specs/comic-reader-spread-and-flip.md).
+const spread = (label: string, altText?: string) => ({ image: page(label, 1600, 1200), altText, spread: true });
 
 export const FIXTURE_SERIES: ComicSeries[] = [
   {
@@ -58,5 +60,34 @@ export const FIXTURE_SERIES: ComicSeries[] = [
     status: 'ongoing',
     type: 'original',
     chapters: [{ number: 1, pages: [p('NA 1', 'Unreachable.')] }],
+  },
+  // Pairs on a wide screen (comic-reader-spread-and-flip): chapter 1 opens on the right and has a
+  // spread at page 5, leaving page 4 alone; chapter 2 opens on the left and ends with a pair.
+  {
+    slug: 'open-book',
+    title: 'Open Book',
+    description: 'Facing pages and a spread.',
+    status: 'ongoing',
+    type: 'original',
+    chapters: [
+      {
+        number: 1,
+        title: 'Facing Pages',
+        pages: [
+          p('OB 1-1', 'A door opens.'),
+          p('OB 1-2', 'A hall of mirrors.'),
+          p('OB 1-3', 'The fox sees itself.'),
+          p('OB 1-4', 'A window.'),
+          spread('OB 1-5 spread', 'The whole valley below.'),
+          p('OB 1-6', 'Night falls.'),
+        ],
+      },
+      {
+        number: 2,
+        title: 'Left First',
+        openOn: 'left',
+        pages: [p('OB 2-1', 'Morning.'), p('OB 2-2', 'Breakfast.'), p('OB 2-3', 'The road.'), p('OB 2-4', 'A bridge.')],
+      },
+    ],
   },
 ];

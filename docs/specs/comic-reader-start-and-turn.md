@@ -5,6 +5,7 @@ tests-commit:
 unlocks:
   - tests/e2e/comic-reader.spec.ts: design-comic-sheet-and-controls replaces the Previous page / Next page pair with four controls that keep their place when they can't be used (links without an address, `aria-disabled`). AC-9 and AC-10 now check that the first page's **Previous page** and the last page's **Next page** have no address, instead of being absent, and AC-16 reads a control's name from `aria-label` before its text. Recorded with docs/specs/comic-reader-sheet-and-controls.md.
   - tests/e2e/comic-reader.spec.ts: the AC-1 test checked for the "No Address" card after navigating away from /comics, so it could never pass; the checks now run on /comics before the click. The criterion is unchanged.
+  - tests/e2e/comic-reader.spec.ts: runs in a 900 × 800 window, narrower than the width at which pages pair (comic-reader-spread-and-flip AC-3), so it still checks one page at a time; Playwright's default 1280 × 720 now shows two. The criteria are unchanged.
 ---
 
 # Comic reader: start reading and turn pages

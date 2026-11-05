@@ -4,6 +4,10 @@
 import { expect, test, type Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
+// One page at a time: a window narrower than the width at which pages pair
+// (docs/specs/comic-reader-spread-and-flip.md AC-3). The defaults are 1280 × 720, which pairs them.
+test.use({ viewport: { width: 900, height: 800 } });
+
 const SITE = 'https://newsite.kettlebird.com';
 const share = (page: Page) => page.getByRole('button', { name: /Share this page|Link copied/ });
 const status = (page: Page) => page.locator('[data-announce]');

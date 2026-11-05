@@ -4,6 +4,7 @@ tests-commit:
   - c2a96d8b8e552137c75bdc6c647280049930d273
 unlocks:
   - tests/unit/comic-sharing-edges.test.ts (new): mutation testing showed nothing checked an ongoing series with exactly two pages or without a web address (AC-3), an address with /comics/ in its middle (AC-4), the logo's literal address (AC-5), or a turn read in the same millisecond (AC-7). Added; the criteria are unchanged.
+  - tests/e2e/comic-share-and-announce.spec.ts: runs in a 900 × 800 window, narrower than the width at which pages pair (comic-reader-spread-and-flip AC-3), so it still checks one page at a time; Playwright's default 1280 × 720 now shows two. The criteria are unchanged.
 ---
 
 # Comic reader: newest page, sharing, and announcing pages
