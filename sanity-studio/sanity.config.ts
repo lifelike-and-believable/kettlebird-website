@@ -1,7 +1,9 @@
-import { defineConfig, defineLocaleResourceBundle } from 'sanity';
+import { defineConfig, defineLocaleResourceBundle, type SchemaTypeDefinition } from 'sanity';
 import { structureTool } from 'sanity/structure';
 
-import { withChapters } from './actions/deleteSeries';
+import { withChapters, withStoryChapters } from './actions/deleteSeries';
+import { withStoryChapterChecks, withStoryLinkCheck } from './actions/publishStory';
+import { SceneBreakPlugins } from './components/SceneBreakOnEnter';
 import { withPublishNote } from './actions/publishNote';
 import { LiveStatus } from './components/LiveStatus';
 import { CONTENT_TYPES } from './lib/live-status';
@@ -10,12 +12,13 @@ import { ThingsToFixBadge } from './badges/thingsToFix';
 import { FixSummary } from './components/FixSummary';
 import { isSettingsType, SETTINGS_ACTIONS } from './lib/site-settings';
 import { withChapterChecks } from './actions/publishChapter';
-import { CHAPTER_TEMPLATE } from './components/ChaptersList';
+import { CHAPTER_TEMPLATE, STORY_CHAPTER_TEMPLATE } from './components/ChaptersList';
 import { EMPTY_LIST, isItemType, SECTIONS } from './lib/editor-content';
 import { signInProviders, STUDIO_TITLE } from './lib/studio-settings';
 import schemaTypes from './schemas';
 import { defaultDocumentNode, structure } from './structure';
-import { withPreviewInput } from './components/PreviewButton';
+import { withHelpLinkInput, withPreviewInput } from './components/PreviewButton';
+import { ITEM_HELP } from './lib/help';
 import { isPreviewable } from './lib/preview';
 
 export default defineConfig({
@@ -44,13 +47,15 @@ export default defineConfig({
   },
   schema: {
     // Site settings' items show what to fix at the top (content-editing-site-settings AC-4).
-    types: schemaTypes
-      .map((type) => (isSettingsType(type.name) ? { ...type, components: { input: FixSummary } } : type))
+    types: (schemaTypes as SchemaTypeDefinition[])
+      .map((type) => (isSettingsType(type.name) ? ({ ...type, components: { input: FixSummary } } as SchemaTypeDefinition) : type))
       // Preview at the top of every item that has one (content-editing-preview AC-1).
-      .map((type) => {
-        if (!isPreviewable(type.name)) return type;
+      // An item with a help link but no preview yet has the link alone (story-reader-editor AC-11).
+      .map((type): SchemaTypeDefinition => {
+        const wrap = isPreviewable(type.name) ? withPreviewInput : ITEM_HELP[type.name] ? withHelpLinkInput : null;
+        if (!wrap) return type;
         const inner = (type as { components?: { input?: never } }).components?.input;
-        return { ...type, components: { ...(type as { components?: object }).components, input: withPreviewInput(inner) } };
+        return { ...type, components: { ...(type as { components?: object }).components, input: wrap(inner) } } as SchemaTypeDefinition;
       }),
     // Add chapter on a series opens a chapter for that series with the next number (AC-11).
     // Each kind of item is created by its New … name (organised-editor AC-1, AC-11).
@@ -72,9 +77,25 @@ export default defineConfig({
           series: { _type: 'reference', _ref: seriesId, _weak: true, _strengthenOnPublish: { type: 'comicSeries' } },
           number
         })
+      },
+      // Add chapter on a story (story-reader-editor AC-6).
+      {
+        id: STORY_CHAPTER_TEMPLATE,
+        title: 'Chapter in story',
+        schemaType: 'storyChapter',
+        parameters: [
+          { name: 'storyId', type: 'string' },
+          { name: 'number', type: 'number' }
+        ],
+        value: ({ storyId, number }: { storyId: string; number: number }) => ({
+          story: { _type: 'reference', _ref: storyId, _weak: true, _strengthenOnPublish: { type: 'writtenWork' } },
+          number
+        })
       }
     ]
   },
+  // A symbol-only line becomes a scene break on Enter, in a story's or a chapter's Text (story-reader-editor AC-5).
+  form: { components: { portableText: { plugins: SceneBreakPlugins } } },
   document: {
     // "Create new" offers only the five kinds of item; a chapter starts from its series' Add chapter (AC-11).
     newDocumentOptions: (prev, { creationContext }) =>
@@ -96,6 +117,13 @@ export default defineConfig({
       let actions = prev;
       if (context.schemaType === 'comicChapter') actions = actions.map((action) => (action.action === 'publish' ? withChapterChecks(action) : action));
       if (context.schemaType === 'comicSeries') actions = actions.map((action) => (action.action === 'delete' ? withChapters(action) : action));
+      // Stories and their chapters (story-reader-editor AC-9, AC-10).
+      if (context.schemaType === 'storyChapter') actions = actions.map((action) => (action.action === 'publish' ? withStoryChapterChecks(action) : action));
+      if (context.schemaType === 'writtenWork') {
+        actions = actions.map((action) =>
+          action.action === 'publish' ? withStoryLinkCheck(action) : action.action === 'delete' ? withStoryChapters(action) : action,
+        );
+      }
       if (CONTENT_TYPES.includes(context.schemaType)) actions = actions.map((action) => (action.action === 'publish' ? withPublishNote(action) : action));
       return actions;
     }

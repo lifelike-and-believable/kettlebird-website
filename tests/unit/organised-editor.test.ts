@@ -26,7 +26,7 @@ describe('content-editing-organised-editor#AC-1 AC-10 AC-11 AC-12 menu sections'
   });
   it('names each kind of item plainly', () => {
     expect(ITEM_NAMES).toEqual({
-      comicSeries: 'Series', comicChapter: 'Chapter', galleryItem: 'Piece', writtenWork: 'Story', product: 'Product', commissionType: 'Commission type',
+      comicSeries: 'Series', comicChapter: 'Chapter', storyChapter: 'Chapter', galleryItem: 'Piece', writtenWork: 'Story', product: 'Product', commissionType: 'Commission type',
     });
   });
   it('words the empty list for Star (AC-12)', () => {
@@ -92,13 +92,20 @@ const EXPECTED: Record<ItemType, [string, string, string][]> = {
     ['tags', 'Tags', "Words shown under the picture when it's opened, like a character's name. Type one, then press Enter."],
     ['date', 'Date', 'When you made it. The portfolio shows newest first; pieces without a date come last.'],
   ],
+  // story-reader-editor AC-1 supersedes these: tests/unit/story-editor.test.ts checks every story field.
   writtenWork: [
     ['title', 'Title (required)', "The story's title."],
-    ['externalLink', 'Link to read it', "Where the Writing page's Read it button goes, such as the story on AO3."],
-    ['excerpt', 'Short description', 'A sentence or two, shown on the Writing page.'],
-    ['coverImage', 'Cover', 'Shown beside the story on the Writing page, cropped to a tall rectangle.'],
-    ['genre', 'Genres', 'Shown as tags on the Writing page. Type one, then press Enter.'],
+    ['slug', 'Web address', "It's the last part of the story's link: kettlebird.com/writing/the-kettles-song. Filled in from the title. Changing it after people have shared links breaks them."],
+    ['excerpt', 'Short description', 'A sentence or two, shown on the Writing page and when the story is shared.'],
+    ['coverImage', 'Cover', 'Shown beside the story on the Writing page and at the top of its page.'],
+    ['genre', 'Genres', 'Shown as tags. Type one, then press Enter.'],
+    ['rating', 'Rating', 'Shown before the story and on the Writing page. Mature and Explicit stories ask readers before showing the text.'],
+    ['contentNotes', 'Content notes', 'Anything a reader should know before starting, such as "Mild violence". Shown before the story.'],
+    ['status', 'Status', 'For a story in chapters: In progress or Complete.'],
+    ['content', 'Text', 'For a one-shot: paste or type the whole story. For a story in chapters, add chapters instead.'],
+    ['chapters', 'Chapters', 'For a story in chapters. Each chapter has its own page.'],
     ['publishDate', 'Date posted', 'The Writing page shows newest first.'],
+    ['externalLink', 'Link to read it', "Optional: the story somewhere else, such as AO3. Without text on the site, the Writing page's Read it opens it; with text, it's shown as \"Also on AO3\"."],
   ],
   product: [
     ['name', 'Name (required)', "The product's name in the shop."],
@@ -133,7 +140,7 @@ describe('content-editing-organised-editor#AC-3 AC-5 field labels and help', () 
   }
   it('hides the fields the site doesn\'t use', () => {
     expect(HIDDEN).toEqual({
-      comicSeries: [], galleryItem: ['slug', 'featured'], writtenWork: ['slug', 'content'], product: ['slug', 'tags', 'inventory'], commissionType: [],
+      comicSeries: [], galleryItem: ['slug', 'featured'], writtenWork: [], product: ['slug', 'tags', 'inventory'], commissionType: [],
     });
   });
   it('refuses a field it has no text for', () => {
@@ -154,6 +161,12 @@ describe('content-editing-organised-editor#AC-5 AC-7 required messages', () => {
       const source = read(file);
       for (const [name, field] of Object.entries(FIELDS[type])) {
         if (!field.missing) continue;
+        // A story's web address and rating are needed only once it has text or chapters, with the
+        // story spec's messages (story-reader-editor AC-2).
+        if (type === 'writtenWork' && field.sometimes) {
+          expect(source, `${type}.${name}`).toMatch(name === 'slug' ? /WEB_ADDRESS_MESSAGE/ : /RATING_MESSAGE/);
+          continue;
+        }
         // The series' web address keeps the publishing spec's message (comic-publish-pages AC-10).
         if (type === 'comicSeries' && name === 'slug') expect(source).toContain('SERIES_SLUG_MESSAGE');
         else expect(source, `${type}.${name}`).toContain(`requiredMessage('${type}', '${name}')`);

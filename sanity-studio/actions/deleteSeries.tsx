@@ -1,4 +1,5 @@
-// A series' Delete: deletes its chapters with it, after saying how many (AC-16). Chapters point to
+// A series' or a story's Delete: deletes its chapters with it, after saying how many
+// (comic-publish-pages AC-16; story-reader-editor AC-10). Chapters point to
 // their series, so Sanity refuses to delete a series while it has any. The chapters go first, in one
 // transaction; then the series goes through Sanity's own delete operation, which the open document
 // pane listens for, so the series' Published and Draft tabs close as they do for any deletion. If
@@ -6,8 +7,15 @@
 import { useState } from 'react';
 import { useClient, useDocumentOperation, type DocumentActionComponent } from 'sanity';
 import { chapterDocsToDelete, deleteSeriesDialog, publishedIds, type PublishDialog } from '../lib/comic-pages';
+import { deleteStoryDialog } from '../lib/stories';
 
-export function withChapters(original: DocumentActionComponent): DocumentActionComponent {
+interface Kind { query: string; dialog: (title: string | undefined, count: number) => PublishDialog }
+const SERIES: Kind = { query: '*[_type == "comicChapter" && series._ref == $id]._id', dialog: deleteSeriesDialog };
+const STORY: Kind = { query: '*[_type == "storyChapter" && story._ref == $id]._id', dialog: deleteStoryDialog };
+
+export const withStoryChapters = (original: DocumentActionComponent) => withChapters(original, STORY);
+
+export function withChapters(original: DocumentActionComponent, kind: Kind = SERIES): DocumentActionComponent {
   const DeleteSeries: DocumentActionComponent = (props) => {
     const base = original(props);
     const client = useClient({ apiVersion: '2024-01-01' });
@@ -23,12 +31,8 @@ export function withChapters(original: DocumentActionComponent): DocumentActionC
       ...base,
       disabled: busy || base.disabled,
       onHandle: async () => {
-        const chapterIds = await client.fetch<string[]>(
-          '*[_type == "comicChapter" && series._ref == $id]._id',
-          { id },
-          { perspective: 'raw' },
-        );
-        setPending({ chapterIds, dialog: deleteSeriesDialog(title, publishedIds(chapterIds).length) });
+        const chapterIds = await client.fetch<string[]>(kind.query, { id }, { perspective: 'raw' });
+        setPending({ chapterIds, dialog: kind.dialog(title, publishedIds(chapterIds).length) });
       },
       dialog: pending
         ? {

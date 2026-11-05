@@ -4,8 +4,9 @@
 import type { DefaultDocumentNodeResolver, StructureBuilder, StructureResolver } from 'sanity/structure';
 import { PreviewPane } from './components/PreviewPane';
 import { isPreviewable } from './lib/preview';
-import { CHAPTER_TEMPLATE } from './components/ChaptersList';
+import { CHAPTER_TEMPLATE, STORY_CHAPTER_TEMPLATE } from './components/ChaptersList';
 import { chapterPaneTitle } from './lib/comic-pages';
+import { storyChapterPaneTitle } from './lib/stories';
 import { SECTIONS } from './lib/editor-content';
 import { SETTINGS_ITEMS } from './lib/site-settings';
 
@@ -16,6 +17,7 @@ const views = (S: StructureBuilder, type: string) =>
 export const defaultDocumentNode: DefaultDocumentNodeResolver = (S, { schemaType }) => S.document().views(views(S, schemaType));
 
 const TITLES = `{ "series": *[_id in [$series, "drafts." + $series]][0].title, "chapter": *[_id in [$chapter, "drafts." + $chapter]][0]{ number, title } }`;
+const STORY_TITLES = `{ "story": *[_id in [$story, "drafts." + $story]][0].title, "chapter": *[_id in [$chapter, "drafts." + $chapter]][0]{ number, title } }`;
 
 export const structure: StructureResolver = (S) =>
   S.list()
@@ -66,6 +68,28 @@ export const structure: StructureResolver = (S) =>
                     .title(chapterPaneTitle(titles.series, null));
                 }
                 return chapter.title(chapterPaneTitle(titles.series, titles.chapter ?? null));
+              }),
+          );
+        }
+        // A story opens the same way, with one of its chapters beside it (story-reader-editor AC-6).
+        if (section.type === 'writtenWork') {
+          list = list.child((storyId) =>
+            S.document()
+              .documentId(storyId)
+              .schemaType('writtenWork')
+              .views(views(S, 'writtenWork'))
+              .child(async (chapterId, { params, structureContext }) => {
+                const client = structureContext.getClient({ apiVersion: '2024-01-01' });
+                const titles = await client.fetch<{ story?: string; chapter?: { number: number; title?: string } | null }>(
+                  STORY_TITLES, { story: storyId, chapter: chapterId }, { perspective: 'raw' },
+                );
+                const chapter = S.document().documentId(chapterId).schemaType('storyChapter').views(views(S, 'storyChapter'));
+                if (params.template === STORY_CHAPTER_TEMPLATE) {
+                  return chapter
+                    .initialValueTemplate(STORY_CHAPTER_TEMPLATE, { storyId, number: Number(params.number) || 1 })
+                    .title(storyChapterPaneTitle(titles.story, null));
+                }
+                return chapter.title(storyChapterPaneTitle(titles.story, titles.chapter ?? null));
               }),
           );
         }
