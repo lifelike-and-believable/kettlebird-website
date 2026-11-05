@@ -388,4 +388,95 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
     border: 2px solid var(--color-ink, #2b2b2b);
     background: var(--color-yellow, #f4ce6a);
   }
+
+  /* ── Full screen (docs/design/portfolio-full-screen.md) ─────────────────── */
+  :global(.lightbox__pic) { position: relative; background: var(--color-ink, #2b2b2b); }
+  :global(.lightbox__pic .lightbox__img) { cursor: zoom-in; }
+  :global(.lightbox__full) {
+    position: absolute;
+    right: 0.75rem;
+    bottom: 0.75rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0.35rem 0.75rem;
+    background: var(--color-beige, #f5f1e8);
+    color: var(--color-ink, #2b2b2b);
+    border: 2px solid var(--color-ink, #2b2b2b);
+    font: 700 0.95rem 'Nunito', sans-serif;
+    cursor: pointer;
+  }
+  :global(.lightbox__full:focus-visible) { outline: 3px solid var(--color-beige, #f5f1e8); outline-offset: 3px; box-shadow: 0 0 0 6px #4a4063; }
+  @media (max-width: 699px) {
+    :global(.lightbox__full) { padding: 0; width: 44px; }
+    :global(.lightbox__full-label) { display: none; }
+  }
+
+  :global(.fs) {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    height: 100dvh;
+    background: #161616;
+    color: #f5f1e8;
+    overflow: hidden;
+    touch-action: none;
+    user-select: none;
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  }
+  :global(.fs:focus) { outline: none; }
+  :global(.fs__stage) { position: absolute; overflow: hidden; cursor: grab; }
+  :global(.fs__stage.is-full) { inset: 0; }
+  :global(.fs__img) { position: absolute; max-width: none; object-fit: contain; transform-origin: center; }
+  :global(.fs__img--ease) { transition: transform 0.2s ease-out; }
+  :global(.fs__failed) { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; margin: 0; font: 600 1.1rem 'Nunito', sans-serif; }
+  :global(.fs__loading) {
+    position: absolute; left: 50%; top: 50%; width: 32px; height: 32px; margin: -16px;
+    border: 3px solid #f5f1e855; border-top-color: #f5f1e8; border-radius: 50%;
+    animation: fs-spin 0.9s linear infinite;
+  }
+  @keyframes fs-spin { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { :global(.fs__loading) { animation: none; } }
+
+  :global(.fs__controls) { transition: opacity 0.2s; }
+  :global(.fs__controls[data-hidden='true']) { opacity: 0; pointer-events: none; }
+  :global(.fs__top) {
+    position: absolute; top: 0; left: 0; right: 0; height: 60px; z-index: 2;
+    display: flex; align-items: center; gap: 1rem; padding: 0.5rem 0.5rem 0.5rem 1rem;
+    background: #161616; border-bottom: 1px solid #f5f1e833;
+  }
+  :global(.fs__title) { flex: 1; min-width: 0; font: 700 1.05rem 'Nunito', sans-serif; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  :global(.fs__count) { font: 500 0.9rem 'DM Mono', monospace; white-space: nowrap; }
+  :global(.fs__btn) {
+    min-width: 44px; min-height: 44px; display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+    background: #161616; color: #f5f1e8; border: 2px solid #f5f1e8; font: 700 1.1rem 'Nunito', sans-serif; cursor: pointer;
+  }
+  :global(.fs__btn:focus-visible) { outline: 3px solid #f4ce6a; outline-offset: 2px; }
+  :global(.fs__btn.is-off) { border-style: dashed; border-color: #f5f1e877; color: #f5f1e877; cursor: default; }
+  :global(.fs__close) { flex-direction: row; padding: 0 0.75rem; background: #f5f1e8; color: #2b2b2b; font-size: 0.95rem; }
+  :global(.fs__side) { position: absolute; z-index: 2; width: 56px; height: 72px; }
+  :global(.fs__cap) { font: 600 0.7rem 'Nunito', sans-serif; }
+  :global(.fs--wide .fs__side), :global(.fs__side) { top: 50%; transform: translateY(-50%); }
+  :global(.fs__side--prev) { left: 0.5rem; }
+  :global(.fs__side--next) { right: 0.5rem; }
+  :global(.fs__bottom) { position: absolute; left: 0; right: 0; bottom: 0; height: 76px; z-index: 1; background: #161616; border-top: 1px solid #f5f1e833; }
+  :global(.fs__zoom) {
+    position: absolute; z-index: 2; bottom: 0.75rem; left: 50%; transform: translateX(-50%);
+    display: flex; align-items: center; gap: 0.25rem; padding: 0.25rem; background: #161616; border: 2px solid #f5f1e8;
+  }
+  :global(.fs__zoom .fs__btn) { border-color: transparent; }
+  :global(.fs__zoom .fs__btn.is-off) { border-color: #f5f1e877; }
+  :global(.fs__level) { font: 500 0.85rem 'DM Mono', monospace; min-width: 4.5em; text-align: center; }
+  :global(.fs__fit) { font-size: 0.85rem; }
+  :global(.fs__map) { position: absolute; z-index: 2; right: 0.75rem; bottom: 0.75rem; width: 120px; border: 2px solid #f5f1e8; background: #000; }
+  :global(.fs__map img) { display: block; width: 100%; opacity: 0.55; }
+  :global(.fs__map i) { position: absolute; border: 2px solid #f4ce6a; }
+  /* A phone held upright: Previous and Next in the bottom bar. */
+  @media (max-width: 699px) and (orientation: portrait) {
+    :global(.fs__side) { top: auto; bottom: 5px; transform: none; height: 66px; }
+    :global(.fs__zoom) { bottom: 0.5rem; }
+  }
 </style>

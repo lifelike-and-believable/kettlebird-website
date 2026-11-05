@@ -2,6 +2,8 @@ import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import type { GalleryItem } from '../lib/queries';
 import { urlFor } from '../lib/sanity';
 import { textLines } from '../lib/text';
+import { openedSection, turnOrder } from '../lib/portfolio/full-screen';
+import FullScreenView from './FullScreenView';
 
 const CATEGORY_LABELS: Record<string, string> = {
   featured: 'Featured',
@@ -136,6 +138,42 @@ export default function GalleryGrid({ items, focusId, openId, preview = false }:
 
   const lightboxSrc = lightboxItem ? fullUrl(lightboxItem) : null;
 
+  // Full screen (docs/specs/portfolio-full-screen.md): opened from the dialog, turning through the
+  // section the piece was opened from, and closing back to the dialog of the piece last shown.
+  const [openedFrom, setOpenedFrom] = useState<string | undefined>(undefined);
+  const [fullScreen, setFullScreen] = useState<{ section?: string } | null>(null);
+  const fullScreenOpen = useRef(false);
+  fullScreenOpen.current = fullScreen !== null;
+  const fullScreenButtonRef = useRef<HTMLButtonElement>(null);
+  const returning = useRef(false);
+  const openFullScreen = () => {
+    if (!lightboxItem || !lightboxSrc) return;
+    setFullScreen({ section: openedSection(lightboxItem, openedFrom) });
+  };
+  const fullScreenOrder = fullScreen?.section ? turnOrder(items, fullScreen.section) : [];
+  const closeFullScreen = (last: DisplayItem) => {
+    const section = fullScreen?.section;
+    setFullScreen(null);
+    setLightboxItem(last);
+    returning.current = true;
+    // The gallery's card for the piece last shown gets focus back when the dialog closes.
+    const card = section
+      ? Array.from(document.querySelectorAll<HTMLElement>('section[data-cat] [data-piece]')).find(
+          (el) => el.dataset.piece === last._id && el.closest('section')?.getAttribute('data-cat') === section,
+        )
+      : undefined;
+    if (card) {
+      openerRef.current = card;
+      card.scrollIntoView?.({ block: 'nearest', inline: 'nearest' });
+    }
+  };
+  useEffect(() => {
+    if (fullScreen === null && returning.current) {
+      returning.current = false;
+      fullScreenButtonRef.current?.focus();
+    }
+  }, [fullScreen, lightboxItem]);
+
   // The lightbox is a modal dialog: focus moves into it, stays inside it, Escape closes it, and
   // focus returns to the piece that opened it.
   const dialogRef = useRef<HTMLDivElement>(null);
@@ -143,8 +181,9 @@ export default function GalleryGrid({ items, focusId, openId, preview = false }:
   const openerRef = useRef<HTMLElement | null>(null);
   const isOpen = lightboxItem !== null;
 
-  const openLightbox = (item: DisplayItem) => {
+  const openLightbox = (item: DisplayItem, section?: string) => {
     openerRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    setOpenedFrom(section);
     setLightboxItem(item);
   };
   const closeLightbox = () => setLightboxItem(null);
@@ -153,6 +192,8 @@ export default function GalleryGrid({ items, focusId, openId, preview = false }:
     if (!isOpen) return;
     if (!preview) closeRef.current?.focus();
     const onKeyDown = (event: KeyboardEvent) => {
+      // While full screen is open, it handles the keys (one Escape closes only full screen).
+      if (fullScreenOpen.current) return;
       if (event.key === 'Escape') {
         event.preventDefault();
         closeLightbox();
@@ -237,7 +278,7 @@ export default function GalleryGrid({ items, focusId, openId, preview = false }:
                   {folderItems.length === 0 ? (
                     <p className="gallery-empty">Nothing here yet — check back soon!</p>
                   ) : (
-                    <FolderCarousel items={folderItems} onItemClick={openLightbox} focusId={focusId} />
+                    <FolderCarousel items={folderItems} onItemClick={(item) => openLightbox(item, cat)} focusId={focusId} />
                   )}
                 </div>
               </section>
@@ -254,7 +295,7 @@ export default function GalleryGrid({ items, focusId, openId, preview = false }:
           role="dialog"
           aria-modal="true"
           aria-label={lightboxItem.title}
-          onClick={closeLightbox}
+          onClick={() => !fullScreenOpen.current && closeLightbox()}
         >
           <div className="lightbox__inner" onClick={(e) => e.stopPropagation()}>
             <button
@@ -266,11 +307,20 @@ export default function GalleryGrid({ items, focusId, openId, preview = false }:
               ✕
             </button>
             {lightboxSrc && (
-              <img
-                src={lightboxSrc}
-                alt={lightboxItem.altText ?? lightboxItem.title}
-                className="lightbox__img"
-              />
+              <div className="lightbox__pic">
+                <img
+                  src={lightboxSrc}
+                  alt={lightboxItem.altText ?? lightboxItem.title}
+                  className="lightbox__img"
+                  onClick={openFullScreen}
+                />
+                <button ref={fullScreenButtonRef} type="button" className="lightbox__full" aria-label="Full screen" onClick={openFullScreen}>
+                  <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" />
+                  </svg>
+                  <span className="lightbox__full-label">Full screen</span>
+                </button>
+              </div>
             )}
             <div className="lightbox__info">
               <h2 className="lightbox__title">{lightboxItem.title}</h2>
@@ -293,6 +343,16 @@ export default function GalleryGrid({ items, focusId, openId, preview = false }:
             </div>
           </div>
         </div>
+      )}
+
+      {fullScreen && lightboxItem && fullScreenOrder.length > 0 && (
+        <FullScreenView
+          order={fullScreenOrder}
+          start={Math.max(0, fullScreenOrder.findIndex((p) => p._id === lightboxItem._id))}
+          sectionTitle={fullScreen.section ? CATEGORY_LABELS[fullScreen.section] ?? fullScreen.section : undefined}
+          dialogSrc={(p) => fullUrl(p)}
+          onClose={closeFullScreen}
+        />
       )}
     </div>
   );
