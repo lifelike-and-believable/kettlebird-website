@@ -20,6 +20,10 @@ jobs:
     with:
       # Stryker on the unit-tested logic (stryker.config.mjs).
       mutation: true
+      # astro check on every pull request, so a type error in a test shows before review (rfr-process 0.10.2).
+      typecheck: npm run check
+      # The editor's own packages, for tests that load its code (mutation and typecheck jobs).
+      install-dirs: sanity-studio
     permissions:
       contents: read
       pull-requests: read
