@@ -24,6 +24,10 @@ derived-from:
   - design-comic-spread-and-flip#accessibility: a08b94a31151
   - story-comic-reader-flip-and-panels-page-flip: 81730e39874b
   - story-comic-reader-flip-and-panels-two-page-spread: 3bd1fa1fe9f5
+  - design-comic-panels#flow-a-fan: c81bc4915a90
+  - design-comic-panels#the-panel-view-reader: f40b7f9e2817
+  - design-comic-panels#accessibility: 939d94d8c7e4
+  - story-comic-reader-flip-and-panels-read-panel-by-panel: 0cd610fa0545
 ---
 
 # Reading comics
@@ -79,6 +83,23 @@ On a laptop, or a tablet held sideways, some comics show two pages side by side,
 - Every page keeps its own address, so links work on any screen. On those comics, a link to page 3 opens pages 2 and 3 on a laptop, and page 3 on a phone.
 - On comics where Star has turned it on, turning shows the page turning over, in under half a second, in most up-to-date browsers. If your device is set to reduce motion, or a page isn't ready yet, the page changes straight away instead.
 - With a screen reader, you hear both pages, for example "Chapter 2: The Long Road, pages 2 and 3 of 12.", then what each page shows, left before right. A spread is announced as, for example, "Page 5 of 12, two-page spread.", then what it shows. The buttons' full names say "Next pages" when they lead to two pages, and "Next page" otherwise.
+
+## Read panel by panel
+
+When the reader shows one page at a time, as it does on a phone, you can read a page panel by panel, each panel enlarged to fit your screen, so small lettering is easy to read without pinching.
+
+1. Choose **Panel by panel** in the bar at the top, beside **All pages**. It's there in chapters whose pages have panels. When it's on, the button is dark.
+2. The page zooms into its first panel. The bar says where you are, for example "Page 4 of 12 · panel 1 of 5".
+3. **Next**, swiping left or the right arrow key moves to the next panel. After a page's last panel, the next page opens at its first panel. **Previous**, swiping right or the left arrow key goes back, and from a page's first panel to the last panel of the page before.
+4. A page without panels, like a full-page picture, shows whole, and the bar says "· whole page". One turn moves past it.
+5. To go back to whole pages, choose **Panel by panel** again. You stay on the same page.
+
+- Moving from panel to panel slides and zooms, in under half a second; if your device is set to reduce motion, the view changes straight away.
+- **First**, **Newest**, **All pages** and links open a page at its first panel.
+- Held sideways, a wide panel fills more of the screen, and the buttons are a short scroll below it; swipes and arrow keys still work.
+- Your choice is remembered in that browser.
+- Panel by panel isn't offered when the reader shows two pages side by side; it's there again whenever you're on one page at a time.
+- With a screen reader, you hear each page's description as it opens, then which panel you're on, for example "Panel 3 of 5." at each step. Switching it on says "Panel by panel." and the panel; switching it off says "Whole page".
 
 ## See all the pages in a chapter
 
