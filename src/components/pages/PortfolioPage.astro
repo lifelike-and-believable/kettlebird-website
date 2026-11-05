@@ -430,7 +430,7 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
   :global(.fs:focus) { outline: none; }
   :global(.fs__stage) { position: absolute; overflow: hidden; cursor: grab; }
   :global(.fs__stage.is-full) { inset: 0; }
-  :global(.fs__img) { position: absolute; max-width: none; transform-origin: center; }
+  :global(.fs__img) { position: absolute; max-width: none; object-fit: contain; transform-origin: center; }
   :global(.fs__img--ease) { transition: transform 0.2s ease-out; }
   :global(.fs__failed) { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; margin: 0; font: 600 1.1rem 'Nunito', sans-serif; }
   :global(.fs__loading) {
