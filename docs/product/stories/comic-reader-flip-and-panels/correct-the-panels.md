@@ -3,7 +3,7 @@ id: story-comic-reader-flip-and-panels-correct-the-panels
 status: approved
 derived-from:
   - epic-comic-reader-flip-and-panels#outcome: c1426bb16011
-  - epic-comic-reader-flip-and-panels#decisions-from-the-lead: 23c96219e6c7
+  - epic-comic-reader-flip-and-panels#decisions-from-the-lead: 6c4beced64ec
   - requirements-content-editing#REQ-content-editing-1: dedad51c8978
   - persona-artist#skills-and-tools: 4e28d5374320
 ---
