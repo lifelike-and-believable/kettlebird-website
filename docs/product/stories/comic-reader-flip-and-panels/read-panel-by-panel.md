@@ -1,6 +1,6 @@
 ---
 id: story-comic-reader-flip-and-panels-read-panel-by-panel
-status: draft
+status: approved
 derived-from:
   - epic-comic-reader-flip-and-panels#outcome: c1426bb16011
   - requirements-comics#REQ-comics-2: d738742f9302
