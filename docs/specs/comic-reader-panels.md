@@ -4,6 +4,7 @@ tests-commit: a20fcf5ce30fd48961ab263d0ad924b0861416ca
 unlocks:
   - tests/e2e/comic-panels-edges.spec.ts (new): a screenshot of the build showed that on a comic's newest page, Next (unusable for pages) couldn't step through the page's remaining panels. Added; the criteria are unchanged.
   - tests/unit/comic-panels-edges.test.ts (new): mutation testing showed nothing checked finding panels on an unreadable or blank picture, a dark background, a gutter just too thin or too marked, exactly 12 panels, the 3% and 70% limits, the editor's steps with nothing selected or at the ends of the order, picking outside the order, undoing a confirm, a panel with no width, or a tall panel's frame. Added; the criteria are unchanged.
+  - tests/e2e/comic-panels.spec.ts: "the button" checked that **Panel by panel** wasn't shown with two pages side by side; design-comic-panels-two-up (2026-11-06) offers it there, so it now checks that it is. AC-11 was amended to match.
   - tests/e2e/comic-panels.spec.ts: the AC-12 check measured the picture straight after **Panel by panel** was pressed, while the view's 0.3 s zoom (AC-14) could still be on its first frame, so it failed about one run in fifteen. It now waits for the picture to grow. The criteria are unchanged.
 ---
 
@@ -59,7 +60,7 @@ Source: S3.n, S4.n and S5.n are the stories' nth criteria; design and docs secti
 
 | # | Criterion | Verified by | Source |
 |---|---|---|---|
-| AC-11 | When the reader shows one page at a time (a narrow screen, or any screen in a comic with two pages side by side off), the reader bar has **Panel by panel** (a toggle button, `aria-pressed`), beside **All pages**, on every page of a chapter where at least one page has panels. It isn't shown with two pages side by side, or without a script. The choice is remembered in that browser (`localStorage` `kb-panels`). | test: e2e "the button", "remembered" | S3.1; design-comic-panels#flow-a-fan, #states-and-errors |
+| AC-11 | The reader bar has **Panel by panel** (a toggle button, `aria-pressed`), beside **All pages**, on every page of a chapter where at least one page has panels, with one page or two showing; with two pages side by side, turning it on shows one page at a time (amended by comic-reader-panels-two-up). It isn't shown without a script. The choice is remembered in that browser (`localStorage` `kb-panels`). | test: e2e "the button", "remembered" | S3.1; design-comic-panels#flow-a-fan, #states-and-errors; design-comic-panels-two-up#the-change |
 | AC-12 | Panel by panel on, the page area shows the current panel scaled to fit, centred, with a margin of 4% of the page's width in the page area's colour; nothing else of the page shows. The bar reads "… · Page 4 of 12 · panel 2 of 5", or "· whole page" on a page without panels, and keeps two lines on a phone, so the page area and controls don't move. | test: unit "panel frame"; e2e "the panel view" | S3.2; design-comic-panels#the-panel-view-reader, #layout |
 | AC-13 | **Next**, swipes and the arrow keys step to the next panel; after a page's last panel, to the next page at its first panel; **Previous** back, and from a page's first panel to the page before at its last panel. A page without panels is one step. **First**, **Newest**, **All pages** and links open a page at its first panel. The controls' full names say "Next panel" and "Previous panel" when the step is within the page, "Next page" and "Previous page" otherwise. Each step replaces the history entry, with the panel in it, so a refresh keeps the panel and Back leaves the page. While pinch-zoomed, swipes and keys don't step. | test: unit "panel steps"; e2e "stepping", "across pages" | S3.2–S3.5; design-comic-panels#flow-a-fan, #page-addresses |
 | AC-14 | Moving between panels pans and zooms in about 0.3 s, never more than 0.4 s; under reduced motion, at once. A page turn from a last panel plays the page-flip only when the comic has it on. | test: e2e "motion" | S3.6; design-comic-panels#the-panel-view-reader |
@@ -75,7 +76,7 @@ Source: S3.n, S4.n and S5.n are the stories' nth criteria; design and docs secti
   - `src/components/pages/ReaderPage.astro`: **Panel by panel**, the panel view and its script.
   - `tests/fixtures/comics.ts`, `tests/fixtures/drafts.ts`: pages with panels, a page without, in a comic with pairs off.
   - Tests: `tests/unit/comic-panels.test.ts`, `tests/unit/panel-finding.test.ts`, `tests/e2e/comic-panels.spec.ts`; `docs/tutorials/publishing-comics.md` steps for checking panels (manual).
-- Out: finding panels in pages' text balloons; panels for two pages side by side.
+- Out: finding panels in pages' text balloons. (Panels with two pages side by side: comic-reader-panels-two-up.)
 
 ## APIs and assumptions
 
