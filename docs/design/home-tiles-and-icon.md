@@ -1,6 +1,6 @@
 ---
 id: design-home-tiles-and-icon
-status: draft
+status: approved
 derived-from:
   - persona-fan#goals: 2b047e4cae5d
   - persona-fan#skills-and-tools: 6df01b6c2a65
@@ -34,7 +34,7 @@ public/assets/images/kblogo.png by make-logo.py; the today-*.png images are scre
 
 **Home tiles** (mock-ups 1 and 2):
 
-- **No shaded box behind the labels.** The labels sit straight on the photo or colour. Their font, size, case and place don't change. Their colour is the first question at review: without the box, white fails contrast on photos as well as on flat colours (Accessibility), and the proposal is white with a 3px ink outline, like comic lettering (mock-up 3).
+- **No shaded box behind the labels.** The labels sit straight on the photo or colour. Their font, size, case and place don't change. They stay white with their soft dark shadow, which carries the contrast for now (the lead, 2026-11-06). Without the box, white falls short on the light photos and the flat colours (Accessibility); the lead will look at the alternatives in mock-up 3 with Star, and any change to the labels' colour is a later amendment.
 - **The logo tile in the logo's own orange,** `color-logo` (#ffbb58), with the mark lifted off its square (`kettlebird-mark.png`, transparent) so it sits directly on the tile. The mark is about the size it is today.
 - **The mark inside the border,** set 12% of the tile's width in from each side and scaled to fit, so the bird and the letters never touch the outline.
 - **The tile stays square** (`aspect-ratio: 1`), as the picture made it, so the grid's rows keep their heights at every width; on a phone it stays first.
@@ -51,7 +51,7 @@ public/assets/images/kblogo.png by make-logo.py; the today-*.png images are scre
 - **The full mark from 64 px up, the bird alone at 48 and under.** At small sizes K and B shrink to a pixel or two and blur the bird; the bird's shape and eye still read at 16 px (mock-up 5).
 - **The mark fills 84% of the large icons and 88% of the small ones,** so it reads as large as it can with a pixel or more of orange around it. iPhones round the corners of home-screen icons themselves, and Android cuts the maskable icon to its own shape; the files stay square.
 - **The web manifest** names the site "Kettlebird Creations" (short name "Kettlebird"), starts at `/`, opens in the browser (`display: browser`), and lists the 192, 512 and maskable 512 icons, with `background_color` #ffbb58.
-- **No `theme-color`** for now: it would tint the browser's toolbar orange on Android and Safari, a bigger change to the look than an icon; the third question at review.
+- **No `theme-color`:** the browser keeps its own toolbar colour (the lead, 2026-11-06).
 - **Link previews** are not changed. Comic and story pages fall back to `kblogo.png`, which already follows the rule; the home page and the other top pages set no preview picture, which is a separate change.
 
 ## Where it applies
@@ -73,7 +73,7 @@ Built from the home page's own styles, with its fonts, colours, pictures and gut
 |---|---|---|
 | 1 | After, on a laptop (1280 × 900): labels without the box; the logo tile in the logo's orange, the mark inside the border. Today: `today-laptop.png` | `mockups/home-tiles-and-icon/1-laptop.png` |
 | 2 | After, on a phone (390 × 844). Today: `today-phone.png` | `mockups/home-tiles-and-icon/2-phone.png` |
-| 3 | The labels without the box on photo and flat tiles: white as asked, white with a 3px ink outline (proposed), and ink | `mockups/home-tiles-and-icon/3-flat-tile-labels.png` |
+| 3 | The labels without the box on photo and flat tiles: white as asked, white with a 3px ink outline, and ink (alternatives for the lead and Star) | `mockups/home-tiles-and-icon/3-flat-tile-labels.png` |
 | 4 | Today and after: a browser's tab and address bar, and phones' home screens (iPhone and Android) | `mockups/home-tiles-and-icon/4-browser-and-home-screen.png` |
 | 5 | The icon at each size, the pixels of the 16 and 32, and the maskable icon cut to a circle | `mockups/home-tiles-and-icon/5-icon-sizes.png` |
 
@@ -82,8 +82,8 @@ Built from the home page's own styles, with its fonts, colours, pictures and gut
 - The logo tile keeps its text alternative, "Kettlebird Logo". The icons are decoration for the browser and have none.
 - The mark's purple on `color-logo` is 5.4:1.
 - **Labels without the box.** White on the photos, measured from the pictures behind the words, is 1.5:1 on Comics and 2.2:1 on Commissions (2.2 and 3.3 with the box); the soft shadow doesn't carry them. On the flat tiles it is 2.3:1 on Shop (`color-orange`), 1.6:1 on About (`color-green`) and 1.5:1 on News (`color-yellow`); with the box, 3.5, 2.6 and 2.4:1, so only Shop passes today. Contact me (#cc5544 to #d94f3d) is 4.1:1 and passes either way. Large text needs 3:1.
-- **The proposal, white with a 3px ink outline,** keeps the labels white and puts `color-ink` (15:1 against white) between every letter and whatever is behind it, on photos and colours alike. Ink labels (6.2, 8.7 and 9.4:1 on the flat tiles) would fail on the dark photos instead.
-- The 16 px icon is small: the bird reads as a purple teardrop with its eye; Star should see it at actual size in a real tab before deciding (mock-up 5, and the second question).
+- **Kept for now,** at the lead's decision: the labels stay white with their shadow. The alternatives are in mock-up 3: white with a 3px ink outline (`color-ink`, 15:1 against white, between every letter and whatever is behind it), and ink labels (6.2, 8.7 and 9.4:1 on the flat tiles, but failing on the dark photos). The lead will choose with Star.
+- The 16 px icon is small: the bird reads as a purple teardrop with its eye; the lead chose it at review (mock-up 5).
 - Under reduced motion the tiles no longer lift on hover.
 
 ## Other documents
@@ -94,7 +94,7 @@ Built from the home page's own styles, with its fonts, colours, pictures and gut
 
 ## For the spec to check
 
-- On the home page, no tile label has a background of its own; the labels keep their font, size and place, and take the colour chosen at review.
+- On the home page, no tile label has a background of its own; the labels keep their font, size, place, white colour and text shadow.
 - The logo tile's background is #ffbb58; its picture is the transparent mark, set 12% of the tile's width in from each side, and keeps its text alternative "Kettlebird Logo".
 - The logo tile is square, and at 1280 × 800 the grid's row heights, and every tile's size, position and order, are the same as before; at 390 × 844 the logo tile is first and square.
 - Under reduced motion, a tile doesn't move on hover.
@@ -105,16 +105,16 @@ Built from the home page's own styles, with its fonts, colours, pictures and gut
 
 ## Decisions at review
 
-Questions for the lead:
-1. **The labels without the box:** white with a 3px ink outline (proposed; passes on every tile), plain white (as asked; fails on the light photos and the flat tiles), or ink (mock-up 3)?
-2. **The icon's small sizes:** the bird alone at 48 and under (proposed), or the full mark at every size? Worth Star seeing the 16 px in a real tab first.
-3. **`theme-color`:** leave the browser's own toolbar colour (proposed), or tint it #ffbb58 on Android and Safari?
+The lead's review (2026-11-06):
+- **The labels:** the shaded box goes; the labels stay white with their shadow for now. The lead will discuss the alternatives in mock-up 3 (an ink outline, or ink) with Star; any change is a later amendment.
+- **The icon's small sizes:** the bird alone at 48 px and under, the full mark above.
+- **`theme-color`:** none; the browser keeps its own toolbar colour.
 
 ## Persona walkthrough
 
 A walkthrough for persona-fan, and for persona-artist on the look (2026-11-06), opened every mock-up and logo file and checked the design against the code. It found two blocking problems, six misleading ones and six slower ones. All are addressed above:
 - **Blocking:**
-  - without the box, white labels fail on the light photos as well as the flat tiles (now measured, and the ink outline proposed);
+  - without the box, white labels fail on the light photos as well as the flat tiles (now measured, with alternatives in mock-up 3);
   - Android cuts home-screen icons to a circle and needs a maskable icon (added, with the manifest's contents).
 - **Misleading:**
   - today's logo tile was described wrongly (the picture covers the tile; the mark is about a quarter in);
@@ -129,4 +129,4 @@ A walkthrough for persona-fan, and for persona-artist on the look (2026-11-06), 
   - the style guide's logo card lines (updated);
   - checks the spec couldn't test (the tile's squareness and the grid's rows now named);
   - the tiles' hover under reduced motion (now in scope);
-  - `theme-color` (now a question).
+  - `theme-color` (decided at review: none).
