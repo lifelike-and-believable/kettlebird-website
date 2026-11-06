@@ -112,6 +112,42 @@ test('comic-reader-panels#AC-14 motion', async ({ page }) => {
   expect(await duration()).toBe(0);
 });
 
+test('comic-reader-panels#AC-14 arriving on a page', async ({ page }) => {
+  // Only moving between panels pans and zooms: a page opens on its panel already in place (the lead,
+  // 2026-11-06). Every transform transition that starts is recorded, from the first frame.
+  await page.setViewportSize(PHONE);
+  await page.addInitScript(() => {
+    localStorage.setItem('kb-panels', '1');
+    const runs: string[] = [];
+    (window as unknown as { kbRuns: string[] }).kbRuns = runs;
+    document.addEventListener(
+      'transitionrun',
+      (e) => {
+        const el = e.target as Element;
+        if (el.closest('.reader__page.is-current')) runs.push(`${el.className || el.tagName}:${e.propertyName}`);
+      },
+      true,
+    );
+  });
+  const runs = () => page.evaluate(() => (window as unknown as { kbRuns: string[] }).kbRuns);
+  // Opening on a page's first panel.
+  await page.goto('/comics/single-sheets/1/4');
+  await expect(heading(page)).toHaveText('Page 4 of 4 · panel 1 of 3');
+  await page.waitForTimeout(600);
+  expect(await runs()).toEqual([]);
+  // Stepping to the next panel still moves.
+  await nav(page).getByRole('link', { name: 'Next panel' }).click();
+  await expect(heading(page)).toHaveText('Page 4 of 4 · panel 2 of 3');
+  await expect.poll(async () => (await runs()).length).toBeGreaterThan(0);
+  // Turning back onto a page's last panel.
+  await page.goto('/comics/single-sheets/1/2');
+  await nav(page).getByRole('link', { name: 'Previous page', exact: true }).click();
+  await expect(page).toHaveURL(/\/single-sheets\/1\/1$/);
+  await expect(heading(page)).toHaveText('Page 1 of 4 · panel 2 of 2');
+  await page.waitForTimeout(600);
+  expect(await runs()).toEqual([]);
+});
+
 test('comic-reader-panels#AC-15 announcements', async ({ page }) => {
   await page.setViewportSize(PHONE);
   await page.goto('/comics/single-sheets/1/1');
