@@ -19,22 +19,22 @@
   /* Header, simplified from BaseLayout */
   .head { position: relative; z-index: 2; padding: 2rem 1rem calc(22px + 3.1vw); }
   .head::before { content: ''; position: absolute; inset: 0 0 -28px 0; z-index: -1; background: url('../../../../public/assets/images/Paper_1_Torn.png') no-repeat center bottom / auto max(384px, 100%); }
-  .laptop .head { display: grid; grid-template-columns: auto 1fr; grid-template-areas: 'title title' 'sub nav'; align-items: center; column-gap: 1rem; padding-bottom: 62px; }
+  .laptop .head { display: grid; grid-template-columns: auto 1fr; grid-template-areas: 'title title' 'sub nav'; align-items: center; column-gap: 1rem; height: 244px; padding-bottom: 0; align-content: start; }
   .title { grid-area: title; margin: 0 0 .25rem; font: 700 88px/1.1 'Nunito'; letter-spacing: .02em; }
   .sub { grid-area: sub; margin: 0; font: 600 40px/1.25 'Nunito'; }
   .nav { grid-area: nav; justify-self: end; display: flex; gap: .5rem; }
   .nav span { font: 700 1rem 'Nunito'; padding: .5rem 1.25rem; background: url('../../../../public/assets/images/Highlighter_Y.png') center / 100% 100% no-repeat; }
-  .phone .head { display: flex; justify-content: space-between; align-items: center; padding: .875rem 1rem 36px; }
+  .phone .head { display: flex; justify-content: space-between; align-items: flex-start; padding: .875rem 1rem 0; height: 117px; }
   .phone .title { font-size: 40px; margin: 0; }
   .phone .sub { font-size: 17px; }
   .menu { width: 44px; height: 44px; border: 2px solid var(--color-ink); display: grid; place-items: center; }
   .menu i { width: 24px; height: 2px; background: var(--color-ink); box-shadow: 0 -8px 0 var(--color-ink), 0 8px 0 var(--color-ink); }
   /* The home grid, from HomePage.astro, with the change */
-  .homepage { max-width: 1600px; margin: 0 auto; padding: 0 1rem 2rem; }
+  .homepage { max-width: 1600px; margin: 0 auto; padding: 0 2rem 2rem; } /* the page's 16px plus the home page's 16px, as on the site */
   .grid-container { display: grid; grid-template-columns: repeat(6, 1fr); grid-template-rows: repeat(7, minmax(75px, auto)); gap: 1rem; margin-top: -24px; }
   .grid-tile { border: 3px solid var(--color-ink); overflow: hidden; position: relative; min-height: 75px; display: flex; align-items: center; justify-content: center; }
   .grid-tile-portfolio { grid-column: span 2; grid-row: span 2; background: #8b7355 url('../../../../public/assets/images/bkgd-artwork.jpg') center / cover; }
-  .grid-tile-logo { grid-column: span 2; grid-row: span 4; background: var(--color-logo); padding: 12%; }
+  .grid-tile-logo { grid-column: span 2; grid-row: span 4; background: var(--color-logo); aspect-ratio: 1; }
   .grid-tile-merch { grid-column: span 2; grid-row: span 2; background: var(--color-orange); }
   .grid-tile-comics { grid-column: span 2; grid-row: span 3; background: #c8c8c8 url('../../../../public/assets/images/bkgd-Comics.jpg') center / cover; }
   .grid-tile-commissions { grid-column: span 2; grid-row: span 2; background: #a8a8a8 url('../../../../public/assets/images/bkgd-commissions.jpeg') center / cover; }
@@ -48,18 +48,19 @@
   .tile-content { text-align: center; padding: 1rem; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
   .tile-title { font: 700 clamp(1.5rem, 3vw, 2.5rem) 'Nunito'; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); }
   .tile-title.ink { color: var(--color-ink); text-shadow: none; }
-  .tile-image { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .tile-image { position: absolute; inset: 12%; width: 76%; height: 76%; object-fit: contain; }
+  .tile-title.outline { -webkit-text-stroke: 6px var(--color-ink); paint-order: stroke fill; text-shadow: none; }
   .phone .grid-container { grid-template-columns: repeat(2, 1fr); }
   .phone .grid-tile { grid-column: span 2; grid-row: auto; }
   .phone .grid-tile-about, .phone .grid-tile-news { grid-column: span 1; }
-  .phone .grid-tile-logo { order: -1; aspect-ratio: 1; }
+  .phone .grid-tile-logo { order: -1; }
   .phone .grid-tile-portfolio { order: 0; } .phone .grid-tile-comics { order: 1; } .phone .grid-tile-writing { order: 2; } .phone .grid-tile-commissions { order: 3; }
   .phone .grid-tile-merch { order: 4; } .phone .grid-tile-about { order: 5; } .phone .grid-tile-news { order: 6; } .phone .grid-tile-contact { order: 7; }
   .phone .tile-title { font-size: 1.5rem; }
   .phone .grid-tile:not(.grid-tile-logo) { min-height: 75px; }
   /* Frame 3: labels on the flat tiles */
-  .labels { display: grid; grid-template-columns: 160px repeat(3, 180px); gap: 12px; align-items: center; padding: 20px; background: var(--color-beige); }
-  .labels .grid-tile { height: 120px; }
+  .labels { display: grid; grid-template-columns: 170px repeat(5, 180px); gap: 12px; align-items: center; padding: 20px; background: var(--color-beige); }
+  .labels .grid-tile { height: 120px; grid-column: auto; grid-row: auto; } .labels .tile-title { font-size: 1.6rem; }
   .lab { font: 600 13px system-ui; }
   /* Frame 4: browsers */
   .browsers { display: grid; gap: 18px; padding: 20px; background: #e5e7eb; width: 1100px; }
@@ -118,13 +119,23 @@
   </div></div>
 </div></div>
 
-<div class="wrap" id="m3"><h6>3 · Labels on the flat tiles: white (as the other tiles) or ink (a question for the lead)</h6>
+<div class="wrap" id="m3"><h6>3 · Labels without the box: white as asked, white with an ink outline (like comic lettering), or ink</h6>
 <div class="labels">
-  <span class="lab">White · 2.3, 1.6, 1.5 : 1</span>
+  <span class="lab">White<br>photos 1.5–2.2:1 · flat 1.5–2.3:1</span>
+  <div class="grid-tile grid-tile-comics"><div class="tile-content"><span class="tile-title">COMICS</span></div></div>
+  <div class="grid-tile grid-tile-commissions"><div class="tile-content"><span class="tile-title">COMMISSIONS</span></div></div>
   <div class="grid-tile grid-tile-merch"><div class="tile-content"><span class="tile-title">SHOP</span></div></div>
   <div class="grid-tile grid-tile-about"><div class="tile-content"><span class="tile-title">ABOUT</span></div></div>
   <div class="grid-tile grid-tile-news"><div class="tile-content"><span class="tile-title">NEWS</span></div></div>
-  <span class="lab">Ink · 6.2, 8.7, 9.4 : 1</span>
+  <span class="lab">White, 3px ink outline<br>the outline against the label 15:1</span>
+  <div class="grid-tile grid-tile-comics"><div class="tile-content"><span class="tile-title outline">COMICS</span></div></div>
+  <div class="grid-tile grid-tile-commissions"><div class="tile-content"><span class="tile-title outline">COMMISSIONS</span></div></div>
+  <div class="grid-tile grid-tile-merch"><div class="tile-content"><span class="tile-title outline">SHOP</span></div></div>
+  <div class="grid-tile grid-tile-about"><div class="tile-content"><span class="tile-title outline">ABOUT</span></div></div>
+  <div class="grid-tile grid-tile-news"><div class="tile-content"><span class="tile-title outline">NEWS</span></div></div>
+  <span class="lab">Ink<br>flat 6.2–9.4:1 · photos vary</span>
+  <div class="grid-tile grid-tile-comics"><div class="tile-content"><span class="tile-title ink">COMICS</span></div></div>
+  <div class="grid-tile grid-tile-commissions"><div class="tile-content"><span class="tile-title ink">COMMISSIONS</span></div></div>
   <div class="grid-tile grid-tile-merch"><div class="tile-content"><span class="tile-title ink">SHOP</span></div></div>
   <div class="grid-tile grid-tile-about"><div class="tile-content"><span class="tile-title ink">ABOUT</span></div></div>
   <div class="grid-tile grid-tile-news"><div class="tile-content"><span class="tile-title ink">NEWS</span></div></div>
@@ -138,7 +149,7 @@
   </div>
   <div class="row2">
     <div><p class="tag">Today: a screenshot of the page</p><div class="home"><span class="app"><i></i>Notes</span><span class="app"><i></i>Photos</span><span class="app"><i style="background:#fff url('today-phone.png') top / 60px auto"></i>Kettlebird</span><span class="app"><i></i>Maps</span></div></div>
-    <div><p class="tag">After</p><div class="home"><span class="app"><i></i>Notes</span><span class="app"><i></i>Photos</span><span class="app"><img src="icon-180.png" alt="">Kettlebird</span><span class="app"><i></i>Maps</span></div></div>
+    <div><p class="tag">After: iPhone (180) and Android (maskable 512, cut to a circle)</p><div class="home"><span class="app"><i></i>Notes</span><span class="app"><img src="icon-180.png" alt="">Kettlebird</span><span class="app"><i style="border-radius:50%"></i>Maps</span><span class="app"><img src="icon-maskable-512.png" alt="" style="border-radius:50%">Kettlebird</span></div></div>
   </div>
 </div></div>
 
@@ -151,6 +162,7 @@
   <figure><img src="favicon-16.png" width="16" height="16" alt="">16</figure>
   <figure><img class="px" src="favicon-16.png" width="96" height="96" alt="">16 × 6<i>its pixels</i></figure>
   <figure><img class="px" src="favicon-32.png" width="96" height="96" alt="">32 × 3<i>its pixels</i></figure>
+  <figure><img src="icon-maskable-512.png" width="96" height="96" alt="" style="border-radius:50%">512 maskable<i>Android, cut to a circle</i></figure>
 </div></div>
 
 <script>
