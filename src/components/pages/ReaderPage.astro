@@ -4,6 +4,8 @@
 // docs/design/comic-sheet-and-controls.md (which replaces the Previous page / Next page pair).
 // Specs: docs/specs/comic-reader-start-and-turn.md, docs/specs/comic-reader-sheet-and-controls.md.
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Arrow from '../Arrow.astro';
+import type { ArrowKind } from '../../lib/arrows';
 import type { PreviewInfo } from '../../lib/preview/load';
 import {
   endNote,
@@ -69,13 +71,8 @@ const allPages = allPagesHref(entry);
 const panelled = offersPanels(entry);
 const panels = pagePanels(entry.page);
 const preview = { ...pagePreview(entry, Astro.site!.href), type: 'article' };
-// Drawn arrowheads: phones draw characters like ⏭ as emoji of their own (design, Layout).
-const ICONS: Record<ControlKind, { viewBox: string; d: string }> = {
-  first: { viewBox: '0 0 32 24', d: 'M30 4 L18 12 L30 20 Z M16 4 L4 12 L16 20 Z' },
-  previous: { viewBox: '0 0 24 24', d: 'M17 4 L5 12 L17 20 Z' },
-  next: { viewBox: '0 0 24 24', d: 'M7 4 L19 12 L7 20 Z' },
-  newest: { viewBox: '0 0 32 24', d: 'M2 4 L14 12 L2 20 Z M16 4 L28 12 L16 20 Z' },
-};
+// The site's drawn arrows (docs/design/arrows.md): phones draw typed characters as emoji of their own.
+const ARROW_FOR: Record<ControlKind, ArrowKind> = { first: 'first', previous: 'previous', next: 'next', newest: 'last' };
 const SIZES = '(min-width: 62.5em) and (orientation: landscape) 50vw, (max-width: 700px) 100vw, 900px';
 const TURNS: Partial<Record<ControlKind, string>> = { previous: 'previous', next: 'next' };
 /** In the preview route: what the preview shows and outlines (docs/specs/content-editing-preview.md). */
@@ -178,16 +175,16 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
               loading={current ? undefined : 'lazy'}
             />
             {current && entry.previousPath && (
-              <a href={turnHref(entry.previousPath)} {...turnAttrs(entry.previousPath)} class:list={['reader__edge reader__edge--prev', { 'for-narrow': reads.twoUp }]} aria-hidden="true" tabindex="-1">‹</a>
+              <a href={turnHref(entry.previousPath)} {...turnAttrs(entry.previousPath)} class:list={['reader__edge reader__edge--prev', { 'for-narrow': reads.twoUp }]} aria-hidden="true" tabindex="-1"><span class="arrow-btn"><Arrow kind="previous" /></span></a>
             )}
             {current && entry.nextPath && (
-              <a href={turnHref(entry.nextPath)} {...turnAttrs(entry.nextPath)} class:list={['reader__edge reader__edge--next', { 'for-narrow': reads.twoUp }]} aria-hidden="true" tabindex="-1">›</a>
+              <a href={turnHref(entry.nextPath)} {...turnAttrs(entry.nextPath)} class:list={['reader__edge reader__edge--next', { 'for-narrow': reads.twoUp }]} aria-hidden="true" tabindex="-1"><span class="arrow-btn"><Arrow kind="next" /></span></a>
             )}
             {reads.twoUp && first && wide.previousPath && (
-              <a href={turnHref(wide.previousPath)} {...turnAttrs(wide.previousPath)} class="reader__edge reader__edge--prev for-wide" aria-hidden="true" tabindex="-1">‹</a>
+              <a href={turnHref(wide.previousPath)} {...turnAttrs(wide.previousPath)} class="reader__edge reader__edge--prev for-wide" aria-hidden="true" tabindex="-1"><span class="arrow-btn"><Arrow kind="previous" /></span></a>
             )}
             {reads.twoUp && last && wide.nextPath && (
-              <a href={turnHref(wide.nextPath)} {...turnAttrs(wide.nextPath)} class="reader__edge reader__edge--next for-wide" aria-hidden="true" tabindex="-1">›</a>
+              <a href={turnHref(wide.nextPath)} {...turnAttrs(wide.nextPath)} class="reader__edge reader__edge--next for-wide" aria-hidden="true" tabindex="-1"><span class="arrow-btn"><Arrow kind="next" /></span></a>
             )}
           </div>
         );
@@ -199,12 +196,9 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
       <div class:list={['reader__controls-box', { [`for-${view}`]: reads.twoUp }]} data-view={view}>
         <nav class="reader__controls" aria-label="Page navigation">
           {set.map((c) => {
-            const icon = ICONS[c.kind];
             const body = (
               <>
-                <svg viewBox={icon.viewBox} width={c.kind === 'first' || c.kind === 'newest' ? 30 : 26} height="24" aria-hidden="true" focusable="false">
-                  <path d={icon.d} fill="currentColor" />
-                </svg>
+                <Arrow kind={ARROW_FOR[c.kind]} />
                 <span class="reader__control-caption">{c.caption}</span>
                 <span class="reader__control-tip" aria-hidden="true">{c.name}</span>
               </>
@@ -213,7 +207,7 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
               <a
                 href={TURNS[c.kind] ? turnHref(c.path) : c.path}
                 {...(TURNS[c.kind] ? turnAttrs(c.path) : {})}
-                class={`reader__control reader__control--${c.kind}`}
+                class={`arrow-btn reader__control reader__control--${c.kind}`}
                 aria-label={c.name}
                 rel={c.kind === 'previous' ? 'prev' : c.kind === 'next' ? 'next' : undefined}
                 data-turn={TURNS[c.kind]}
@@ -226,7 +220,7 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
                 aria-label={c.name}
                 tabindex="-1"
                 data-control={c.kind}
-                class={`reader__control reader__control--${c.kind} is-off`}
+                class={`arrow-btn reader__control reader__control--${c.kind} is-off`}
               >{body}</a>
             );
           })}
@@ -815,8 +809,6 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
     width: 15%;
     align-items: center;
     justify-content: center;
-    font-size: 3rem;
-    color: var(--color-ink);
     text-decoration: none;
     opacity: 0;
     transition: opacity var(--transition-fast);
@@ -825,7 +817,9 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
   .reader__edge--next { right: 0; }
   @media (hover: hover) and (min-width: 700px) {
     .reader__edge { display: flex; }
-    .reader__edge:hover { opacity: 0.6; background: rgba(245, 241, 232, 0.4); }
+    /* Over the strip: the strip tints, and its arrow button shows, yellow (docs/design/arrows.md). */
+    .reader__edge:hover { opacity: 1; background: rgba(245, 241, 232, 0.4); }
+    .reader__edge:hover :global(.arrow-btn) { background-color: var(--color-yellow); }
   }
 
   .reader__controls-box {
@@ -856,12 +850,7 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
     gap: 2px;
     min-height: 56px;
     padding: 0.25rem 0;
-    border: 3px solid var(--color-ink);
-    background: var(--color-beige);
-    color: var(--color-ink);
-    text-decoration: none;
   }
-  .reader__control svg { height: 24px; flex: none; }
   .reader__control-caption {
     font-family: 'Nunito', sans-serif;
     font-weight: 700;
@@ -869,12 +858,7 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
     line-height: 1.1;
     text-align: center;
   }
-  /* A control that can't be used keeps its place, dashed and faded. */
-  .reader__control.is-off {
-    border-style: dashed;
-    border-color: rgba(43, 43, 43, 0.4);
-    color: rgba(43, 43, 43, 0.45);
-  }
+  /* A control that can't be used keeps its place, dashed and faded (the arrow button's own style). */
   /* The full name, above the control, on hover and keyboard focus. */
   .reader__control-tip {
     display: none;

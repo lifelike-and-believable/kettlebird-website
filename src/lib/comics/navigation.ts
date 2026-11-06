@@ -48,7 +48,7 @@ export interface ChapterListItem {
 }
 
 export interface ChapterLink {
-  /** "← Chapter 1" or "Chapter 3 →". */
+  /** "Chapter 1" or "Chapter 3"; the arrow beside it is drawn (docs/design/arrows.md). */
   label: string;
   /** "Previous chapter: Chapter 1". */
   name: string;
@@ -114,7 +114,7 @@ function sheet(series: ComicSeries, chapter: ComicChapter, path: string, marked?
     if (!withList || !c) return undefined;
     const label = chapterShortLabel(c);
     return {
-      label: previous ? `← ${label}` : `${label} →`,
+      label,
       name: `${previous ? 'Previous' : 'Next'} chapter: ${label}`,
       path: chapterSheetPath(slug, c.number),
     };
@@ -125,7 +125,7 @@ function sheet(series: ComicSeries, chapter: ComicChapter, path: string, marked?
     heading: named ? `${series.title} · ${chapterLabel(chapter)}` : series.title,
     pageCount: count(chapter.pages.length),
     seriesPath: seriesPath(slug),
-    backToPage: marked && { label: `← Back to page ${marked.pageNumber}`, path: marked.path },
+    backToPage: marked && { label: `Back to page ${marked.pageNumber}`, path: marked.path },
     pictures: chapter.pages.map((page, i) => {
       const number = i + 1;
       const isMarked = marked?.pageNumber === number;

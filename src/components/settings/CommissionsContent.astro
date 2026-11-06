@@ -1,5 +1,6 @@
 ---
 import Lines from '../Lines.astro';
+import Arrow from '../Arrow.astro';
 // The Commissions page's content, open or closed, from Site settings: the banner, How it works, the
 // commission types, Ready to order? and the email buttons (content-editing-site-settings AC-7, AC-11;
 // design-site-settings mock-up 5). The page passes in the commission types, ready to show.
@@ -120,7 +121,7 @@ const email = settings.contact.email;
         I'll get back to you as soon as I can!
       </p>
       <a href={`mailto:${email}`} class="highlighter-btn highlighter-btn--green">
-        Email me to get started →
+        Email me to get started<Arrow kind="next" class="arrow-inline" />
       </a>
     </div>
 

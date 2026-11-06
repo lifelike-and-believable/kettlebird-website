@@ -3,6 +3,7 @@ import type { GalleryItem } from '../lib/queries';
 import { urlFor } from '../lib/sanity';
 import { textLines } from '../lib/text';
 import { openedSection, turnOrder } from '../lib/portfolio/full-screen';
+import Arrow from './Arrow';
 import FullScreenView from './FullScreenView';
 
 const CATEGORY_LABELS: Record<string, string> = {
@@ -90,11 +91,12 @@ function FolderCarousel({
   return (
     <div className="carousel">
       <button
-        className="carousel__arrow carousel__arrow--left"
+        type="button"
+        className="arrow-btn carousel__arrow carousel__arrow--left"
         onClick={() => scroll('left')}
         aria-label="Scroll left"
       >
-        ‹
+        <Arrow kind="previous" />
       </button>
       <div className="carousel__track" ref={trackRef}>
         {items.map((item) => (
@@ -102,11 +104,12 @@ function FolderCarousel({
         ))}
       </div>
       <button
-        className="carousel__arrow carousel__arrow--right"
+        type="button"
+        className="arrow-btn carousel__arrow carousel__arrow--right"
         onClick={() => scroll('right')}
         aria-label="Scroll right"
       >
-        ›
+        <Arrow kind="next" />
       </button>
     </div>
   );

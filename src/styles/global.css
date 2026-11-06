@@ -1322,3 +1322,80 @@ a:focus-visible {
   white-space: nowrap;
   border: 0;
 }
+
+/* ── Arrows (docs/design/arrows.md, docs/specs/site-arrows.md) ──────────
+   One drawn shape (src/lib/arrows.ts) and one flat button, like ink on paper: no drop shadow,
+   and no state moves or resizes it. */
+
+/* An arrow beside words, about three quarters of the letters' height, on the side it points to. */
+.arrow-inline {
+  display: inline-block;
+  width: 0.72em;
+  height: 0.72em;
+  flex: none;
+  vertical-align: -0.05em;
+}
+.arrow-inline[data-arrow='previous'] { margin-right: 0.3em; }
+.arrow-inline[data-arrow='next'],
+.arrow-inline[data-arrow='down'],
+.arrow-inline[data-arrow='up'] { margin-left: 0.3em; }
+
+/* The arrow button, on paper. */
+.arrow-btn {
+  box-sizing: border-box;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  background-color: var(--color-beige);
+  color: var(--color-ink);
+  border: 3px solid var(--color-ink);
+  border-radius: 0;
+  box-shadow: none;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--transition-fast) ease-out, color var(--transition-fast) ease-out,
+    border-color var(--transition-fast) ease-out;
+}
+.arrow-btn svg { width: 24px; height: 24px; flex: none; }
+.arrow-btn svg[data-arrow='first'],
+.arrow-btn svg[data-arrow='last'] { width: 32px; }
+/* Yellow on hover only where the device can hover, so it doesn't stick after a tap on a phone. */
+@media (hover: hover) {
+  .arrow-btn:not(.is-off):hover { background-color: var(--color-yellow); color: var(--color-ink); }
+}
+/* Pressed: inked in. */
+.arrow-btn:not(.is-off):active { background-color: var(--color-ink); color: var(--color-beige); }
+.arrow-btn:focus { outline: none; }
+.arrow-btn:focus-visible { outline: 2px solid var(--color-dark-purple); outline-offset: 2px; }
+/* Can't be used: an empty, dashed outline (exempt from contrast; aria-disabled and skipped by Tab). */
+.arrow-btn.is-off {
+  border-style: dashed;
+  border-color: rgba(43, 43, 43, 0.4);
+  color: rgba(43, 43, 43, 0.45);
+  background-color: transparent;
+  cursor: default;
+}
+
+/* The same button on dark (full screen). */
+.arrow-btn--dark {
+  background-color: #161616;
+  color: var(--color-beige);
+  border-color: var(--color-beige);
+}
+@media (hover: hover) {
+  .arrow-btn--dark:not(.is-off):hover { background-color: var(--color-yellow); color: var(--color-ink); border-color: var(--color-yellow); }
+}
+.arrow-btn--dark:not(.is-off):active { background-color: var(--color-beige); color: var(--color-ink); border-color: var(--color-beige); }
+.arrow-btn--dark:focus-visible { outline: 3px solid var(--color-yellow); outline-offset: 2px; }
+.arrow-btn--dark.is-off { border-color: #f5f1e877; color: #f5f1e877; background-color: transparent; }
+
+@media (prefers-reduced-motion: reduce) {
+  .arrow-btn { transition: none; }
+}

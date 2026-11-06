@@ -3,6 +3,7 @@
 // (docs/specs/content-editing-preview.md). Cards from the story model: a story with a page has Read,
 // and its title and cover link to it (docs/specs/story-reader-pages.md AC-2).
 import Lines from '../Lines.astro';
+import Arrow from '../Arrow.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import type { PreviewInfo } from '../../lib/preview/load';
 import { alsoOn, cardLine, hasPage, ratingLine, sortForWriting, storyPath, type Story } from '../../lib/stories/model';
@@ -66,7 +67,7 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
                   )}
                   {!page && work.link && (
                     <a href={work.link} target="_blank" rel="noopener noreferrer" class="btn">
-                      Read it →
+                      Read it<Arrow kind="next" class="arrow-inline" />
                     </a>
                   )}
                 </div>

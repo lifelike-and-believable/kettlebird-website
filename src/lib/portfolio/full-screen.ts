@@ -147,6 +147,26 @@ export function fetchNext(order: GalleryItem[], index: number, going: Turn): Gal
   return [ahead, behind].filter((p): p is GalleryItem => Boolean(p));
 }
 
+// ---------------------------------------------------------------- a phone's bottom bar (site-arrows AC-10)
+
+/** The bottom bar on a phone held upright, when Previous, the zoom controls and Next share one row. */
+export const PHONE_BAR = 76;
+/** Room beside each side button: its 8 px margin from the edge and 4 px before the zoom controls. */
+const BESIDE = 12;
+/** With two rows, the zoom controls sit this far up, above the side buttons, with this much under the bar's top. */
+const ZOOM_ROW = 80;
+const ZOOM_TOP = 8;
+
+/** The zoom controls stay centred between the side buttons when they fit with room either side. */
+export function oneRow({ width, zoom, side }: { width: number; zoom: number; side: number }): boolean {
+  return zoom + 2 * (side + BESIDE) <= width;
+}
+
+/** The bar's height, and where the zoom controls sit (undefined: as styled, on the buttons' row). */
+export function bottomBar({ oneRow: single, zoomHeight }: { oneRow: boolean; zoomHeight: number }): { height: number; zoomBottom: number | undefined } {
+  return single ? { height: PHONE_BAR, zoomBottom: undefined } : { height: ZOOM_ROW + zoomHeight + ZOOM_TOP, zoomBottom: ZOOM_ROW };
+}
+
 // ---------------------------------------------------------------- touches (AC-6, AC-7, AC-9)
 
 /** A touch that moves no more than this, and lifts within TAP_MS, is a tap. */
