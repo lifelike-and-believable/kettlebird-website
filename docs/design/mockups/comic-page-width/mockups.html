@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>A comic's page width on a computer: mock-ups</title>
+<title>How a comic's pages fit on a computer: mock-ups</title>
 <!-- Source for the PNG mock-ups beside this file (docs/design/comic-page-width.md). The reader screens in shots/
      are screenshots of the fixture build, today and with proposed.css; render.mjs takes them and saves each
-     frame below. The editor frame follows docs/design/mockups/comic-spread-and-flip/mockups.html, mock-up 13. -->
+     frame below. The editor frames follow docs/design/mockups/comic-spread-and-flip/mockups.html, mock-up 13. -->
 <style>
   * { box-sizing: border-box; }
   body { margin: 0; padding: 24px; background: #9ca3af; font-family: system-ui, sans-serif; display: flex; flex-wrap: wrap; gap: 32px; align-items: flex-start; }
@@ -18,7 +18,8 @@
   .window .chrome span { margin-left: 12px; background: #fff; border-radius: 6px; padding: 3px 12px; }
   .window img { display: block; }
   .fold { position: relative; }
-  .fold::after { content: 'bottom of the window'; position: absolute; left: 0; right: 0; top: 900px; border-top: 2px dashed #b91c1c; font: 700 12px system-ui; color: #b91c1c; text-align: right; padding: 2px 8px; }
+  .fold::after { content: 'bottom of the window'; position: absolute; left: 0; right: 0; top: var(--fold, 934px); border-top: 2px dashed #b91c1c; font: 700 12px system-ui; color: #b91c1c; text-align: right; padding: 2px 8px; }
+  .label { font: 600 13px system-ui; color: #111827; margin: 14px 0 6px; }
 
   /* The editor (from comic-spread-and-flip mock-up 13) */
   .ed { width: 1000px; background: #f3f4f6; font: 14px/1.45 system-ui, sans-serif; color: #111827; border: 1px solid #d1d5db; }
@@ -30,81 +31,101 @@
   .ed .input { background: #fff; border: 1px solid #d1d5db; border-radius: 4px; padding: 8px 10px; }
   .ed .radio { display: flex; gap: 8px; align-items: flex-start; margin: 6px 0; }
   .ed .check { width: 18px; height: 18px; border: 2px solid #2563eb; border-radius: 3px; flex: none; background: #fff; }
+  .ed .dot { width: 18px; height: 18px; border: 2px solid #2563eb; border-radius: 50%; flex: none; background: #fff; margin-top: 1px; }
+  .ed .dot.on { box-shadow: inset 0 0 0 3px #fff; background: #2563eb; }
   .ed .btn { display: inline-block; padding: 7px 14px; border-radius: 4px; border: 1px solid #d1d5db; background: #fff; font-weight: 600; }
   .ed .new { outline: 2px dashed #7c3aed; outline-offset: 6px; border-radius: 4px; }
+  .ed .note { background: #eff6ff; border-radius: 4px; padding: 6px 8px; color: #1e3a8a; }
 </style>
 </head>
 <body>
 
 <figure id="m1">
-  <figcaption>1 · Today, a laptop (1440 × 900), one page at a time<small>The page is fitted to the window's height, so a whole page and the controls show at once, and the page is small.</small></figcaption>
+  <figcaption>1 · Fit the screen (the default, as now), a laptop (1440 × 900)<small>The page, the bar and the buttons fit in the window, so the page is small: 467 px wide.</small></figcaption>
   <div class="window"><div class="chrome"><i></i><i></i><i></i><span>kettlebird.com/comics/single-sheets/1/1</span></div><img src="shots/today-1440.png" width="1440" alt=""></div>
 </figure>
 
 <figure id="m2">
-  <figcaption>2 · After, with the comic's page width set to 900 px<small>The page shows 900 px wide and runs below the window. The bar is at the top, as now; Next is a scroll below the page, and the arrow keys and the page's edge arrows turn pages without scrolling.</small></figcaption>
-  <div class="window"><div class="chrome"><i></i><i></i><i></i><span>kettlebird.com/comics/single-sheets/1/1</span></div><img src="shots/after-1440.png" width="1440" alt=""></div>
+  <figcaption>2 · Fit the width, Largest page width empty<small>The page shows at its own size: the picture is 800 × 1200 pixels, so 800 px wide. It runs below the window. The bar lines up with it; Next is a scroll below the page, and the arrow keys and the page's edge arrows turn pages without scrolling.</small></figcaption>
+  <div class="window"><div class="chrome"><i></i><i></i><i></i><span>kettlebird.com/comics/single-sheets/1/1</span></div><img src="shots/width-1440.png" width="1440" alt=""></div>
 </figure>
 
 <figure id="m3">
-  <figcaption>3 · After, the whole page: scrolled down, the controls are under the page<small>The dashed line is the bottom of the window as the page opens.</small></figcaption>
-  <div class="window fold"><div class="chrome"><i></i><i></i><i></i><span>kettlebird.com/comics/single-sheets/1/1</span></div><img src="shots/after-1440-full.png" width="1440" alt=""></div>
+  <figcaption>3 · Fit the width, the whole page: scrolled down, the buttons are under the page<small>The dashed line is the bottom of the window as the page opens.</small></figcaption>
+  <div class="window fold"><div class="chrome"><i></i><i></i><i></i><span>kettlebird.com/comics/single-sheets/1/1</span></div><img src="shots/width-1440-full.png" width="1440" alt=""></div>
 </figure>
 
 <figure id="m4">
-  <figcaption>4 · After, a desktop window narrower than the page width (800 × 700)<small>The page shrinks to the reader's width, and its height follows.</small></figcaption>
-  <div class="window"><div class="chrome"><i></i><i></i><i></i><span>kettlebird.com/comics/single-sheets/1/1</span></div><img src="shots/after-800.png" width="800" alt=""></div>
+  <figcaption>4 · Fit the width, with Largest page width set to 1200<small>Wider than the picture's 800 pixels, so the picture is enlarged and may look soft; the editor's help says so.</small></figcaption>
+  <div class="window"><div class="chrome"><i></i><i></i><i></i><span>kettlebird.com/comics/single-sheets/1/1</span></div><img src="shots/width-1440-1200.png" width="1440" alt=""></div>
 </figure>
 
 <figure id="m5">
-  <figcaption>5 · After, a two-page spread shown alone<small>Twice the page width, or the reader's width if that's narrower: here the window's.</small></figcaption>
-  <div class="window"><div class="chrome"><i></i><i></i><i></i><span>kettlebird.com/comics/single-sheets/1/3</span></div><img src="shots/after-1440-spread.png" width="1440" alt=""></div>
+  <figcaption>5 · Fit the height<small>The page opens filling the window's height: 600 × 900. Back to series and the page's place are a scroll up; the buttons are a scroll down. Below: the whole reader, with the bottom of the window marked as it would be if the page opened at the bar.</small></figcaption>
+  <div class="window"><div class="chrome"><i></i><i></i><i></i><span>kettlebird.com/comics/single-sheets/1/1</span></div><img src="shots/height-1440.png" width="1440" alt=""></div>
+  <div class="label">The whole reader</div>
+  <div class="window fold"><div class="chrome"><i></i><i></i><i></i><span>kettlebird.com/comics/single-sheets/1/1</span></div><img src="shots/height-1440-full.png" width="1440" alt=""></div>
 </figure>
 
 <figure id="m6">
-  <figcaption>6 · The editor: the comic's How it reads, with Page width on a computer (new, outlined)</figcaption>
+  <figcaption>6 · Fit the width, a desktop window narrower than the page (800 × 700)<small>The page shrinks to the window's width, and its height follows.</small></figcaption>
+  <div class="window"><div class="chrome"><i></i><i></i><i></i><span>kettlebird.com/comics/single-sheets/1/1</span></div><img src="shots/width-800.png" width="800" alt=""></div>
+</figure>
+
+<figure id="m7">
+  <figcaption>7 · Fit the width, a two-page spread<small>The spread's picture is 1600 pixels wide, so it shows up to 1600; this window is narrower, so it fills the window.</small></figcaption>
+  <div class="window"><div class="chrome"><i></i><i></i><i></i><span>kettlebird.com/comics/single-sheets/1/3</span></div><img src="shots/width-1440-spread.png" width="1440" alt=""></div>
+</figure>
+
+<figure id="m8">
+  <figcaption>8 · The editor: the comic's How it reads, with Page size on a computer and Largest page width (new, outlined)</figcaption>
   <div class="ed"><div class="top"><span>Single Sheets</span><span style="display:flex;gap:10px;align-items:center;font-weight:600"><span>● Live · 2:41 pm</span><span class="btn">Preview</span><span class="btn" style="background:#2563eb;color:#fff;border-color:#2563eb">Publish</span></span></div><div class="doc">
     <div class="field"><label>Kind</label><div class="input" style="width:240px">Original</div></div>
     <div class="field" style="border:1px solid #d1d5db;border-radius:6px;padding:12px 14px;background:#fff"><label style="font-size:15px">How it reads</label>
       <div class="radio" style="align-items:center;margin-top:10px"><span class="check"></span><b>Two pages side by side</b></div><p class="help" style="margin-left:26px">On a laptop, or a tablet held sideways, show facing pages together, like an open comic. Off: one page at a time on every screen.</p>
       <div class="radio" style="align-items:center"><span class="check"></span><b>Page-flip</b></div><p class="help" style="margin-left:26px">Turn pages with an animation of a page turning over. Off: pages change at once.</p>
       <div class="new" style="margin:14px 0 4px">
-        <label>Page width on a computer</label>
-        <p class="help">How wide each page shows on a laptop or desktop, in screen pixels, from 600 to 1600; for example 900. Most laptop windows are 1280 to 1440 pixels wide, and a page fitted to the window today is about 470 pixels wide. Pages can then run below the bottom of the window, and readers scroll down to the buttons; a narrower window shrinks the page to fit. Leave it empty to fit each page into the window, as now. Phones and tablets aren't affected. The preview at Computer is shown smaller, to fit beside the editor.</p>
-        <div class="input" style="width:160px">900</div>
+        <label>Page size on a computer</label>
+        <p class="help">How big each page shows on a laptop or desktop, one page at a time. Phones and tablets always fit the screen.</p>
+        <div class="radio"><span class="dot"></span><div><b>Fit the screen</b><p class="help" style="margin:0">The whole page and the buttons show at once, without scrolling. Pages are smaller.</p></div></div>
+        <div class="radio"><span class="dot on"></span><div><b>Fit the width</b><p class="help" style="margin:0">Pages are as wide as the window allows, up to their largest width; readers scroll down each page to the buttons.</p></div></div>
+        <div class="radio"><span class="dot"></span><div><b>Fit the height</b><p class="help" style="margin:0">Each page opens filling the window's height; readers scroll up to the comic's name and down to the buttons.</p></div></div>
+        <label style="margin-top:14px">Largest page width</label>
+        <p class="help">The widest a page shows, in screen pixels. Leave it empty to show each page no wider than its picture: a picture 2400 pixels wide can show up to 2400, which is wider than most windows. A number wider than a page's picture enlarges it, and it may look soft. A two-page spread shows up to twice this. The preview at Computer is shown smaller, to fit beside the editor.</p>
+        <div class="input" style="width:160px;color:#6b7280">Each page's own width</div>
       </div>
       <p class="help" style="margin:10px 0 0">Preview a chapter to see how it reads.</p>
     </div>
   </div></div>
 </figure>
 
-<figure id="m7">
-  <figcaption>7 · The editor: the field's notes<small>With Two pages side by side ticked, the width has no effect, and says so. A width outside 600 to 1600, or not a whole number, can't be published.</small></figcaption>
+<figure id="m9">
+  <figcaption>9 · The editor: the notes<small>With Two pages side by side ticked, the two settings have no effect, and say so. A Largest page width outside 400 to 3200, or not a whole number, can't be published.</small></figcaption>
   <div class="ed"><div class="top"><span>Open Book</span><span style="display:flex;gap:10px;align-items:center;font-weight:600"><span class="btn">Preview</span><span class="btn" style="background:#2563eb;color:#fff;border-color:#2563eb">Publish</span></span></div><div class="doc">
     <div class="field" style="border:1px solid #d1d5db;border-radius:6px;padding:12px 14px;background:#fff"><label style="font-size:15px">How it reads</label>
       <div class="radio" style="align-items:center;margin-top:10px"><span class="check" style="background:#2563eb"></span><b>Two pages side by side</b></div>
       <div class="radio" style="align-items:center"><span class="check" style="background:#2563eb"></span><b>Page-flip</b></div>
       <div class="new" style="margin:14px 0 4px">
-        <label>Page width on a computer</label>
-        <p class="help" style="background:#eff6ff;border-radius:4px;padding:6px 8px;color:#1e3a8a">Two pages side by side is on for this comic, so this has no effect: pairs fit the window. Untick it to read one page at a time at this width.</p>
-        <div class="input" style="width:160px">900</div>
+        <label>Page size on a computer</label>
+        <p class="help note">Two pages side by side is on for this comic, so this has no effect: pairs fit the screen. Untick it to read one page at a time at this size.</p>
+        <div class="radio"><span class="dot on"></span><b>Fit the width</b></div>
       </div>
     </div>
     <div class="field" style="border:1px solid #d1d5db;border-radius:6px;padding:12px 14px;background:#fff"><label style="font-size:15px">How it reads</label>
       <div class="new" style="margin:6px 0 4px">
-        <label>Page width on a computer</label>
-        <div class="input" style="width:160px;border-color:#dc2626">2400</div>
-        <p class="help" style="color:#b91c1c;margin-top:6px">Choose a width between 600 and 1600 pixels, or leave it empty.</p>
+        <label>Largest page width</label>
+        <div class="input" style="width:160px;border-color:#dc2626">900px</div>
+        <p class="help" style="color:#b91c1c;margin-top:6px">Choose a whole number of pixels between 400 and 3200, or leave it empty.</p>
       </div>
     </div>
   </div></div>
 </figure>
 
-<figure id="m8">
-  <figcaption>8 · Zoom, and the edge arrow on a tall page<small>Left: a 1280 laptop zoomed to 200% (640 CSS pixels wide): the page fills the window's width, still bigger than today. Right: a 1200 px page in a 1280 × 720 window, the pointer at its right edge: the arrow stays in the window's middle.</small></figcaption>
+<figure id="m10">
+  <figcaption>10 · Zoom, and the edge arrow on a tall page (Fit the width)<small>Left: a 1280 laptop zoomed to 200% (640 CSS pixels wide): the page fills the window's width, still bigger than today. Right: Largest page width 1200, a 1280 × 720 window, the pointer at the page's right edge: the arrow stays in the window's middle.</small></figcaption>
   <div style="display:flex;gap:24px;align-items:flex-start">
-    <div class="window"><div class="chrome"><i></i><i></i><i></i><span>200%</span></div><img src="shots/after-zoom-640.png" width="640" alt=""></div>
-    <div class="window"><div class="chrome"><i></i><i></i><i></i><span>1280 × 720</span></div><img src="shots/after-1280-edge.png" width="1280" alt=""></div>
+    <div class="window"><div class="chrome"><i></i><i></i><i></i><span>200%</span></div><img src="shots/width-zoom-640.png" width="640" alt=""></div>
+    <div class="window"><div class="chrome"><i></i><i></i><i></i><span>1280 × 720</span></div><img src="shots/width-1280-edge.png" width="1280" alt=""></div>
   </div>
 </figure>
 

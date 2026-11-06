@@ -1,29 +1,50 @@
-/* The proposed change (docs/design/comic-page-width.md), injected into the fixture build by render.mjs with
-   the comic's page width (--kb-page-width, set on the reader by the page in the build, and only when the
-   comic reads one page at a time). On a computer (a mouse or trackpad, at any window width), one page at
-   a time: the reader's column is the page width, so the bar lines up with the page, or the window's width
-   if that's narrower; the page's height follows, so it can run below the window. A spread alone is twice
-   as wide, centred, breaking out of the column, within the window. On a tall page the edge arrows and the
-   loading message stay in view. !important here only because this sheet is injected over the reader's
-   scoped styles. */
+/* The proposed change (docs/design/comic-page-width.md), injected into the fixture build by render.mjs.
+   The build marks the reader with the comic's mode (kb-fit-screen, kb-fit-width or kb-fit-height), only when
+   the comic reads one page at a time, and sets:
+   - on each page, --kb-cap: the largest width it shows at: the comic's Largest page width (twice it for a
+     spread), or else the picture's own width in pixels;
+   - on the reader, --kb-col and --kb-ratio: the current page's --kb-cap and shape, updated on each turn, so the
+     column (and the bar) line up with the page.
+   Only on a computer (a mouse or trackpad, at any window width). The edge arrows and the loading message stay
+   in view on a tall page. !important here only because this sheet is injected over the reader's scoped
+   styles. */
 @media (hover: hover) and (pointer: fine) {
-  .reader.kb-has-width:not(.is-panels) { max-width: calc(var(--kb-page-width) + 1rem) !important; }
-  .reader.kb-has-width:not(.is-panels) .reader__page:not(.is-spread) {
+  /* Fit the screen (as now): the page, bar and controls in the window; never wider than its cap. */
+  .reader.kb-fit-screen:not(.is-panels) .reader__page:not(.is-spread) {
+    max-width: min(100%, calc((100svh - 12.5rem) * var(--page-ratio)), var(--kb-cap)) !important;
+  }
+  .reader.kb-fit-screen:not(.is-panels) .reader__page.is-spread { max-width: min(100%, var(--kb-cap)) !important; }
+
+  /* Fit the width: as wide as the window allows, up to the cap; the height follows. */
+  .reader.kb-fit-width:not(.is-panels) { max-width: min(calc(var(--kb-col) + 1rem), 100%) !important; }
+  .reader.kb-fit-width:not(.is-panels) .reader__page {
     max-height: none !important;
     max-width: 100% !important;
+    width: min(var(--kb-cap), 100%) !important;
   }
-  .reader.kb-has-width:not(.is-panels) .reader__page.is-spread {
-    --kb-spread: min(calc(var(--kb-page-width) * 2), calc(100vw - 2rem));
+
+  /* Fit the height: the page's height is the window's, up to the cap and the window's width. */
+  .reader.kb-fit-height:not(.is-panels) {
+    max-width: min(calc(min(var(--kb-col), calc(100svh * var(--kb-ratio))) + 1rem), 100%) !important;
+  }
+  .reader.kb-fit-height:not(.is-panels) .reader__page {
     max-height: none !important;
-    max-width: none !important;
-    width: var(--kb-spread) !important;
-    margin-inline: calc((100% - var(--kb-spread)) / 2) !important;
+    max-width: 100% !important;
+    width: min(var(--kb-cap), 100%, calc(100svh * var(--page-ratio))) !important;
   }
+
   /* The edge arrows: the strip runs the page's height; its arrow stays in the window's middle. */
-  .reader.kb-has-width:not(.is-panels) .reader__edge { align-items: flex-start !important; }
-  .reader.kb-has-width:not(.is-panels) .reader__edge .arrow-btn { position: sticky; top: calc(50vh - 22px); margin-top: calc(50vh - 22px); }
+  .reader:is(.kb-fit-width, .kb-fit-height):not(.is-panels) .reader__edge { align-items: flex-start !important; }
+  .reader:is(.kb-fit-width, .kb-fit-height):not(.is-panels) .reader__edge .arrow-btn {
+    position: sticky;
+    top: calc(50vh - 22px);
+    margin-top: calc(50vh - 22px);
+  }
   /* The loading message at the top of the page, where it's seen. */
-  .reader.kb-has-width:not(.is-panels) .reader__loading { align-items: flex-start !important; padding-top: 3rem !important; }
+  .reader:is(.kb-fit-width, .kb-fit-height):not(.is-panels) .reader__loading {
+    align-items: flex-start !important;
+    padding-top: 3rem !important;
+  }
   /* "Turn your phone sideways" is for phones. */
-  .reader.kb-has-width .reader__turn-hint { display: none !important; }
+  .reader:is(.kb-fit-width, .kb-fit-height) .reader__turn-hint { display: none !important; }
 }
