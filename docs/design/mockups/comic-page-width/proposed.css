@@ -1,36 +1,46 @@
 /* The proposed change (docs/design/comic-page-width.md), injected into the fixture build by render.mjs.
-   The build marks the reader with the comic's mode (kb-fit-screen, kb-fit-width or kb-fit-height), only when
-   the comic reads one page at a time, and sets:
+   The build marks the reader with the comic's mode (kb-fit-width or kb-fit-height; Fit the screen is today's
+   reader, unmarked), only when the comic reads one page at a time, and sets:
    - on each page, --kb-cap: the largest width it shows at: the comic's Largest page width (twice it for a
-     spread), or else the picture's own width in pixels;
-   - on the reader, --kb-col and --kb-ratio: the current page's --kb-cap and shape, updated on each turn, so the
-     column (and the bar) line up with the page.
+     spread), or else the picture's own width in pixels, never over 3200;
+   - on the reader, --kb-col and --kb-ratio: the cap and shape of the chapter's widest page (spreads aside), so the
+     column, and the bar and buttons in it, stay the same width through a chapter. The column is never narrower
+     than 600 px, or the window.
+   Pages narrower than the column are centred in it; a spread breaks out of it, centred, within the window.
    Only on a computer (a mouse or trackpad, at any window width). The edge arrows and the loading message stay
    in view on a tall page. !important here only because this sheet is injected over the reader's scoped
    styles. */
 @media (hover: hover) and (pointer: fine) {
-  /* Fit the screen (as now): the page, bar and controls in the window; never wider than its cap. */
-  .reader.kb-fit-screen:not(.is-panels) .reader__page:not(.is-spread) {
-    max-width: min(100%, calc((100svh - 12.5rem) * var(--page-ratio)), var(--kb-cap)) !important;
-  }
-  .reader.kb-fit-screen:not(.is-panels) .reader__page.is-spread { max-width: min(100%, var(--kb-cap)) !important; }
-
   /* Fit the width: as wide as the window allows, up to the cap; the height follows. */
-  .reader.kb-fit-width:not(.is-panels) { max-width: min(calc(var(--kb-col) + 1rem), 100%) !important; }
-  .reader.kb-fit-width:not(.is-panels) .reader__page {
+  .reader.kb-fit-width:not(.is-panels) { max-width: min(max(calc(var(--kb-col) + 1rem), 600px), 100%) !important; }
+  .reader.kb-fit-width:not(.is-panels) .reader__page:not(.is-spread) {
     max-height: none !important;
     max-width: 100% !important;
     width: min(var(--kb-cap), 100%) !important;
   }
+  .reader.kb-fit-width:not(.is-panels) .reader__page.is-spread {
+    --kb-w: min(var(--kb-cap), calc(100vw - 2rem));
+    max-height: none !important;
+    max-width: none !important;
+    width: var(--kb-w) !important;
+    margin-inline: calc((100% - var(--kb-w)) / 2) !important;
+  }
 
   /* Fit the height: the page's height is the window's, up to the cap and the window's width. */
   .reader.kb-fit-height:not(.is-panels) {
-    max-width: min(calc(min(var(--kb-col), calc(100svh * var(--kb-ratio))) + 1rem), 100%) !important;
+    max-width: min(max(calc(min(var(--kb-col), calc(100svh * var(--kb-ratio))) + 1rem), 600px), 100%) !important;
   }
-  .reader.kb-fit-height:not(.is-panels) .reader__page {
+  .reader.kb-fit-height:not(.is-panels) .reader__page:not(.is-spread) {
     max-height: none !important;
     max-width: 100% !important;
     width: min(var(--kb-cap), 100%, calc(100svh * var(--page-ratio))) !important;
+  }
+  .reader.kb-fit-height:not(.is-panels) .reader__page.is-spread {
+    --kb-w: min(var(--kb-cap), calc(100vw - 2rem), calc(100svh * var(--page-ratio)));
+    max-height: none !important;
+    max-width: none !important;
+    width: var(--kb-w) !important;
+    margin-inline: calc((100% - var(--kb-w)) / 2) !important;
   }
 
   /* The edge arrows: the strip runs the page's height; its arrow stays in the window's middle. */

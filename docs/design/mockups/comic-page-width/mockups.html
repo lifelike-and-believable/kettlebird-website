@@ -41,7 +41,7 @@
 <body>
 
 <figure id="m1">
-  <figcaption>1 · Fit the screen (the default, as now), a laptop (1440 × 900)<small>The page, the bar and the buttons fit in the window, so the page is small: 467 px wide.</small></figcaption>
+  <figcaption>1 · Fit the screen (the default): today's reader, unchanged, a laptop (1440 × 900)<small>The page, the bar and the buttons fit in the window, so the page is small: 467 px wide.</small></figcaption>
   <div class="window"><div class="chrome"><i></i><i></i><i></i><span>kettlebird.com/comics/single-sheets/1/1</span></div><img src="shots/today-1440.png" width="1440" alt=""></div>
 </figure>
 
@@ -61,7 +61,7 @@
 </figure>
 
 <figure id="m5">
-  <figcaption>5 · Fit the height<small>The page opens filling the window's height: 600 × 900. Back to series and the page's place are a scroll up; the buttons are a scroll down. Below: the whole reader, with the bottom of the window marked as it would be if the page opened at the bar.</small></figcaption>
+  <figcaption>5 · Fit the height<small>The page's height is the window's: 600 × 900. As proposed it opens with its top at the window's top, so Back to series and the page number are a scroll up and the buttons a scroll down (Decisions at review). Below: the whole reader, with the bottom of the window marked as it would be if the page opened at the bar instead.</small></figcaption>
   <div class="window"><div class="chrome"><i></i><i></i><i></i><span>kettlebird.com/comics/single-sheets/1/1</span></div><img src="shots/height-1440.png" width="1440" alt=""></div>
   <div class="label">The whole reader</div>
   <div class="window fold"><div class="chrome"><i></i><i></i><i></i><span>kettlebird.com/comics/single-sheets/1/1</span></div><img src="shots/height-1440-full.png" width="1440" alt=""></div>
@@ -73,12 +73,12 @@
 </figure>
 
 <figure id="m7">
-  <figcaption>7 · Fit the width, a two-page spread<small>The spread's picture is 1600 pixels wide, so it shows up to 1600; this window is narrower, so it fills the window.</small></figcaption>
+  <figcaption>7 · Fit the width, a two-page spread<small>The spread's picture is 1600 pixels wide, so it shows up to 1600; this window is narrower, so it fills the window. The bar stays the chapter's width (800), so Back to series and the buttons don't move from page to page.</small></figcaption>
   <div class="window"><div class="chrome"><i></i><i></i><i></i><span>kettlebird.com/comics/single-sheets/1/3</span></div><img src="shots/width-1440-spread.png" width="1440" alt=""></div>
 </figure>
 
 <figure id="m8">
-  <figcaption>8 · The editor: the comic's How it reads, with Page size on a computer and Largest page width (new, outlined)</figcaption>
+  <figcaption>8 · The editor: the comic's How it reads, with Page size on a computer and Largest page width (new, outlined)<small>The line under Largest page width is worked out from the comic's pages, so Star knows her pictures' sizes.</small></figcaption>
   <div class="ed"><div class="top"><span>Single Sheets</span><span style="display:flex;gap:10px;align-items:center;font-weight:600"><span>● Live · 2:41 pm</span><span class="btn">Preview</span><span class="btn" style="background:#2563eb;color:#fff;border-color:#2563eb">Publish</span></span></div><div class="doc">
     <div class="field"><label>Kind</label><div class="input" style="width:240px">Original</div></div>
     <div class="field" style="border:1px solid #d1d5db;border-radius:6px;padding:12px 14px;background:#fff"><label style="font-size:15px">How it reads</label>
@@ -87,31 +87,40 @@
       <div class="new" style="margin:14px 0 4px">
         <label>Page size on a computer</label>
         <p class="help">How big each page shows on a laptop or desktop, one page at a time. Phones and tablets always fit the screen.</p>
-        <div class="radio"><span class="dot"></span><div><b>Fit the screen</b><p class="help" style="margin:0">The whole page and the buttons show at once, without scrolling. Pages are smaller.</p></div></div>
-        <div class="radio"><span class="dot on"></span><div><b>Fit the width</b><p class="help" style="margin:0">Pages are as wide as the window allows, up to their largest width; readers scroll down each page to the buttons.</p></div></div>
-        <div class="radio"><span class="dot"></span><div><b>Fit the height</b><p class="help" style="margin:0">Each page opens filling the window's height; readers scroll up to the comic's name and down to the buttons.</p></div></div>
+        <div class="radio"><span class="dot"></span><div><b>Fit the screen</b><p class="help" style="margin:0">The whole page and the buttons show at once, without scrolling, as now. On a 1440 × 900 laptop a page is about 470 pixels wide.</p></div></div>
+        <div class="radio"><span class="dot on"></span><div><b>Fit the width</b><p class="help" style="margin:0">Each page shows as wide as its picture, or as Largest page width, narrowed to fit the window. Readers scroll down each page to the buttons.</p></div></div>
+        <div class="radio"><span class="dot"></span><div><b>Fit the height</b><p class="help" style="margin:0">Each page's height matches the window's, never wider than its picture or Largest page width. Readers scroll up to Back to series and the page number, and down to the buttons.</p></div></div>
         <label style="margin-top:14px">Largest page width</label>
-        <p class="help">The widest a page shows, in screen pixels. Leave it empty to show each page no wider than its picture: a picture 2400 pixels wide can show up to 2400, which is wider than most windows. A number wider than a page's picture enlarges it, and it may look soft. A two-page spread shows up to twice this. The preview at Computer is shown smaller, to fit beside the editor.</p>
+        <p class="help">In screen pixels. A number wider than a page's picture enlarges the picture, and it may look soft. Leave it empty to show each page no wider than its picture. A two-page spread shows up to twice this. Fit the screen ignores it.</p>
+        <p class="help note">This comic's pages are 800 pixels wide, and its spread 1600. On sharp (high-density) screens, a picture looks sharpest at half its width or less.</p>
         <div class="input" style="width:160px;color:#6b7280">Each page's own width</div>
       </div>
-      <p class="help" style="margin:10px 0 0">Preview a chapter to see how it reads.</p>
+      <p class="help" style="margin:10px 0 0">Preview a chapter to see how it reads. The preview at Computer is a 1280 × 800 laptop, shown smaller to fit beside the editor.</p>
     </div>
   </div></div>
 </figure>
 
 <figure id="m9">
-  <figcaption>9 · The editor: the notes<small>With Two pages side by side ticked, the two settings have no effect, and say so. A Largest page width outside 400 to 3200, or not a whole number, can't be published.</small></figcaption>
-  <div class="ed"><div class="top"><span>Open Book</span><span style="display:flex;gap:10px;align-items:center;font-weight:600"><span class="btn">Preview</span><span class="btn" style="background:#2563eb;color:#fff;border-color:#2563eb">Publish</span></span></div><div class="doc">
+  <figcaption>9 · The editor: the notes<small>Left: with Two pages side by side ticked, both settings say they have no effect. Right: a Largest page width outside 400 to 3200, or not a whole number, can't be published.</small></figcaption>
+  <div style="display:flex;gap:24px;align-items:flex-start">
+  <div class="ed" style="width:620px"><div class="top"><span>Open Book</span><span style="display:flex;gap:10px;align-items:center;font-weight:600"><span class="btn">Preview</span><span class="btn" style="background:#2563eb;color:#fff;border-color:#2563eb">Publish</span></span></div><div class="doc">
     <div class="field" style="border:1px solid #d1d5db;border-radius:6px;padding:12px 14px;background:#fff"><label style="font-size:15px">How it reads</label>
       <div class="radio" style="align-items:center;margin-top:10px"><span class="check" style="background:#2563eb"></span><b>Two pages side by side</b></div>
       <div class="radio" style="align-items:center"><span class="check" style="background:#2563eb"></span><b>Page-flip</b></div>
       <div class="new" style="margin:14px 0 4px">
         <label>Page size on a computer</label>
         <p class="help note">Two pages side by side is on for this comic, so this has no effect: pairs fit the screen. Untick it to read one page at a time at this size.</p>
+        <div class="radio"><span class="dot"></span><b>Fit the screen</b></div>
         <div class="radio"><span class="dot on"></span><b>Fit the width</b></div>
+        <div class="radio"><span class="dot"></span><b>Fit the height</b></div>
+        <label style="margin-top:14px">Largest page width</label>
+        <p class="help note">Two pages side by side is on for this comic, so this has no effect.</p>
+        <div class="input" style="width:160px">1200</div>
       </div>
     </div>
-    <div class="field" style="border:1px solid #d1d5db;border-radius:6px;padding:12px 14px;background:#fff"><label style="font-size:15px">How it reads</label>
+  </div></div>
+  <div class="ed" style="width:420px"><div class="top"><span>Single Sheets</span><span class="btn" style="background:#2563eb;color:#fff;border-color:#2563eb;opacity:.5">Publish</span></div><div class="doc">
+    <div class="field" style="border:1px solid #d1d5db;border-radius:6px;padding:12px 14px;background:#fff">
       <div class="new" style="margin:6px 0 4px">
         <label>Largest page width</label>
         <div class="input" style="width:160px;border-color:#dc2626">900px</div>
@@ -119,6 +128,7 @@
       </div>
     </div>
   </div></div>
+  </div>
 </figure>
 
 <figure id="m10">

@@ -17,28 +17,35 @@ mkdirSync(path.join(dir, 'shots'), { recursive: true });
 const browser = await chromium.launch();
 const measures = {};
 
-// What the build will set (proposed.css): the mode on the reader, each page's cap (the comic's largest width,
-// twice it for a spread, or else the picture's own width), and the current page's cap and shape on the reader.
-function mark({ mode, largest }) {
+// What the build will set (proposed.css): the mode on the reader; each page's cap (the comic's largest width,
+// twice it for a spread, or else the picture's own width, never over 3200); and on the reader the cap and shape
+// of the chapter's widest single page (here, of the pages in the reader's markup).
+function mark({ mode, largest, chapterCol }) {
   const r = document.querySelector('.reader');
   r.classList.add(`kb-fit-${mode}`);
+  let col = 0;
+  let ratio = 0;
   for (const p of document.querySelectorAll('.reader__page')) {
     const [w, h] = p.style.aspectRatio.split('/').map((n) => Number(n.trim()));
     const spread = p.classList.contains('is-spread');
-    const cap = largest ? largest * (spread ? 2 : 1) : w;
+    const cap = largest ? largest * (spread ? 2 : 1) : Math.min(w, 3200);
     p.style.setProperty('--kb-cap', `${cap}px`);
-    if (p.classList.contains('is-current')) {
-      r.style.setProperty('--kb-col', `${cap}px`);
-      r.style.setProperty('--kb-ratio', String(w / h));
+    if (!spread && (cap > col || (cap === col && w / h > ratio))) {
+      col = cap;
+      ratio = w / h;
     }
   }
+  // The build knows every page in the chapter; the markup may hold only the current one (a spread here).
+  if (chapterCol) col = chapterCol;
+  r.style.setProperty('--kb-col', `${col}px`);
+  r.style.setProperty('--kb-ratio', String(ratio || 0.6667));
 }
 
-async function shot(name, { width, height, mode, largest, url = '/comics/single-sheets/1/1', full = false, hoverEdge = false, at = 'bar' }) {
+async function shot(name, { width, height, mode, largest, chapterCol, url = '/comics/single-sheets/1/1', full = false, hoverEdge = false, at = 'bar' }) {
   const page = await browser.newPage({ viewport: { width, height }, deviceScaleFactor: 1 });
   await page.goto(BASE + url);
   if (mode) {
-    await page.evaluate(mark, { mode, largest });
+    await page.evaluate(mark, { mode, largest, chapterCol });
     await page.addStyleTag({ content: css });
   }
   await page.evaluate(() => document.fonts.ready);
@@ -71,7 +78,7 @@ await shot('height-1440-full', { width: 1440, height: 900, mode: 'height', full:
 // A window narrower than the page (a narrow desktop window): the page shrinks to fit.
 await shot('width-800', { width: 800, height: 700, mode: 'width' });
 // A spread alone, its own pixels 1600: capped by the window.
-await shot('width-1440-spread', { width: 1440, height: 900, mode: 'width', url: '/comics/single-sheets/1/3' });
+await shot('width-1440-spread', { width: 1440, height: 900, mode: 'width', chapterCol: 800, url: '/comics/single-sheets/1/3' });
 // Browser zoom at 200% on a 1280 laptop (640 CSS px wide): the page fills the window's width.
 await shot('width-zoom-640', { width: 640, height: 400, mode: 'width' });
 // The edge arrow on a tall page, pointed at: it stays in the window.
