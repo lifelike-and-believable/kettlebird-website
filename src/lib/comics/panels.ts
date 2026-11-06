@@ -78,3 +78,24 @@ export function panelsOn(panel: number, count: number): string {
 }
 
 export const PANELS_OFF = 'Whole page';
+
+// With two pages side by side (docs/specs/comic-reader-panels-two-up.md).
+
+/** The width test for two pages side by side; WIDE_MEDIA in spreads.ts. */
+const WIDE_SIZES = '(min-width: 62.5em) and (orientation: landscape)';
+
+/**
+ * A page's `sizes`. In a chapter with panels, a wide screen asks for twice the page area's width when
+ * one page shows: the area's height (the window less the bar and controls) times the page's shape,
+ * doubled, so a zoomed panel stays sharp (AC-7). Otherwise, as before.
+ */
+export function readerSizes(image: { width: number; height: number }, spread: boolean, panelled: boolean): string {
+  const narrow = spread ? '100vw' : '(max-width: 700px) 100vw, 900px';
+  if (!panelled) return spread ? '100vw' : `${WIDE_SIZES} 50vw, ${narrow}`;
+  return `${WIDE_SIZES} calc((100vh - 12.5rem) * ${((2 * image.width) / image.height).toFixed(4)}), ${narrow}`;
+}
+
+/** What switching panel by panel off says: what arriving at a pair or a spread says, else "Whole page" (AC-5). */
+export function panelsOffAnnouncement(view: 'narrow' | 'wide', kind: string, wideText: string): string {
+  return view === 'wide' && (kind === 'pair' || kind === 'spread') ? wideText : PANELS_OFF;
+}

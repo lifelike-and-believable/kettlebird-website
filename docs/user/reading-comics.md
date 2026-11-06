@@ -30,6 +30,7 @@ derived-from:
   - design-comic-panels#the-panel-view-reader: f40b7f9e2817
   - design-comic-panels#accessibility: 939d94d8c7e4
   - story-comic-reader-flip-and-panels-read-panel-by-panel: 0cd610fa0545
+  - design-comic-panels-two-up#for-the-guide: af472bda9347
 ---
 
 # Reading comics
@@ -88,7 +89,7 @@ On a laptop, or a tablet held sideways, some comics show two pages side by side,
 
 ## Read panel by panel
 
-When the reader shows one page at a time, as it does on a phone, you can read a page panel by panel, each panel enlarged to fit your screen, so small lettering is easy to read without pinching.
+You can read a page panel by panel, each panel enlarged to fit your screen, so small lettering is easy to read without pinching.
 
 1. Choose **Panel by panel** in the bar at the top, beside **All pages**. It's there in chapters whose pages have panels. When it's on, the button is dark.
 2. The page zooms into its first panel. The bar says where you are, for example "Page 4 of 12 · panel 1 of 5".
@@ -100,7 +101,7 @@ When the reader shows one page at a time, as it does on a phone, you can read a 
 - **First**, **Newest**, **All pages** and links open a page at its first panel.
 - Held sideways, a wide panel fills more of the screen, and the buttons are a short scroll below it; swipes and arrow keys still work.
 - Your choice is remembered in that browser.
-- Panel by panel isn't offered when the reader shows two pages side by side; it's there again whenever you're on one page at a time.
+- When the reader shows two pages side by side, choosing **Panel by panel** shows one page at a time, starting with the page you're on. Choosing it again goes back to two pages side by side.
 - With a screen reader, you hear each page's description as it opens, then which panel you're on, for example "Panel 3 of 5." at each step. Switching it on says "Panel by panel." and the panel; switching it off says "Whole page".
 
 ## See all the pages in a chapter

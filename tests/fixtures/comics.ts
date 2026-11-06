@@ -69,6 +69,7 @@ export const FIXTURE_SERIES: ComicSeries[] = [
   },
   // Pairs on a wide screen (comic-reader-spread-and-flip): chapter 1 opens on the right and has a
   // spread at page 5, leaving page 4 alone; chapter 2 opens on the left and ends with a pair.
+  // Pages 1 to 3 of chapter 1 have panels (comic-reader-panels, comic-reader-panels-two-up).
   {
     slug: 'open-book',
     title: 'Open Book',
@@ -83,8 +84,9 @@ export const FIXTURE_SERIES: ComicSeries[] = [
         title: 'Facing Pages',
         pages: [
           panelled(p('OB 1-1', 'A door opens.'), box(5, 3, 90, 45), box(5, 52, 90, 45)),
-          p('OB 1-2', 'A hall of mirrors.'),
-          p('OB 1-3', 'The fox sees itself.'),
+          // A pair with panels on both pages (comic-reader-panels-two-up).
+          panelled(p('OB 1-2', 'A hall of mirrors.'), box(5, 3, 90, 45), box(5, 52, 90, 45)),
+          panelled(p('OB 1-3', 'The fox sees itself.'), box(5, 3, 43, 45), box(52, 3, 43, 45), box(5, 52, 90, 45)),
           p('OB 1-4', 'A window.'),
           spread('OB 1-5 spread', 'The whole valley below.'),
           p('OB 1-6', 'Night falls.'),

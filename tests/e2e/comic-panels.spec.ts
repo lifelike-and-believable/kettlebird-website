@@ -20,9 +20,9 @@ test('comic-reader-panels#AC-11 the button', async ({ page }) => {
   await page.setViewportSize(LAPTOP);
   await page.goto('/comics/single-sheets/1/1');
   await expect(toggle(page)).toBeVisible();
-  // Not with two pages side by side; there on a phone.
+  // With two pages side by side, too (amended by comic-reader-panels-two-up), and on a phone.
   await page.goto('/comics/open-book/1/1');
-  await expect(toggle(page)).toBeHidden();
+  await expect(toggle(page)).toBeVisible();
   await page.setViewportSize(PHONE);
   await page.goto('/comics/open-book/1/1');
   await expect(toggle(page)).toBeVisible();
