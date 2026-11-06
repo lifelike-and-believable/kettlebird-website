@@ -281,3 +281,19 @@ export function canUse(s: EditorState): { setOrder: boolean; showWhole: boolean;
 export function boxName(index: number, count: number, selected: boolean): string {
   return `Panel ${index + 1} of ${count}${selected ? ', selected' : ''}`;
 }
+
+/**
+ * The step a drag of a box makes: a move, or a resize by its handle; none for a click without a drag
+ * (docs/specs/comic-reader-panels.md AC-8). Used as the box follows the pointer and when it's let go, so what
+ * shows while dragging is what's kept.
+ */
+export function dragStep(kind: 'move' | 'resize', dx: number, dy: number): EditorAction | undefined {
+  if (Math.abs(dx) + Math.abs(dy) < 0.3) return undefined;
+  return kind === 'move' ? { type: 'move', dx, dy } : { type: 'resize', dw: dx, dh: dy };
+}
+
+/** The boxes as they'd be after the drag so far, without making it a step: shown while the pointer moves. */
+export function dragPreview(s: EditorState, kind: 'move' | 'resize', dx: number, dy: number): Panel[] {
+  const step = dragStep(kind, dx, dy);
+  return step ? edit(s, step).panels : s.panels;
+}
