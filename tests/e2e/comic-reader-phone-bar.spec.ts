@@ -1,6 +1,12 @@
 // End-to-end tests for the reader bar on phones, against the fixture comics: Single Sheets has panels,
 // Kettle Tales has none. Criteria: docs/specs/comic-reader-phone-bar.md.
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type Browser, type Page } from '@playwright/test';
+
+/** A phone: touch, no mouse, so no computer-only controls (comic-reader-page-size's Page size). */
+async function phone(browser: Browser) {
+  const context = await browser.newContext({ hasTouch: true, isMobile: true });
+  return context.newPage();
+}
 
 const PHONES = [
   { width: 320, height: 568 },
@@ -21,7 +27,8 @@ async function open(page: Page, size: { width: number; height: number }, path = 
   await page.evaluate(() => document.fonts.ready);
 }
 
-test('comic-reader-phone-bar#AC-1 pictures only', async ({ page }) => {
+test('comic-reader-phone-bar#AC-1 pictures only', async ({ browser }) => {
+  const page = await phone(browser);
   for (const size of PHONES) {
     await open(page, size);
     const bar = await box(page, '.reader__bar');
@@ -148,7 +155,8 @@ test('comic-reader-phone-bar#AC-6 one button', async ({ page, browser }) => {
   await context.close();
 });
 
-test('comic-reader-phone-bar#AC-7 controls on the screen', async ({ page }) => {
+test('comic-reader-phone-bar#AC-7 controls on the screen', async ({ browser }) => {
+  const page = await phone(browser);
   for (const size of PHONES) {
     for (const path of [PANELLED, PLAIN]) {
       for (const on of [false, true]) {

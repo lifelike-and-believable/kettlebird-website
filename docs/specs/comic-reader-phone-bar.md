@@ -3,6 +3,7 @@ status: implemented
 tests-commit: 1e1aca2406328c36cdef4827eb06605e880b9a18
 unlocks:
   - tests/e2e/comic-reader-phone-bar.spec.ts: three checks were wrong against the build, and the criteria are unchanged. AC-4 looked for the words with getByText, which also finds the hidden name label holding the same words; it now checks the words' own span. AC-8 matched calc() exactly as written, but the browser writes its terms in its own order (calc(-12.5rem + 100svh)) and scoped styles put an attribute between .reader__page and .is-spread; it now allows both, and also reads the stylesheets' text to check each svh declaration follows its 100vh fallback, which the browser's style rules can't show.
+  - tests/e2e/comic-reader-phone-bar.spec.ts: AC-1 and AC-7 ran in the desktop browser, with a mouse, at phone sizes; comic-reader-page-size (2026-11-06) adds Page size to the bar on computers only, so there a third button showed. They now run as a phone (touch, no mouse), as the criteria mean. The criteria are unchanged.
 ---
 
 # Comic reader: the reader bar on phones

@@ -14,6 +14,8 @@ const menu = (page: Page) => page.getByRole('menu', { name: 'Page size on this c
 const item = (page: Page, name: string | RegExp) => menu(page).getByRole('menuitemradio', { name });
 const current = (page: Page) => page.locator('.reader__page.is-current:visible').first();
 const bar = (page: Page) => page.locator('.reader__bar');
+/** The reader's top: a page opens with it at the window's top (the bar sits inside its padding). */
+const readerTop = async (page: Page) => (await box(page.locator('.reader'))).y;
 const nav = (page: Page) => page.getByRole('navigation', { name: 'Page navigation' });
 const announced = (page: Page) => page.locator('[data-announce]');
 
@@ -77,7 +79,7 @@ test('comic-reader-page-size#AC-9 fit the height', async ({ page }) => {
   near(b.width, 600);
   near(b.height, 900);
   // Opened at the bar, as now: the page's bottom is a bar's height below the window.
-  near(await box(bar(page)).then((r) => r.y), 0, 2);
+  near(await readerTop(page), 0, 1);
   const below = b.y + b.height - 900;
   expect(below).toBeGreaterThanOrEqual(60);
   expect(below).toBeLessThanOrEqual(76);
@@ -149,7 +151,8 @@ test('comic-reader-page-size#AC-12 a spread alone', async ({ page }) => {
     near((await box(bar(p))).width, barWidth);
     await p.close();
   }
-  // Big Pages' 2400 spread, at Fit the width.
+  // Big Pages' 2400 spread, at the comic's Fit the width (the tabs above share this browser's storage).
+  await page.addInitScript(([k]) => localStorage.removeItem(k), [KEY] as const);
   await open(page, '/comics/big-pages/1/3');
   const s = await box(current(page));
   near(s.width, (await clientWidth(page)) - 32);
@@ -310,7 +313,7 @@ test('comic-reader-page-size#AC-17 the keyboard', async ({ page }) => {
   await expect(sizeButton(page)).toBeFocused();
   near((await box(current(page))).width, 800);
   await page.keyboard.press('Enter');
-  await page.keyboard.press('ArrowDown');
+  await page.keyboard.press('ArrowUp');
   await page.keyboard.press(' ');
   await expect(menu(page)).toBeHidden();
   await expect(sizeButton(page)).toHaveAccessibleName('Page size: Fit the screen, your choice');
@@ -332,7 +335,7 @@ test('comic-reader-page-size#AC-18 choosing', async ({ page }) => {
   const b = await box(current(page));
   near(b.width, 600);
   near(b.height, 900);
-  near((await box(bar(page))).y, 0, 2);
+  near(await readerTop(page), 0, 1);
   await expect(announced(page)).toHaveText('Page size: Fit the height.');
 });
 
@@ -411,19 +414,19 @@ test('comic-reader-page-size#AC-21 turning and waiting', async ({ page }) => {
     // Each page opens at the bar, by Next, by Previous and by the arrow keys.
     await nav(p).getByRole('link', { name: /^Next/ }).click();
     await expect(p).toHaveURL(/\/1\/2$/);
-    near((await box(bar(p))).y, 0, 2);
+    near(await readerTop(p), 0, 1);
     await nav(p).getByRole('link', { name: /^Previous/ }).click();
     await expect(p).toHaveURL(/\/1\/1$/);
-    near((await box(bar(p))).y, 0, 2);
+    near(await readerTop(p), 0, 1);
     await p.keyboard.press('ArrowRight');
     await expect(p).toHaveURL(/\/1\/2$/);
-    near((await box(bar(p))).y, 0, 2);
+    near(await readerTop(p), 0, 1);
     // After a keyboard turn, focus is on the same control on the new page.
     await nav(p).getByRole('link', { name: /^Next/ }).focus();
     await p.keyboard.press('Enter');
     await expect(p).toHaveURL(/\/1\/3$/);
     await expect(nav(p).getByRole('link', { name: /^Next/ })).toBeFocused();
-    near((await box(bar(p))).y, 0, 2);
+    near(await readerTop(p), 0, 1);
     await p.close();
   }
 

@@ -108,7 +108,7 @@ describe('comic-reader-page-size#AC-4 read from Sanity', () => {
   });
 
   it('carries both onto the comic', () => {
-    const raw = { title: 'T', slug: { current: 't' }, status: 'ongoing', type: 'original', chapters: [] };
+    const raw = { title: 'T', slug: { current: 't' }, status: 'ongoing' as const, type: 'original' as const, chapters: [] };
     expect(fromSanity({ ...raw, pageSize: 'height', largestPageWidth: 1200 })).toMatchObject({ pageSize: 'height', largestPageWidth: 1200 });
     const plain = fromSanity(raw);
     expect(plain.pageSize).toBe('screen');

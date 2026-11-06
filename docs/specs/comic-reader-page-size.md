@@ -1,6 +1,9 @@
 ---
 status: draft
 tests-commit: b888818f3c31894e03bd85432579e29e0cbf2427
+unlocks:
+  - tests/e2e/comic-page-size.spec.ts: three checks were wrong against the build, and the criteria are unchanged. "The bar at the window's top" measured the bar, which sits 8 px inside the reader's padding; it now measures the reader's top. AC-12 read Big Pages after tabs in the same browser had stored a fan's choice, which the comic's own size must not see; it now clears it first. AC-17 pressed Down to reach Fit the screen from Fit the width, which is above it; it now presses Up.
+  - tests/unit/comic-page-size.test.ts: AC-4's sample comic gave its status and kind as plain strings, which the type check refuses; they're now typed as the values they are. The criterion is unchanged.
 ---
 
 # Comic reader: how pages fit on a computer
