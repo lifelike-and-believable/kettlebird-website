@@ -1,6 +1,6 @@
 ---
 id: design-comic-panels-two-up
-status: draft
+status: approved
 derived-from:
   - design-comic-panels#decisions: ace7e1b001af
   - design-comic-panels#flow-a-fan: c81bc4915a90
