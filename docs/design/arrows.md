@@ -27,7 +27,7 @@ records the result for later work. -->
 ## Personas
 
 - persona-fan: fans move through comic pages and portfolio pieces one after another (#goals), mostly on phones (#skills-and-tools), deciding quickly whether to keep going (#context-of-use). The way forward should look the same everywhere, so a fan who has used it once knows it on every page. Today it doesn't: the reader's controls, its edge arrows, the carousel and full screen each draw their arrows differently, and on an iPhone full screen's ◀ ▶ characters can come out as emoji.
-- persona-artist: Star wants the site to look like Star's own style (#goals): thick ink borders, sharp corners, hard shadows, yellow highlights and the rounded Nunito lettering. The arrows are drawn to match.
+- persona-artist: Star wants the site to look like Star's own style (#goals): thick ink borders, sharp corners, yellow highlights and the rounded Nunito lettering. The arrows are drawn to match, as ink on paper: flat, with no drop shadow (lead, 2026-11-06).
 
 ## The problem
 
@@ -45,18 +45,18 @@ Four kinds of arrow are in use, none from the style guide:
 
 **One shape.** Every arrow is drawn (SVG) from one solid triangle with rounded corners (mock-up 1): the same solid "play" shape the comic controls have today, so its meaning doesn't change, with its corners rounded like the ends of Nunito's letters. It points right for next, left for previous, and down for a fold-out; two side by side, with a gap between them, are first and newest (or last). In a 24-unit square, the triangle is 10 units wide and 13 tall, drawn with a 3-unit stroke with round joins; the doubles sit in a 32 by 24 box. No arrow is a typed character.
 
-**One button.** Every arrow that stands on its own, without words beside it, sits in one button style, built from the style guide's parts (mock-up 7):
+**One button.** Every arrow that stands on its own, without words beside it, sits in one button style, built from the style guide's parts and kept flat, like ink on paper: no drop shadow, and nothing lifts or moves (mock-up 7). The lead chose this at review (2026-11-06): drop shadows fight the ink-on-paper look.
 
-- **At rest:** beige (`--color-beige`), a 3 px ink border, sharp corners, and the hard shadow, 4 px down and right (`4px 4px 0 rgba(0,0,0,.3)`). At least 44 by 44 px.
-- **Pointer over it:** yellow (`--color-yellow`), lifted 2 px up and left, with the hard shadow at 6 px (`6px 6px 0 rgba(0,0,0,.3)`). The colour and lift are the site's primary buttons' (`.btn-primary`); the shadow stays hard. Only where the device can hover (`@media (hover: hover)`): on a phone, a tapped button that doesn't load a new page (full screen, the carousel) would otherwise stay yellow and lifted, and read as "selected".
-- **Pressed:** yellow, moved 2 px down and right, with no shadow, as if pressed onto the paper (`:active`, on every device).
-- **How it moves:** the lift and the press use the CSS `translate` property, not `transform`, so they add to a button's own positioning. Full screen's side buttons centre themselves with `transform: translateY(-50%)`; a lift written as a `transform` would replace that and make them jump.
+- **At rest:** beige (`--color-beige`), a 3 px ink border, sharp corners, no shadow. At least 44 by 44 px.
+- **Pointer over it:** yellow (`--color-yellow`), the colour of the site's primary buttons on hover (`.btn-primary`), like a highlighter stroke. Only where the device can hover (`@media (hover: hover)`): on a phone, a tapped button that doesn't load a new page (full screen, the carousel) would otherwise stay yellow, and read as "selected".
+- **Pressed:** inked in: an ink fill (`--color-ink`) with a beige arrow and caption, while the finger or button is down (`:active`, on every device).
+- **Nothing moves:** no state changes a button's size or position, so full screen's side buttons, which centre themselves with `transform: translateY(-50%)`, stay where they are.
 - **Keyboard focus:** the site's focus ring, 2 px dark purple (`--color-dark-purple`) 2 px outside the border, shown only for the keyboard (`:focus-visible`).
-- **Can't be used:** a dashed border at 40% ink (`rgba(43,43,43,.4)`) and the arrow and caption at 45% ink (`rgba(43,43,43,.45)`), as today. New: no shadow, and no fill (today's controls keep their beige), so it reads as flat and out of reach. On dark: border, arrow and caption at `#f5f1e877`, as today. These fall below 3:1 on purpose; WCAG exempts controls that can't be used from contrast, and they're also `aria-disabled` and skipped by Tab.
+- **Can't be used:** a dashed border at 40% ink (`rgba(43,43,43,.4)`) and the arrow and caption at 45% ink (`rgba(43,43,43,.45)`), as today. New: no fill (today's controls keep their beige), so it reads as an empty outline, out of reach. On dark: border, arrow and caption at `#f5f1e877`, as today. These fall below 3:1 on purpose; WCAG exempts controls that can't be used from contrast, and they're also `aria-disabled` and skipped by Tab.
 - **The carousel has no "can't be used" state,** as today: its arrows scroll the row and do nothing at its ends.
-- **Motion:** the colour, lift and shadow change over 120 ms (`--transition-fast`). With reduced motion, nothing moves: the colour and shadow change at once, and there's no lift or press movement (as the site's `.btn` does today).
+- **Motion:** only colour changes, over 120 ms (`--transition-fast`); with reduced motion, at once.
 
-**On dark** (full screen), the same button turned around: near-black (`#161616`) with a beige border, arrow and caption, and a pale shadow (`4px 4px 0 rgba(245,241,232,.25)`). With the pointer over it or pressed, it turns yellow with an ink arrow, as on paper. Its focus ring stays full screen's yellow, 3 px, which shows on near-black where purple wouldn't.
+**On dark** (full screen), the same button turned around: near-black (`#161616`) with a beige border, arrow and caption, and no shadow. With the pointer over it, it turns yellow with an ink arrow, as on paper; pressed, it fills beige with an ink arrow (inked in, the other way round). Its focus ring stays full screen's yellow, 3 px, which shows on near-black where purple wouldn't.
 
 **Beside words.** In a link or button with words, the arrow is the same triangle, about three quarters of the letters' height, in the text's colour, on the side it points to (mock-up 8). It's hidden from screen readers; the words carry the meaning.
 
@@ -96,7 +96,7 @@ Built to match the site, with its fonts, colours, paper and pictures. Source: `m
 - Every arrow button is at least 44 by 44 px, and the comic controls at least 56 px tall, as today.
 - The ink arrow on beige or yellow, and the beige arrow on near-black, are well above 3:1, as graphics need. The yellow hover doesn't carry meaning on its own: hovering is a pointer effect, and the button is the same button.
 - Keyboard focus shows the site's ring (REQ-site-4). The comic controls are links and already show it; the carousel buttons show only the browser's own ring today, and gain the site's. On the carousel's kraft band (`#bd9f76` at its darkest) the purple ring is 3.8:1, above the 3:1 a focus ring needs (mock-up 10). Full screen keeps its yellow ring: purple on near-black would be 1.9:1.
-- With reduced motion, nothing moves: hover and press change colour and shadow at once, with no lift or press movement (REQ-site-4).
+- Nothing moves in any state; with reduced motion, the colour changes at once (REQ-site-4).
 - With text at 200%, the captions grow and the arrows keep their size; the comic controls wrap two by two, as today (mock-up 9); the carousel keeps 44 px arrows (mock-up 10); full screen's buttons grow to their captions (mock-up 11).
 
 ## Other documents
@@ -114,10 +114,10 @@ The fans' guide `reading-comics.md` names **← Back to page 4** (twice: where t
 ## For the spec to check
 
 - No control on the site uses a typed arrow (‹ › ◀ ▶ ← → ▾ ▴ ⏮ ⏭): the comic controls, edge arrows, carousel, full screen, contact sheet links, the chapter list, "Read it" and "Email me to get started" use the drawn shape, from one shared source, hidden from screen readers.
-- The arrow buttons in the comic reader, the edge arrows, the carousel and full screen share one style: at rest, a 3 px border and a 4 px hard shadow; with the pointer over them (only where the device can hover), yellow, lifted 2 px, with a 6 px hard shadow; pressed, yellow, with no shadow; can't be used (not the carousel), dashed with no shadow and no fill; and the dark variant in full screen.
-- The lift and press don't move full screen's side buttons from their places: on a laptop, **Previous** and **Next** stay centred on the screen's height with the pointer over them.
+- The arrow buttons in the comic reader, the edge arrows, the carousel and full screen share one style: at rest, beige with a 3 px ink border and no shadow; with the pointer over them (only where the device can hover), yellow; pressed, an ink fill with a beige arrow; can't be used (not the carousel), dashed with no fill; and the dark variant in full screen. None has a box shadow.
+- No state moves or resizes a button: on a laptop, full screen's **Previous** and **Next** stay centred on the screen's height with the pointer over them and while pressed.
 - Keyboard focus shows a visible ring on each (purple on paper, yellow in full screen); a mouse click doesn't.
-- With reduced motion, the hover and press changes have no transition and no movement.
+- With reduced motion, the colour changes have no transition.
 - Accessible names are unchanged, apart from **Back to page 4**, "Read it" and "Email me to get started" losing their arrows.
 - The carousel buttons are 44 by 44 px at every width, including 320 px with text at 200%.
 - With text at 200% on a 320 px phone held upright, full screen's **Previous** and **Next** show their whole captions inside their borders, and nothing in the bottom bar overlaps.
@@ -126,23 +126,25 @@ The fans' guide `reading-comics.md` names **← Back to page 4** (twice: where t
 
 ## Decisions at review
 
-Questions for the lead:
-1. **Yellow on hover** for every arrow button, as the site's primary buttons do (proposed), or only a lift?
-2. **The hard shadow on the comic controls**, which they don't have today (proposed, so all arrow buttons match).
-3. **Words with arrows** ("Read it", "Email me to get started", the chapter links and the chapter list): change them too (proposed), or only the arrows that stand alone?
+The lead's review (2026-11-06), so far:
+- **No drop shadows** on arrow buttons: they fight the ink-on-paper look. With no shadow, nothing lifts or sinks either: hover is yellow only, and pressed is inked in (mock-ups redrawn). This settles the earlier question of adding the shadow to the comic controls.
+
+Still open:
+1. **Yellow on hover** for every arrow button, as the site's primary buttons do (proposed)?
+2. **Words with arrows** ("Read it", "Email me to get started", the chapter links and the chapter list): change them too (proposed), or only the arrows that stand alone?
 
 ## Persona walkthrough
 
 A walkthrough for persona-fan, and for persona-artist on the look (2026-11-06), opened each mock-up and checked the design against the code. It found one blocking problem, five misleading ones and seven slower ones. All are addressed above:
-- **Blocking:** a lift written as a CSS `transform` would have replaced full screen's centring of **Previous** and **Next**, making them jump about 36 px on hover (now the lift uses `translate`, with a check for the spec).
+- **Blocking:** a lift written as a CSS `transform` would have replaced full screen's centring of **Previous** and **Next**, making them jump about 36 px on hover (since the review, nothing moves at all, with a check for the spec).
 - **Misleading:**
   - "Read it" and "Email me to get started" lose their arrows from their spoken names too, not only **Back to page 4**;
-  - the hover's shadow is hard, unlike `.btn-primary`'s soft one;
+  - the hover's shadow was hard, unlike `.btn-primary`'s soft one (since the review, there's no shadow);
   - the comic controls already show the site's focus ring; only the carousel doesn't;
   - on a phone, hover would stick after a tap that loads no new page (now hover is only where the device can hover);
   - the guide names **← Back to page 4** twice.
 - **Slower:**
-  - reduced motion was stated two ways (now: no movement at all);
+  - reduced motion was stated two ways (now nothing moves in any state);
   - mock-up 4 drew the carousel on paper, not its kraft band (redrawn, with the focus ring checked there);
   - the carousel's "can't be used" state was undefined (it has none);
   - the carousel's size today, and with text at 200% (mock-up 10);
