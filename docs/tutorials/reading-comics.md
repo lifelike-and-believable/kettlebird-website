@@ -4,7 +4,7 @@ status: approved
 runner: web
 derived-from:
   - docs-reading-comics#start-a-comic: 5469a681fb3f
-  - docs-reading-comics#turn-pages: b0976c6d3152
+  - docs-reading-comics#turn-pages: 1c80f1da7829
   - docs-reading-comics#when-you-reach-the-end: 13d6837fff63
   - docs-reading-comics#reading-on-a-wide-screen: e4e19d2033de
 ---

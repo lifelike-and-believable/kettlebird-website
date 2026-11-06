@@ -106,8 +106,12 @@ test('comic-reader-phone-bar#AC-4 the 700 px line', async ({ page }) => {
   await open(page, { width: 700, height: 900 });
   expect((await toggle(page).boundingBox())!.width).toBeGreaterThan(100);
   expect((await all(page).boundingBox())!.width).toBeGreaterThan(80);
-  await expect(page.locator('.reader__bar').getByText('Panel by panel', { exact: true })).toBeVisible();
-  await expect(page.locator('.reader__bar').getByText('All pages', { exact: true })).toBeVisible();
+  // The words themselves (the name label under each holds them too, hidden at this width).
+  await expect(toggle(page).locator('.reader__tool-word')).toHaveText('Panel by panel');
+  await expect(toggle(page).locator('.reader__tool-word')).toBeVisible();
+  await expect(all(page).locator('.reader__tool-word')).toHaveText('All pages');
+  await expect(all(page).locator('.reader__tool-word')).toBeVisible();
+  await expect(toggle(page).locator('.reader__tool-tip')).toBeHidden();
 });
 
 test('comic-reader-phone-bar#AC-5 enlarged text', async ({ page }) => {
@@ -177,13 +181,23 @@ test('comic-reader-phone-bar#AC-8 small viewport', async ({ page }) => {
     }
     return out;
   });
+  // The browser keeps the last valid declaration, and may write calc() terms in its own order.
   const declares = (selector: RegExp, property: string, value: string) =>
-    rules.some((r) => selector.test(r.split('{')[0]) && r.includes(`${property}: ${value}`));
-  expect(declares(/\.reader__page(?!\.)/, 'max-height', 'calc(100svh - 12.5rem)'), 'the page area').toBe(true);
-  expect(declares(/\.reader--pairs.*\.reader__book/, 'height', 'calc(100svh - 12.5rem)'), 'the pair').toBe(true);
-  expect(declares(/\.reader__page\.is-spread/, 'max-height', 'calc(100svh - 12.5rem)'), 'a spread alone').toBe(true);
+    rules.some((r) => selector.test(r.split('{')[0]) && new RegExp(`(^|[;{ ])${property}: [^;]*${value}`).test(r));
+  const small = 'calc\\([^;]*(100svh[^;]*12\\.5rem|12\\.5rem[^;]*100svh)';
+  expect(declares(/\.reader__page(?!\.)/, 'max-height', small), 'the page area').toBe(true);
+  expect(declares(/\.reader--pairs.*\.reader__book/, 'height', small), 'the pair').toBe(true);
+  // Scoped styles put an attribute between the class names: .reader__page[data-astro-cid-…].is-spread.
+  expect(declares(/\.reader__page(\[[^\]]*\])?\.is-spread/, 'max-height', small), 'a spread alone').toBe(true);
   expect(declares(/^\.reader(\[|\s*$)/, 'min-height', '100vh'), "the reader's minimum height").toBe(true);
   expect(rules.some((r) => r.includes('max-height: calc(100vh - 12.5rem)') && !r.includes('svh')), 'no page area left on 100vh alone').toBe(false);
+  // Each svh declaration follows a 100vh one, for browsers without svh (the stylesheets' own text).
+  const hrefs = await page.evaluate(() => [...document.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]')].map((l) => l.href));
+  const inline = await page.evaluate(() => [...document.querySelectorAll('style')].map((s) => s.textContent ?? '').join('\n'));
+  const css = (await Promise.all(hrefs.map(async (h) => (await page.request.get(h)).text()))).join('\n') + inline;
+  for (const property of ['max-height', 'height']) {
+    expect(css, `${property} falls back to 100vh`).toMatch(new RegExp(`${property}:\\s*calc\\(100vh - 12\\.5rem\\);\\s*${property}:\\s*calc\\(100svh - 12\\.5rem\\)`));
+  }
 });
 
 test('comic-reader-phone-bar#AC-9 the picture', async ({ page }) => {

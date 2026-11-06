@@ -1,5 +1,8 @@
 ---
 status: draft
+tests-commit: 1e1aca2406328c36cdef4827eb06605e880b9a18
+unlocks:
+  - tests/e2e/comic-reader-phone-bar.spec.ts: three checks were wrong against the build, and the criteria are unchanged. AC-4 looked for the words with getByText, which also finds the hidden name label holding the same words; it now checks the words' own span. AC-8 matched calc() exactly as written, but the browser writes its terms in its own order (calc(-12.5rem + 100svh)) and scoped styles put an attribute between .reader__page and .is-spread; it now allows both, and also reads the stylesheets' text to check each svh declaration follows its 100vh fallback, which the browser's style rules can't show.
 ---
 
 # Comic reader: the reader bar on phones

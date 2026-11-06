@@ -30,6 +30,7 @@ derived-from:
   - design-comic-panels#the-panel-view-reader: f40b7f9e2817
   - design-comic-panels#accessibility: 939d94d8c7e4
   - story-comic-reader-flip-and-panels-read-panel-by-panel: 0cd610fa0545
+  - design-comic-reader-phone-bar#for-the-guide: 321a518145c9
   - design-comic-panels-two-up#for-the-guide: af472bda9347
 ---
 
@@ -59,7 +60,7 @@ Under the page are four buttons, in this order: **First**, **Previous**, **Next*
 
 Arrived from a link partway through? **First** takes you to the start of the comic, and **All pages** shows where you are in this chapter.
 
-With a mouse or keyboard, pointing at a button or moving to it with Tab shows its full name above it, for example "First page of the series". **First** and **Newest** always mean the whole comic, not the chapter you're in.
+With a mouse or keyboard, pointing at a button or moving to it with Tab shows its full name above it, for example "First page of the series". On a narrow screen, pointing at **Panel by panel** or **All pages** at the top shows its name under it. **First** and **Newest** always mean the whole comic, not the chapter you're in.
 
 You can also turn pages in other ways:
 
@@ -91,7 +92,7 @@ On a laptop, or a tablet held sideways, some comics show two pages side by side,
 
 You can read a page panel by panel, each panel enlarged to fit your screen, so small lettering is easy to read without pinching.
 
-1. Choose **Panel by panel** in the bar at the top, beside **All pages**. It's there in chapters whose pages have panels. When it's on, the button is dark.
+1. Choose **Panel by panel** in the bar at the top, beside **All pages**. It's there in chapters whose pages have panels. On a phone it shows only its picture, a page divided into panels, at the top right. When it's on, the button is dark.
 2. The page zooms into its first panel. The bar says where you are, for example "Page 4 of 12 · panel 1 of 5".
 3. **Next**, swiping left or the right arrow key moves to the next panel. After a page's last panel, the next page opens at its first panel. **Previous**, swiping right or the left arrow key goes back, and from a page's first panel to the last panel of the page before.
 4. A page without panels, like a full-page picture, shows whole, and the bar says "· whole page". One turn moves past it.
@@ -103,10 +104,11 @@ You can read a page panel by panel, each panel enlarged to fit your screen, so s
 - Your choice is remembered in that browser.
 - When the reader shows two pages side by side, choosing **Panel by panel** shows one page at a time, starting with the page you're on. Choosing it again goes back to two pages side by side.
 - With a screen reader, you hear each page's description as it opens, then which panel you're on, for example "Panel 3 of 5." at each step. Switching it on says "Panel by panel." and the panel; switching it off says "Whole page".
+- With voice control, say "Tap Panel by panel".
 
 ## See all the pages in a chapter
 
-Choose **All pages** at the top of the reader to see every page of the chapter you're in as a small picture, numbered and in order. It's handy for finding a scene again, or for seeing how far a chapter goes.
+Choose **All pages** at the top of the reader to see every page of the chapter you're in as a small picture, numbered and in order. It's handy for finding a scene again, or for seeing how far a chapter goes. On a phone, **All pages** is the grid of nine squares at the top right. With voice control, say "Tap All pages" (its full name is "All pages in this chapter").
 
 - The page you came from is marked **You were here**, and the sheet opens scrolled to it.
 - Choose any picture to open that page.

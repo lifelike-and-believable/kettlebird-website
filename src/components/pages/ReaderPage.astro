@@ -131,22 +131,32 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
   <div class:list={['reader', { 'reader--pairs': reads.twoUp, 'reader--panelled': panelled }]} data-pairs={reads.twoUp ? '' : undefined}>
     <div class="reader__bar">
       <a href={back} class="reader__back">Back to series</a>
-      {panelled && (
-        <button type="button" class="reader__panels" data-panels-toggle aria-pressed="false" hidden>
-          <svg viewBox="0 0 16 22" width="14" height="20" aria-hidden="true" focusable="false">
-            <rect x="1" y="1" width="14" height="20" fill="none" stroke="currentColor" stroke-width="2" />
-            <rect x="3" y="3" width="10" height="7" fill="currentColor" />
-            <rect x="3" y="12" width="4" height="7" fill="none" stroke="currentColor" stroke-width="1.5" />
-            <rect x="9" y="12" width="4" height="7" fill="none" stroke="currentColor" stroke-width="1.5" />
-          </svg>
-          Panel by panel
-        </button>
-      )}
-      {allPages && (
-        <a href={allPages} class="reader__all" aria-label="All pages in this chapter">
-          <span class="reader__grid" aria-hidden="true">{Array.from({ length: 9 }, () => <i></i>)}</span>
-          All pages
-        </a>
+      {(panelled || allPages) && (
+        <!-- On phones, the two show their pictures only, together at the right; their words stay for
+             assistive technology, and the name shows under each on hover and focus
+             (docs/design/comic-reader-phone-bar.md, docs/specs/comic-reader-phone-bar.md). -->
+        <div class="reader__tools">
+          {panelled && (
+            <button type="button" class="reader__panels reader__tool" data-panels-toggle aria-pressed="false" hidden>
+              <!-- A page of panels, the one being read drawn heavier. Interim, until Star draws it. -->
+              <svg viewBox="0 0 16 22" width="14" height="20" aria-hidden="true" focusable="false">
+                <rect x="1" y="1" width="14" height="20" fill="none" stroke="currentColor" stroke-width="1.5" />
+                <rect x="3.25" y="3.25" width="9.5" height="6.5" fill="none" stroke="currentColor" stroke-width="2.5" />
+                <rect x="3" y="12" width="4" height="7" fill="none" stroke="currentColor" stroke-width="1.25" />
+                <rect x="9" y="12" width="4" height="7" fill="none" stroke="currentColor" stroke-width="1.25" />
+              </svg>
+              <span class="reader__tool-word">Panel by panel</span>
+              <span class="reader__tool-tip" aria-hidden="true">Panel by panel</span>
+            </button>
+          )}
+          {allPages && (
+            <a href={allPages} class="reader__all reader__tool" aria-label="All pages in this chapter">
+              <span class="reader__grid" aria-hidden="true">{Array.from({ length: 9 }, () => <i></i>)}</span>
+              <span class="reader__tool-word">All pages</span>
+              <span class="reader__tool-tip" aria-hidden="true">All pages in this chapter</span>
+            </a>
+          )}
+        </div>
       )}
       {locationLine(entry) === wide.location ? (
         <h1 class="reader__location" data-part="reader-location">{wide.location}</h1>
@@ -661,11 +671,50 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
   }
   .reader__grid { display: inline-grid; grid-template-columns: repeat(3, 5px); gap: 2px; }
   .reader__grid i { display: block; width: 5px; height: 5px; background: var(--color-ink); }
-  /* Phones: Back to series and All pages on the first line, the location line under them. */
+  /* Phones: Back to series and the two buttons on the first line, the location line under them. On
+     phones, either way up, the buttons show their pictures only, as 44 px squares together at the right,
+     and stay together if they wrap (comic-reader-phone-bar AC-1, AC-5). Their words stay in the button,
+     visually hidden, and the name shows under it on hover and keyboard focus, right-aligned, so it's
+     inside the screen (AC-2, AC-3). */
+  .reader__tool-tip { display: none; }
   @media (max-width: 699px) {
     .reader__location { flex-basis: 100%; }
+    .reader__tools { display: flex; gap: 1rem; margin-left: auto; }
+    .reader__tool { position: relative; width: 44px; height: 44px; padding: 0; justify-content: center; gap: 0; }
+    .reader__panels svg { width: 18px; height: 26px; }
+    .reader__all .reader__grid { grid-template-columns: repeat(3, 6px); }
+    .reader__all .reader__grid i { width: 6px; height: 6px; }
+    .reader__tool-word {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      padding: 0;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+    .reader__tool-tip {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: -2px; /* the button's outer edge, past its 2 px border */
+      z-index: 3;
+      padding: 0.25rem 0.5rem;
+      background: var(--color-ink);
+      color: var(--color-beige);
+      font: 600 0.8rem 'Nunito', sans-serif;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+    .reader__tool:focus-visible .reader__tool-tip { display: block; }
+  }
+  /* Hover only where a device can hover: on touch, a tap would leave the label stuck over the page. */
+  @media (max-width: 699px) and (hover: hover) {
+    .reader__tool:hover .reader__tool-tip { display: block; }
   }
   @media (min-width: 700px) {
+    .reader__tools { display: contents; }
     .reader__all { order: 3; }
     .reader__location { margin-right: auto; }
   }
@@ -681,10 +730,13 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
     position: relative;
     margin: 0 auto;
     width: 100%;
-    /* Fits the window below the reader bar (with All pages) and above the controls, so on a
-       360 × 640 phone both are on the first screen. */
+    /* Fits the visible screen below the reader bar and above the controls: the small viewport, with the
+       browser's toolbars showing, where 100vh on iPhone Safari is the screen with them hidden
+       (comic-reader-phone-bar AC-8). 100vh for browsers without svh. */
     max-height: calc(100vh - 12.5rem);
+    max-height: calc(100svh - 12.5rem);
     max-width: min(100%, calc((100vh - 12.5rem) * var(--page-ratio, 0.6667)));
+    max-width: min(100%, calc((100svh - 12.5rem) * var(--page-ratio, 0.6667)));
     background: var(--color-paper-dark);
   }
   /* A spread on a narrow screen is shrunk to fit its width; sideways, it fills it, with the controls a
@@ -720,6 +772,7 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       grid-template-rows: minmax(0, 1fr);
       height: calc(100vh - 12.5rem);
+      height: calc(100svh - 12.5rem);
     }
     :global(html:not(.kb-one-page)) .reader--pairs .reader__book .reader__page {
       height: 100%;
@@ -748,7 +801,9 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
     .reader:not(.reader--pairs) .reader__page.is-spread,
     :global(html.kb-one-page) .reader__page.is-spread {
       max-height: calc(100vh - 12.5rem);
+      max-height: calc(100svh - 12.5rem);
       max-width: min(100%, calc((100vh - 12.5rem) * var(--page-ratio, 1.3333)));
+      max-width: min(100%, calc((100svh - 12.5rem) * var(--page-ratio, 1.3333)));
     }
   }
 
