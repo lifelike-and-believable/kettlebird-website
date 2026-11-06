@@ -157,8 +157,9 @@ test.describe('on a touch phone', () => {
     expect(await page.evaluate(() => matchMedia('(hover: hover)').matches)).toBe(false);
     const right = carousel(page, 'Scroll right');
     await right.tap();
-    await page.waitForTimeout(300);
-    expect((await look(right)).backgroundColor).toBe(BEIGE);
+    // Back to paper once the tap ends (no hover colour stuck on a touch screen), after its colour
+    // transition: waited for, since a fixed wait was too short on a slow CI machine.
+    await expect.poll(async () => (await look(right)).backgroundColor).toBe(BEIGE);
   });
 });
 
