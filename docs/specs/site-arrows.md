@@ -1,5 +1,5 @@
 ---
-status: draft
+status: implemented
 tests-commit: 1068af420ddd5c5b9b8be59b738479b0ded0211d
 unlocks:
   - tests/unit/arrows-edges.test.ts (new): mutation testing showed nothing checked the spaces between the arrow's attributes, or that an arrow without a class gets no class attribute at all. Added an exact check of the markup; the criteria are unchanged.
