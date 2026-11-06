@@ -32,7 +32,7 @@ This amends design-comic-spread-and-flip, "Settings per comic", which has two ti
 - Empty for every comic today and for a new comic, which read as now.
 - Anything else (under 600, over 1600, not a whole number, "900px") can't be published: "Choose a width between 600 and 1600 pixels, or leave it empty." (mock-up 7).
 - **With Two pages side by side ticked**, the field says: "Two pages side by side is on for this comic, so this has no effect: pairs fit the window. Untick it to read one page at a time at this width." (mock-up 7), as **Open on** does in the other direction.
-- Like the other settings, it goes live when the comic itself is published; publishing a chapter doesn't publish it. The comic's own **Publish** shows "Changes not published" until then, as for any item (design-know-when-live), and the guide says to publish the comic.
+- Like the other settings, it goes live when the comic itself is published; publishing a chapter doesn't publish it. Until then the comic shows Sanity's own mark for unpublished changes, as any item does (design-know-when-live, "Drafts"), and the guide says to publish the comic.
 - A chapter's preview at **Computer** uses the comic's width as it is now, published or not, like the other settings. That preview is the reader at 1280 px, shown smaller to fit beside the editor, so it shows how the page and controls fall, not the page's real size on screen.
 
 **On a computer, one page at a time** (mock-ups 2 to 5 and 8):
