@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Arrows: mock-ups</title>
+<!-- Source for the PNG mock-ups beside this file (docs/design/arrows.md). Each frame is built to match
+     the site (its fonts, colours, paper and pictures), with simplified markup. The today-*.png images are
+     screenshots of the live site on 2026-11-06, shown beside the change. Render: node render.mjs -->
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@500&family=DM+Sans:wght@400;500;700&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root { --ink:#2b2b2b; --beige:#f5f1e8; --yellow:#f4ce6a; --purple:#4a4063; --night:#161616; --orange:#ea7547; }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 24px; background: #9ca3af; font-family: 'DM Sans', sans-serif; color: #111; display: flex; flex-direction: column; gap: 32px; align-items: flex-start; }
+  .frame { background: #e5e7eb; padding: 20px; }
+  .frame h2 { font: 800 20px 'Nunito'; margin: 0 0 4px; }
+  .frame p.sub { margin: 0 0 14px; font-size: 14px; line-height: 1.45; max-width: 760px; }
+  .tag { font: 700 12px system-ui; text-transform: uppercase; letter-spacing: .06em; color: #374151; margin: 0 0 6px; }
+  .paper { background: var(--beige) url('../../../../public/assets/images/Paper_2_Tileable.png'); background-size: 400px; color: var(--ink); }
+  .dark { background: var(--night); color: var(--beige); }
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+  .cell { padding: 16px; border: 1px solid #0002; }
+  img.today { display: block; max-width: 100%; }
+
+  /* ---------- The arrow button (one style everywhere) ---------- */
+  .ab { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+    min-width: 44px; min-height: 44px; padding: 4px 8px; background: var(--beige); color: var(--ink);
+    border: 3px solid var(--ink); box-shadow: 4px 4px 0 rgba(0,0,0,.3); font: 700 .8rem/1.1 'Nunito'; position: relative; text-decoration: none; }
+  .ab svg { width: 24px; height: 24px; display: block; flex: none; }
+  .ab svg.dbl { width: 32px; }
+  .ab.hover { background: var(--yellow); transform: translate(-2px,-2px); box-shadow: 6px 6px 0 rgba(0,0,0,.3); }
+  .ab.press { background: var(--yellow); transform: translate(2px,2px); box-shadow: none; }
+  .ab.focus { outline: 2px solid var(--purple); outline-offset: 2px; }
+  .ab.off { border-style: dashed; border-color: rgba(43,43,43,.4); color: rgba(43,43,43,.45); box-shadow: none; background: transparent; }
+  .dark .ab { background: var(--night); color: var(--beige); border-color: var(--beige); box-shadow: 4px 4px 0 rgba(245,241,232,.25); }
+  .dark .ab.hover { background: var(--yellow); color: var(--ink); border-color: var(--yellow); box-shadow: 6px 6px 0 rgba(245,241,232,.25); }
+  .dark .ab.press { background: var(--yellow); color: var(--ink); border-color: var(--yellow); box-shadow: none; }
+  .dark .ab.focus { outline: 3px solid var(--yellow); outline-offset: 2px; }
+  .dark .ab.off { border-color: #f5f1e877; color: #f5f1e877; box-shadow: none; background: transparent; }
+  .tip { position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%); padding: .25rem .5rem; background: var(--ink); color: var(--beige); font: 600 .8rem 'Nunito'; white-space: nowrap; }
+
+  /* Frame 1: the shape */
+  .shapes { display: flex; gap: 28px; align-items: flex-end; }
+  .shapes figure { margin: 0; text-align: center; font: 500 12px 'DM Mono'; }
+  .shapes figure svg { width: 72px; height: 72px; background: #fff; outline: 1px dashed #0003; display: block; margin-bottom: 6px; color: var(--ink); }
+  .shapes figure svg.dbl { width: 96px; }
+  .beside { display: flex; align-items: center; gap: 14px; padding: 18px 24px; }
+  .beside .t { font: 900 64px/1 'Nunito'; }
+  .beside svg { width: 64px; height: 64px; }
+
+  /* Frame 2: comic controls */
+  .controls { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: .5rem; }
+  .controls .ab { min-height: 56px; padding: .25rem 0; }
+  .phone-controls { width: 358px; }
+  .wide-controls { width: 640px; }
+
+  /* Frame 3: edge arrows */
+  .edge { position: relative; width: 420px; height: 300px; background: #f2ead9; border: 1px solid #0002; overflow: hidden; }
+  .edge .page { position: absolute; inset: 0 0 0 0; background: url('../../../../public/assets/images/bkgd-Comics.jpg') center/cover; filter: grayscale(1) contrast(.9); opacity: .9; }
+  .edge .zone { position: absolute; top: 0; bottom: 0; right: 0; width: 15%; background: rgba(245,241,232,.4); display: flex; align-items: center; justify-content: center; }
+
+  /* Frame 4: carousel */
+  .carousel { display: flex; align-items: center; gap: 12px; width: 640px; }
+  .thumb { flex: 1; height: 150px; border: 3px solid var(--ink); background: url('../../../../public/assets/images/bkgd-artwork.jpg') center/cover; }
+  .thumb:nth-child(3) { background-position: 30% 40%; } .thumb:nth-child(4) { background-position: 80% 60%; }
+
+  /* Frames 5 and 6: full screen */
+  .fs { position: relative; overflow: hidden; }
+  .fs .top { position: absolute; left: 0; right: 0; top: 0; height: 56px; background: var(--night); border-bottom: 1px solid #f5f1e833; display: flex; align-items: center; gap: 14px; padding: 0 12px; z-index: 2; }
+  .fs .top b { font: 800 1rem 'Nunito'; } .fs .top span { font: 500 .85rem 'DM Sans'; color: #ddd; }
+  .fs .top .close { margin-left: auto; background: var(--beige); color: var(--ink); border: 2px solid var(--beige); font: 800 1.05rem 'Nunito'; min-width: 44px; justify-content: center; padding: 0 .75rem; min-height: 44px; display: flex; align-items: center; }
+  .fs .pic { position: absolute; background: url('../../../../public/assets/images/bkgd-artwork.jpg') center/contain no-repeat; }
+  .fs .side { position: absolute; top: 50%; transform: translateY(-50%); width: 64px; min-height: 72px; z-index: 2; }
+  .fs .side.hover { transform: translate(-2px, calc(-50% - 2px)); }
+  .fs .zoom { position: absolute; z-index: 2; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: .25rem; padding: .25rem; background: var(--night); border: 2px solid var(--beige); }
+  .fs .zoom .zb { min-width: 44px; min-height: 44px; display: flex; align-items: center; justify-content: center; font: 700 1.1rem 'Nunito'; color: var(--beige); border: 2px solid transparent; }
+  .fs .zoom .zb.off { border: 2px dashed #f5f1e877; color: #f5f1e877; }
+  .fs .zoom .lvl { font: 500 .85rem 'DM Mono'; min-width: 4.5em; text-align: center; }
+  .fs .bottom { position: absolute; left: 0; right: 0; bottom: 0; height: 76px; background: var(--night); border-top: 1px solid #f5f1e833; }
+
+  /* Frame 8: text links */
+  .links { display: grid; gap: 18px; width: 640px; }
+  .tl { font: 700 1rem 'Nunito'; color: var(--ink); display: inline-flex; align-items: center; gap: .3em; text-decoration: none; min-height: 44px; }
+  .tl svg, .btnx svg, .hl svg, .sum svg { width: .72em; height: .72em; flex: none; }
+  .row { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  .today-text { font: 700 1rem 'Nunito'; color: var(--ink); }
+  .btnx { display: inline-flex; align-items: center; gap: .35em; font: 600 1.1rem 'Nunito'; padding: .75rem 1.5rem; border: 2px solid var(--ink); border-radius: 5% 95% 6% 94% / 95% 7% 93% 5%; background: var(--orange); color: var(--ink); }
+  .hl { display: inline-flex; align-items: center; gap: .35em; font: 700 1rem 'Nunito'; padding: .6rem 1.5rem; background: url('../../../../public/assets/images/Highlighter_G.png') 0 0/100% 100% no-repeat; color: var(--ink); }
+  .sum { display: flex; justify-content: space-between; align-items: center; min-height: 44px; padding: .5rem .75rem; border: 2px solid var(--ink); font: 700 1rem 'Nunito'; background: var(--beige); }
+  .lbl { font: 600 12px system-ui; color: #4b5563; }
+
+  /* Frame 9: enlarged text on a 320 px phone (rem sizes doubled) */
+  .x2 { width: 320px; padding: 16px 12px; }
+  .x2 .controls { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .x2 .ab { font-size: 1.6rem; }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- The one shape: a solid triangle, 10 wide and 13 tall, drawn with a 3-unit round-joined stroke in a 24-unit square. -->
+    <g id="next"><path d="M8 5.5 L18 12 L8 18.5 Z" fill="currentColor" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/></g>
+    <g id="previous"><path d="M16 5.5 L6 12 L16 18.5 Z" fill="currentColor" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/></g>
+    <!-- Doubles, in a 32 by 24 box, with a visible gap between the two. -->
+    <g id="newest"><path d="M3.5 5.5 L13.5 12 L3.5 18.5 Z M18.5 5.5 L28.5 12 L18.5 18.5 Z" fill="currentColor" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/></g>
+    <g id="first"><path d="M28.5 5.5 L18.5 12 L28.5 18.5 Z M13.5 5.5 L3.5 12 L13.5 18.5 Z" fill="currentColor" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/></g>
+    <g id="down"><path d="M5.5 8 L18.5 8 L12 18 Z" fill="currentColor" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/></g>
+    <g id="up"><path d="M5.5 16 L18.5 16 L12 6 Z" fill="currentColor" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/></g>
+  </defs>
+</svg>
+
+<!-- 1 -->
+<div class="frame" id="f1" style="width:820px">
+  <h2>1 · The shape</h2>
+  <p class="sub">One solid triangle with rounded corners, like the rounded ends of Nunito's letters. Every arrow on the site is drawn from it: one pointing right for next, left for previous, two for first and newest, and down or up for a fold-out.</p>
+  <div class="cell paper">
+    <div class="shapes">
+      <figure><svg viewBox="0 0 24 24"><use href="#previous"/></svg>previous</figure>
+      <figure><svg viewBox="0 0 24 24"><use href="#next"/></svg>next</figure>
+      <figure><svg class="dbl" viewBox="0 0 32 24"><use href="#first"/></svg>first</figure>
+      <figure><svg class="dbl" viewBox="0 0 32 24"><use href="#newest"/></svg>newest / last</figure>
+      <figure><svg viewBox="0 0 24 24"><use href="#down"/></svg>fold-out</figure>
+    </div>
+    <div class="beside"><span class="t">Next</span><svg viewBox="0 0 24 24"><use href="#next"/></svg><span class="t" style="margin-left:40px">Newest</span><svg viewBox="0 0 32 24" style="width:85px"><use href="#newest"/></svg></div>
+  </div>
+</div>
+
+<!-- 2 -->
+<div class="frame" id="f2" style="width:720px">
+  <h2>2 · Comic reader controls</h2>
+  <p class="sub">The same four controls, in the same places, with the same captions and full names. They gain the hard shadow, yellow on hover, and the soft triangles.</p>
+  <p class="tag">Today</p>
+  <div class="cell paper" style="margin-bottom:16px"><img class="today" src="today-comic-controls.png" width="640"></div>
+  <p class="tag">After, on a laptop: on the newest page, with the pointer over Previous</p>
+  <div class="cell paper" style="margin-bottom:16px; padding-top:48px">
+    <div class="controls wide-controls">
+      <span class="ab"><svg class="dbl" viewBox="0 0 32 24"><use href="#first"/></svg>First</span>
+      <span class="ab hover"><svg viewBox="0 0 24 24"><use href="#previous"/></svg>Previous<span class="tip">Previous page</span></span>
+      <span class="ab off"><svg viewBox="0 0 24 24"><use href="#next"/></svg>Next</span>
+      <span class="ab off"><svg class="dbl" viewBox="0 0 32 24"><use href="#newest"/></svg>Newest</span>
+    </div>
+  </div>
+  <p class="tag">After, on a 390 px phone: on page 1 of the series</p>
+  <div class="cell paper">
+    <div class="controls phone-controls">
+      <span class="ab off"><svg class="dbl" viewBox="0 0 32 24"><use href="#first"/></svg>First</span>
+      <span class="ab off"><svg viewBox="0 0 24 24"><use href="#previous"/></svg>Previous</span>
+      <span class="ab"><svg viewBox="0 0 24 24"><use href="#next"/></svg>Next</span>
+      <span class="ab"><svg class="dbl" viewBox="0 0 32 24"><use href="#newest"/></svg>Newest</span>
+    </div>
+  </div>
+</div>
+
+<!-- 3 -->
+<div class="frame" id="f3" style="width:820px">
+  <h2>3 · Comic edge arrows (laptops, on hover)</h2>
+  <p class="sub">The quiet strip at each edge of the page stays, and still turns the page when clicked anywhere. In place of the faint ‹ character, the arrow button shows in its middle, yellow, while the pointer is over the strip.</p>
+  <div class="pair">
+    <div><p class="tag">Today</p><div class="cell paper"><img class="today" src="today-comic-edge.png" style="height:300px"></div></div>
+    <div><p class="tag">After</p><div class="cell paper"><div class="edge" style="width:340px"><div class="page"></div><div class="zone"><span class="ab hover"><svg viewBox="0 0 24 24"><use href="#next"/></svg></span></div></div></div></div>
+  </div>
+</div>
+
+<!-- 4 -->
+<div class="frame" id="f4" style="width:720px">
+  <h2>4 · Portfolio carousel</h2>
+  <p class="sub">The black squares with ‹ and › become the same arrow buttons. The right one shows the pointer over it.</p>
+  <p class="tag">Today</p>
+  <div class="cell paper" style="margin-bottom:16px"><img class="today" src="today-carousel.png" width="640"></div>
+  <p class="tag">After</p>
+  <div class="cell paper"><div class="carousel"><span class="ab"><svg viewBox="0 0 24 24"><use href="#previous"/></svg></span><div class="thumb"></div><div class="thumb"></div><div class="thumb"></div><span class="ab hover"><svg viewBox="0 0 24 24"><use href="#next"/></svg></span></div></div>
+</div>
+
+<!-- 5 -->
+<div class="frame" id="f5" style="width:1180px">
+  <h2>5 · Full screen on a laptop</h2>
+  <p class="sub">The same button, turned around for the dark view: near-black with a beige border, arrow and caption, and a pale shadow. On the first piece, Previous can't be used. The emoji-prone ◀ ▶ characters go.</p>
+  <div class="pair">
+    <div><p class="tag">Today</p><img class="today" src="today-full-screen.png" width="550"></div>
+    <div><p class="tag">After</p>
+      <div class="fs dark" style="width:550px; height:400px">
+        <div class="top"><b>Night Market</b><span>1 of 12 · Original Work</span><span class="close">✕ Close</span></div>
+        <div class="pic" style="inset:60px 80px 70px"></div>
+        <span class="ab off side" style="left:8px"><svg viewBox="0 0 24 24"><use href="#previous"/></svg>Previous</span>
+        <span class="ab side" style="right:8px"><svg viewBox="0 0 24 24"><use href="#next"/></svg>Next</span>
+        <div class="zoom" style="bottom:10px"><span class="zb off">−</span><span class="lvl">100%</span><span class="zb">+</span><span class="zb off" style="font-size:.85rem">Fit</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 6 -->
+<div class="frame" id="f6" style="width:900px">
+  <h2>6 · Full screen on a phone held upright</h2>
+  <p class="sub">Previous and Next in the bottom bar, either side of the zoom controls, in the dark style. Left: at rest. Right: Next pressed (it sinks onto its shadow and turns yellow).</p>
+  <div class="pair" style="grid-template-columns: 390px 390px">
+    <div class="fs dark" style="width:390px; height:700px">
+      <div class="top"><b>Night Market</b><span>3 of 12</span><span class="close">✕</span></div>
+      <div class="pic" style="inset:70px 8px 90px"></div>
+      <div class="bottom"></div>
+      <span class="ab side" style="left:8px; top:auto; bottom:6px; transform:none; width:60px; min-height:64px"><svg viewBox="0 0 24 24"><use href="#previous"/></svg>Previous</span>
+      <span class="ab side" style="right:8px; top:auto; bottom:6px; transform:none; width:60px; min-height:64px"><svg viewBox="0 0 24 24"><use href="#next"/></svg>Next</span>
+      <div class="zoom" style="bottom:12px"><span class="zb off">−</span><span class="lvl">100%</span><span class="zb">+</span><span class="zb off" style="font-size:.85rem">Fit</span></div>
+    </div>
+    <div class="fs dark" style="width:390px; height:700px">
+      <div class="top"><b>Night Market</b><span>3 of 12</span><span class="close">✕</span></div>
+      <div class="pic" style="inset:70px 8px 90px"></div>
+      <div class="bottom"></div>
+      <span class="ab side" style="left:8px; top:auto; bottom:6px; transform:none; width:60px; min-height:64px"><svg viewBox="0 0 24 24"><use href="#previous"/></svg>Previous</span>
+      <span class="ab side press" style="right:8px; top:auto; bottom:6px; transform:translate(2px,2px); width:60px; min-height:64px"><svg viewBox="0 0 24 24"><use href="#next"/></svg>Next</span>
+      <div class="zoom" style="bottom:12px"><span class="zb off">−</span><span class="lvl">100%</span><span class="zb">+</span><span class="zb off" style="font-size:.85rem">Fit</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- 7 -->
+<div class="frame" id="f7" style="width:900px">
+  <h2>7 · States</h2>
+  <p class="sub">One set of rules for every arrow button, on paper and on dark.</p>
+  <div class="cell paper" style="display:flex; gap:36px; align-items:flex-end; padding:28px 24px 20px">
+    <figure style="margin:0;text-align:center"><span class="ab"><svg viewBox="0 0 24 24"><use href="#next"/></svg></span><figcaption class="lbl" style="margin-top:12px">At rest</figcaption></figure>
+    <figure style="margin:0;text-align:center"><span class="ab hover"><svg viewBox="0 0 24 24"><use href="#next"/></svg></span><figcaption class="lbl" style="margin-top:12px">Pointer over it:<br>yellow, lifts 2 px</figcaption></figure>
+    <figure style="margin:0;text-align:center"><span class="ab press"><svg viewBox="0 0 24 24"><use href="#next"/></svg></span><figcaption class="lbl" style="margin-top:12px">Pressed: sinks<br>onto its shadow</figcaption></figure>
+    <figure style="margin:0;text-align:center"><span class="ab focus"><svg viewBox="0 0 24 24"><use href="#next"/></svg></span><figcaption class="lbl" style="margin-top:12px">Keyboard focus:<br>the site's purple ring</figcaption></figure>
+    <figure style="margin:0;text-align:center"><span class="ab off"><svg viewBox="0 0 24 24"><use href="#next"/></svg></span><figcaption class="lbl" style="margin-top:12px">Can't be used: dashed,<br>faded, no shadow</figcaption></figure>
+  </div>
+  <div class="cell dark" style="display:flex; gap:36px; align-items:flex-end; padding:28px 24px 20px; margin-top:12px">
+    <figure style="margin:0;text-align:center"><span class="ab"><svg viewBox="0 0 24 24"><use href="#next"/></svg></span><figcaption class="lbl" style="margin-top:12px;color:#ddd">At rest</figcaption></figure>
+    <figure style="margin:0;text-align:center"><span class="ab hover"><svg viewBox="0 0 24 24"><use href="#next"/></svg></span><figcaption class="lbl" style="margin-top:12px;color:#ddd">Pointer over it</figcaption></figure>
+    <figure style="margin:0;text-align:center"><span class="ab press"><svg viewBox="0 0 24 24"><use href="#next"/></svg></span><figcaption class="lbl" style="margin-top:12px;color:#ddd">Pressed</figcaption></figure>
+    <figure style="margin:0;text-align:center"><span class="ab focus"><svg viewBox="0 0 24 24"><use href="#next"/></svg></span><figcaption class="lbl" style="margin-top:12px;color:#ddd">Keyboard focus:<br>yellow ring, as today</figcaption></figure>
+    <figure style="margin:0;text-align:center"><span class="ab off"><svg viewBox="0 0 24 24"><use href="#next"/></svg></span><figcaption class="lbl" style="margin-top:12px;color:#ddd">Can't be used</figcaption></figure>
+  </div>
+</div>
+
+<!-- 8 -->
+<div class="frame" id="f8" style="width:720px">
+  <h2>8 · Arrows in words</h2>
+  <p class="sub">Where an arrow sits beside words (a link or a button), the typed ← → become the small triangle, about three quarters of the letters' height, in the text's colour. The chapter list's ▾ becomes the triangle pointing down.</p>
+  <div class="pair" style="grid-template-columns: 1fr 1fr">
+    <div><p class="tag">Today</p>
+      <div class="cell paper links" style="width:auto">
+        <div class="row"><span class="today-text">← Chapter 1</span><span class="today-text">Chapter 3 →</span></div>
+        <div><span class="today-text">← Back to page 4</span></div>
+        <div class="sum">Chapter 2 of 6 · All chapters <span>▾</span></div>
+        <div><span class="btnx">Read it →</span></div>
+        <div><span class="hl">Email me to get started →</span></div>
+      </div>
+    </div>
+    <div><p class="tag">After</p>
+      <div class="cell paper links" style="width:auto">
+        <div class="row"><a class="tl"><svg viewBox="0 0 24 24"><use href="#previous"/></svg>Chapter 1</a><a class="tl">Chapter 3<svg viewBox="0 0 24 24"><use href="#next"/></svg></a></div>
+        <div><a class="tl"><svg viewBox="0 0 24 24"><use href="#previous"/></svg>Back to page 4</a></div>
+        <div class="sum">Chapter 2 of 6 · All chapters <svg viewBox="0 0 24 24"><use href="#down"/></svg></div>
+        <div><span class="btnx">Read it<svg viewBox="0 0 24 24"><use href="#next"/></svg></span></div>
+        <div><span class="hl">Email me to get started<svg viewBox="0 0 24 24"><use href="#next"/></svg></span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 9 -->
+<div class="frame" id="f9" style="width:380px">
+  <h2>9 · Enlarged text</h2>
+  <p class="sub">A 320 px phone with text at 200%: the controls wrap two by two, as today. The arrows keep their size; the captions grow.</p>
+  <div class="paper x2">
+    <div class="controls">
+      <span class="ab off" style="order:1"><svg viewBox="0 0 24 24"><use href="#previous"/></svg>Previous</span>
+      <span class="ab" style="order:2"><svg viewBox="0 0 24 24"><use href="#next"/></svg>Next</span>
+      <span class="ab off" style="order:3"><svg class="dbl" viewBox="0 0 32 24"><use href="#first"/></svg>First</span>
+      <span class="ab" style="order:4"><svg class="dbl" viewBox="0 0 32 24"><use href="#newest"/></svg>Newest</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  Promise.all([document.fonts.ready, ...[...document.images].map((i) => i.decode().catch(() => {}))]).then(() => { document.body.dataset.ready = 'yes'; });
+</script>
+</body>
+</html>
