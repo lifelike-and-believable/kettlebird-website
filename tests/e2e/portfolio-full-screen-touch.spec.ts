@@ -17,7 +17,7 @@ async function open(page: Page) {
   const view = page.getByRole('dialog', { name: 'Full screen' });
   await expect(view).toBeVisible();
   const cdp = await page.context().newCDPSession(page);
-  const touch = (type: 'touchStart' | 'touchMove' | 'touchEnd', points: { x: number; y: number }[]) =>
+  const touch = (type: 'touchStart' | 'touchMove' | 'touchEnd' | 'touchCancel', points: { x: number; y: number }[]) =>
     cdp.send('Input.dispatchTouchEvent', { type, touchPoints: points.map((p, id) => ({ ...p, id })) });
   const box = (await view.locator('[data-fs-stage]').boundingBox())!;
   return { view, touch, cx: box.x + box.width / 2, cy: box.y + box.height / 2 };
@@ -73,3 +73,29 @@ test('portfolio-full-screen#AC-7 dragging still works after letting go for a whi
   await touch('touchEnd', []);
   await expect.poll(async () => parseInt((await view.locator('[data-fs-level]').textContent()) ?? '0')).toBeLessThan(level);
 });
+
+test('portfolio-full-screen#AC-9 a touch brings the bars back at once, however the phone ends it', async ({ page }) => {
+  // The lead found on a phone that a tap hid the bars but another tap didn't bring them back (2026-11-06).
+  // A phone may end a touch with a cancel rather than a lift (iPhones do so readily), and the view only
+  // counted lifts as taps; and bringing the bars back waited for a possible double tap.
+  const { view, touch, cx, cy } = await open(page);
+  const controls = view.locator('[data-fs-controls]');
+  await touch('touchStart', [{ x: cx, y: cy }]);
+  await touch('touchEnd', []);
+  await expect(controls).toHaveAttribute('data-hidden', 'true');
+  await page.waitForTimeout(500);
+  // A tap shows them straight away, without waiting out the double-tap time.
+  await touch('touchStart', [{ x: cx, y: cy }]);
+  await touch('touchEnd', []);
+  expect(await controls.getAttribute('data-hidden')).toBe('false');
+  // Hide them again, then a touch the phone cancels still shows them.
+  await page.waitForTimeout(500);
+  await touch('touchStart', [{ x: cx, y: cy }]);
+  await touch('touchEnd', []);
+  await expect(controls).toHaveAttribute('data-hidden', 'true');
+  await page.waitForTimeout(500);
+  await touch('touchStart', [{ x: cx, y: cy }]);
+  await touch('touchCancel', []);
+  await expect(controls).toHaveAttribute('data-hidden', 'false');
+});
+

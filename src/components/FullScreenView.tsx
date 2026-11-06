@@ -13,6 +13,7 @@ import {
   downPointers,
   isDoubleTap,
   isTap,
+  TAP_MOVE,
   fetchNext,
   fitted,
   HIDE_DELAY_MS,
@@ -354,25 +355,36 @@ export default function FullScreenView({ order, start, sectionTitle, dialogSrc, 
     hideTimer.current = window.setTimeout(() => {
       // Hiding is visual only; a control keeping focus would vanish, so focus moves to the view first.
       if (rootRef.current?.querySelector('[data-fs-controls]')?.contains(document.activeElement)) rootRef.current.focus();
-      setHidden((h) => !h);
+      setHidden(true);
     }, HIDE_DELAY_MS);
   };
-  const onPointerUp = (event: ReactPointerEvent<HTMLDivElement>) => {
+  // How a touch ends: a lift, a cancel, or a lost capture with no lift (phones send each). While the bars
+  // are hidden, any short touch brings them back at once, however it ends.
+  const endGesture = (event: ReactPointerEvent<HTMLDivElement>, cancelled: boolean) => {
     pointers.current.delete(event.pointerId);
     const g = gesture.current;
     setSwipeX(0);
     if (!g || pointers.current.size > 0) return;
     gesture.current = undefined;
     if (g.multi) return;
-    if (event.type !== 'pointercancel' && isTap({ moved: g.moved, duration: performance.now() - g.start })) {
+    if (hidden && g.moved <= TAP_MOVE) {
+      lastTap.current = { time: performance.now(), x: event.clientX, y: event.clientY };
+      show();
+      return;
+    }
+    if (cancelled) return;
+    if (isTap({ moved: g.moved, duration: performance.now() - g.start })) {
       tap(event.clientX, event.clientY);
       return;
     }
     const to = swipeTurn({ dx: event.clientX - g.startX, dy: event.clientY - g.startY, startX: g.startX, zoomed: zoom > 1 });
     if (to) turn(to);
   };
+  const onPointerUp = (event: ReactPointerEvent<HTMLDivElement>) => endGesture(event, false);
+  const onPointerCancel = (event: ReactPointerEvent<HTMLDivElement>) => endGesture(event, true);
+  // A capture lost with no lift ends the touch too; after a lift, the gesture is already over.
   const onLostCapture = (event: ReactPointerEvent<HTMLDivElement>) => {
-    pointers.current.delete(event.pointerId);
+    if (pointers.current.has(event.pointerId)) endGesture(event, true);
   };
 
   // ---------------------------------------------------------------- the view
@@ -404,7 +416,7 @@ export default function FullScreenView({ order, start, sectionTitle, dialogSrc, 
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
-        onPointerCancel={onPointerUp}
+        onPointerCancel={onPointerCancel}
         onLostPointerCapture={onLostCapture}
       >
         {failed ? (
