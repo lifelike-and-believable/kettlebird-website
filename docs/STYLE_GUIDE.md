@@ -132,10 +132,27 @@ Subtle, professional animations:
 ## Accessibility
 
 - Minimum contrast AA for text; AAA for body on paper.
-- Focus rings: 2px teal outline + 1px offset shadow on focusable elements.
+- Focus rings: 2px dark purple (`--color-dark-purple`) outline, 2px outside the element, shown for the keyboard only (`:focus-visible`). On near-black (full screen), a 3px yellow ring instead.
 - All imagery requires descriptive alt text reflecting subject/pose.
 - Keyboard: skip link enabled, menu/filter pills reachable in logical order.
 - Motion safety: `prefers-reduced-motion` respected for hover wiggle/scroll effects.
+
+## Arrows and navigation buttons
+
+From design-arrows (`docs/design/arrows.md`, with mock-ups in `docs/design/mockups/arrows/`). Every arrow on the site is drawn from one shape and, when it stands alone, sits in one button.
+
+- **The shape:** a solid triangle with rounded corners, matching the rounded ends of Nunito's letters. In a 24-unit square it is 10 units wide and 13 tall, drawn with a 3-unit stroke with round joins. One points right for next, left for previous, down or up for a fold-out; two side by side, with a gap, are first and last. Always drawn (SVG) from the shared source, never typed: phones draw characters like ◀ ⏭ as emoji, and fonts draw ‹ → differently.
+- **The button, on paper:** flat, like ink on paper: no drop shadow, and no state moves or resizes it (lead, 2026-11-06: drop shadows fight the ink-on-paper look).
+  - At rest: `--color-beige` background, 3px `--color-ink` border, sharp corners; at least 44 × 44px.
+  - Hover, only under `@media (hover: hover)` so it doesn't stick after a tap: `--color-yellow` (the hover colour of `.btn-primary`).
+  - Pressed (`:active`): inked in, a `--color-ink` fill with a beige arrow and caption.
+  - Can't be used: dashed border at `rgba(43,43,43,.4)`, arrow and caption at `rgba(43,43,43,.45)`, no fill; `aria-disabled` and skipped by Tab (exempt from contrast).
+  - Focus: the site's focus ring (see Accessibility).
+- **The button, on dark** (full screen): `#161616` background, beige border, arrow and caption, no shadow; yellow with an ink arrow on hover; a beige fill with an ink arrow when pressed; a 3px yellow focus ring.
+- **With a caption** (the comic controls, full screen): the arrow above a short Nunito 700 caption, at least 56px tall.
+- **Beside words** (links and buttons): the same triangle at about 0.72em, in the text's colour, on the side it points to, `aria-hidden`. No typed ← → in labels.
+- **Motion:** colour only, over 120ms (`--transition-fast`); at once under reduced motion.
+- **Not arrows:** close (✕), zoom (+ − Fit) and menu buttons keep their own looks.
 
 ## Branding & Iconography
 
