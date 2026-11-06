@@ -26,7 +26,7 @@ describe('content-editing-site-settings#AC-7 commissions', () => {
     expect(html).toMatch(/href="mailto:star@example\.com"[^>]*>\s*Contact me/);
     expect(html).toContain('How it works');
     expect(html).toContain('Ready to order?');
-    expect(html).toMatch(/Email me to get started →/);
+    expect(html).toMatch(/Email me to get started\s*<svg/);
     expect(count(html, 'mailto:star@example.com')).toBe(2);
     expect(html).toContain('Full colour illustration');
     expect(html).not.toContain('for when they open again');
