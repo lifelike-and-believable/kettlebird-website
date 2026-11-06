@@ -144,14 +144,15 @@ From design-arrows (`docs/design/arrows.md`, with mock-ups in `docs/design/mocku
 - **The shape:** a solid triangle with rounded corners, matching the rounded ends of Nunito's letters. In a 24-unit square it is 10 units wide and 13 tall, drawn with a 3-unit stroke with round joins. One points right for next, left for previous, down or up for a fold-out; two side by side, with a gap, are first and last. Always drawn (SVG) from the shared source, never typed: phones draw characters like ◀ ⏭ as emoji, and fonts draw ‹ → differently.
 - **The button, on paper:**
   - At rest: `--color-beige` background, 3px `--color-ink` border, sharp corners, hard shadow `4px 4px 0 rgba(0,0,0,.3)`; at least 44 × 44px.
-  - Hover: `--color-yellow`, `translate(-2px, -2px)`, shadow `6px 6px 0 rgba(0,0,0,.3)` (as `.btn-primary`).
-  - Pressed: `--color-yellow`, `translate(2px, 2px)`, no shadow.
-  - Can't be used: dashed border and arrow at about 40% ink, no shadow, no fill; `aria-disabled`.
+  - Hover, only under `@media (hover: hover)` so it doesn't stick after a tap: `--color-yellow`, `translate: -2px -2px`, hard shadow `6px 6px 0 rgba(0,0,0,.3)` (the colour and lift of `.btn-primary`, with a hard shadow).
+  - Pressed (`:active`): `--color-yellow`, `translate: 2px 2px`, no shadow.
+  - Use the `translate` property for the lift and press, not `transform`, so they add to a button's own positioning.
+  - Can't be used: dashed border at `rgba(43,43,43,.4)`, arrow and caption at `rgba(43,43,43,.45)`, no shadow, no fill; `aria-disabled` and skipped by Tab (exempt from contrast).
   - Focus: the site's focus ring (see Accessibility).
 - **The button, on dark** (full screen): `#161616` background, beige border, arrow and caption, shadow `4px 4px 0 rgba(245,241,232,.25)`; yellow with an ink arrow on hover and press; a 3px yellow focus ring.
 - **With a caption** (the comic controls, full screen): the arrow above a short Nunito 700 caption, at least 56px tall.
 - **Beside words** (links and buttons): the same triangle at about 0.72em, in the text's colour, on the side it points to, `aria-hidden`. No typed ← → in labels.
-- **Motion:** 120ms (`--transition-fast`) for the colour, lift and shadow; none under reduced motion.
+- **Motion:** 120ms (`--transition-fast`) for the colour, lift and shadow. Under reduced motion, colour and shadow change at once and nothing moves.
 - **Not arrows:** close (✕), zoom (+ − Fit) and menu buttons keep their own looks.
 
 ## Branding & Iconography

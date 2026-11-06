@@ -13,6 +13,8 @@ const names = {
   f7: '7-states',
   f8: '8-arrows-in-words',
   f9: '9-text-200-narrow',
+  f10: '10-carousel-text-200',
+  f11: '11-full-screen-text-200',
 };
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1300, height: 1000 } });
