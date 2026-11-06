@@ -88,7 +88,7 @@ Based on the approved mockup:
 - **Card backgrounds:** Solid colors with optional subtle texture overlay
   - Portfolio cards: Dark background with artwork overlay
   - Content cards: Solid accent colors (orange, mint, yellow, coral)
-  - Logo card: Golden yellow with centered purple icon
+  - Logo card: the logo's own orange (#ffbb58) with the purple bird mark inside the border (design-home-tiles-and-icon)
 - **Shadows:** Hard drop shadows offset (4px right, 4px down) in black at 30% opacity
 - **Navigation tabs:** Solid color pills with thick borders, rectangular with slight rounding
 - **No deckled/torn edges:** Clean, geometric shapes throughout
@@ -104,7 +104,7 @@ Based on the mockup design:
   - Bold white uppercase labels
   - Hard drop shadows for depth
   - No border-radius (sharp corners)
-- **Logo card:** Centered purple bird icon with "KB" text on golden yellow background
+- **Logo card:** The purple bird mark with "K" and "B", on the logo's own orange (#ffbb58), held inside the border (design-home-tiles-and-icon)
 - **Social media links:** Horizontal row of colored rectangular labels with text (BLUESKY | TUMBLR | INSTAGRAM | KO-FI)
 - **Section cards:** Grid layout with different sized rectangles:
   - Portfolio: Dark with artwork preview
@@ -161,10 +161,10 @@ Based on the approved mockup:
 - **Logo:** Purple bird silhouette with "KB" initials centered inside
   - Color: Deep purple (#5a4a7d)
   - Style: Simplified, iconic bird shape with teardrop/spade-like body
-  - Placement: On golden yellow background card in grid layout
+  - Placement: on the logo's own orange (#ffbb58), in the home grid's logo card, and as the site's icon
 - **Brand name:** "Kettlebird" in bold, condensed black sans-serif
 - **Tagline:** "Comics + Illustration" in regular weight below brand name
-- **Favicon/App icons:** Simplified "KB" or bird icon from logo
+- **Favicon/App icons:** The mark on a #ffbb58 square: the full mark from 64px up (512, 192, 180), the bird alone at 48, 32 and 16px (design-home-tiles-and-icon)
 - **Social icons:** Text-based labels in colored rectangles (not icon symbols)
 - **No decorative elements:** Clean, geometric design without ink splatters or brush strokes
 
