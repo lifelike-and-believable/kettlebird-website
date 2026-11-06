@@ -97,7 +97,7 @@ describe('comic-reader-sheet-and-controls#AC-7 page sheet', () => {
       pageCount: '2 pages',
       tabTitle: 'Chapter 2, all pages · Kettle Tales · Kettlebird Creations',
       seriesPath: '/comics/kettle-tales',
-      backToPage: { label: '← Back to page 2', path: '/comics/kettle-tales/2/2' },
+      backToPage: { label: 'Back to page 2', path: '/comics/kettle-tales/2/2' },
     });
   });
   it('lists every page in order, linking to the reader, and marks the page the fan came from', () => {
@@ -174,8 +174,8 @@ describe('comic-reader-sheet-and-controls#AC-9 chapter list', () => {
 describe('comic-reader-sheet-and-controls#AC-10 chapters either side', () => {
   it('links the chapters with pages either side, skipping empty ones', () => {
     const middle = pageSheet(at(kettle, '/comics/kettle-tales/2/1'));
-    expect(middle.previousChapter).toEqual({ label: '← Chapter 1', name: 'Previous chapter: Chapter 1', path: '/comics/kettle-tales/1/pages' });
-    expect(middle.nextChapter).toEqual({ label: 'Chapter 4 →', name: 'Next chapter: Chapter 4', path: '/comics/kettle-tales/4/pages' });
+    expect(middle.previousChapter).toEqual({ label: 'Chapter 1', name: 'Previous chapter: Chapter 1', path: '/comics/kettle-tales/1/pages' });
+    expect(middle.nextChapter).toEqual({ label: 'Chapter 4', name: 'Next chapter: Chapter 4', path: '/comics/kettle-tales/4/pages' });
   });
   it('none before the first chapter or after the last', () => {
     expect(pageSheet(at(kettle, '/comics/kettle-tales/1/1')).previousChapter).toBeUndefined();

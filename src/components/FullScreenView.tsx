@@ -4,6 +4,7 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
 import type { GalleryItem } from '../lib/queries';
 import { urlFor } from '../lib/sanity';
+import Arrow from './Arrow';
 import {
   announcement,
   clampPan,
@@ -30,6 +31,9 @@ import {
   zoomLabel,
   type Size,
   type Turn,
+  bottomBar,
+  oneRow,
+  PHONE_BAR,
 } from '../lib/portfolio/full-screen';
 
 export interface FullScreenViewProps {
@@ -44,7 +48,6 @@ export interface FullScreenViewProps {
 const WIDE = 700;
 const TOP = 60;
 const BOTTOM_WIDE = 72;
-const BOTTOM_PHONE = 76;
 const SIDE = 72;
 const RETRY_MS = 250;
 
@@ -80,11 +83,25 @@ export default function FullScreenView({ order, start, sectionTitle, dialogSrc, 
 
   const item = order[index];
   const wide = screen.width >= WIDE;
+  // A phone's bottom bar: one row, or the zoom controls above Previous and Next when they don't fit
+  // (site-arrows AC-10). Measured after each layout, since enlarged text widens the buttons.
+  const [bar, setBar] = useState<{ height: number; zoomBottom: number | undefined }>({ height: PHONE_BAR, zoomBottom: undefined });
+  const prevRef = useRef<HTMLButtonElement>(null);
+  const nextRef = useRef<HTMLButtonElement>(null);
+  const zoomRef = useRef<HTMLDivElement>(null);
+  useLayoutEffect(() => {
+    if (wide || !prevRef.current || !nextRef.current || !zoomRef.current) return;
+    const side = Math.max(prevRef.current.offsetWidth, nextRef.current.offsetWidth);
+    const zoomBox = zoomRef.current;
+    const next = bottomBar({ oneRow: oneRow({ width: screen.width, zoom: zoomBox.offsetWidth, side }), zoomHeight: zoomBox.offsetHeight });
+    setBar((b) => (b.height === next.height && b.zoomBottom === next.zoomBottom ? b : next));
+  });
+  const bottom = wide ? BOTTOM_WIDE : bar.height;
   const stage: Size = hidden
     ? screen
     : {
         width: Math.max(1, screen.width - (wide ? 2 * SIDE : 0)),
-        height: Math.max(1, screen.height - TOP - (wide ? BOTTOM_WIDE : BOTTOM_PHONE)),
+        height: Math.max(1, screen.height - TOP - bottom),
       };
   const original = originalSize(item.image.asset._ref) ?? { width: 1200, height: 1200 };
   const fit = fitted(original, stage);
@@ -415,13 +432,29 @@ export default function FullScreenView({ order, start, sectionTitle, dialogSrc, 
     </button>
   );
 
+  // Previous and Next: the site's arrow button, on dark (docs/design/arrows.md).
+  const side = (label: 'Previous' | 'Next', enabled: boolean, onPress: () => void) => (
+    <button
+      ref={label === 'Previous' ? prevRef : nextRef}
+      type="button"
+      className={`arrow-btn arrow-btn--dark fs__side fs__side--${label === 'Previous' ? 'prev' : 'next'}${enabled ? '' : ' is-off'}`}
+      aria-label={label}
+      aria-disabled={enabled ? undefined : 'true'}
+      tabIndex={enabled ? undefined : -1}
+      onClick={() => enabled && onPress()}
+    >
+      <Arrow kind={label === 'Previous' ? 'previous' : 'next'} />
+      <span className="fs__cap">{label}</span>
+    </button>
+  );
+
   return (
     <div ref={rootRef} className={`fs${wide ? ' fs--wide' : ''}`} role="dialog" aria-modal="true" aria-label="Full screen" tabIndex={-1} onPointerMove={(e) => e.pointerType === 'mouse' && !pointers.current.size && show()}>
       <div
         ref={stageRef}
         className={`fs__stage${hidden ? ' is-full' : ''}`}
         data-fs-stage=""
-        style={hidden ? undefined : { top: TOP, bottom: wide ? BOTTOM_WIDE : BOTTOM_PHONE, left: wide ? SIDE : 0, right: wide ? SIDE : 0 }}
+        style={hidden ? undefined : { top: TOP, bottom, left: wide ? SIDE : 0, right: wide ? SIDE : 0 }}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
@@ -455,10 +488,10 @@ export default function FullScreenView({ order, start, sectionTitle, dialogSrc, 
             {wide ? '✕ Close' : '✕'}
           </button>
         </div>
-        {button('Previous', can.previous, () => turn('previous'), <><span aria-hidden="true">◀</span><span className="fs__cap">Previous</span></>, 'fs__side fs__side--prev')}
-        {button('Next', can.next, () => turn('next'), <><span aria-hidden="true">▶</span><span className="fs__cap">Next</span></>, 'fs__side fs__side--next')}
-        {!wide && <div className="fs__bottom" />}
-        <div className="fs__zoom">
+        {side('Previous', can.previous, () => turn('previous'))}
+        {side('Next', can.next, () => turn('next'))}
+        {!wide && <div className="fs__bottom" style={{ height: bar.height }} />}
+        <div ref={zoomRef} className="fs__zoom" style={!wide && bar.zoomBottom !== undefined ? { bottom: bar.zoomBottom } : undefined}>
           {button('Zoom out', can.zoomOut, () => setZoomAt(stepZoom(zoom, 'out', max), undefined, true), '−')}
           <span className="fs__level" data-fs-level="">{zoomLabel(zoom)}</span>
           {button('Zoom in', can.zoomIn, () => setZoomAt(stepZoom(zoom, 'in', max), undefined, true), '+')}

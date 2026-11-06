@@ -18,6 +18,8 @@ derived-from:
   - story-comic-reader-assistive-technology: 1db666e12004
   - design-comic-spread-and-flip#flow-a-fan: 4feac2263d70
   - design-comic-spread-and-flip#how-it-works: c145d0b6b751
+  - design-arrows#where-it-applies: b5130e400405
+  - design-arrows#for-the-guide: 675d6365c4c3
   - design-comic-spread-and-flip#settings-per-comic: 64a1be41076a
   - story-comic-reader-flip-and-panels-comic-settings: 91b08e4f2d65
   - design-comic-spread-and-flip#the-page-flip: 2ad0e062a153
@@ -107,14 +109,14 @@ Choose **All pages** at the top of the reader to see every page of the chapter y
 
 - The page you came from is marked **You were here**, and the sheet opens scrolled to it.
 - Choose any picture to open that page.
-- **← Back to page 4** (with the number of your page) takes you back where you were, and so does your browser's back button. **Back to series** returns to the comic's page. Both are at the top and the bottom of the sheet, so you don't have to scroll back up.
+- **Back to page 4** (with the number of your page) takes you back where you were, and so does your browser's back button. **Back to series** returns to the comic's page. Both are at the top and the bottom of the sheet, so you don't have to scroll back up.
 
 To look at another chapter's pages:
 
 - Choose the line under the heading, for example "Chapter 2 of 6 · All chapters", to unfold the list of chapters, then choose one. Your chapter is marked "you're here".
-- Or use **← Chapter 1** and **Chapter 3 →** under the pictures for the chapters either side.
+- Or use **Chapter 1** and **Chapter 3** under the pictures for the chapters either side.
 
-Choosing a chapter here opens its pages as pictures; to start reading it, choose its first picture. Another chapter's sheet marks no page and has no **← Back to page** link: to return to the page you were reading, press your browser's back button until you're there.
+Choosing a chapter here opens its pages as pictures; to start reading it, choose its first picture. Another chapter's sheet marks no page and has no **Back to page** link: to return to the page you were reading, press your browser's back button until you're there.
 
 A chapter with only one page has no **All pages** button. If a comic has no chapters, or only one chapter with pages, the sheet has no chapter list and no chapter links.
 

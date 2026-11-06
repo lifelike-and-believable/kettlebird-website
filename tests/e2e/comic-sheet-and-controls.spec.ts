@@ -178,9 +178,9 @@ test('comic-reader-sheet-and-controls#AC-7 page sheet', async ({ page }) => {
   await expect(img).toHaveAttribute('height', /\d+/);
 
   // Back links above and under the pictures.
-  await expect(page.getByRole('link', { name: '← Back to page 3' })).toHaveCount(2);
+  await expect(page.getByRole('link', { name: 'Back to page 3', exact: true })).toHaveCount(2);
   await expect(page.getByRole('link', { name: 'Back to series' })).toHaveCount(2);
-  await page.getByRole('link', { name: '← Back to page 3' }).first().click();
+  await page.getByRole('link', { name: 'Back to page 3', exact: true }).first().click();
   await expect(page).toHaveURL(/\/kettle-tales\/1\/3$/);
 
   await page.goto('/comics/kettle-tales/1/3/pages');
@@ -227,7 +227,7 @@ test('comic-reader-sheet-and-controls#AC-9 chapter list', async ({ page }) => {
 
 test('comic-reader-sheet-and-controls#AC-10 chapters either side', async ({ page }) => {
   await page.goto('/comics/kettle-tales/2/1/pages');
-  await expect(page.getByRole('link', { name: 'Previous chapter: Chapter 1' })).toHaveText('← Chapter 1');
+  await expect(page.getByRole('link', { name: 'Previous chapter: Chapter 1' })).toHaveText('Chapter 1');
   await page.getByRole('link', { name: 'Next chapter: Chapter 4' }).click();
   await expect(page).toHaveURL(/\/kettle-tales\/4\/pages$/);
   await expect(page.getByRole('link', { name: /Next chapter/ })).toHaveCount(0);

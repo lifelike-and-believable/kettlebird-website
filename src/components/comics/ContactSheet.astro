@@ -3,6 +3,7 @@
 // chapter's sheet. Design: docs/design/comic-sheet-and-controls.md.
 // Spec: docs/specs/comic-reader-sheet-and-controls.md.
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Arrow from '../Arrow.astro';
 import type { ContactSheet } from '../../lib/comics/navigation';
 
 interface Props {
@@ -11,23 +12,25 @@ interface Props {
 }
 
 const { sheet, seriesTitle } = Astro.props;
-const links = [sheet.backToPage, { label: 'Back to series', path: sheet.seriesPath }].filter(Boolean) as {
+// Back to page N carries a drawn arrow pointing back (docs/design/arrows.md); Back to series has none.
+const links = [sheet.backToPage && { ...sheet.backToPage, back: true }, { label: 'Back to series', path: sheet.seriesPath, back: false }].filter(Boolean) as {
   label: string;
   path: string;
+  back: boolean;
 }[];
 ---
 
 <BaseLayout title={sheet.tabTitle} description={`All pages of ${seriesTitle}, a comic by Star Goldberg.`} noindex>
   <div class="sheet">
     <div class="sheet__bar">
-      {links.map((l) => <a href={l.path}>{l.label}</a>)}
+      {links.map((l) => <a href={l.path}>{l.back && <Arrow kind="previous" class="arrow-inline" />}{l.label}</a>)}
     </div>
     <h1 class="sheet__heading">{sheet.heading}</h1>
     <p class="sheet__count">{sheet.pageCount}</p>
 
     {sheet.chapterList && (
       <details class="sheet__chapters">
-        <summary>{sheet.chapterList.summary}</summary>
+        <summary>{sheet.chapterList.summary}<Arrow kind="down" class="arrow-inline sheet__fold sheet__fold--closed" /><Arrow kind="up" class="arrow-inline sheet__fold sheet__fold--open" /></summary>
         <nav aria-label="Chapters">
           <ol>
             {sheet.chapterList.items.map((item) => (
@@ -68,19 +71,19 @@ const links = [sheet.backToPage, { label: 'Back to series', path: sheet.seriesPa
       <div class="sheet__chapter-links">
         {sheet.previousChapter ? (
           <a href={sheet.previousChapter.path} aria-label={sheet.previousChapter.name}>
-            <span aria-hidden="true">←&nbsp;</span>{sheet.previousChapter.label.replace(/^← /, '')}
+            <Arrow kind="previous" class="arrow-inline" />{sheet.previousChapter.label}
           </a>
         ) : <span></span>}
         {sheet.nextChapter && (
           <a href={sheet.nextChapter.path} aria-label={sheet.nextChapter.name}>
-            {sheet.nextChapter.label.replace(/ →$/, '')}<span aria-hidden="true">&nbsp;→</span>
+            {sheet.nextChapter.label}<Arrow kind="next" class="arrow-inline" />
           </a>
         )}
       </div>
     )}
 
     <div class="sheet__bar sheet__bar--foot">
-      {links.map((l) => <a href={l.path}>{l.label}</a>)}
+      {links.map((l) => <a href={l.path}>{l.back && <Arrow kind="previous" class="arrow-inline" />}{l.label}</a>)}
     </div>
   </div>
 </BaseLayout>
@@ -140,8 +143,11 @@ const links = [sheet.backToPage, { label: 'Back to series', path: sheet.seriesPa
     font-weight: 700;
   }
   .sheet__chapters summary::-webkit-details-marker { display: none; }
-  .sheet__chapters summary::after { content: '▾'; }
-  .sheet__chapters[open] summary::after { content: '▴'; }
+  /* Down while folded, up while open (docs/design/arrows.md). */
+  .sheet__chapters summary :global(.sheet__fold) { margin-left: auto; }
+  .sheet__chapters summary :global(.sheet__fold--open),
+  .sheet__chapters[open] summary :global(.sheet__fold--closed) { display: none; }
+  .sheet__chapters[open] summary :global(.sheet__fold--open) { display: inline-block; }
   .sheet__chapters ol {
     margin: 0;
     padding: 0 0.75rem 0.5rem;

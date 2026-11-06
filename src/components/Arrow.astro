@@ -1,0 +1,11 @@
+---
+// One drawn arrow, from the shared shapes (src/lib/arrows.ts). Hidden from screen readers.
+import { arrowSvg, type ArrowKind } from '../lib/arrows';
+
+interface Props {
+  kind: ArrowKind;
+  class?: string;
+}
+const { kind, class: className } = Astro.props;
+---
+<Fragment set:html={arrowSvg(kind, className)} />
