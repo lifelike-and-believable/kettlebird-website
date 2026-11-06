@@ -1,5 +1,6 @@
 ---
 status: draft
+tests-commit: 910decd770676d39bcc1bb0cdaf98f1bfc312184
 ---
 
 # Comic reader: panel by panel with two pages side by side

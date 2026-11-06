@@ -20,7 +20,7 @@ import { allPagesHref, playControls, type ControlKind, type PlayControl } from '
 import { pageAnnouncement, pagePreview, shareTitle } from '../../lib/comics/sharing';
 import { readsAs, wideView, type WideView } from '../../lib/comics/spreads';
 import { previewTurn } from '../../lib/preview/turns';
-import { offersPanels, pagePanels } from '../../lib/comics/panels';
+import { offersPanels, pagePanels, readerSizes } from '../../lib/comics/panels';
 
 
 const { entry, nextImage, preview: inPreview = false, previewUrl } = Astro.props as {
@@ -73,7 +73,6 @@ const panels = pagePanels(entry.page);
 const preview = { ...pagePreview(entry, Astro.site!.href), type: 'article' };
 // The site's drawn arrows (docs/design/arrows.md): phones draw typed characters as emoji of their own.
 const ARROW_FOR: Record<ControlKind, ArrowKind> = { first: 'first', previous: 'previous', next: 'next', newest: 'last' };
-const SIZES = '(min-width: 62.5em) and (orientation: landscape) 50vw, (max-width: 700px) 100vw, 900px';
 const TURNS: Partial<Record<ControlKind, string>> = { previous: 'previous', next: 'next' };
 /** In the preview route: what the preview shows and outlines (docs/specs/content-editing-preview.md). */
 const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
@@ -89,6 +88,16 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
   <!-- Don't draw the page until the scroll below has run, so the site header never flashes on a
        turn, even when the page arrives in pieces. Browsers without render-blocking ignore it. -->
   {!inPreview && <link slot="head" rel="expect" href="#reader-scrolled" {...{ blocking: 'render' }} />}
+  {panelled && (
+    <script is:inline slot="head">
+      // Panel by panel shows one page at a time on every screen (docs/specs/comic-reader-panels-two-up.md
+      // AC-4): marked here, before the first frame, so a pair never shows first and the page-flip turns
+      // one page.
+      try {
+        if (localStorage.getItem('kb-panels') === '1') document.documentElement.classList.add('kb-one-page');
+      } catch (_) {}
+    </script>
+  )}
   {reads.pageFlip && (
     <style is:inline slot="head">
       /* This comic turns its pages with the page-flip (comic-reader-comic-settings AC-5). */
@@ -167,7 +176,7 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
             <img
               src={img.src}
               srcset={img.srcset}
-              sizes={p.page.spread ? '100vw' : SIZES}
+              sizes={readerSizes(img, Boolean(p.page.spread), panelled)}
               width={img.width}
               height={img.height}
               alt={pageAltText(p)}
@@ -274,14 +283,17 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
   <script>
     import { announcesOnOpen, focusAfterTurn, type NavigationKind, type RememberedTurn } from '../../lib/comics/sharing';
     import { turnDirection, WIDE_MEDIA } from '../../lib/comics/spreads';
-    import { panelAnnouncement, panelFrame, panelsOn, PANELS_OFF, type Panel } from '../../lib/comics/panels';
+    import { panelAnnouncement, panelFrame, panelsOffAnnouncement, panelsOn, PANELS_OFF, type Panel } from '../../lib/comics/panels';
 
     // Two pages side by side when the width test matches (comic-reader-spread-and-flip AC-3); the
     // styles use the same test, so this picks the links that show.
     const wideScreen = matchMedia(WIDE_MEDIA);
     // A comic with two pages side by side off has only the narrow set (comic-reader-comic-settings AC-2).
     const pairs = document.querySelector('.reader')?.hasAttribute('data-pairs') ?? false;
-    const view = () => (pairs && wideScreen.matches ? 'wide' : 'narrow');
+    // Panel by panel shows one page at a time on every screen (comic-reader-panels-two-up): the page is
+    // marked, and the one-page view's links, controls and announcements are the ones that count.
+    const onePage = () => document.documentElement.classList.contains('kb-one-page');
+    const view = () => (pairs && wideScreen.matches && !onePage() ? 'wide' : 'narrow');
 
     // Arrow keys and swipes follow the same links as Previous page and Next page
     // (design-comic-turn-pages, "How a page turn works"). Reading never needs this script.
@@ -368,8 +380,9 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
       else window.addEventListener('load', fill, { once: true });
     }
 
-    // Panel by panel (docs/specs/comic-reader-panels.md AC-11 to AC-15): one page at a time, the
-    // current panel enlarged in the page area. The choice is kept in the browser; the panel, in the
+    // Panel by panel (docs/specs/comic-reader-panels.md AC-11 to AC-15; with two pages side by side,
+    // comic-reader-panels-two-up): one page at a time on every screen, the current panel enlarged in
+    // the page area. The choice is kept in the browser; the panel, in the
     // page's history entry; a turn to another page says where to open it.
     const PANELS_KEY = 'kb-panels';
     const ARRIVE_KEY = 'kb-panel-arrive';
@@ -398,7 +411,7 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
       };
       let on = false;
       let panel = 0;
-      const offered = () => !(pairs && wideScreen.matches);
+      const book = document.querySelector<HTMLElement>('[data-reader-page]');
       const say = (text: string) => {
         if (announce) announce.textContent = text;
       };
@@ -445,30 +458,24 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
         }
       };
       const show = () => {
+        // Instant: the styles show the one-page view or the pair, with no transition between them.
+        document.documentElement.classList.toggle('kb-one-page', on);
         reader.classList.toggle('is-panels', on);
         toggle.setAttribute('aria-pressed', String(on));
         label();
         place();
         if (on) history.replaceState({ ...(history.state ?? {}), panel }, '');
       };
-      const setOn = (value: boolean, announceIt: boolean) => {
-        on = value && offered();
+      const setOn = (value: boolean) => {
+        on = value;
         stored(PANELS_KEY, value ? '1' : '');
         show();
-        if (announceIt) say(on ? (panels.length ? panelsOn(panel, panels.length) : `Panel by panel. ${PANELS_OFF}.`) : PANELS_OFF);
+        if (on) say(panels.length ? panelsOn(panel, panels.length) : `Panel by panel. ${PANELS_OFF}.`);
+        // Off: what arriving at the view now showing says (the pair, a spread, or "Whole page").
+        else say(panelsOffAnnouncement(view(), book?.dataset.kind ?? '', announce?.dataset.textWide ?? ''));
       };
-      toggle.addEventListener('click', () => setOn(!on, true));
-      const update = () => {
-        toggle.hidden = !offered();
-        if (!offered() && on) {
-          on = false;
-          show();
-        } else if (offered() && !on && stored(PANELS_KEY) === '1') {
-          on = true;
-          show();
-        }
-      };
-      wideScreen.addEventListener('change', update);
+      toggle.addEventListener('click', () => setOn(!on));
+      // Resizing or turning the screen changes nothing but the panel's place: one page stays one page.
       window.addEventListener('resize', place);
       img.addEventListener('load', place);
 
@@ -483,8 +490,8 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
       const kept = (history.state as { panel?: number } | null)?.panel;
       if (typeof kept === 'number' && kept < panels.length) panel = kept;
       else if (arrive?.to === location.pathname + location.search && arrive.at === 'last') panel = Math.max(0, panels.length - 1);
-      on = stored(PANELS_KEY) === '1' && offered();
-      toggle.hidden = !offered();
+      on = stored(PANELS_KEY) === '1';
+      toggle.hidden = false;
       show();
       if (on) panelSuffix = panels.length ? panelAnnouncement(panel, panels.length) : '';
 
@@ -694,33 +701,37 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
     .reader__turn-hint { display: block; }
   }
 
-  /* Each view's parts. The width test is WIDE_MEDIA in src/lib/comics/spreads.ts. */
+  /* Each view's parts. The width test is WIDE_MEDIA in src/lib/comics/spreads.ts. Panel by panel marks
+     the page one page at a time (kb-one-page), which shows the narrow view on every screen
+     (comic-reader-panels-two-up). */
   @media not ((min-width: 62.5em) and (orientation: landscape)) {
     .for-wide, .reader__page.is-other { display: none !important; }
   }
+  :global(html.kb-one-page) .for-wide,
+  :global(html.kb-one-page) .reader__page.is-other { display: none !important; }
   @media (min-width: 62.5em) and (orientation: landscape) {
-    .for-narrow { display: none !important; }
-    .reader--pairs { max-width: 1400px; }
+    :global(html:not(.kb-one-page)) .for-narrow { display: none !important; }
+    :global(html:not(.kb-one-page)) .reader--pairs { max-width: 1400px; }
     /* Two pages of the same height meeting at the spine, a page alone on its own side, or a spread
        across both (comic-reader-spread-and-flip AC-7). */
-    .reader--pairs .reader__book {
+    :global(html:not(.kb-one-page)) .reader--pairs .reader__book {
       position: relative;
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       grid-template-rows: minmax(0, 1fr);
       height: calc(100vh - 12.5rem);
     }
-    .reader--pairs .reader__book .reader__page {
+    :global(html:not(.kb-one-page)) .reader--pairs .reader__book .reader__page {
       height: 100%;
       width: auto;
       max-width: 100%;
       max-height: none;
       margin: 0;
     }
-    .reader--pairs .reader__page[data-side='left'] { grid-column: 1; justify-self: end; view-transition-name: kb-left; }
-    .reader--pairs .reader__page[data-side='right'] { grid-column: 2; justify-self: start; view-transition-name: kb-right; }
-    .reader--pairs .reader__page[data-side='both'] { grid-column: 1 / -1; justify-self: center; view-transition-name: kb-spread; }
-    .reader--pairs .reader__book[data-kind='pair']::after {
+    :global(html:not(.kb-one-page)) .reader--pairs .reader__page[data-side='left'] { grid-column: 1; justify-self: end; view-transition-name: kb-left; }
+    :global(html:not(.kb-one-page)) .reader--pairs .reader__page[data-side='right'] { grid-column: 2; justify-self: start; view-transition-name: kb-right; }
+    :global(html:not(.kb-one-page)) .reader--pairs .reader__page[data-side='both'] { grid-column: 1 / -1; justify-self: center; view-transition-name: kb-spread; }
+    :global(html:not(.kb-one-page)) .reader--pairs .reader__book[data-kind='pair']::after {
       content: '';
       position: absolute;
       top: 0;
@@ -732,9 +743,10 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
       pointer-events: none;
     }
     .reader__turn-hint { display: none; }
-    /* With two pages side by side off, a spread shows alone, as wide as the page area allows
-       (comic-reader-comic-settings AC-3). */
-    .reader:not(.reader--pairs) .reader__page.is-spread {
+    /* With two pages side by side off, or one page at a time, a spread shows alone, as wide as the page
+       area allows (comic-reader-comic-settings AC-3). */
+    .reader:not(.reader--pairs) .reader__page.is-spread,
+    :global(html.kb-one-page) .reader__page.is-spread {
       max-height: calc(100vh - 12.5rem);
       max-width: min(100%, calc((100vh - 12.5rem) * var(--page-ratio, 1.3333)));
     }
@@ -791,8 +803,10 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
   @media not ((min-width: 62.5em) and (orientation: landscape)) {
     .reader__page.is-current { view-transition-name: kb-page; }
   }
-  /* With two pages side by side off, every screen turns the single page (comic-reader-comic-settings AC-5). */
-  .reader:not(.reader--pairs) .reader__page.is-current { view-transition-name: kb-page; }
+  /* With two pages side by side off, or one page at a time, every screen turns the single page
+     (comic-reader-comic-settings AC-5, comic-reader-panels-two-up AC-3). */
+  .reader:not(.reader--pairs) .reader__page.is-current,
+  :global(html.kb-one-page) .reader__page.is-current { view-transition-name: kb-page; }
   .reader__page img {
     position: relative;
     display: block;
