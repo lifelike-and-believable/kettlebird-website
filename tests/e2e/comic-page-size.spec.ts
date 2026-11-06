@@ -243,6 +243,10 @@ test('comic-reader-page-size#AC-15 the button', async ({ page, browser }) => {
     await p.close();
   }
 
+  // In a chapter of one page too, which has no Panel by panel or All pages.
+  await open(page, '/comics/paused/1/1');
+  await expect(sizeButton(page)).toBeVisible();
+
   // Without script it isn't shown.
   const context = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 1440, height: 900 } });
   const bare = await context.newPage();

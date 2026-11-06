@@ -169,10 +169,10 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
   >
     <div class="reader__bar">
       <a href={back} class="reader__back">Back to series</a>
-      {(panelled || allPages) && (
-        <!-- On phones, the two show their pictures only, together at the right; their words stay for
-             assistive technology, and the name shows under each on hover and focus
-             (docs/design/comic-reader-phone-bar.md, docs/specs/comic-reader-phone-bar.md). -->
+      <!-- On phones, the two show their pictures only, together at the right; their words stay for
+           assistive technology, and the name shows under each on hover and focus
+           (docs/design/comic-reader-phone-bar.md, docs/specs/comic-reader-phone-bar.md). Always there, for
+           Page size on computers (comic-reader-page-size AC-15), even in a chapter of one page. -->
         <div class="reader__tools">
           <!-- A fan's page size, on computers (comic-reader-page-size AC-15 to AC-20): shown by the script. -->
           <div class="reader__size" data-page-size-control hidden>
@@ -229,7 +229,6 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
             </a>
           )}
         </div>
-      )}
       {locationLine(entry) === wide.location ? (
         <h1 class="reader__location" data-part="reader-location">{wide.location}</h1>
       ) : (

@@ -4,6 +4,8 @@ tests-commit: b888818f3c31894e03bd85432579e29e0cbf2427
 unlocks:
   - tests/e2e/comic-page-size.spec.ts: three checks were wrong against the build, and the criteria are unchanged. "The bar at the window's top" measured the bar, which sits 8 px inside the reader's padding; it now measures the reader's top. AC-12 read Big Pages after tabs in the same browser had stored a fan's choice, which the comic's own size must not see; it now clears it first. AC-17 pressed Down to reach Fit the screen from Fit the width, which is above it; it now presses Up.
   - tests/unit/comic-page-size.test.ts: AC-4's sample comic gave its status and kind as plain strings, which the type check refuses; they're now typed as the values they are. The criterion is unchanged.
+  - tests/e2e/comic-page-size.spec.ts: AC-15 also checks the button shows in a chapter of one page (Paused), where the bar had no tools to hold it (found by the guides' walkthrough). The criterion is unchanged.
+  - tests/unit/comic-page-size.test.ts: AC-1's choice texts for Fit the screen and Fit the height are corrected, as the design's help text was wrong after the lead's decisions: a 1440 × 900 laptop's browser window is about 1440 × 780, where a page is about 390 wide; and Fit the height opens at the bar (the lead, 2026-11-06), so readers don't scroll up. The criterion is unchanged.
   - tests/unit/comic-page-size-edges.test.ts (new): mutation testing showed nothing checked a page whose width isn't known or is 0, or a comic of spreads of different widths, in the pictures' sizes line. Added; the criteria are unchanged.
 ---
 

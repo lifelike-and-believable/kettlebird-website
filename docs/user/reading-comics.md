@@ -91,14 +91,15 @@ On a laptop, or a tablet held sideways, some comics show two pages side by side,
 
 ## Choose how big pages show on a computer
 
-On a laptop or desktop, Star chooses how big each comic's pages show: the whole page and the buttons on screen at once, the page as wide as the window allows, or the page as tall as the window. When a page runs below the window, scroll down to the buttons; the arrow keys and the arrows at the page's edges turn pages without scrolling.
+On a laptop or desktop, Star chooses how big each comic's pages show: the whole page and the buttons on screen at once, the page as wide as its picture (or the window, if that's narrower), or the page as tall as the window. Pages are never shown bigger than their pictures. When a page runs below the window, scroll down to the buttons; the arrow keys and the arrows at the page's edges turn pages from anywhere on the page, and the next page opens at the bar.
 
-To choose for yourself, use **Page size**, the picture of a page with arrows at its corners, beside **Panel by panel** in the bar at the top (pointing at it shows its name):
+To choose for yourself, use **Page size**, the picture of a page with arrows at its corners, in the bar at the top, before **Panel by panel** and **All pages** (pointing at it shows its name):
 
 - **Comic's choice** follows each comic's own setting. It's where you start.
-- **Fit the screen**, **Fit the width** or **Fit the height** uses that size for every comic, on this computer, until you choose **Comic's choice** again.
-- While your own choice is in use, the button has a small dot.
-- With the keyboard: Tab to **Page size**, press Enter, then the up and down arrow keys, and Enter to choose. Escape closes it.
+- **Fit the screen**, **Fit the width** or **Fit the height** uses that size for every comic, in this browser, until you choose **Comic's choice** again.
+- A small dot on the button means your own size is showing; open it and choose **Comic's choice** to clear it.
+- With the keyboard: Tab to **Page size**, press Enter, then the up and down arrow keys, and Enter to choose. Escape or Tab closes it, and the focus stays on **Page size**.
+- With a screen reader, the button is named "Page size", or "Page size: Fit the height, your choice" when you've chosen one, and choosing says "Page size: Fit the height." With voice control, say "Click Page size".
 - Phones and tablets always fit the page to the screen, and don't show **Page size**. Reading panel by panel always fits each panel to the screen; a size you choose then applies when you turn panel by panel off.
 
 ## Read panel by panel

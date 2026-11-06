@@ -255,9 +255,9 @@ export const PAGE_SIZE_FIELD = {
   options: {
     layout: 'radio',
     list: [
-      { value: 'screen', title: 'Fit the screen: The whole page and the buttons show at once, without scrolling, as now. On a 1440 × 900 laptop a page is about 470 pixels wide.' },
+      { value: 'screen', title: 'Fit the screen: The whole page and the buttons show at once, without scrolling, as now. In a 1440 × 780 laptop window a page is about 390 pixels wide.' },
       { value: 'width', title: 'Fit the width: Each page shows as wide as its picture, or as Largest page width, narrowed to fit the window. Readers scroll down each page to the buttons.' },
-      { value: 'height', title: "Fit the height: Each page's height matches the window's, never wider than its picture or Largest page width. Readers scroll up to Back to series and the page number, and down to the buttons." },
+      { value: 'height', title: "Fit the height: Each page's height matches the window's, never wider than its picture or Largest page width. Readers scroll down a little to the buttons." },
     ],
   },
 } as const;
