@@ -4,7 +4,7 @@
 import { Box, Button, Card, Flex, Stack, Text } from '@sanity/ui';
 import { useEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from 'react';
 import { set, unset, useClient, useFormValue, type PatchEvent } from 'sanity';
-import { boxName, canUse, edit, panelStatus, PICTURE_CHANGED, startEditing, type EditorAction, type EditorState, type Panel, type PanelsBy } from '../lib/panels';
+import { boxName, canUse, dragPreview, dragStep, edit, panelStatus, PICTURE_CHANGED, startEditing, type EditorAction, type EditorState, type Panel, type PanelsBy } from '../lib/panels';
 import { useFinding, setFinding } from '../lib/upload-store';
 import { assetUrl, findOnPage, storedPanels } from './findOnPage';
 
@@ -26,6 +26,8 @@ export function PanelsTool({ value, onChange }: { value: PageValue; onChange: (p
   const area = useRef<HTMLDivElement>(null);
   const drag = useRef<{ kind: 'move' | 'resize' | 'draw'; x: number; y: number; start?: Panel } | null>(null);
   const [drawing, setDrawing] = useState<Panel>();
+  // The boxes while one is moved or resized, so it follows the pointer; kept as a step when it's let go.
+  const [dragged, setDragged] = useState<Panel[]>();
 
   // A new page opened in the panel starts afresh.
   useEffect(() => setState(startEditing(value)), [key]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -95,6 +97,8 @@ export function PanelsTool({ value, onChange }: { value: PageValue; onChange: (p
     const p = percent(e);
     if (d.kind === 'draw') {
       setDrawing({ x: Math.min(d.x, p.x), y: Math.min(d.y, p.y), width: Math.abs(p.x - d.x), height: Math.abs(p.y - d.y) });
+    } else if (d.start) {
+      setDragged(dragPreview(state, d.kind, p.x - d.x, p.y - d.y));
     }
   };
   const onUp = (e: PointerEvent) => {
@@ -106,10 +110,9 @@ export function PanelsTool({ value, onChange }: { value: PageValue; onChange: (p
       setDrawing(undefined);
       act({ type: 'draw', box: { x: Math.min(d.x, p.x), y: Math.min(d.y, p.y), width: Math.abs(p.x - d.x), height: Math.abs(p.y - d.y) } });
     } else if (d.start) {
-      const dx = p.x - d.x;
-      const dy = p.y - d.y;
-      if (Math.abs(dx) + Math.abs(dy) < 0.3) return;
-      act(d.kind === 'move' ? { type: 'move', dx, dy } : { type: 'resize', dw: dx, dh: dy });
+      setDragged(undefined);
+      const step = dragStep(d.kind, p.x - d.x, p.y - d.y);
+      if (step) act(step);
     }
   };
   const onBoxKey = (e: KeyboardEvent, index: number) => {
@@ -162,10 +165,16 @@ export function PanelsTool({ value, onChange }: { value: PageValue; onChange: (p
           onPointerDown={onAreaDown}
           onPointerMove={onMove}
           onPointerUp={onUp}
+          onPointerCancel={() => {
+            // A drag the browser cancelled changes nothing.
+            drag.current = null;
+            setDrawing(undefined);
+            setDragged(undefined);
+          }}
           style={{ position: 'relative', userSelect: 'none', touchAction: 'none', cursor: 'crosshair', maxWidth: 520 }}
         >
           <img src={src} alt="" data-picture="1" draggable={false} style={{ display: 'block', width: '100%' }} />
-          {state.panels.map((p, i) => {
+          {(dragged ?? state.panels).map((p, i) => {
             const selected = state.selected === i;
             const picked = state.ordering ? state.ordering.indexOf(i) : -2;
             const number = state.ordering ? (picked >= 0 ? String(picked + 1) : '?') : String(i + 1);
