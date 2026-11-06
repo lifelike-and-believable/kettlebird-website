@@ -1,6 +1,6 @@
 ---
 id: design-comic-reader-phone-bar
-status: draft
+status: approved
 derived-from:
   - design-comic-sheet-and-controls#layout: ee5c53db8ba2
   - design-comic-sheet-and-controls#accessibility: a6dfd125f599
@@ -116,9 +116,9 @@ The fans' guide `reading-comics.md`, everywhere it names the two buttons:
 
 ## Decisions at review
 
-For the lead:
-1. **Pictures only on phones, as asked**, rather than keeping words. Shorter words ("Panels", "Pages") would still wrap at 320 px with **Back to series**, and "Panels" isn't part of the toggle's name. A small caption under each picture would fit, but would take most of the 16 px margin above the address bar. The cost of pictures only: on touch, a fan has to know or try what each picture does; the guide names them, and pressing **Panel by panel** is safe to undo.
-2. **The pictures themselves.** This design redraws Panel by panel's picture so it reads less like a phone, but at 18 × 26 px the difference is small (mock-up 5). Star could draw both pictures in the site's style, which would make them recognisable as Star's and, hopefully, easier to read; the build would take them as drawn.
+The lead's review (2026-11-06):
+1. **Pictures only on phones**, as asked. Shorter words would still wrap at 320 px with **Back to series**, and a caption under each picture would take most of the margin above the address bar. On touch, a fan has to know or try what each picture does; the guide names them, and pressing **Panel by panel** is safe to undo.
+2. **Star draws the two pictures.** The lead will ask Star for a Panel by panel picture and an All pages picture in the site's style. Until they arrive, the build uses the redrawn Panel by panel picture in this design (mock-up 5) and today's grid, and Star's drawings replace them when they come, without another design change: each must read at 18 × 26 px for Panel by panel and 22 × 22 px for All pages, in ink on paper and paper on ink (pressed).
 
 ## Persona walkthrough
 
