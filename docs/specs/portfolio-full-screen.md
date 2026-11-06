@@ -6,6 +6,7 @@ unlocks:
   - tests/unit/full-screen-edges.test.ts (new): mutation testing showed nothing checked pieces with no category or a picture without an asset, the end of an asset id, `fitted` on its own, an exactly diagonal swipe, or Shift with Up and Down. Added; the criteria are unchanged. Two mutants survive as equivalent: a zero pan limit giving -0 instead of 0, and `dx <= 0` where a turn needs at least 50 px.
   - tests/e2e/portfolio-full-screen-touch.spec.ts (new): see the next entry.
   - tests/unit/full-screen-touch.test.ts (new): the lead found on a phone that after letting go of a zoomed piece, dragging and pinching stopped working until a zoom button was used, and that a tap didn't hide the bars (2026-11-06). The view now reads taps and double taps from the touches themselves, starts afresh with each new first finger, and keeps the picture from taking touches (so the phone's own image long-press can't start). Added; the criteria are unchanged.
+  - tests/e2e/portfolio-full-screen-touch.spec.ts: a test that a touch brings the bars back at once, however the phone ends it, after the lead found on a phone that a tap hid the bars but another didn't bring them back (2026-11-06). The criteria are unchanged.
 ---
 
 # Portfolio: full screen
