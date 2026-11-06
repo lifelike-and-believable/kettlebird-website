@@ -32,6 +32,7 @@ derived-from:
   - story-comic-reader-flip-and-panels-read-panel-by-panel: 0cd610fa0545
   - design-comic-reader-phone-bar#for-the-guide: 321a518145c9
   - design-comic-panels-two-up#for-the-guide: af472bda9347
+  - design-comic-page-width#for-the-guides: 52902c1e5b18
 ---
 
 # Reading comics
@@ -87,6 +88,18 @@ On a laptop, or a tablet held sideways, some comics show two pages side by side,
 - Every page keeps its own address, so links work on any screen. On those comics, a link to page 3 opens pages 2 and 3 on a laptop, and page 3 on a phone.
 - On comics where Star has turned it on, turning shows the page turning over, in under half a second, in most up-to-date browsers. If your device is set to reduce motion, or a page isn't ready yet, the page changes straight away instead.
 - With a screen reader, you hear both pages, for example "Chapter 2: The Long Road, pages 2 and 3 of 12.", then what each page shows, left before right. A spread is announced as, for example, "Page 5 of 12, two-page spread.", then what it shows. The buttons' full names say "Next pages" when they lead to two pages, and "Next page" otherwise.
+
+## Choose how big pages show on a computer
+
+On a laptop or desktop, Star chooses how big each comic's pages show: the whole page and the buttons on screen at once, the page as wide as the window allows, or the page as tall as the window. When a page runs below the window, scroll down to the buttons; the arrow keys and the arrows at the page's edges turn pages without scrolling.
+
+To choose for yourself, use **Page size**, the picture of a page with arrows at its corners, beside **Panel by panel** in the bar at the top (pointing at it shows its name):
+
+- **Comic's choice** follows each comic's own setting. It's where you start.
+- **Fit the screen**, **Fit the width** or **Fit the height** uses that size for every comic, on this computer, until you choose **Comic's choice** again.
+- While your own choice is in use, the button has a small dot.
+- With the keyboard: Tab to **Page size**, press Enter, then the up and down arrow keys, and Enter to choose. Escape closes it.
+- Phones and tablets always fit the page to the screen, and don't show **Page size**. Reading panel by panel always fits each panel to the screen; a size you choose then applies when you turn panel by panel off.
 
 ## Read panel by panel
 
