@@ -48,7 +48,7 @@ The look of the site is recorded in `docs/STYLE_GUIDE.md` and in the Kettlebird 
 | About and contact | Star's about page, quick facts and social links | design-site-settings |
 | Star runs the site | Sign-in at `/studio`; an editor organised as Comics, Art, Writing, Shop, Commissions and Site settings; preview before publishing; knowing when a change is live; help links to Star's guides on every item | epic-content-editing |
 
-Being finished: **the reader bar on phones** (design-comic-reader-phone-bar; spec and build in review). Phones show **Panel by panel** and **All pages** as pictures, so the reader's controls stay above Safari's address bar.
+The newest change is **the reader bar on phones** (design-comic-reader-phone-bar): phones show **Panel by panel** and **All pages** as pictures, and the page is sized from the visible screen, so the reader's controls stay above Safari's address bar.
 
 ## What's left
 
