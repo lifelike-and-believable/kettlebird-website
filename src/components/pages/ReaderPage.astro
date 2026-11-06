@@ -886,8 +886,9 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
   .reader__edge--next { right: 0; }
   @media (hover: hover) and (min-width: 700px) {
     .reader__edge { display: flex; }
-    /* Over the strip: the strip tints, and its arrow button shows, yellow (docs/design/arrows.md). */
-    .reader__edge:hover { opacity: 1; background: rgba(245, 241, 232, 0.4); }
+    /* Over the strip: its arrow button shows, yellow; the strip stays clear over the page
+       (docs/design/arrows.md; site-arrows AC-8). */
+    .reader__edge:hover { opacity: 1; }
     .reader__edge:hover :global(.arrow-btn) { background-color: var(--color-yellow); }
   }
 
