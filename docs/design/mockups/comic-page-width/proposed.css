@@ -58,3 +58,57 @@
   /* "Turn your phone sideways" is for phones. */
   .reader:is(.kb-fit-width, .kb-fit-height) .reader__turn-hint { display: none !important; }
 }
+
+/* Two pages side by side (pairs show on a wide window held sideways, as now): the same modes, the pair's
+   column twice the chapter's widest page. The book's height follows its pages, which meet at the spine. */
+@media (hover: hover) and (pointer: fine) and (min-width: 62.5em) and (orientation: landscape) {
+  html:not(.kb-one-page) .reader.reader--pairs.kb-fit-width {
+    max-width: min(max(calc(var(--kb-col) * 2 + 1rem), 600px), 100%) !important;
+  }
+  html:not(.kb-one-page) .reader.reader--pairs.kb-fit-height {
+    max-width: min(max(calc(min(var(--kb-col), calc(100svh * var(--kb-ratio))) * 2 + 1rem), 600px), 100%) !important;
+  }
+  html:not(.kb-one-page) .reader.reader--pairs:is(.kb-fit-width, .kb-fit-height) .reader__book { height: auto !important; }
+  html:not(.kb-one-page) .reader.reader--pairs:is(.kb-fit-width, .kb-fit-height) .reader__book .reader__page { height: auto !important; }
+  html:not(.kb-one-page) .reader.reader--pairs:is(.kb-fit-width, .kb-fit-height) .reader__page.is-spread { margin-inline: auto !important; }
+  html:not(.kb-one-page) .reader.reader--pairs.kb-fit-width .reader__page.is-spread { width: min(var(--kb-cap), 100%) !important; }
+}
+
+/* A fan's page size (computers only): one button in the bar's tools, opening a short list. */
+.reader__size { display: none; }
+@media (hover: hover) and (pointer: fine) {
+  .reader__size { display: inline-flex; position: relative; order: 2; }
+  .reader__size-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 44px;
+    padding: 0.3rem 0.6rem;
+    border: 2px solid var(--color-ink);
+    background: var(--color-beige);
+    font: 700 1rem 'Nunito', sans-serif;
+    color: var(--color-ink);
+    cursor: pointer;
+  }
+  .reader__size-button svg { width: 22px; height: 22px; }
+  .reader__size-menu {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    z-index: 5;
+    min-width: 21rem;
+    margin: 0;
+    padding: 0.5rem 0;
+    border: 2px solid var(--color-ink);
+    background: var(--color-beige);
+    box-shadow: 0 6px 18px rgba(43, 43, 43, 0.25);
+    font: 600 1rem 'Nunito', sans-serif;
+    color: var(--color-ink);
+  }
+  .reader__size-menu label { display: flex; align-items: center; gap: 0.6rem; padding: 0.45rem 0.9rem; cursor: pointer; }
+  .reader__size-menu label:hover { background: rgba(43, 43, 43, 0.06); }
+  .reader__size-menu input { accent-color: var(--color-ink); width: 18px; height: 18px; margin: 0; }
+  .reader__size-menu svg { width: 22px; height: 22px; flex: none; }
+  .reader__size-menu small { display: block; font-weight: 400; font-size: 0.85rem; color: var(--color-ink-light); }
+  .reader__size-menu hr { border: 0; border-top: 1px solid rgba(43, 43, 43, 0.2); margin: 0.35rem 0; }
+}
