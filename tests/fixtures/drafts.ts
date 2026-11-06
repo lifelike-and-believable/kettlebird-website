@@ -47,7 +47,7 @@ export const FIXTURE_PUBLISHED: RawDoc[] = [
 ];
 
 export const FIXTURE_DRAFTS: RawDoc[] = [
-  { _id: 'drafts.series-sheets', _type: 'comicSeries', title: 'Single Sheets', slug: { current: 'single-sheets' }, status: 'ongoing', type: 'original', twoUp: true, pageFlip: true },
+  { _id: 'drafts.series-sheets', _type: 'comicSeries', title: 'Single Sheets', slug: { current: 'single-sheets' }, status: 'ongoing', type: 'original', twoUp: true, pageFlip: true, pageSize: 'height', largestPageWidth: 1200 },
   {
     _id: 'drafts.sheets-1',
     _type: 'comicChapter',
