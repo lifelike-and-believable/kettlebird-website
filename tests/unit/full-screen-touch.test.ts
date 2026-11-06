@@ -2,7 +2,7 @@
 // phone, after letting go of a zoomed piece, dragging and pinching stopped working until a zoom button was
 // used, and that a tap didn't hide the bars (2026-11-06). Criteria: docs/specs/portfolio-full-screen.md.
 import { describe, expect, it } from 'vitest';
-import { DOUBLE_TAP_MS, downPointers, isDoubleTap, isTap, TAP_MOVE } from '../../src/lib/portfolio/full-screen';
+import { DOUBLE_TAP_MS, downPointers, isDoubleTap, isTap, TAP_MOVE, TAP_MS } from '../../src/lib/portfolio/full-screen';
 
 describe('portfolio-full-screen#AC-6 AC-7 fingers on the screen', () => {
   it('starts afresh when a new first finger touches, forgetting any whose lift was never reported', () => {
@@ -20,14 +20,16 @@ describe('portfolio-full-screen#AC-6 AC-9 taps', () => {
     expect(isTap({ moved: 0, duration: 120 })).toBe(true);
     expect(isTap({ moved: TAP_MOVE, duration: 400 })).toBe(true);
     expect(isTap({ moved: TAP_MOVE + 1, duration: 120 })).toBe(false);
-    expect(isTap({ moved: 0, duration: 600 })).toBe(false);
+    expect(isTap({ moved: 0, duration: TAP_MS })).toBe(true);
+    expect(isTap({ moved: 0, duration: TAP_MS + 1 })).toBe(false);
   });
 
   it('counts a second tap soon after, near the first, as a double tap', () => {
     const first = { time: 1000, x: 100, y: 100 };
     expect(isDoubleTap(first, { time: 1000 + DOUBLE_TAP_MS, x: 120, y: 110 })).toBe(true);
     expect(isDoubleTap(first, { time: 1001 + DOUBLE_TAP_MS, x: 100, y: 100 })).toBe(false);
-    expect(isDoubleTap(first, { time: 1100, x: 200, y: 100 })).toBe(false);
+    expect(isDoubleTap(first, { time: 1100, x: 140, y: 100 })).toBe(true);
+    expect(isDoubleTap(first, { time: 1100, x: 141, y: 100 })).toBe(false);
     expect(isDoubleTap(undefined, { time: 1100, x: 100, y: 100 })).toBe(false);
   });
 });
