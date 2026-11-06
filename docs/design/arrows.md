@@ -128,7 +128,6 @@ The fans' guide `reading-comics.md` names **← Back to page 4** (twice: where t
 
 The lead's review (2026-11-06):
 - **No drop shadows** on arrow buttons: they fight the ink-on-paper look. With no shadow, nothing lifts or sinks either: hover is yellow only, and pressed is inked in (mock-ups redrawn). This settles the earlier question of adding the shadow to the comic controls.
-
 - **Yellow on hover** for every arrow button, as the site's primary buttons do: yes.
 - **Words with arrows** ("Read it", "Email me to get started", the chapter links, **Back to page 4** and the chapter list) change too: yes.
 
