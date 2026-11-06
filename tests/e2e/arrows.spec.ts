@@ -270,7 +270,9 @@ test('site-arrows#AC-10 full screen, enlarged text', async ({ page }) => {
   expect(z.y + z.height).toBeGreaterThan(p.y);
   expect(Math.round((await box(view(page).locator('.fs__bottom'))).height)).toBe(76);
 
-  // Two rows with text at 200% on a 320 px phone.
+  // Two rows with text at 200% on a 320 px phone. The browser can't resize a window in full-screen mode, so leave it first.
+  await page.keyboard.press('Escape');
+  await expect.poll(() => page.evaluate(() => document.fullscreenElement === null)).toBe(true);
   await page.setViewportSize({ width: 320, height: 640 });
   await cdn(page);
   await page.goto(PORTFOLIO);
