@@ -10,6 +10,9 @@ import {
   clampZoom,
   countLabel,
   DOUBLE_TAP_ZOOM,
+  downPointers,
+  isDoubleTap,
+  isTap,
   fetchNext,
   fitted,
   HIDE_DELAY_MS,
@@ -42,7 +45,6 @@ const TOP = 60;
 const BOTTOM_WIDE = 72;
 const BOTTOM_PHONE = 76;
 const SIDE = 72;
-const DRAG = 5;
 const RETRY_MS = 250;
 
 type Status = 'loading' | 'loaded' | 'failed';
@@ -292,16 +294,28 @@ export default function FullScreenView({ order, start, sectionTitle, dialogSrc, 
     return () => el.removeEventListener('wheel', onWheel);
   }, [zoom, setZoomAt]);
 
-  // Pointers: drags move a zoomed piece, swipes turn a fitted one, two fingers pinch, taps hide the bars.
+  // Pointers: drags move a zoomed piece, swipes turn a fitted one, two fingers pinch, and taps (read from
+  // the touches themselves, as phones don't always send a click or a double-click) hide the bars or zoom.
   const pointers = useRef(new Map<number, { x: number; y: number }>());
-  const gesture = useRef<{ startX: number; startY: number; lastX: number; lastY: number; moved: number; pinch?: number; zoom: number }>();
+  const gesture = useRef<{ startX: number; startY: number; lastX: number; lastY: number; moved: number; start: number; multi: boolean; pinch?: number; zoom: number }>();
+  const lastTap = useRef<{ time: number; x: number; y: number }>();
+  const atStage = (x: number, y: number) => {
+    const rect = stageRef.current!.getBoundingClientRect();
+    return { x: x - rect.left - rect.width / 2, y: y - rect.top - rect.height / 2 };
+  };
 
   const onPointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
-    pointers.current.set(event.pointerId, { x: event.clientX, y: event.clientY });
+    // A new first finger means every earlier one has lifted, even if the phone never said so.
+    pointers.current = downPointers(pointers.current, { id: event.pointerId, x: event.clientX, y: event.clientY, primary: event.isPrimary ?? true });
     event.currentTarget.setPointerCapture?.(event.pointerId);
     const points = [...pointers.current.values()];
-    const pinch = points.length === 2 ? Math.hypot(points[0].x - points[1].x, points[0].y - points[1].y) : undefined;
-    gesture.current = { startX: event.clientX, startY: event.clientY, lastX: event.clientX, lastY: event.clientY, moved: 0, pinch, zoom };
+    if (points.length === 2 && gesture.current) {
+      gesture.current.multi = true;
+      gesture.current.pinch = Math.hypot(points[0].x - points[1].x, points[0].y - points[1].y);
+      gesture.current.zoom = zoom;
+      return;
+    }
+    gesture.current = { startX: event.clientX, startY: event.clientY, lastX: event.clientX, lastY: event.clientY, moved: 0, start: performance.now(), multi: false, zoom };
   };
   const onPointerMove = (event: ReactPointerEvent<HTMLDivElement>) => {
     if (!pointers.current.has(event.pointerId)) {
@@ -314,10 +328,11 @@ export default function FullScreenView({ order, start, sectionTitle, dialogSrc, 
     const points = [...pointers.current.values()];
     if (points.length === 2 && g.pinch) {
       const distance = Math.hypot(points[0].x - points[1].x, points[0].y - points[1].y);
-      g.moved = DRAG + 1;
-      setZoomAt(g.zoom * (distance / g.pinch));
+      const mid = atStage((points[0].x + points[1].x) / 2, (points[0].y + points[1].y) / 2);
+      setZoomAt(g.zoom * (distance / g.pinch), mid);
       return;
     }
+    if (g.multi) return;
     const dx = event.clientX - g.lastX;
     const dy = event.clientY - g.lastY;
     g.moved = Math.max(g.moved, Math.hypot(event.clientX - g.startX, event.clientY - g.startY));
@@ -326,17 +341,15 @@ export default function FullScreenView({ order, start, sectionTitle, dialogSrc, 
     if (zoom > 1) setPan((p) => clampPan({ x: p.x + dx, y: p.y + dy }, zoom, fit, stage));
     else if (!reduced) setSwipeX(event.clientX - g.startX);
   };
-  const onPointerUp = (event: ReactPointerEvent<HTMLDivElement>) => {
-    pointers.current.delete(event.pointerId);
-    const g = gesture.current;
-    setSwipeX(0);
-    if (!g || pointers.current.size > 0) return;
-    const to = swipeTurn({ dx: event.clientX - g.startX, dy: event.clientY - g.startY, startX: g.startX, zoomed: zoom > 1 });
-    if (to) turn(to);
-  };
-  const onClick = () => {
-    const g = gesture.current;
-    if (g && g.moved > DRAG) return;
+  const tap = (x: number, y: number) => {
+    const now = { time: performance.now(), x, y };
+    if (isDoubleTap(lastTap.current, now)) {
+      lastTap.current = undefined;
+      window.clearTimeout(hideTimer.current);
+      setZoomAt(zoom > 1 ? 1 : DOUBLE_TAP_ZOOM, atStage(x, y));
+      return;
+    }
+    lastTap.current = now;
     window.clearTimeout(hideTimer.current);
     hideTimer.current = window.setTimeout(() => {
       // Hiding is visual only; a control keeping focus would vanish, so focus moves to the view first.
@@ -344,11 +357,22 @@ export default function FullScreenView({ order, start, sectionTitle, dialogSrc, 
       setHidden((h) => !h);
     }, HIDE_DELAY_MS);
   };
-  const onDoubleClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    window.clearTimeout(hideTimer.current);
-    const rect = event.currentTarget.getBoundingClientRect();
-    const at = { x: event.clientX - rect.left - rect.width / 2, y: event.clientY - rect.top - rect.height / 2 };
-    setZoomAt(zoom > 1 ? 1 : DOUBLE_TAP_ZOOM, at);
+  const onPointerUp = (event: ReactPointerEvent<HTMLDivElement>) => {
+    pointers.current.delete(event.pointerId);
+    const g = gesture.current;
+    setSwipeX(0);
+    if (!g || pointers.current.size > 0) return;
+    gesture.current = undefined;
+    if (g.multi) return;
+    if (event.type !== 'pointercancel' && isTap({ moved: g.moved, duration: performance.now() - g.start })) {
+      tap(event.clientX, event.clientY);
+      return;
+    }
+    const to = swipeTurn({ dx: event.clientX - g.startX, dy: event.clientY - g.startY, startX: g.startX, zoomed: zoom > 1 });
+    if (to) turn(to);
+  };
+  const onLostCapture = (event: ReactPointerEvent<HTMLDivElement>) => {
+    pointers.current.delete(event.pointerId);
   };
 
   // ---------------------------------------------------------------- the view
@@ -381,8 +405,7 @@ export default function FullScreenView({ order, start, sectionTitle, dialogSrc, 
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
         onPointerCancel={onPointerUp}
-        onClick={onClick}
-        onDoubleClick={onDoubleClick}
+        onLostPointerCapture={onLostCapture}
       >
         {failed ? (
           <p className="fs__failed">{LOAD_FAILED}</p>

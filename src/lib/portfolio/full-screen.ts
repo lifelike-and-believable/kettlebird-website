@@ -146,3 +146,34 @@ export function fetchNext(order: GalleryItem[], index: number, going: Turn): Gal
   const behind = going === 'next' ? order[index - 1] : order[index + 1];
   return [ahead, behind].filter((p): p is GalleryItem => Boolean(p));
 }
+
+// ---------------------------------------------------------------- touches (AC-6, AC-7, AC-9)
+
+/** A touch that moves no more than this, and lifts within TAP_MS, is a tap. */
+export const TAP_MOVE = 10;
+export const TAP_MS = 500;
+/** A second tap within this time, and near the first, is a double tap. */
+export const DOUBLE_TAP_MS = 300;
+const DOUBLE_TAP_DISTANCE = 40;
+
+export function isTap({ moved, duration }: { moved: number; duration: number }): boolean {
+  return moved <= TAP_MOVE && duration <= TAP_MS;
+}
+
+type TapAt = { time: number; x: number; y: number };
+
+export function isDoubleTap(previous: TapAt | undefined, now: TapAt): boolean {
+  if (!previous) return false;
+  return now.time - previous.time <= DOUBLE_TAP_MS && Math.hypot(now.x - previous.x, now.y - previous.y) <= DOUBLE_TAP_DISTANCE;
+}
+
+/** The fingers down after one more touches: a new first finger means every earlier one has lifted,
+ * even if a phone never reported it. */
+export function downPointers(
+  pointers: Map<number, { x: number; y: number }>,
+  { id, x, y, primary }: { id: number; x: number; y: number; primary: boolean },
+): Map<number, { x: number; y: number }> {
+  const next = primary ? new Map<number, { x: number; y: number }>() : new Map(pointers);
+  next.set(id, { x, y });
+  return next;
+}
