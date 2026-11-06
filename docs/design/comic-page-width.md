@@ -1,6 +1,6 @@
 ---
 id: design-comic-page-width
-status: draft
+status: approved
 derived-from:
   - design-comic-spread-and-flip#settings-per-comic: 64a1be41076a
   - design-comic-sheet-and-controls#layout: ee5c53db8ba2
@@ -182,9 +182,8 @@ Settled by the lead (2026-11-06):
 - pages fit the screen, the width or the height; the default largest width is each picture's own pixels, in screen pixels, overridable in the editor;
 - fans can choose a size for themselves with a compact control on computers, and Star's choice is the comic's default;
 - **Fit the height** opens at the bar, as now;
-- two pages side by side take the size too.
-
-Still for the lead: a fan's choice is kept for every comic, as proposed, since it's about their screen and taste, with the dot showing it's in use; or kept per comic, so Star's choice for another comic still shows?
+- two pages side by side take the size too;
+- a fan's choice is kept for every comic, with the dot showing it's in use.
 
 ## Persona walkthrough
 
