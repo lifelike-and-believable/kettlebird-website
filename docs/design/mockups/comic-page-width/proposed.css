@@ -74,29 +74,61 @@
   html:not(.kb-one-page) .reader.reader--pairs.kb-fit-width .reader__page.is-spread { width: min(var(--kb-cap), 100%) !important; }
 }
 
-/* A fan's page size (computers only): one button in the bar's tools, opening a short list. */
+/* A fan's page size (computers only): one picture button in the bar's tools, with its name under it on hover
+   and keyboard focus, like the bar's other tools on phones, opening a short menu. A dot marks a fan's own
+   choice. */
 .reader__size { display: none; }
 @media (hover: hover) and (pointer: fine) {
   .reader__size { display: inline-flex; position: relative; order: 2; }
   .reader__size-button {
+    position: relative;
     display: inline-flex;
     align-items: center;
-    gap: 0.4rem;
-    min-height: 44px;
-    padding: 0.3rem 0.6rem;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
     border: 2px solid var(--color-ink);
     background: var(--color-beige);
-    font: 700 1rem 'Nunito', sans-serif;
     color: var(--color-ink);
     cursor: pointer;
   }
-  .reader__size-button svg { width: 22px; height: 22px; }
+  .reader__size-button svg { width: 24px; height: 24px; }
+  .reader__size-button[data-own]::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-ink);
+    box-shadow: 0 0 0 2px var(--color-yellow);
+  }
+  .reader__size-tip {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    right: -2px;
+    z-index: 3;
+    padding: 0.25rem 0.5rem;
+    background: var(--color-ink);
+    color: var(--color-beige);
+    font: 600 0.8rem 'Nunito', sans-serif;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+  .reader__size-button:hover .reader__size-tip,
+  .reader__size-button:focus-visible .reader__size-tip { display: block; }
+  .reader__size-button[aria-expanded='true'] .reader__size-tip { display: none; }
   .reader__size-menu {
     position: absolute;
     top: calc(100% + 6px);
     right: 0;
     z-index: 5;
-    min-width: 21rem;
+    width: 22rem;
+    max-height: calc(100svh - 7rem);
+    overflow-y: auto;
     margin: 0;
     padding: 0.5rem 0;
     border: 2px solid var(--color-ink);
@@ -105,10 +137,24 @@
     font: 600 1rem 'Nunito', sans-serif;
     color: var(--color-ink);
   }
-  .reader__size-menu label { display: flex; align-items: center; gap: 0.6rem; padding: 0.45rem 0.9rem; cursor: pointer; }
-  .reader__size-menu label:hover { background: rgba(43, 43, 43, 0.06); }
-  .reader__size-menu input { accent-color: var(--color-ink); width: 18px; height: 18px; margin: 0; }
+  .reader__size-menu [role='menuitemradio'] {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    width: 100%;
+    padding: 0.45rem 0.9rem;
+    border: 0;
+    background: none;
+    font: inherit;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+  .reader__size-menu [role='menuitemradio']:hover { background: rgba(43, 43, 43, 0.06); }
+  .reader__size-menu [role='menuitemradio']:focus-visible { outline: 2px solid var(--color-ink); outline-offset: -4px; }
+  .reader__size-menu .tick { width: 18px; flex: none; text-align: center; font-weight: 800; }
   .reader__size-menu svg { width: 22px; height: 22px; flex: none; }
   .reader__size-menu small { display: block; font-weight: 400; font-size: 0.85rem; color: var(--color-ink-light); }
   .reader__size-menu hr { border: 0; border-top: 1px solid rgba(43, 43, 43, 0.2); margin: 0.35rem 0; }
+  .reader__size-menu .note { display: block; padding: 0.2rem 0.9rem 0.3rem; font-weight: 400; font-size: 0.85rem; color: var(--color-ink-light); }
 }

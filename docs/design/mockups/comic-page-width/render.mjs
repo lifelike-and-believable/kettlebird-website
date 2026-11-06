@@ -42,45 +42,64 @@ function mark({ mode, largest, chapterCol }) {
 }
 
 
-// The fan's page-size control the build will have: a button in the bar's tools, and its list when open.
+// The fan's page-size control the build will have: a picture button in the bar's tools (a dot when the fan has
+// made their own choice), and its menu when open.
 const ICONS = {
-  size: '<rect x="6" y="4" width="12" height="16" fill="none" stroke="currentColor" stroke-width="2"/><path d="M2 8V2h6M22 8V2h-6M2 16v6h6M22 16v6h-6" fill="none" stroke="currentColor" stroke-width="2"/>',
+  size: '<rect x="7" y="6" width="10" height="12" fill="none" stroke="currentColor" stroke-width="2"/><path d="M2 6V2h4M2 2l4 4M22 6V2h-4M22 2l-4 4M2 18v4h4M2 22l4-4M22 18v4h-4M22 22l-4-4" fill="none" stroke="currentColor" stroke-width="1.75"/>',
   screen: '<rect x="7" y="5" width="10" height="14" fill="none" stroke="currentColor" stroke-width="2"/><path d="M2 7V2h5M22 7V2h-5M2 17v5h5M22 17v5h-5" fill="none" stroke="currentColor" stroke-width="2"/>',
   width: '<rect x="5" y="2" width="14" height="20" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".45"/><path d="M2 12h20M2 12l4-4M2 12l4 4M22 12l-4-4M22 12l-4 4" fill="none" stroke="currentColor" stroke-width="2"/>',
   height: '<rect x="5" y="2" width="14" height="20" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".45"/><path d="M12 2v20M12 2l-4 4M12 2l4 4M12 22l-4-4M12 22l4-4" fill="none" stroke="currentColor" stroke-width="2"/>',
 };
-function addSizeControl({ open, comicMode, chosen, icons }) {
+function addSizeControl({ open, comicMode, chosen, icons, focusItem, panels }) {
   const tools = document.querySelector('.reader__tools');
   const names = { screen: 'Fit the screen', width: 'Fit the width', height: 'Fit the height' };
-  const notes = { screen: 'The whole page and the buttons at once', width: 'As wide as the window allows', height: 'As tall as the window' };
+  const notes = { screen: 'The whole page and the buttons at once', width: "As wide as the page's picture, or the window if narrower", height: 'As tall as the window' };
   const svg = (k) => `<svg viewBox="0 0 24 24" aria-hidden="true">${icons[k]}</svg>`;
+  const own = chosen !== 'comic';
+  const label = own ? `Page size: ${names[chosen]}, your choice` : 'Page size';
+  const item = (value, name, note, icon) =>
+    `<button type="button" role="menuitemradio" aria-checked="${chosen === value}" data-value="${value}"><span class="tick" aria-hidden="true">${chosen === value ? '✓' : ''}</span>${icon}<span>${name}<small>${note}</small></span></button>`;
   const wrap = document.createElement('div');
   wrap.className = 'reader__size';
-  const radio = (value, label, note, icon) =>
-    `<label><input type="radio" name="kb-size" value="${value}" ${chosen === value ? 'checked' : ''}>${icon}<span>${label}<small>${note}</small></span></label>`;
   wrap.innerHTML =
-    `<button type="button" class="reader__size-button" aria-expanded="${open}" aria-controls="kb-size-menu">${svg('size')}<span class="reader__tool-word">Page size</span></button>` +
+    `<button type="button" class="reader__size-button" aria-label="${label}" aria-haspopup="menu" aria-expanded="${open}" ${own ? 'data-own' : ''}>${svg('size')}<span class="reader__size-tip" aria-hidden="true">${own ? `Page size: ${names[chosen]}` : 'Page size'}</span></button>` +
     (open
-      ? `<fieldset class="reader__size-menu" id="kb-size-menu" style="border-width:2px"><legend class="visually-hidden">Page size on this computer</legend>` +
-        radio('comic', `Comic's choice: ${names[comicMode]}`, 'As the artist set it for this comic', svg(comicMode)) +
+      ? `<div class="reader__size-menu" role="menu" aria-label="Page size on this computer">` +
+        item('comic', `Comic's choice: ${names[comicMode]}`, "Follows this comic's setting", svg(comicMode)) +
         '<hr>' +
-        ['screen', 'width', 'height'].map((k) => radio(k, names[k], notes[k], svg(k))).join('') +
-        '<hr><small style="padding:0.2rem 0.9rem 0.3rem">Kept on this computer for every comic.</small></fieldset>'
+        ['screen', 'width', 'height'].map((k) => item(k, names[k], `${notes[k]}. For every comic`, svg(k))).join('') +
+        '<hr>' +
+        (panels ? '<span class="note">Panel by panel always fits the screen. Your choice applies when it\'s off.</span>' : '<span class="note">Kept on this computer.</span>') +
+        '</div>'
       : '');
   tools.prepend(wrap);
+  if (focusItem) {
+    const el = wrap.querySelector(`[data-value="${focusItem}"]`) ?? wrap.querySelector('.reader__size-button');
+    el.focus();
+  }
 }
 
-async function shot(name, { width, height, mode, largest, chapterCol, url = '/comics/single-sheets/1/1', full = false, hoverEdge = false, at = 'bar', control, clip }) {
+async function shot(name, { width, height, mode, largest, chapterCol, url = '/comics/single-sheets/1/1', full = false, hoverEdge = false, at = 'bar', control, clip, hoverSize = false, panelsOn = false }) {
   const page = await browser.newPage({ viewport: { width, height }, deviceScaleFactor: 1 });
+  if (panelsOn) await page.addInitScript(() => localStorage.setItem('kb-panels', '1'));
   await page.goto(BASE + url);
-  if (mode) {
-    await page.evaluate(mark, { mode, largest, chapterCol });
-    await page.addStyleTag({ content: css });
+  if (mode) await page.evaluate(mark, { mode, largest, chapterCol });
+  // The stylesheet always: its page-size rules need the reader marked, and the button is on every computer.
+  await page.addStyleTag({ content: css });
+  const c = control ?? { open: false, comicMode: mode ?? 'screen', chosen: 'comic' };
+  await page.evaluate(addSizeControl, { ...c, icons: ICONS });
+  if (c.focusItem === 'button') {
+    await page.keyboard.press('Shift+Tab');
+    await page.keyboard.press('Tab');
   }
-  if (control) await page.evaluate(addSizeControl, { ...control, icons: ICONS });
   await page.evaluate(() => document.fonts.ready);
   await page.evaluate((sel) => document.querySelector(sel)?.scrollIntoView({ block: 'start' }), at === 'page' ? '.reader__page.is-current' : '.reader');
   await page.waitForTimeout(400);
+  if (hoverSize) {
+    const b = await page.locator('.reader__size-button').boundingBox();
+    await page.mouse.move(b.x + b.width / 2, b.y + b.height / 2);
+    await page.waitForTimeout(200);
+  }
   if (hoverEdge) {
     const b = await page.locator('.reader__edge--next').first().boundingBox();
     await page.mouse.move(b.x + b.width / 2, 400);
@@ -89,7 +108,8 @@ async function shot(name, { width, height, mode, largest, chapterCol, url = '/co
   measures[name] = await page.evaluate(() => {
     const p = document.querySelector('.reader__page.is-current').getBoundingClientRect();
     const nav = [...document.querySelectorAll('nav.reader__controls')].map((n) => n.getBoundingClientRect()).find((r) => r.height > 0);
-    return { readerTop: Math.round(document.querySelector('.reader').getBoundingClientRect().top + scrollY), page: [Math.round(p.width), Math.round(p.height)], top: Math.round(p.top), controlsBottom: Math.round(nav.bottom), window: innerHeight, sideways: document.documentElement.scrollWidth > innerWidth };
+    const bar = document.querySelector('.reader__bar').getBoundingClientRect();
+    return { bar: Math.round(bar.height), readerTop: Math.round(document.querySelector('.reader').getBoundingClientRect().top + scrollY), page: [Math.round(p.width), Math.round(p.height)], top: Math.round(p.top), controlsBottom: Math.round(nav.bottom), window: innerHeight, sideways: document.documentElement.scrollWidth > innerWidth };
   });
   if (clip) await page.screenshot({ path: path.join(dir, 'shots', `${name}.png`), clip });
   else await page.screenshot({ path: path.join(dir, 'shots', `${name}.png`), fullPage: full });
@@ -118,9 +138,16 @@ await shot('width-1280-edge', { width: 1280, height: 720, mode: 'width', largest
 await shot('pairs-today-1440', { width: 1440, height: 900, url: '/comics/open-book/1/2' });
 await shot('pairs-width-1440', { width: 1440, height: 900, mode: 'width', url: '/comics/open-book/1/2' });
 await shot('pairs-height-1440', { width: 1440, height: 900, mode: 'height', url: '/comics/open-book/1/2' });
-// The fan's control: closed in the bar, and open, with the comic's choice (Fit the width) in use.
-await shot('control-closed', { width: 1440, height: 900, mode: 'width', control: { open: false, comicMode: 'width', chosen: 'comic' }, clip: { x: 260, y: 0, width: 920, height: 80 } });
-await shot('control-open', { width: 1440, height: 900, mode: 'width', control: { open: true, comicMode: 'width', chosen: 'comic' }, clip: { x: 260, y: 0, width: 920, height: 460 } });
+// The fan's control, in a 1440 window with Fit the width the comic's choice: closed; with the pointer on it; open
+// from the keyboard, focus on the ticked item; a fan's own choice (Fit the screen, the dot); open with Panel by
+// panel on; and the bar at 700 px wide.
+const top = (h) => ({ x: 260, y: 0, width: 920, height: h });
+await shot('control-closed', { width: 1440, height: 900, mode: 'width', clip: top(80) });
+await shot('control-hover', { width: 1440, height: 900, mode: 'width', clip: top(110), hoverSize: true });
+await shot('control-open', { width: 1440, height: 900, mode: 'width', control: { open: true, comicMode: 'width', chosen: 'comic', focusItem: 'comic' }, clip: top(470) });
+await shot('control-own', { width: 1440, height: 900, control: { open: false, comicMode: 'width', chosen: 'screen' }, clip: { x: 230, y: 0, width: 980, height: 110 }, hoverSize: true });
+await shot('control-panels', { width: 1440, height: 900, mode: 'width', panelsOn: true, control: { open: true, comicMode: 'width', chosen: 'height', panels: true, focusItem: 'height' }, clip: { x: 230, y: 0, width: 980, height: 470 } });
+await shot('control-700', { width: 700, height: 800, mode: 'width', clip: { x: 0, y: 0, width: 700, height: 80 } });
 console.log(JSON.stringify(measures));
 
 const names = { m1: '1-fit-screen', m2: '2-fit-width', m3: '3-fit-width-scrolled', m4: '4-largest-width', m5: '5-fit-height', m6: '6-narrower-window', m7: '7-spread', m8: '8-editor', m9: '9-editor-notes', m10: '10-zoom-and-edge', m11: '11-pairs', m12: '12-fan-control' };
