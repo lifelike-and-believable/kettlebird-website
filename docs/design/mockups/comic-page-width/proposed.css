@@ -1,0 +1,160 @@
+/* The proposed change (docs/design/comic-page-width.md), injected into the fixture build by render.mjs.
+   The build marks the reader with the page size in use (kb-fit-width or kb-fit-height; Fit the screen is today's
+   reader, unmarked): the fan's choice if they made one, or else the comic's. It sets:
+   - on each page, --kb-cap: the largest width it shows at: the comic's Largest page width (twice it for a
+     spread), or else the picture's own width in pixels, never over 3200;
+   - on the reader, --kb-col and --kb-ratio: the cap and shape of the chapter's widest page (spreads aside), so the
+     column, and the bar and buttons in it, stay the same width through a chapter (twice it for pairs). The column
+     is never narrower than 600 px, or the window.
+   Pages narrower than the column are centred in it; a spread breaks out of it, centred, within the window.
+   Only on a computer (a mouse or trackpad, at any window width). The edge arrows and the loading message stay
+   in view on a tall page. !important here only because this sheet is injected over the reader's scoped
+   styles. */
+@media (hover: hover) and (pointer: fine) {
+  /* Fit the width: as wide as the window allows, up to the cap; the height follows. */
+  .reader.kb-fit-width:not(.is-panels) { max-width: min(max(calc(var(--kb-col) + 1rem), 600px), 100%) !important; }
+  .reader.kb-fit-width:not(.is-panels) .reader__page:not(.is-spread) {
+    max-height: none !important;
+    max-width: 100% !important;
+    width: min(var(--kb-cap), 100%) !important;
+  }
+  .reader.kb-fit-width:not(.is-panels) .reader__page.is-spread {
+    --kb-w: min(var(--kb-cap), calc(100vw - 2rem));
+    max-height: none !important;
+    max-width: none !important;
+    width: var(--kb-w) !important;
+    margin-inline: calc((100% - var(--kb-w)) / 2) !important;
+  }
+
+  /* Fit the height: the page's height is the window's, up to the cap and the window's width. */
+  .reader.kb-fit-height:not(.is-panels) {
+    max-width: min(max(calc(min(var(--kb-col), calc(100svh * var(--kb-ratio))) + 1rem), 600px), 100%) !important;
+  }
+  .reader.kb-fit-height:not(.is-panels) .reader__page:not(.is-spread) {
+    max-height: none !important;
+    max-width: 100% !important;
+    width: min(var(--kb-cap), 100%, calc(100svh * var(--page-ratio))) !important;
+  }
+  .reader.kb-fit-height:not(.is-panels) .reader__page.is-spread {
+    --kb-w: min(var(--kb-cap), calc(100vw - 2rem), calc(100svh * var(--page-ratio)));
+    max-height: none !important;
+    max-width: none !important;
+    width: var(--kb-w) !important;
+    margin-inline: calc((100% - var(--kb-w)) / 2) !important;
+  }
+
+  /* The edge arrows: the strip runs the page's height; its arrow stays in the window's middle. */
+  .reader:is(.kb-fit-width, .kb-fit-height):not(.is-panels) .reader__edge { align-items: flex-start !important; }
+  .reader:is(.kb-fit-width, .kb-fit-height):not(.is-panels) .reader__edge .arrow-btn {
+    position: sticky;
+    top: calc(50vh - 22px);
+    margin-top: calc(50vh - 22px);
+  }
+  /* The loading message at the top of the page, where it's seen. */
+  .reader:is(.kb-fit-width, .kb-fit-height):not(.is-panels) .reader__loading {
+    align-items: flex-start !important;
+    padding-top: 3rem !important;
+  }
+  /* "Turn your phone sideways" is for phones. */
+  .reader:is(.kb-fit-width, .kb-fit-height) .reader__turn-hint { display: none !important; }
+}
+
+/* Two pages side by side (pairs show on a wide window held sideways, as now): the same modes, the pair's
+   column twice the chapter's widest page. The book's height follows its pages, which meet at the spine. */
+@media (hover: hover) and (pointer: fine) and (min-width: 62.5em) and (orientation: landscape) {
+  html:not(.kb-one-page) .reader.reader--pairs.kb-fit-width {
+    max-width: min(max(calc(var(--kb-col) * 2 + 1rem), 600px), 100%) !important;
+  }
+  html:not(.kb-one-page) .reader.reader--pairs.kb-fit-height {
+    max-width: min(max(calc(min(var(--kb-col), calc(100svh * var(--kb-ratio))) * 2 + 1rem), 600px), 100%) !important;
+  }
+  html:not(.kb-one-page) .reader.reader--pairs:is(.kb-fit-width, .kb-fit-height) .reader__book { height: auto !important; }
+  html:not(.kb-one-page) .reader.reader--pairs:is(.kb-fit-width, .kb-fit-height) .reader__book .reader__page { height: auto !important; }
+  html:not(.kb-one-page) .reader.reader--pairs:is(.kb-fit-width, .kb-fit-height) .reader__page.is-spread { margin-inline: auto !important; }
+  html:not(.kb-one-page) .reader.reader--pairs.kb-fit-width .reader__page.is-spread { width: min(var(--kb-cap), 100%) !important; }
+}
+
+/* A fan's page size (computers only): one picture button in the bar's tools, with its name under it on hover
+   and keyboard focus, like the bar's other tools on phones, opening a short menu. A dot marks a fan's own
+   choice. */
+.reader__size { display: none; }
+@media (hover: hover) and (pointer: fine) {
+  .reader__size { display: inline-flex; position: relative; order: 2; }
+  .reader__size-button {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 2px solid var(--color-ink);
+    background: var(--color-beige);
+    color: var(--color-ink);
+    cursor: pointer;
+  }
+  .reader__size-button svg { width: 24px; height: 24px; }
+  .reader__size-button[data-own]::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-ink);
+    box-shadow: 0 0 0 2px var(--color-yellow);
+  }
+  .reader__size-tip {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    right: -2px;
+    z-index: 3;
+    padding: 0.25rem 0.5rem;
+    background: var(--color-ink);
+    color: var(--color-beige);
+    font: 600 0.8rem 'Nunito', sans-serif;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+  .reader__size-button:hover .reader__size-tip,
+  .reader__size-button:focus-visible .reader__size-tip { display: block; }
+  .reader__size-button[aria-expanded='true'] .reader__size-tip { display: none; }
+  .reader__size-menu {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    z-index: 5;
+    width: 22rem;
+    max-height: calc(100svh - 7rem);
+    overflow-y: auto;
+    margin: 0;
+    padding: 0.5rem 0;
+    border: 2px solid var(--color-ink);
+    background: var(--color-beige);
+    box-shadow: 0 6px 18px rgba(43, 43, 43, 0.25);
+    font: 600 1rem 'Nunito', sans-serif;
+    color: var(--color-ink);
+  }
+  .reader__size-menu [role='menuitemradio'] {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    width: 100%;
+    padding: 0.45rem 0.9rem;
+    border: 0;
+    background: none;
+    font: inherit;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+  .reader__size-menu [role='menuitemradio']:hover { background: rgba(43, 43, 43, 0.06); }
+  .reader__size-menu [role='menuitemradio']:focus-visible { outline: 2px solid var(--color-ink); outline-offset: -4px; }
+  .reader__size-menu .tick { width: 18px; flex: none; text-align: center; font-weight: 800; }
+  .reader__size-menu svg { width: 22px; height: 22px; flex: none; }
+  .reader__size-menu small { display: block; font-weight: 400; font-size: 0.85rem; color: var(--color-ink-light); }
+  .reader__size-menu hr { border: 0; border-top: 1px solid rgba(43, 43, 43, 0.2); margin: 0.35rem 0; }
+  .reader__size-menu .note { display: block; padding: 0.2rem 0.9rem 0.3rem; font-weight: 400; font-size: 0.85rem; color: var(--color-ink-light); }
+}
