@@ -1,11 +1,11 @@
 /* The proposed change (docs/design/comic-page-width.md), injected into the fixture build by render.mjs.
-   The build marks the reader with the comic's mode (kb-fit-width or kb-fit-height; Fit the screen is today's
-   reader, unmarked), only when the comic reads one page at a time, and sets:
+   The build marks the reader with the page size in use (kb-fit-width or kb-fit-height; Fit the screen is today's
+   reader, unmarked): the fan's choice if they made one, or else the comic's. It sets:
    - on each page, --kb-cap: the largest width it shows at: the comic's Largest page width (twice it for a
      spread), or else the picture's own width in pixels, never over 3200;
    - on the reader, --kb-col and --kb-ratio: the cap and shape of the chapter's widest page (spreads aside), so the
-     column, and the bar and buttons in it, stay the same width through a chapter. The column is never narrower
-     than 600 px, or the window.
+     column, and the bar and buttons in it, stay the same width through a chapter (twice it for pairs). The column
+     is never narrower than 600 px, or the window.
    Pages narrower than the column are centred in it; a spread breaks out of it, centred, within the window.
    Only on a computer (a mouse or trackpad, at any window width). The edge arrows and the loading message stay
    in view on a tall page. !important here only because this sheet is injected over the reader's scoped
