@@ -26,7 +26,7 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
         <div class="tile-content"><span class="tile-title">PORTFOLIO</span></div>
       </a>
       <div class="grid-tile grid-tile-logo">
-        <img src="/assets/images/kblogo.png" alt="Kettlebird Logo" class="tile-image" width="1600" height="1600" />
+        <img src="/assets/images/kettlebird-mark.png" alt="Kettlebird Logo" class="tile-image" width="1182" height="1182" />
       </div>
       <a href="/shop" class="grid-tile grid-tile-merch">
         <div class="tile-content"><span class="tile-title">SHOP</span></div>
@@ -91,16 +91,23 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
     box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.15);
   }
 
+  @media (prefers-reduced-motion: reduce) {
+    .grid-tile:hover { transform: none; }
+  }
+
   .grid-tile-portfolio {
     grid-column: span 2;
     grid-row: span 2;
     background: #8b7355 url('/assets/images/bkgd-artwork.jpg') center / cover;
   }
 
+  /* The logo's own orange, the mark inside the border, square as the old picture made it, so the grid's rows
+     keep their heights (design-home-tiles-and-icon). */
   .grid-tile-logo {
     grid-column: span 2;
     grid-row: span 4;
-    background: var(--color-yellow);
+    background: #ffbb58;
+    aspect-ratio: 1;
   }
 
   .grid-tile-merch {
@@ -158,7 +165,6 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: rgba(0, 0, 0, 0.2);
   }
 
   .tile-title {
@@ -170,9 +176,11 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
   }
 
   .tile-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    position: absolute;
+    inset: 12%;
+    width: 76%;
+    height: 76%;
+    object-fit: contain;
   }
 
   /* ── About section ── */
