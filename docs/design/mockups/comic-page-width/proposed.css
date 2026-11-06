@@ -1,0 +1,20 @@
+/* The proposed change (docs/design/comic-page-width.md), injected into the fixture build by render.mjs with
+   the comic's page width (--kb-page-width, set on the reader by the page in the build). On a computer (a
+   mouse or trackpad, 700 px and wider), one page at a time: the reader's column is the page width, so the
+   bar lines up with the page, or the window's width if that's narrower; the page's height follows, so it
+   can run below the window. A spread alone is twice as wide, centred, breaking out of the column, within
+   the window. !important here only because this sheet is injected over the reader's scoped styles. */
+@media (min-width: 700px) and (hover: hover) and (pointer: fine) {
+  .reader.kb-has-width:not(.is-panels) { max-width: calc(var(--kb-page-width) + 1rem) !important; }
+  .reader.kb-has-width:not(.is-panels) .reader__page:not(.is-spread) {
+    max-height: none !important;
+    max-width: 100% !important;
+  }
+  .reader.kb-has-width:not(.is-panels) .reader__page.is-spread {
+    --kb-spread: min(calc(var(--kb-page-width) * 2), calc(100vw - 2rem));
+    max-height: none !important;
+    max-width: none !important;
+    width: var(--kb-spread) !important;
+    margin-inline: calc((100% - var(--kb-spread)) / 2) !important;
+  }
+}
