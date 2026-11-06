@@ -1,6 +1,6 @@
 ---
 id: design-arrows
-status: draft
+status: approved
 derived-from:
   - requirements-site#REQ-site-4: 5970ab67a115
   - persona-fan#goals: 2b047e4cae5d
@@ -126,12 +126,11 @@ The fans' guide `reading-comics.md` names **← Back to page 4** (twice: where t
 
 ## Decisions at review
 
-The lead's review (2026-11-06), so far:
+The lead's review (2026-11-06):
 - **No drop shadows** on arrow buttons: they fight the ink-on-paper look. With no shadow, nothing lifts or sinks either: hover is yellow only, and pressed is inked in (mock-ups redrawn). This settles the earlier question of adding the shadow to the comic controls.
 
-Still open:
-1. **Yellow on hover** for every arrow button, as the site's primary buttons do (proposed)?
-2. **Words with arrows** ("Read it", "Email me to get started", the chapter links and the chapter list): change them too (proposed), or only the arrows that stand alone?
+- **Yellow on hover** for every arrow button, as the site's primary buttons do: yes.
+- **Words with arrows** ("Read it", "Email me to get started", the chapter links, **Back to page 4** and the chapter list) change too: yes.
 
 ## Persona walkthrough
 
