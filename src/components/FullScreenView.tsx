@@ -112,6 +112,13 @@ export default function FullScreenView({ order, start, sectionTitle, dialogSrc, 
     const overflow = html.style.overflow;
     html.style.overflow = 'hidden';
     closeRef.current?.focus();
+    // Safari on an iPhone zooms the whole page on a pinch, whatever touch-action says, unless its own
+    // gesture events are cancelled; and a drag could scroll the page behind. Either takes the touches
+    // away from the piece, so both are turned off while the view is open.
+    const stop = (event: Event) => event.preventDefault();
+    const GESTURES = ['gesturestart', 'gesturechange', 'gestureend'];
+    for (const type of GESTURES) document.addEventListener(type, stop, { passive: false });
+    root.addEventListener('touchmove', stop, { passive: false });
 
     const cover = () => {
       covering.current = true;
@@ -147,6 +154,8 @@ export default function FullScreenView({ order, start, sectionTitle, dialogSrc, 
     window.addEventListener('resize', onResize);
     return () => {
       html.style.overflow = overflow;
+      for (const type of GESTURES) document.removeEventListener(type, stop);
+      root.removeEventListener('touchmove', stop);
       window.removeEventListener('popstate', onPop);
       document.removeEventListener('fullscreenchange', onChange);
       window.removeEventListener('resize', onResize);

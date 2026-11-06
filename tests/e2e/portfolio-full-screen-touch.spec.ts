@@ -99,3 +99,30 @@ test('portfolio-full-screen#AC-9 a touch brings the bars back at once, however t
   await expect(controls).toHaveAttribute('data-hidden', 'false');
 });
 
+
+test('portfolio-full-screen#AC-2 the phone\'s own pinch zoom and scrolling are turned off while full screen is open', async ({ page }) => {
+  // The lead found on an iPhone that after pinching, the piece stopped answering to touch (2026-11-06).
+  // Safari on an iPhone zooms the whole page on a pinch unless its own gesture events are cancelled
+  // (it ignores touch-action for that), after which drags pan Safari's zoom instead of the piece.
+  const { view } = await open(page);
+  const cancelled = () =>
+    view.locator('[data-fs-stage]').evaluate((stage) => {
+      const gesture = new Event('gesturestart', { bubbles: true, cancelable: true });
+      stage.dispatchEvent(gesture);
+      const change = new Event('gesturechange', { bubbles: true, cancelable: true });
+      stage.dispatchEvent(change);
+      const move = new Event('touchmove', { bubbles: true, cancelable: true });
+      stage.dispatchEvent(move);
+      return [gesture.defaultPrevented, change.defaultPrevented, move.defaultPrevented];
+    });
+  expect(await cancelled()).toEqual([true, true, true]);
+  // Once full screen is closed, the page's own gestures work again.
+  await view.getByRole('button', { name: 'Close' }).tap();
+  await expect(view).toHaveCount(0);
+  const after = await page.evaluate(() => {
+    const gesture = new Event('gesturestart', { bubbles: true, cancelable: true });
+    document.body.dispatchEvent(gesture);
+    return gesture.defaultPrevented;
+  });
+  expect(after).toBe(false);
+});
