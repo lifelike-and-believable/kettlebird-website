@@ -17,7 +17,7 @@ async function open(page: Page) {
   const view = page.getByRole('dialog', { name: 'Full screen' });
   await expect(view).toBeVisible();
   const cdp = await page.context().newCDPSession(page);
-  const touch = (type: 'touchStart' | 'touchMove' | 'touchEnd', points: { x: number; y: number }[]) =>
+  const touch = (type: 'touchStart' | 'touchMove' | 'touchEnd' | 'touchCancel', points: { x: number; y: number }[]) =>
     cdp.send('Input.dispatchTouchEvent', { type, touchPoints: points.map((p, id) => ({ ...p, id })) });
   const box = (await view.locator('[data-fs-stage]').boundingBox())!;
   return { view, touch, cx: box.x + box.width / 2, cy: box.y + box.height / 2 };
@@ -95,11 +95,7 @@ test('portfolio-full-screen#AC-9 a touch brings the bars back at once, however t
   await expect(controls).toHaveAttribute('data-hidden', 'true');
   await page.waitForTimeout(500);
   await touch('touchStart', [{ x: cx, y: cy }]);
-  await cdpCancel(page);
+  await touch('touchCancel', []);
   await expect(controls).toHaveAttribute('data-hidden', 'false');
 });
 
-async function cdpCancel(page: import('@playwright/test').Page) {
-  const cdp = await page.context().newCDPSession(page);
-  await cdp.send('Input.dispatchTouchEvent', { type: 'touchCancel', touchPoints: [] });
-}
