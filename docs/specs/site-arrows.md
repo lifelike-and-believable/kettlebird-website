@@ -4,6 +4,7 @@ tests-commit: 1068af420ddd5c5b9b8be59b738479b0ded0211d
 unlocks:
   - tests/unit/arrows-edges.test.ts (new): mutation testing showed nothing checked the spaces between the arrow's attributes, or that an arrow without a class gets no class attribute at all. Added an exact check of the markup; the criteria are unchanged.
   - tests/e2e/arrows.spec.ts: AC-10 resized the window while the browser was still in full-screen mode, which Chrome refuses; it now leaves full screen first. The criterion is unchanged.
+  - tests/e2e/arrows.spec.ts: AC-8 now also checks that the strip stays clear while the pointer is over it. The strip had been tinted pale over the page since before this spec; no design called for it, and the lead asked for it to go (2026-11-06). Only the yellow button shows, as design-arrows describes.
   - tests/e2e/arrows.spec.ts: AC-5's phone check tapped the carousel arrow, waited a fixed 300 ms, then read its colour; on a slow CI machine the 120 ms colour change hadn't finished (it failed on main and on an unrelated PR, 2026-11-06, reading rgb(236, 232, 224)). It now waits for the colour to settle, as the hover check does. The criterion is unchanged.
 ---
 
