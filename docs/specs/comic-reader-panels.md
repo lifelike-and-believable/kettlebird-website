@@ -7,6 +7,7 @@ unlocks:
   - tests/e2e/comic-panels.spec.ts: "the button" checked that **Panel by panel** wasn't shown with two pages side by side; design-comic-panels-two-up (2026-11-06) offers it there, so it now checks that it is. AC-11 was amended to match.
   - tests/e2e/comic-panels.spec.ts: "arriving on a page" (new) checks that a page opened panel by panel shows its first panel, or its last when turning back, already in place, and that stepping between panels still moves. The view had panned and zoomed in from the whole page on every arrival; AC-14 asks for movement between panels only, and the lead asked for it to go (2026-11-06). The criteria are unchanged.
   - tests/e2e/comic-panels.spec.ts: the AC-12 check measured the picture straight after **Panel by panel** was pressed, while the view's 0.3 s zoom (AC-14) could still be on its first frame, so it failed about one run in fifteen. It now waits for the picture to grow. The criteria are unchanged.
+  - tests/unit/comic-panels-drag.test.ts (new): moving or resizing a panel in the editor showed only when the mouse was released (the lead, 2026-11-06). Added checks that the box shown while dragging is the step the drag ends with, kept inside the picture, without becoming a step. The criteria are unchanged.
 ---
 
 # Comic reader: panels
