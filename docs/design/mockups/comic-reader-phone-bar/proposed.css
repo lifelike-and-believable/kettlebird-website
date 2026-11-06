@@ -1,0 +1,17 @@
+/* The proposed change (docs/design/comic-reader-phone-bar.md), injected into the fixture build by render.mjs.
+   In the build, the buttons' words go in a span that is hidden visually, not with font-size. */
+@media (max-width: 699px) {
+  /* Phones: Panel by panel and All pages show their pictures only, square, together at the right. */
+  .reader .reader__panels, .reader .reader__all { width: 44px; height: 44px; padding: 0; justify-content: center; font-size: 0; gap: 0; }
+  .reader .reader__panels { margin-left: auto; }
+  .reader .reader__panels svg { width: 18px; height: 26px; }
+  .reader .reader__all .reader__grid { grid-template-columns: repeat(3, 6px); gap: 2px; }
+  .reader .reader__all .reader__grid i { width: 6px; height: 6px; }
+}
+/* The page area leaves room for the bar and controls inside the small viewport: the screen with the
+   browser's toolbars showing (iPhone Safari's 100vh is the screen with them hidden). */
+/* (The reader's own styles are scoped, hence .reader before each selector here.) */
+.reader .reader__page:not(.is-spread) {
+  max-height: calc(100svh - 12.5rem);
+  max-width: min(100%, calc((100svh - 12.5rem) * var(--page-ratio, 0.6667)));
+}

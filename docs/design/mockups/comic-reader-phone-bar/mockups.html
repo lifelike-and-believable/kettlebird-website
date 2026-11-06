@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>The reader bar on phones: mock-ups</title>
+    <!-- Source for the PNG mock-ups beside this file (docs/design/comic-reader-phone-bar.md). The screens in
+     shots/ are screenshots of the fixture build's reader, today and with proposed.css; render.mjs takes
+     them and saves each frame below. Safari's status bar and bottom toolbar are drawn over them at
+     iPhone 15 sizes (393 × 852 points: 59 status bar, 659 page, 134 toolbar). -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Nunito:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        padding: 24px;
+        background: #9ca3af;
+        font-family: system-ui, sans-serif;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 32px;
+        align-items: flex-start;
+      }
+      figure {
+        margin: 0;
+        background: #9ca3af;
+        padding: 12px;
+      }
+      figcaption {
+        font: 600 14px/1.4 system-ui;
+        color: #111827;
+        max-width: 420px;
+        margin-bottom: 10px;
+      }
+      figcaption small {
+        display: block;
+        font-weight: 400;
+        color: #1f2937;
+      }
+
+      /* An iPhone 15 in Safari: 393 × 852 points. */
+      .phone {
+        position: relative;
+        width: 393px;
+        height: 852px;
+        border-radius: 48px;
+        overflow: hidden;
+        background: #f5f1e8;
+        box-shadow:
+          0 0 0 10px #111,
+          0 0 0 12px #333;
+      }
+      .phone .page {
+        position: absolute;
+        top: 59px;
+        left: 0;
+        width: 393px;
+      }
+      .status {
+        position: absolute;
+        inset: 0 0 auto;
+        height: 59px;
+        background: #f5f1e8;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 32px 0;
+        font: 600 16px system-ui;
+      }
+      .island {
+        position: absolute;
+        top: 11px;
+        left: 50%;
+        width: 124px;
+        height: 36px;
+        transform: translateX(-50%);
+        background: #000;
+        border-radius: 20px;
+      }
+      .toolbar {
+        position: absolute;
+        inset: auto 0 0;
+        height: 134px;
+        z-index: 2;
+        background: rgba(246, 246, 246, 0.94);
+        border-top: 1px solid rgba(0, 0, 0, 0.12);
+        backdrop-filter: blur(8px);
+      }
+      .toolbar .url {
+        position: absolute;
+        top: 10px;
+        left: 12px;
+        right: 12px;
+        height: 46px;
+        border-radius: 14px;
+        background: #fff;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font: 400 15px system-ui;
+        color: #111;
+      }
+      .toolbar .icons {
+        position: absolute;
+        top: 70px;
+        left: 24px;
+        right: 24px;
+        display: flex;
+        justify-content: space-between;
+        color: #1d6ff2;
+        font: 400 22px system-ui;
+      }
+      .toolbar .home {
+        position: absolute;
+        bottom: 8px;
+        left: 50%;
+        width: 134px;
+        height: 5px;
+        border-radius: 3px;
+        background: #111;
+        transform: translateX(-50%);
+      }
+      .note {
+        position: absolute;
+        right: 8px;
+        z-index: 3;
+        font: 700 12px system-ui;
+        padding: 3px 7px;
+        border-radius: 4px;
+      }
+      .note.bad {
+        background: #b91c1c;
+        color: #fff;
+      }
+      .note.good {
+        background: #166534;
+        color: #fff;
+      }
+
+      /* Close-ups */
+      .bars {
+        display: grid;
+        grid-template-columns: auto auto;
+        gap: 14px 24px;
+        align-items: start;
+        background: #e5e7eb;
+        padding: 16px;
+      }
+      .bars h4 {
+        margin: 0 0 4px;
+        font: 600 13px system-ui;
+        color: #111827;
+      }
+      .bars p {
+        margin: 4px 0 0;
+        font: 400 12px/1.4 system-ui;
+        color: #374151;
+        max-width: 420px;
+      }
+      .bars img {
+        display: block;
+        border: 1px dashed #6b7280;
+        background: #f5f1e8;
+      }
+      .span2 {
+        grid-column: 1 / -1;
+      }
+    </style>
+  </head>
+  <body>
+    <figure id="m1">
+      <figcaption>
+        1 · Today, iPhone 15 in Safari<small
+          >All pages wraps to its own line: the bar takes 152 px. The page area
+          is sized from 100vh, the screen with Safari's toolbars hidden, so the
+          controls sit under the address bar.</small
+        >
+      </figcaption>
+      <div class="phone">
+        <div class="status">
+          <span>9:41</span><span class="island"></span><span>●●● ▮</span>
+        </div>
+        <img class="page" src="shots/today-15.png" width="393" alt="" />
+        <span class="note bad" style="top: 700px"
+          >Controls under the toolbar</span
+        >
+        <div class="toolbar">
+          <div class="url">ᴀA&nbsp;&nbsp;&nbsp;kettlebird.com</div>
+          <div class="icons">
+            <span>‹</span><span>›</span><span>⇧</span><span>▢</span
+            ><span>⧉</span>
+          </div>
+          <div class="home"></div>
+        </div>
+      </div>
+    </figure>
+
+    <figure id="m2">
+      <figcaption>
+        2 · After, iPhone 15 in Safari<small
+          >Panel by panel and All pages show their pictures only, at the right
+          of the first line: the bar takes 104 px. The page area is sized from
+          the screen with the toolbars showing, so the controls are above the
+          address bar.</small
+        >
+      </figcaption>
+      <div class="phone">
+        <div class="status">
+          <span>9:41</span><span class="island"></span><span>●●● ▮</span>
+        </div>
+        <img class="page" src="shots/after-15.png" width="393" alt="" />
+        <div class="toolbar">
+          <div class="url">ᴀA&nbsp;&nbsp;&nbsp;kettlebird.com</div>
+          <div class="icons">
+            <span>‹</span><span>›</span><span>⇧</span><span>▢</span
+            ><span>⧉</span>
+          </div>
+          <div class="home"></div>
+        </div>
+      </div>
+    </figure>
+
+    <figure id="m3">
+      <figcaption>
+        3 · After, panel by panel on<small
+          >The button is pressed (dark). The location line keeps its two lines,
+          so nothing moves from panel to panel.</small
+        >
+      </figcaption>
+      <div class="phone">
+        <div class="status">
+          <span>9:41</span><span class="island"></span><span>●●● ▮</span>
+        </div>
+        <img class="page" src="shots/after-15-panels.png" width="393" alt="" />
+        <div class="toolbar">
+          <div class="url">ᴀA&nbsp;&nbsp;&nbsp;kettlebird.com</div>
+          <div class="icons">
+            <span>‹</span><span>›</span><span>⇧</span><span>▢</span
+            ><span>⧉</span>
+          </div>
+          <div class="home"></div>
+        </div>
+      </div>
+    </figure>
+
+    <figure id="m4">
+      <figcaption>
+        4 · The reader bar, close up<small
+          >Names a screen reader and voice control use are unchanged: "Panel by
+          panel" (a toggle) and "All pages in this chapter".</small
+        >
+      </figcaption>
+      <div class="bars">
+        <div>
+          <h4>Today, 320 px (narrowest iPhone)</h4>
+          <img src="shots/bar-today-320.png" width="320" alt="" />
+        </div>
+        <div>
+          <h4>After, 320 px</h4>
+          <img src="shots/bar-after-320.png" width="320" alt="" />
+        </div>
+        <div>
+          <h4>Today, 393 px (iPhone 15)</h4>
+          <img src="shots/bar-today-393.png" width="393" alt="" />
+        </div>
+        <div>
+          <h4>After, 393 px</h4>
+          <img src="shots/bar-after-393.png" width="393" alt="" />
+        </div>
+        <div>
+          <h4>After, panel by panel on</h4>
+          <img src="shots/bar-after-393-on.png" width="393" alt="" />
+        </div>
+        <div>
+          <h4>After, text at 200%</h4>
+          <img src="shots/bar-after-393-200.png" width="393" alt="" />
+          <p>
+            The pictures stay 44 px buttons; the words and location line grow.
+          </p>
+        </div>
+        <div class="span2">
+          <h4>
+            From 700 px wide (a tablet held upright, or a laptop): unchanged,
+            words and pictures
+          </h4>
+          <img src="shots/bar-after-768.png" width="768" alt="" />
+        </div>
+      </div>
+    </figure>
+  </body>
+</html>
