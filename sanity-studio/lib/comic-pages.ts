@@ -218,7 +218,12 @@ export const SPREAD_FIELD = {
 } as const;
 
 /** A comic's How it reads group and its two settings (docs/specs/comic-reader-comic-settings.md AC-1). */
-export const HOW_IT_READS = { name: 'howItReads', title: 'How it reads', description: 'Preview a chapter to see how it reads.' } as const;
+export const HOW_IT_READS = {
+  name: 'howItReads',
+  title: 'How it reads',
+  // The preview's frame named (docs/specs/comic-reader-page-size.md AC-1).
+  description: 'Preview a chapter to see how it reads. The preview at Computer is a 1280 × 800 laptop, shown smaller to fit beside the editor.',
+} as const;
 
 export const TWO_UP_FIELD = {
   name: 'twoUp',
@@ -237,6 +242,67 @@ export const PAGE_FLIP_FIELD = {
   initialValue: false,
   description: 'Turn pages with an animation of a page turning over. Off: pages change at once.',
 } as const;
+
+/** How pages fit on a computer (docs/specs/comic-reader-page-size.md AC-1). */
+export const PAGE_SIZE_FIELD = {
+  name: 'pageSize',
+  title: 'Page size on a computer',
+  type: 'string',
+  fieldset: 'howItReads',
+  initialValue: 'screen',
+  description:
+    'How big pages show on a laptop or desktop, one at a time or two side by side. Readers on a computer can choose another size for themselves. Phones and tablets always fit the screen.',
+  options: {
+    layout: 'radio',
+    list: [
+      { value: 'screen', title: 'Fit the screen: The whole page and the buttons show at once, without scrolling, as now. In a 1440 × 780 laptop window a page is about 390 pixels wide.' },
+      { value: 'width', title: 'Fit the width: Each page shows as wide as its picture, or as Largest page width, narrowed to fit the window. Readers scroll down each page to the buttons.' },
+      { value: 'height', title: "Fit the height: Each page's height matches the window's, never wider than its picture or Largest page width. Readers scroll down a little to the buttons." },
+    ],
+  },
+} as const;
+
+export const LARGEST_PAGE_WIDTH_ERROR = 'Choose a whole number of pixels between 400 and 3200, or leave it empty.';
+
+/** What's wrong with a Largest page width, if anything: empty, or a whole number from 400 to 3200 (AC-2). */
+export function largestPageWidthProblem(value: unknown): string | undefined {
+  if (value === undefined || value === null) return undefined;
+  const ok = typeof value === 'number' && Number.isInteger(value) && value >= 400 && value <= 3200;
+  return ok ? undefined : LARGEST_PAGE_WIDTH_ERROR;
+}
+
+/** The parts of Sanity's validation Rule that the Largest page width uses. */
+interface CustomRule<R> { custom(fn: (value: unknown) => true | string): R }
+
+export const LARGEST_PAGE_WIDTH_FIELD = {
+  name: 'largestPageWidth',
+  title: 'Largest page width',
+  type: 'number',
+  fieldset: 'howItReads',
+  description:
+    "In screen pixels. A number wider than a page's picture enlarges the picture, and it may look soft. Leave it empty to show each page no wider than its picture. A two-page spread shows up to twice this. Fit the screen ignores it.",
+  validation: <R extends CustomRule<R>>(rule: R): R => rule.custom((value) => largestPageWidthProblem(value) ?? true),
+} as const;
+
+const SHARP_SCREENS = 'On sharp (high-density) screens, a picture looks sharpest at half its width or less.';
+const range = (widths: number[]) => {
+  const low = Math.min(...widths);
+  const high = Math.max(...widths);
+  return low === high ? `${low}` : `${low} to ${high}`;
+};
+
+/** The line under Largest page width: how wide the comic's pictures are (AC-3). None without pages' sizes. */
+export function picturesSizesLine(pages: readonly { width?: number; height?: number; spread?: boolean }[]): string | undefined {
+  const sized = pages.filter((p): p is { width: number; spread?: boolean } => typeof p.width === 'number' && p.width > 0);
+  const singles = sized.filter((p) => !p.spread).map((p) => p.width);
+  const spreads = sized.filter((p) => p.spread).map((p) => p.width);
+  if (!singles.length && !spreads.length) return undefined;
+  if (!singles.length) {
+    return spreads.length === 1 ? `This comic's spread is ${spreads[0]} pixels wide. ${SHARP_SCREENS}` : `This comic's spreads are ${range(spreads)} pixels wide. ${SHARP_SCREENS}`;
+  }
+  const spreadPart = spreads.length ? `, and its ${spreads.length === 1 ? 'spread' : 'spreads'} ${range(spreads)}` : '';
+  return `This comic's pages are ${range(singles)} pixels wide${spreadPart}. ${SHARP_SCREENS}`;
+}
 
 /** Under a chapter's Open on when its comic has pairs off (AC-7). */
 export const OPEN_ON_OFF_NOTE = "Two pages side by side is off for this comic, so this has no effect. Turn it on in the comic's How it reads.";

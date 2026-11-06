@@ -1,5 +1,6 @@
 // Comic reader model: series, chapters, pages, addresses, and labels.
 // Spec: docs/specs/comic-reader-start-and-turn.md. Pure functions only; data loading is in source.ts.
+import type { PageSize } from './page-size';
 import type { OpenOn } from './pairing';
 
 export type { OpenOn };
@@ -49,6 +50,10 @@ export interface ComicSeries {
   twoUp?: boolean;
   /** How it reads: turn pages with the page-flip. Off when missing. */
   pageFlip?: boolean;
+  /** How it reads (docs/specs/comic-reader-page-size.md): how big pages show on a computer. Fit the screen when missing. */
+  pageSize?: PageSize;
+  /** How it reads: the widest a page shows, in screen pixels; else each page's own picture width. */
+  largestPageWidth?: number;
   chapters: ComicChapter[];
 }
 

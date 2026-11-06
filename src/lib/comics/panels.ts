@@ -89,11 +89,25 @@ const WIDE_SIZES = '(min-width: 62.5em) and (orientation: landscape)';
  * one page shows: the area's height (the window less the bar and controls) times the page's shape,
  * doubled, so a zoomed panel stays sharp (AC-7). Otherwise, as before.
  */
-export function readerSizes(image: { width: number; height: number }, spread: boolean, panelled: boolean): string {
+export function readerSizes(
+  image: { width: number; height: number },
+  spread: boolean,
+  panelled: boolean,
+  /** How the page fits on a computer, and its largest width (docs/specs/comic-reader-page-size.md AC-7). */
+  fit?: { size: 'screen' | 'width' | 'height'; cap: number },
+): string {
   const narrow = spread ? '100vw' : '(max-width: 700px) 100vw, 900px';
-  if (!panelled) return spread ? '100vw' : `${WIDE_SIZES} 50vw, ${narrow}`;
-  return `${WIDE_SIZES} calc((100vh - 12.5rem) * ${((2 * image.width) / image.height).toFixed(4)}), ${narrow}`;
+  const today = panelled
+    ? `${WIDE_SIZES} calc((100vh - 12.5rem) * ${((2 * image.width) / image.height).toFixed(4)}), ${narrow}`
+    : spread ? '100vw' : `${WIDE_SIZES} 50vw, ${narrow}`;
+  // Panel by panel fits the window whatever the size, so its sizes stay as they are.
+  if (!fit || fit.size === 'screen' || panelled) return today;
+  const tall = fit.size === 'height' ? `, calc(100vh * ${(image.width / image.height).toFixed(4)})` : '';
+  return `${COMPUTER} min(${fit.cap}px, calc(100vw - 2rem)${tall}), ${today}`;
 }
+
+/** A computer: a mouse or trackpad (design-comic-page-width, "On a computer"). */
+export const COMPUTER = '(hover: hover) and (pointer: fine)';
 
 /** What switching panel by panel off says: what arriving at a pair or a spread says, else "Whole page" (AC-5). */
 export function panelsOffAnnouncement(view: 'narrow' | 'wide', kind: string, wideText: string): string {

@@ -121,4 +121,38 @@ export const FIXTURE_SERIES: ComicSeries[] = [
       },
     ],
   },
+  // How pages fit on a computer (docs/specs/comic-reader-page-size.md): Fit the width, each page up to its own
+  // picture's width, the pictures of different sizes, a wide spread and one wider than the site makes.
+  {
+    slug: 'big-pages',
+    title: 'Big Pages',
+    description: 'Pages of every size.',
+    status: 'ongoing',
+    type: 'original',
+    twoUp: false,
+    pageSize: 'width',
+    chapters: [
+      {
+        number: 1,
+        pages: [
+          { image: page('BP 1', 600, 900), altText: 'A small page.' },
+          { image: page('BP 2', 1200, 1800), altText: 'A big page.' },
+          { image: page('BP 3 spread', 2400, 1800), altText: 'A wide spread.', spread: true },
+          { image: page('BP 4', 4000, 6000), altText: 'A huge page.' },
+        ],
+      },
+    ],
+  },
+  // Fit the height, no page wider than 1200.
+  {
+    slug: 'set-width',
+    title: 'Set Width',
+    description: 'Pages as tall as the window.',
+    status: 'ongoing',
+    type: 'original',
+    twoUp: false,
+    pageSize: 'height',
+    largestPageWidth: 1200,
+    chapters: [{ number: 1, pages: [p('SW 1', 'A tall page.'), p('SW 2', 'Another.'), p('SW 3', 'The last.')] }],
+  },
 ];

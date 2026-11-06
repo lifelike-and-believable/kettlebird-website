@@ -19,6 +19,7 @@ derived-from:
   - design-comic-panels#how-it-works: cce393bb0002
   - story-comic-reader-flip-and-panels-panels-found: 61aa1e576413
   - story-comic-reader-flip-and-panels-correct-the-panels: 0e8299e7679c
+  - design-comic-page-width#for-the-guides: 52902c1e5b18
 ---
 
 # Publishing comic pages and chapters
@@ -84,6 +85,32 @@ Both are off for every comic until you turn them on, comic by comic:
 4. To see how it reads before you publish, open a chapter and choose **Preview**: **Computer** shows pairs if **Two pages side by side** is ticked, and **Previous** and **Next** turn pages in the preview, with the page-flip if it's ticked.
 
 With **Two pages side by side** off, every screen shows one page at a time. A page you've marked as a two-page spread still shows wide on a laptop, on its own. Each chapter's **Open on** then has no effect, and says so; the choice is kept for if you turn pairs on later.
+
+### How big pages show on a computer
+
+Under **How it reads**, **Page size on a computer** chooses how big pages show on a laptop or desktop, one at a time or two side by side:
+
+- **Fit the screen** (every comic starts with this): the whole page and the buttons show at once, without scrolling. Pages are small: about 390 pixels wide in a laptop's 1440 × 780 browser window (the table below shows others).
+- **Fit the width**: each page shows as wide as its picture, narrowed to fit the window. Pages can run below the bottom of the window, and readers scroll down to the buttons.
+- **Fit the height**: each page is as tall as the window, never wider than its picture. Readers scroll down a little to the buttons.
+
+**Largest page width** is the widest a page shows, in screen pixels. Leave it empty and each page shows no wider than its picture, so uploading bigger pictures gives bigger pages. Above its number box, a blue line says how wide this comic's pictures are (it appears once the comic has pages). A number wider than your pictures enlarges them, and they may look soft. A two-page spread shows up to twice it. **Fit the screen** ignores it.
+
+What a 2:3 page comes to, in pixels wide, in some common browser windows (a screen less the browser's own bars), with **Largest page width** empty and pictures at least as wide as shown. A **Largest page width**, or narrower pictures, change these; **Fit the height** is never wider than the picture either:
+
+| Window | Fit the screen | Fit the width, pictures 800 / 1600 / 2400 wide | Fit the height |
+|---|---|---|---|
+| 1366 × 640 (a small laptop) | about 290 | 800 / 1318 / 1318 | about 430 |
+| 1440 × 780 (a laptop) | about 390 | 800 / 1392 / 1392 | about 520 |
+| 1920 × 960 (a desktop) | about 510 | 800 / 1600 / 1872 | about 640 |
+
+A few things to know:
+
+- Most laptops have sharp screens, where a picture looks sharpest when it's twice the width it shows at. A page shown at 800 pixels looks best from a picture 1600 wide.
+- Keep a chapter's pages the same size, so they read evenly.
+- Narrower windows and browser zoom shrink pages to fit. Phones and tablets always fit the screen.
+- Fans on a computer can choose another size for themselves with **Page size**, the button beside **Panel by panel** in the reader. A dot on that button means a choice of their own is showing in that browser; choosing **Comic's choice** there clears it. If what you see on your own computer doesn't match your setting, check for that dot.
+- Like the tick boxes, these go live when you publish the comic itself. **Preview** at **Computer** shows a 1280 × 800 laptop's window, made smaller to fit beside the editor, so it shows how the page and buttons fall, not the page's real size. To see the real size, publish the comic and open it on your computer; if it isn't the size you chose, look for a dot on **Page size**.
 
 ### How pages pair up
 

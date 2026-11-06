@@ -3,6 +3,7 @@ status: implemented
 tests-commit: 0ce321fdcfd6a7cb30431a5c8ff79063416f0797
 unlocks:
   - tests/unit/comic-settings-edges.test.ts (new): mutation testing showed nothing checked a preview turn to an address in the chapter that isn't a page number (its sheet, page 0, a padded number, a page's own sheet). Added; the criteria are unchanged.
+  - tests/unit/comic-settings.test.ts: AC-1 checked How it reads' description in full; comic-reader-page-size (2026-11-06) adds a line naming the preview's frame to it, so it now checks the description starts with this spec's line. The criterion is unchanged.
 ---
 
 # Comic reader: settings per comic
