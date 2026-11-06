@@ -237,6 +237,8 @@ test('site-arrows#AC-8 edge arrows', async ({ page }) => {
   await page.mouse.move(strip.x + strip.width / 2, strip.y + 20);
   await expect.poll(() => edge.evaluate((el) => getComputedStyle(el).opacity)).toBe('1');
   await expect.poll(async () => (await look(button)).backgroundColor).toBe(YELLOW);
+  // Only the button shows: the strip itself doesn't tint over the page (the lead, 2026-11-06).
+  expect(await edge.evaluate((el) => getComputedStyle(el).backgroundColor)).toBe(CLEAR);
 
   const href = await edge.getAttribute('href');
   await page.mouse.click(strip.x + strip.width / 2, strip.y + 20);
