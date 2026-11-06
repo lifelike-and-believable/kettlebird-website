@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Home tiles and the site's icon: mock-ups</title>
+<!-- Source for the PNG mock-ups beside this file (docs/design/home-tiles-and-icon.md). The home grid is copied
+     from src/components/pages/HomePage.astro with the proposed change, and the header simplified, using the
+     site's fonts, colours and images. The logo files beside this file are made by make-logo.py.
+     today-*.png are screenshots of the site on 2026-11-06. Render: node render.mjs -->
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --color-ink: #2b2b2b; --color-beige: #f5f1e8; --color-yellow: #f4ce6a; --color-orange: #e89a5a; --color-green: #a8d5ba; --color-logo: #ffbb58; }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 24px; background: #9ca3af; font-family: 'DM Sans', sans-serif; display: flex; flex-direction: column; gap: 32px; align-items: flex-start; }
+  .wrap h6 { margin: 0 0 6px; font: 600 13px/1.4 system-ui; color: #111827; }
+  .page { position: relative; overflow: hidden; background: var(--color-beige) url('../../../../public/assets/images/Paper_2_Tileable.png'); background-size: 400px; color: var(--color-ink); }
+  .laptop { width: 1280px; height: 900px; }
+  .phone { width: 390px; height: 844px; }
+  /* Header, simplified from BaseLayout */
+  .head { position: relative; z-index: 2; padding: 2rem 1rem calc(22px + 3.1vw); }
+  .head::before { content: ''; position: absolute; inset: 0 0 -28px 0; z-index: -1; background: url('../../../../public/assets/images/Paper_1_Torn.png') no-repeat center bottom / auto max(384px, 100%); }
+  .laptop .head { display: grid; grid-template-columns: auto 1fr; grid-template-areas: 'title title' 'sub nav'; align-items: center; column-gap: 1rem; padding-bottom: 62px; }
+  .title { grid-area: title; margin: 0 0 .25rem; font: 700 88px/1.1 'Nunito'; letter-spacing: .02em; }
+  .sub { grid-area: sub; margin: 0; font: 600 40px/1.25 'Nunito'; }
+  .nav { grid-area: nav; justify-self: end; display: flex; gap: .5rem; }
+  .nav span { font: 700 1rem 'Nunito'; padding: .5rem 1.25rem; background: url('../../../../public/assets/images/Highlighter_Y.png') center / 100% 100% no-repeat; }
+  .phone .head { display: flex; justify-content: space-between; align-items: center; padding: .875rem 1rem 36px; }
+  .phone .title { font-size: 40px; margin: 0; }
+  .phone .sub { font-size: 17px; }
+  .menu { width: 44px; height: 44px; border: 2px solid var(--color-ink); display: grid; place-items: center; }
+  .menu i { width: 24px; height: 2px; background: var(--color-ink); box-shadow: 0 -8px 0 var(--color-ink), 0 8px 0 var(--color-ink); }
+  /* The home grid, from HomePage.astro, with the change */
+  .homepage { max-width: 1600px; margin: 0 auto; padding: 0 1rem 2rem; }
+  .grid-container { display: grid; grid-template-columns: repeat(6, 1fr); grid-template-rows: repeat(7, minmax(75px, auto)); gap: 1rem; margin-top: -24px; }
+  .grid-tile { border: 3px solid var(--color-ink); overflow: hidden; position: relative; min-height: 75px; display: flex; align-items: center; justify-content: center; }
+  .grid-tile-portfolio { grid-column: span 2; grid-row: span 2; background: #8b7355 url('../../../../public/assets/images/bkgd-artwork.jpg') center / cover; }
+  .grid-tile-logo { grid-column: span 2; grid-row: span 4; background: var(--color-logo); padding: 12%; }
+  .grid-tile-merch { grid-column: span 2; grid-row: span 2; background: var(--color-orange); }
+  .grid-tile-comics { grid-column: span 2; grid-row: span 3; background: #c8c8c8 url('../../../../public/assets/images/bkgd-Comics.jpg') center / cover; }
+  .grid-tile-commissions { grid-column: span 2; grid-row: span 2; background: #a8a8a8 url('../../../../public/assets/images/bkgd-commissions.jpeg') center / cover; }
+  .grid-tile-writing { grid-column: 1 / span 2; grid-row: 6 / span 2; background: #d94f3d url('../../../../public/assets/images/bkgd-writing.jpg') center / cover; }
+  .grid-tile-contact { grid-column: 3 / span 2; grid-row: 5 / span 3; background: linear-gradient(135deg, #cc5544 0%, #d94f3d 100%); }
+  .grid-tile-about { grid-column: 5 / span 1; grid-row: 5 / span 3; background: var(--color-green); }
+  .grid-tile-about .tile-content { justify-content: flex-start; }
+  .grid-tile-news { grid-column: 6 / span 1; grid-row: 5 / span 3; background: var(--color-yellow); }
+  .grid-tile-news .tile-content { justify-content: flex-end; }
+  /* The change: no shaded box behind the labels */
+  .tile-content { text-align: center; padding: 1rem; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .tile-title { font: 700 clamp(1.5rem, 3vw, 2.5rem) 'Nunito'; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); }
+  .tile-title.ink { color: var(--color-ink); text-shadow: none; }
+  .tile-image { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .phone .grid-container { grid-template-columns: repeat(2, 1fr); }
+  .phone .grid-tile { grid-column: span 2; grid-row: auto; }
+  .phone .grid-tile-about, .phone .grid-tile-news { grid-column: span 1; }
+  .phone .grid-tile-logo { order: -1; aspect-ratio: 1; }
+  .phone .grid-tile-portfolio { order: 0; } .phone .grid-tile-comics { order: 1; } .phone .grid-tile-writing { order: 2; } .phone .grid-tile-commissions { order: 3; }
+  .phone .grid-tile-merch { order: 4; } .phone .grid-tile-about { order: 5; } .phone .grid-tile-news { order: 6; } .phone .grid-tile-contact { order: 7; }
+  .phone .tile-title { font-size: 1.5rem; }
+  .phone .grid-tile:not(.grid-tile-logo) { min-height: 75px; }
+  /* Frame 3: labels on the flat tiles */
+  .labels { display: grid; grid-template-columns: 160px repeat(3, 180px); gap: 12px; align-items: center; padding: 20px; background: var(--color-beige); }
+  .labels .grid-tile { height: 120px; }
+  .lab { font: 600 13px system-ui; }
+  /* Frame 4: browsers */
+  .browsers { display: grid; gap: 18px; padding: 20px; background: #e5e7eb; width: 1100px; }
+  .chrome { background: #dee1e6; border-radius: 10px 10px 0 0; padding: 8px 8px 0; }
+  .tabs { display: flex; gap: 2px; }
+  .tab { display: flex; align-items: center; gap: 8px; width: 240px; padding: 9px 12px; border-radius: 8px 8px 0 0; font: 400 12.5px system-ui; color: #3c4043; }
+  .tab.on { background: #fff; color: #202124; }
+  .tab .globe { width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid #5f6368; position: relative; }
+  .tab .globe::after { content: ''; position: absolute; inset: 1px 4px; border: 1.2px solid #5f6368; border-radius: 50%; }
+  .omni { background: #fff; padding: 8px 12px; }
+  .omni div { background: #f1f3f4; border-radius: 16px; padding: 7px 14px; font: 400 13.5px system-ui; color: #202124; display: flex; gap: 10px; align-items: center; }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .tag { font: 600 12px system-ui; color: #374151; margin: 0 0 6px; text-transform: uppercase; letter-spacing: .06em; }
+  .home { width: 330px; height: 128px; border-radius: 28px; padding: 26px; background: linear-gradient(160deg, #6d7f98, #a7b3c4); display: grid; grid-template-columns: repeat(4, 60px); gap: 18px 16px; align-content: start; justify-content: center; }
+  .app { display: grid; justify-items: center; gap: 4px; font: 500 10.5px system-ui; color: #fff; }
+  .app i { width: 60px; height: 60px; border-radius: 14px; background: #ffffff55; display: block; }
+  .app img { width: 60px; height: 60px; border-radius: 14px; display: block; }
+  /* Frame 5: sizes */
+  .sizes { display: flex; gap: 28px; align-items: flex-end; padding: 24px; background: var(--color-beige); }
+  .sizes figure { margin: 0; display: grid; justify-items: start; gap: 6px; font: 500 12px/1.3 'DM Mono'; }
+  .sizes figure i { font-style: normal; color: #595959; }
+  .px { image-rendering: pixelated; }
+</style>
+</head>
+<body>
+
+<div class="wrap" id="m1"><h6>1 · After, on a laptop (1280 × 900)</h6>
+<div class="page laptop">
+  <header class="head"><p class="title">Kettlebird</p><p class="sub">Comics + Illustration</p><div class="nav"><span>PORTFOLIO</span><span>COMICS</span><span>WRITING</span><span>SHOP</span><span>COMMISSIONS</span><span>ABOUT</span><span>NEWS</span></div></header>
+  <div class="homepage"><div class="grid-container">
+    <a class="grid-tile grid-tile-portfolio"><div class="tile-content"><span class="tile-title">PORTFOLIO</span></div></a>
+    <div class="grid-tile grid-tile-logo"><img src="kettlebird-mark.png" alt="Kettlebird Logo" class="tile-image"></div>
+    <a class="grid-tile grid-tile-merch"><div class="tile-content"><span class="tile-title">SHOP</span></div></a>
+    <a class="grid-tile grid-tile-comics"><div class="tile-content"><span class="tile-title">COMICS</span></div></a>
+    <a class="grid-tile grid-tile-commissions"><div class="tile-content"><span class="tile-title">COMMISSIONS</span></div></a>
+    <a class="grid-tile grid-tile-writing"><div class="tile-content"><span class="tile-title">WRITING</span></div></a>
+    <a class="grid-tile grid-tile-contact"><div class="tile-content"><span class="tile-title">CONTACT ME!</span></div></a>
+    <a class="grid-tile grid-tile-about"><div class="tile-content"><span class="tile-title">ABOUT</span></div></a>
+    <a class="grid-tile grid-tile-news"><div class="tile-content"><span class="tile-title">NEWS</span></div></a>
+  </div></div>
+</div></div>
+
+<div class="wrap" id="m2"><h6>2 · After, on a phone (390 × 844)</h6>
+<div class="page phone">
+  <header class="head"><div><p class="title">Kettlebird</p><p class="sub">Comics + Illustration</p></div><span class="menu"><i></i></span></header>
+  <div class="homepage"><div class="grid-container">
+    <a class="grid-tile grid-tile-portfolio"><div class="tile-content"><span class="tile-title">PORTFOLIO</span></div></a>
+    <div class="grid-tile grid-tile-logo"><img src="kettlebird-mark.png" alt="Kettlebird Logo" class="tile-image"></div>
+    <a class="grid-tile grid-tile-merch"><div class="tile-content"><span class="tile-title">SHOP</span></div></a>
+    <a class="grid-tile grid-tile-comics"><div class="tile-content"><span class="tile-title">COMICS</span></div></a>
+    <a class="grid-tile grid-tile-commissions"><div class="tile-content"><span class="tile-title">COMMISSIONS</span></div></a>
+    <a class="grid-tile grid-tile-writing"><div class="tile-content"><span class="tile-title">WRITING</span></div></a>
+    <a class="grid-tile grid-tile-contact"><div class="tile-content"><span class="tile-title">CONTACT ME!</span></div></a>
+    <a class="grid-tile grid-tile-about"><div class="tile-content"><span class="tile-title">ABOUT</span></div></a>
+    <a class="grid-tile grid-tile-news"><div class="tile-content"><span class="tile-title">NEWS</span></div></a>
+  </div></div>
+</div></div>
+
+<div class="wrap" id="m3"><h6>3 · Labels on the flat tiles: white (as the other tiles) or ink (a question for the lead)</h6>
+<div class="labels">
+  <span class="lab">White · 2.3, 1.6, 1.5 : 1</span>
+  <div class="grid-tile grid-tile-merch"><div class="tile-content"><span class="tile-title">SHOP</span></div></div>
+  <div class="grid-tile grid-tile-about"><div class="tile-content"><span class="tile-title">ABOUT</span></div></div>
+  <div class="grid-tile grid-tile-news"><div class="tile-content"><span class="tile-title">NEWS</span></div></div>
+  <span class="lab">Ink · 6.2, 8.7, 9.4 : 1</span>
+  <div class="grid-tile grid-tile-merch"><div class="tile-content"><span class="tile-title ink">SHOP</span></div></div>
+  <div class="grid-tile grid-tile-about"><div class="tile-content"><span class="tile-title ink">ABOUT</span></div></div>
+  <div class="grid-tile grid-tile-news"><div class="tile-content"><span class="tile-title ink">NEWS</span></div></div>
+</div></div>
+
+<div class="wrap" id="m4"><h6>4 · The site's icon in a browser tab and address bar, and on a phone's home screen</h6>
+<div class="browsers">
+  <div class="row2">
+    <div><p class="tag">Today</p><div class="chrome"><div class="tabs"><div class="tab on"><span class="globe"></span>Kettlebird Creations • Writer &amp; Illustr…</div><div class="tab"><span class="globe"></span>Inbox</div></div></div><div class="omni"><div><span class="globe" style="width:14px;height:14px;border-radius:50%;border:1.5px solid #5f6368"></span>kettlebird.com</div></div></div>
+    <div><p class="tag">After</p><div class="chrome"><div class="tabs"><div class="tab on"><img src="favicon-32.png" width="16" height="16" alt="">Kettlebird Creations • Writer &amp; Illustr…</div><div class="tab"><span class="globe"></span>Inbox</div></div></div><div class="omni"><div><img src="favicon-32.png" width="16" height="16" alt="">kettlebird.com</div></div></div>
+  </div>
+  <div class="row2">
+    <div><p class="tag">Today: a screenshot of the page</p><div class="home"><span class="app"><i></i>Notes</span><span class="app"><i></i>Photos</span><span class="app"><i style="background:#fff url('today-phone.png') top / 60px auto"></i>Kettlebird</span><span class="app"><i></i>Maps</span></div></div>
+    <div><p class="tag">After</p><div class="home"><span class="app"><i></i>Notes</span><span class="app"><i></i>Photos</span><span class="app"><img src="icon-180.png" alt="">Kettlebird</span><span class="app"><i></i>Maps</span></div></div>
+  </div>
+</div></div>
+
+<div class="wrap" id="m5"><h6>5 · The icon at each size (full mark from 64 px up, the bird alone at 48 and under)</h6>
+<div class="sizes">
+  <figure><img src="icon-512.png" width="192" height="192" alt="">512<i>app icon · shown at 192</i></figure>
+  <figure><img src="icon-180.png" width="90" height="90" alt="">180<i>home screen · shown at 90</i></figure>
+  <figure><img src="favicon-48.png" width="48" height="48" alt="">48</figure>
+  <figure><img src="favicon-32.png" width="32" height="32" alt="">32</figure>
+  <figure><img src="favicon-16.png" width="16" height="16" alt="">16</figure>
+  <figure><img class="px" src="favicon-16.png" width="96" height="96" alt="">16 × 6<i>its pixels</i></figure>
+  <figure><img class="px" src="favicon-32.png" width="96" height="96" alt="">32 × 3<i>its pixels</i></figure>
+</div></div>
+
+<script>
+  Promise.all([document.fonts.ready, ...[...document.images].map((i) => i.decode().catch(() => {}))]).then(() => { document.body.dataset.ready = 'yes'; });
+</script>
+</body>
+</html>
