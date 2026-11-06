@@ -485,9 +485,17 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
         else say(panelsOffAnnouncement(view(), book?.dataset.kind ?? '', announce?.dataset.textWide ?? ''));
       };
       toggle.addEventListener('click', () => setOn(!on));
+      // Only moving between panels pans and zooms (comic-reader-panels AC-14): arriving on a page, a
+      // resize or the picture loading puts the view in place at once.
+      const still = (then: () => void) => {
+        reader.classList.add('kb-still');
+        then();
+        void img.offsetWidth;
+        requestAnimationFrame(() => requestAnimationFrame(() => reader.classList.remove('kb-still')));
+      };
       // Resizing or turning the screen changes nothing but the panel's place: one page stays one page.
-      window.addEventListener('resize', place);
-      img.addEventListener('load', place);
+      window.addEventListener('resize', () => still(place));
+      img.addEventListener('load', () => still(place));
 
       // Where to open: the panel kept for this page (a refresh), or where a turn asked, or the first.
       let arrive: { to: string; at: 'first' | 'last' } | undefined;
@@ -502,7 +510,7 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
       else if (arrive?.to === location.pathname + location.search && arrive.at === 'last') panel = Math.max(0, panels.length - 1);
       on = stored(PANELS_KEY) === '1';
       toggle.hidden = false;
-      show();
+      still(show);
       if (on) panelSuffix = panels.length ? panelAnnouncement(panel, panels.length) : '';
 
       const leave = (which: 'previous' | 'next') => {
@@ -842,6 +850,7 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
   @media (prefers-reduced-motion: reduce) {
     .reader.is-panels .reader__page.is-current img, .reader__panel-mask { transition: none; }
   }
+  .reader.kb-still .reader__page.is-current img, .reader.kb-still .reader__panel-mask { transition: none; }
 
   .reader__loading {
     position: absolute;
