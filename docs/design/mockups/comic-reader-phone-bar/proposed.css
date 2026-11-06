@@ -1,0 +1,34 @@
+/* The proposed change (docs/design/comic-reader-phone-bar.md), injected into the fixture build by render.mjs,
+   which also makes the markup changes the build will make (see markup() there): the two buttons in one
+   group, their words in a visually hidden span, the redrawn Panel by panel picture, and a name tip in each.
+   The reader's own styles are scoped, hence .reader before each selector here. */
+@media (max-width: 699px) {
+  /* Phones, either way up: the two buttons show their pictures only, square, together at the right,
+     and stay together when they wrap (text at 200%). */
+  .reader .reader__tools { display: flex; gap: 1rem; margin-left: auto; }
+  .reader .reader__panels, .reader .reader__all { position: relative; width: 44px; height: 44px; padding: 0; justify-content: center; gap: 0; }
+  .reader .reader__panels svg { width: 18px; height: 26px; }
+  .reader .reader__all .reader__grid { grid-template-columns: repeat(3, 6px); gap: 2px; }
+  .reader .reader__all .reader__grid i { width: 6px; height: 6px; }
+  .reader .reader__tool-word { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  /* The name, under the button and right-aligned with it, on hover and keyboard focus. */
+  .reader .reader__tool-tip { display: none; position: absolute; top: calc(100% + 8px); right: 0; z-index: 3; padding: 0.25rem 0.5rem;
+    background: var(--color-ink); color: var(--color-beige); font: 600 0.8rem 'Nunito', sans-serif; white-space: nowrap; pointer-events: none; }
+  .reader .reader__panels:hover .reader__tool-tip, .reader .reader__panels:focus-visible .reader__tool-tip,
+  .reader .reader__all:hover .reader__tool-tip, .reader .reader__all:focus-visible .reader__tool-tip { display: block; }
+}
+@media (min-width: 700px) { .reader .reader__tool-tip { display: none; } .reader .reader__tools { display: contents; } }
+/* The page area, the pair and a spread shown alone leave room inside the small viewport: the screen
+   with the browser's toolbars showing (iPhone and iPad Safari's 100vh is the screen with them hidden). */
+.reader .reader__page {
+  max-height: calc(100svh - 12.5rem);
+  max-width: min(100%, calc((100svh - 12.5rem) * var(--page-ratio, 0.6667)));
+}
+.reader .reader__page.is-spread { max-height: none; max-width: 100%; }
+@media (min-width: 62.5em) and (orientation: landscape) {
+  .reader.reader--pairs .reader__book { height: calc(100svh - 12.5rem); }
+  .reader:not(.reader--pairs) .reader__page.is-spread {
+    max-height: calc(100svh - 12.5rem);
+    max-width: min(100%, calc((100svh - 12.5rem) * var(--page-ratio, 1.3333)));
+  }
+}
