@@ -16,7 +16,7 @@ mkdirSync(path.join(dir, 'shots'), { recursive: true });
 const browser = await chromium.launch();
 const measures = {};
 
-async function shot(name, { width, height, pageWidth, url = '/comics/single-sheets/1/1', full = false }) {
+async function shot(name, { width, height, pageWidth, url = '/comics/single-sheets/1/1', full = false, hoverEdge = false }) {
   const page = await browser.newPage({ viewport: { width, height }, deviceScaleFactor: 1 });
   await page.goto(BASE + url);
   if (pageWidth) {
@@ -30,6 +30,11 @@ async function shot(name, { width, height, pageWidth, url = '/comics/single-shee
   await page.evaluate(() => document.fonts.ready);
   await page.evaluate(() => document.querySelector('.reader')?.scrollIntoView({ block: 'start' }));
   await page.waitForTimeout(400);
+  if (hoverEdge) {
+    const b = await page.locator('.reader__edge--next').first().boundingBox();
+    await page.mouse.move(b.x + b.width / 2, 400);
+    await page.waitForTimeout(300);
+  }
   measures[name] = await page.evaluate(() => {
     const p = document.querySelector('.reader__page.is-current').getBoundingClientRect();
     const nav = [...document.querySelectorAll('nav.reader__controls')].map((n) => n.getBoundingClientRect()).find((r) => r.height > 0);
@@ -48,9 +53,13 @@ await shot('after-1440-full', { width: 1440, height: 900, pageWidth: 900, full: 
 await shot('after-800', { width: 800, height: 700, pageWidth: 900 });
 // A spread alone: twice as wide, within the window.
 await shot('after-1440-spread', { width: 1440, height: 900, pageWidth: 900, url: '/comics/single-sheets/1/3' });
+// Browser zoom at 200% on a 1280 laptop (640 CSS px wide): still the page width rule, so the page fills the window's width.
+await shot('after-zoom-640', { width: 640, height: 400, pageWidth: 900 });
+// The edge arrow on a tall page, pointed at: it stays in the window.
+await shot('after-1280-edge', { width: 1280, height: 720, pageWidth: 1200, hoverEdge: true });
 console.log(JSON.stringify(measures));
 
-const names = { m1: '1-today-laptop', m2: '2-after-laptop', m3: '3-after-scrolled', m4: '4-narrower-window', m5: '5-spread', m6: '6-editor' };
+const names = { m1: '1-today-laptop', m2: '2-after-laptop', m3: '3-after-scrolled', m4: '4-narrower-window', m5: '5-spread', m6: '6-editor', m7: '7-editor-notes', m8: '8-zoom-and-edge' };
 const page = await browser.newPage({ viewport: { width: 1600, height: 1200 }, deviceScaleFactor: 1 });
 await page.goto('file://' + path.join(dir, 'mockups.html'));
 await page.evaluate(() => document.fonts.ready);
