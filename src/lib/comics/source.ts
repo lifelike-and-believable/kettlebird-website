@@ -3,9 +3,10 @@
 // Spec: docs/specs/comic-reader-start-and-turn.md.
 import { sanityClient, urlFor } from '../sanity';
 import type { ComicImage, ComicSeries, OpenOn, SeriesStatus, SeriesType } from './model';
+import { pictureWidths, readLargestPageWidth, readPageSize } from './page-size';
 
-// Widths the reader requests from the image service; never the print-resolution original.
-const PAGE_WIDTHS = [480, 800, 1200, 1600];
+// Widths the reader requests from the image service are pictureWidths(): never the print-resolution original
+// beyond 3200, nor wider than the picture (docs/specs/comic-reader-page-size.md AC-6).
 const COVER_WIDTHS = [300, 500, 800];
 // The contact sheet's small pictures (design-comic-sheet-and-controls): never the full pages.
 const THUMB_WIDTHS = [150, 300];
@@ -25,11 +26,13 @@ export interface SanitySeries {
   coverImage?: SanityImage;
   twoUp?: unknown;
   pageFlip?: unknown;
+  pageSize?: unknown;
+  largestPageWidth?: unknown;
   chapters?: { number?: number; title?: string; openOn?: OpenOn; pages?: (SanityImage & { altText?: string; spread?: boolean; panels?: { x?: number; y?: number; width?: number; height?: number }[]; panelsBy?: string })[] }[];
 }
 
 export const COMIC_SERIES_WITH_CHAPTERS_QUERY = `*[_type == "comicSeries"] | order(title asc) {
-  title, slug, description, status, type, twoUp, pageFlip,
+  title, slug, description, status, type, twoUp, pageFlip, pageSize, largestPageWidth,
   coverImage { asset, hotspot, "dimensions": asset->metadata.dimensions },
   "chapters": *[_type == "comicChapter" && series._ref == ^._id] | order(number asc) {
     number, title, openOn,
@@ -75,13 +78,16 @@ export function fromSanity(raw: SanitySeries): ComicSeries {
     // How it reads: on only when Star ticked it (comic-reader-comic-settings AC-1).
     twoUp: raw.twoUp === true,
     pageFlip: raw.pageFlip === true,
+    // How pages fit on a computer (docs/specs/comic-reader-page-size.md AC-4).
+    pageSize: readPageSize(raw.pageSize),
+    largestPageWidth: readLargestPageWidth(raw.largestPageWidth),
     chapters: (raw.chapters ?? []).map((c) => ({
       number: c.number ?? 0,
       title: c.title || undefined,
       // Two-page spreads (docs/specs/comic-reader-spread-and-flip.md AC-1): the right unless Star chose the left.
       openOn: c.openOn === 'left' ? 'left' : 'right',
       pages: (c.pages ?? []).flatMap((p) => {
-        const image = sanityImage(p, PAGE_WIDTHS);
+        const image = sanityImage(p, pictureWidths(p.dimensions?.width ?? 800));
         const thumb = sanityImage(p, THUMB_WIDTHS);
         return image ? [{ image: { ...image, thumb: thumb && { src: thumb.src, srcset: thumb.srcset } }, altText: p.altText, spread: p.spread === true, ...panelsOf(p) }] : [];
       }),

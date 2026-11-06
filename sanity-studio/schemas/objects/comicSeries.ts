@@ -1,7 +1,8 @@
 import { defineField, defineType } from 'sanity';
 import { ChaptersList } from '../../components/ChaptersList';
 import { MissingSummary } from '../../components/MissingSummary';
-import { HOW_IT_READS, PAGE_FLIP_FIELD, SERIES_SLUG_MESSAGE, TWO_UP_FIELD } from '../../lib/comic-pages';
+import { LargestPageWidthInput } from '../../components/LargestPageWidthInput';
+import { HOW_IT_READS, LARGEST_PAGE_WIDTH_FIELD, PAGE_FLIP_FIELD, PAGE_SIZE_FIELD, SERIES_SLUG_MESSAGE, TWO_UP_FIELD } from '../../lib/comic-pages';
 import { fieldText, ITEM_NAMES, listDetail, requiredMessage, SERIES_KIND, SERIES_STATUS } from '../../lib/editor-content';
 
 // A comic series. Labels and help: design-organised-editor (Comics); the chapters list and Add
@@ -52,6 +53,9 @@ export default defineType({
     }),
     defineField({ ...TWO_UP_FIELD }),
     defineField({ ...PAGE_FLIP_FIELD }),
+    // How pages fit on a computer (docs/specs/comic-reader-page-size.md AC-1 to AC-3).
+    defineField({ ...PAGE_SIZE_FIELD, options: { ...PAGE_SIZE_FIELD.options, list: [...PAGE_SIZE_FIELD.options.list] } }),
+    defineField({ ...LARGEST_PAGE_WIDTH_FIELD, components: { input: LargestPageWidthInput } }),
     // Not stored: shows this series' chapters and Add chapter (comic-publish-pages AC-11).
     defineField({
       name: 'chapters',
