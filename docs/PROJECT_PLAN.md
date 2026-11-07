@@ -1,6 +1,6 @@
 # Kettlebird Creations Website - Project Plan
 
-<!-- docs/PROJECT_PLAN.md. Brought up to date on 2026-11-06 (three times) and 2026-11-07. The first version (2025-12-24) planned the site as
+<!-- docs/PROJECT_PLAN.md. Brought up to date on 2026-11-06 (three times) and 2026-11-07 (four times). The first version (2025-12-24) planned the site as
 nine milestones of checklists; the work has since moved to the process in docs/product (epics, stories,
 designs, guides and specs), and this plan now summarises where things stand and what's left. The first
 version is in the repository's history. -->
@@ -48,7 +48,7 @@ The look of the site is recorded in `docs/STYLE_GUIDE.md` and in the Kettlebird 
 | About and contact | Star's about page, quick facts and social links | design-site-settings |
 | Star runs the site | Sign-in at `/studio`; an editor organised as Comics, Art, Writing, Shop, Commissions and Site settings; preview before publishing; knowing when a change is live; help links to Star's guides on every item | epic-content-editing |
 
-The newest changes are to stories:
+The newest changes:
 - **Writing from Word documents** (design-story-import, docs/specs/story-import-word.md):
   - Star uploads each chapter, or a one-shot, as a .docx in place of pasting; there's no text box.
   - Italics, bold, scene breaks and their pictures come through, and a note says what came in and what didn't.
@@ -59,7 +59,6 @@ The newest changes are to stories:
   - one checkbox replaces the five ratings, at Star's request;
   - a ticked story is tagged **Mature or explicit** and asks before showing its text;
   - content notes show before any story that has them.
-
 - **Search engines and link previews** (design-site-search, docs/specs/site-search.md):
   - every public page has a canonical address and a link preview, with a new site card where there's no other picture;
   - the Portfolio's preview is the newest piece in Featured, and the Commissions page's says whether commissions are open;
@@ -70,7 +69,9 @@ The newest changes are to stories:
 Also since the last update:
 - The old ratings are gone from the editor and the site: the test story, the only one saved with a rating, is deleted, so no one-off change was needed.
 - The story reader's user stories were brought up to date with these designs.
-- The Commissions page no longer has the line "Custom artwork made just for you", at Star's request.
+- The Commissions page no longer has the line "Custom artwork made just for you", at Star's request, and its description no longer says "custom".
+- The Writing page's subtitle is "Fiction and other words"; its description says "Fiction and other written works", as all the writing on the site is Star's own for now (the lead, 2026-11-07).
+- The docs now use Star's pronouns, they/them, as the about page does.
 - How pages fit on a computer (design-comic-page-width) is done, with four fixes to the reader and the editor.
 
 ## What's left
@@ -104,7 +105,7 @@ Search engines list the site only once its address is `https://kettlebird.com` (
 ### Checks only a person can do
 
 - The Word upload tutorial (`docs/tutorials/publishing-stories.md`) with one of Star's own chapters, including its pictures and a phone photo's location data being removed (story-import-word AC-12, AC-28).
-
+- A read of the new "In search results and link previews" section of Star's guide `going-live.md`, and the lines added to the other guides (site-search AC-12).
 - The page-flip on a page taller than the window, in Chrome and Safari on a computer (comic-reader-page-size AC-24).
 - The reader on a real iPhone in Safari, and in the in-app browsers fans arrive from, for the reader bar on phones.
 - The manual checks named in earlier specs ("manual:" in their criteria), on a phone.
@@ -121,7 +122,7 @@ Search engines list the site only once its address is `https://kettlebird.com` (
 | 3C. Commerce | In part: the shop lists products and links to Ko-fi; buying on the site is open (above). |
 | 3D. Commission requests | In part: the commissions page; the request form is open (above). Google Forms and a public queue board weren't used. |
 | 4. Core pages | Done: home, about, news, contact links, the header and its phone menu, the page-not-found page. |
-| 5. Interactivity | Done where it serves reading: the page-flip, zoom, motion that respects reduced motion, the site's icon, link previews. Decorative effects (ink splatter, parallax) weren't taken up. |
+| 5. Interactivity | Done where it serves reading: the page-flip, zoom, motion that respects reduced motion, the site's icon, link previews. Decorative effects (ink splatter, parallax) weren't taken up. Search engines are ready for the launch: a sitemap, structured data and listing from kettlebird.com. |
 | 6. Content | Star's, through the editor, with the publishing guides; ongoing. |
 | 7. Quality | Continuous rather than a phase: unit and end-to-end tests for every spec, accessibility checks, mutation testing of pure logic, and the guides' tutorials run against each pull request's preview. |
 | 8. Deployment | Continuous: Vercel deploys every merge to `main`. |
@@ -138,3 +139,4 @@ Search engines list the site only once its address is `https://kettlebird.com` (
 | 2026-11-07 | Writing from Word documents, mature or explicit content in place of ratings, the stories brought up to date, the Commissions page's subtitle removed, and the tidying once the test story is deleted. |
 | 2026-11-07 | Later: the hidden old rating, its fallback and the one-off change removed, as the test story is deleted. |
 | 2026-11-07 | Search engines and link previews, and the move to kettlebird.com as a launch step. |
+| 2026-11-07 | Brought up to date after the search engines build: the newest changes in one list, the Writing page's subtitle, the Commissions description, the docs' pronouns for Star, and the guide review as a check. |
