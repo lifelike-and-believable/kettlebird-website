@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Search engines and link previews: mock-ups</title>
+<!-- Source for the PNG mock-ups beside this file (docs/design/site-search.md). Frame 1 is the proposed
+     site card itself, 1200 x 630, also saved as site-card.jpg. Frames 2 to 5 are illustrations of a social
+     site and a search engine, not any real one: each draws its own card and result. Frame 6 is the text
+     search engines read. Addresses are shown as they will be after the move to kettlebird.com.
+     Render: node render.mjs -->
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --ink:#2b2b2b; --ink-light:#595959; --beige:#f5f1e8; --paper-dark:#e8e3d8; --orange:#e8833a; }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 24px; background: #9ca3af; font-family: 'DM Sans', sans-serif; display: flex; flex-wrap: wrap; gap: 32px; align-items: flex-start; }
+  .wrap h6 { margin: 0 0 6px; font: 600 13px/1.4 system-ui; color: #111827; max-width: 640px; }
+
+  /* 1 · The site card, at its real size */
+  .card-img { width: 1200px; height: 630px; position: relative; overflow: hidden; color: var(--ink);
+    background: var(--beige) url('../../../../public/assets/images/Paper_2_Tileable.png'); background-size: 400px 400px;
+    display: flex; align-items: center; gap: 64px; padding: 0 96px; }
+  .card-img img { width: 400px; height: 400px; flex: none; }
+  .card-img b { display: block; font: 700 96px/1 'Nunito', sans-serif; }
+  .card-img span { display: block; white-space: nowrap; font: 600 36px/1.3 'Nunito', sans-serif; margin-top: 20px; color: var(--ink-light); }
+  .card-img i { display: block; font: 500 28px 'DM Mono', monospace; font-style: normal; margin-top: 36px; }
+
+  /* 2, 3 · A social site (illustration) */
+  .social { width: 560px; background: #fff; padding: 20px; color: #111827; font: 15px/1.45 system-ui, sans-serif; }
+  .who { margin: 0 0 4px; color: #6b7280; } .who b { color: #111827; }
+  .post p { margin: 0 0 10px; }
+  .post a { color: #2563eb; }
+  .card { border: 1px solid #d1d5db; border-radius: 10px; overflow: hidden; }
+  .cardimg { width: 100%; aspect-ratio: 1200 / 630; display: block; background: var(--paper-dark); }
+  .cardimg img { width: 100%; height: 100%; display: block; object-fit: cover; }
+  .cardtext { padding: .6rem .8rem; display: flex; flex-direction: column; gap: .15rem; }
+  .cardtext small { color: #6b7280; } .cardtext span { color: #4b5563; font-size: 14px; }
+  .art { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font: 600 22px 'Nunito', sans-serif; color: #2b2b2b99;
+    background: linear-gradient(135deg, #f4ce6a55, #e8833a44), var(--beige); }
+  .onpaper { width: 100%; height: 100%; display: flex; justify-content: center; background: var(--beige); }
+  .onpaper img { width: auto !important; height: 100%; object-fit: contain; }
+  .plain { border: 1px dashed #d1d5db; border-radius: 10px; padding: .6rem .8rem; color: #6b7280; font-size: 14px; }
+
+  /* 4, 5 · A search engine (illustration) */
+  .search { width: 680px; background: #fff; padding: 20px 24px; color: #202124; font: 14px/1.5 Arial, sans-serif; }
+  .q { border: 1px solid #dfe1e5; border-radius: 22px; padding: 8px 16px; margin: 0 0 18px; color: #202124; }
+  .res { margin: 0 0 22px; }
+  .site { display: flex; align-items: center; gap: 10px; margin-bottom: 2px; }
+  .fav { width: 26px; height: 26px; border-radius: 50%; background: #f1f3f4; display: flex; align-items: center; justify-content: center; }
+  .fav img { width: 18px; height: 18px; }
+  .site div { display: flex; flex-direction: column; line-height: 1.25; } .site b { font-weight: 400; font-size: 14px; } .site small { color: #4d5156; font-size: 12px; }
+  .res h3 { margin: 4px 0 2px; font: 400 20px/1.3 Arial, sans-serif; color: #1a0dab; }
+  .res p { margin: 0; color: #4d5156; }
+  .res.dim { opacity: .45; }
+  .links { display: flex; gap: 18px; margin-top: 6px; } .links a { color: #1a0dab; }
+  .note { margin: 0 0 14px; font: italic 13px system-ui; color: #6b7280; }
+
+  /* 6 · What search engines read */
+  .files { width: 1200px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; background: #fff; padding: 20px; }
+  .files h4 { margin: 0 0 8px; font: 700 15px system-ui; color: #111827; }
+  .files pre { margin: 0 0 14px; padding: 12px 14px; background: #f3f4f6; border: 1px solid #e5e7eb; font: 13px/1.5 'DM Mono', monospace; color: #111827; white-space: pre-wrap; }
+</style>
+</head>
+<body>
+<div class="wrap"><h6>1 · The site card (proposed file, 1200 × 630): the logo on paper, the site's name and what it is</h6>
+<div class="card-img" id="m1"><img src="../../../../public/assets/images/kblogo.png" alt=""><div><b>Kettlebird Creations</b><span>Illustration, comics and stories<br>by Star Goldberg</span></div></div></div>
+
+<div class="wrap"><h6>2 · The home page's link on a social site (illustration): today, then with this design</h6>
+<div class="social" id="m2"><div class="post"><p class="who"><b>A fan</b> · just now</p><p>Star has a website now!! <a>kettlebird.com</a></p><p class="plain">Today: no picture and no card; some sites show only the bare link.</p><br><div class="card"><div class="cardimg"><img data-card alt=""></div><div class="cardtext"><small>kettlebird.com</small><b>Kettlebird Creations • Writer &amp; Illustrator</b><span>Portfolio of Star Goldberg (they/them) - UPA-inspired illustrations, comics, and written works featuring fantasy characters and fanart.</span></div></div></div></div></div>
+
+<div class="wrap"><h6>3 · The Portfolio's link (illustration): the newest piece in Featured, whole on paper (a tall piece of Star's stands in), with the page's title and description</h6>
+<div class="social" id="m3"><div class="post"><p class="who"><b>Someone looking for an artist</b> · 2 min</p><p>this artist does commissions, look at their portfolio <a>kettlebird.com/portfolio</a></p><div class="card"><div class="cardimg"><div class="onpaper"><img src="../../../../public/assets/images/bkgd-artwork.jpg" alt=""></div></div><div class="cardtext"><small>kettlebird.com</small><b>Portfolio • Kettlebird Creations</b><span>Illustrations, fanart, original characters, and commissioned work by Star Goldberg (Kettlebird).</span></div></div></div></div></div>
+
+<div class="wrap"><h6>4 · Searching for the site after the move (illustration): the home page, its name, and links to the main pages if the search engine chooses to show them</h6>
+<div class="search" id="m4"><p class="q">kettlebird star goldberg</p>
+<div class="res"><div class="site"><span class="fav"><img data-icon alt=""></span><div><b>Kettlebird Creations</b><small>https://kettlebird.com</small></div></div><h3>Kettlebird Creations • Writer &amp; Illustrator</h3><p>Portfolio of Star Goldberg (they/them) - UPA-inspired illustrations, comics, and written works featuring fantasy characters and fanart.</p><div class="links"><a>Portfolio</a><a>Comics</a><a>Writing</a><a>Commissions</a></div></div>
+<div class="res dim"><div class="site"><span class="fav"></span><div><b>Tumblr</b><small>https://kettle-bird.tumblr.com</small></div></div><h3>kettlebird</h3><p>(Other results: the search engine's own choice.)</p></div></div></div>
+
+<div class="wrap"><h6>5 · A story's chapter in search results (illustration): the path to it, the story's title, its short description</h6>
+<div class="search" id="m5"><p class="q">the long road kettlebird</p>
+<div class="res"><div class="site"><span class="fav"><img data-icon alt=""></span><div><b>Kettlebird Creations</b><small>https://kettlebird.com › Writing › The Long Road</small></div></div><h3>Chapter 3: Night Rain · The Long Road · Kettlebird Creations</h3><p>A fox and a kettle walk home the long way round.</p></div>
+<p class="note">A ticked (mature or explicit) story's pages are marked for adults, so search engines can leave them out when someone searches with safe search on.</p></div></div>
+
+<div class="wrap"><h6>6 · What search engines read, before and after the move to kettlebird.com</h6>
+<div class="files" id="m6">
+<div><h4>Before the move (newsite.kettlebird.com)</h4>
+<pre>/robots.txt
+User-agent: *
+Allow: /</pre>
+<pre>Every page:
+&lt;meta name="robots" content="noindex"&gt;
+(link previews still work)</pre>
+<pre>/sitemap-index.xml: built, but not listed in robots.txt</pre></div>
+<div><h4>After the move (kettlebird.com)</h4>
+<pre>/robots.txt
+User-agent: *
+Allow: /
+Sitemap: https://kettlebird.com/sitemap-index.xml</pre>
+<pre>Public pages: no noindex; a canonical address,
+a link preview and structured data.
+Help, preview, studio and All pages sheets: noindex, as
+today (not blocked in robots.txt, so it can be read).</pre>
+<pre>/sitemap-0.xml (excerpt; each address is the page's canonical one)
+https://kettlebird.com/
+https://kettlebird.com/portfolio
+https://kettlebird.com/comics
+https://kettlebird.com/comics/kettle-tales
+https://kettlebird.com/comics/kettle-tales/1/1
+…
+https://kettlebird.com/writing/the-long-road/3</pre></div>
+</div></div>
+
+<script>
+  // Frames 2 and 4 to 5 reuse frame 1's card and the site's icon.
+  document.querySelectorAll('img[data-icon]').forEach((i) => { i.src = '../../../../public/favicon-32.png'; });
+  window.cardReady = (url) => document.querySelectorAll('img[data-card]').forEach((i) => { i.src = url; });
+  document.fonts.ready.then(() => { document.body.dataset.ready = 'yes'; });
+</script>
+</body>
+</html>
