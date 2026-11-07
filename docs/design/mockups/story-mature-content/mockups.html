@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Mature or explicit content: mock-ups</title>
+<!-- Source for the PNG mock-ups beside this file (docs/design/story-mature-content.md). Low-fidelity: the
+     site's header, colours and fonts, simplified; the editor is Sanity Studio 5.1. Render: node render.mjs -->
+<style>
+  :root { --ink:#1f2328; --muted:#6b7280; --line:#d8dce2; --bg:#f6f7f9; --panel:#fff; --accent:#2563eb; --ok:#15803d; --okbg:#dcfce7;
+          --paper:#f5f1e8; --site:#2b2b2b; --green:#a8d5ba; --yellow:#f4ce6a; --orange:#f3a76b; --purple:#4a4063; --beige:#ece4d3; }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 24px; background: #e5e7eb; font: 14px/1.4 system-ui, sans-serif; color: var(--ink); }
+  .frame { width: 1280px; background: var(--bg); border: 1px solid var(--line); margin-bottom: 32px; }
+  .frame.phone { width: 390px; }
+  .frame h6 { margin: 0; padding: 6px 12px; background: #111827; color: #fff; font: 600 12px/1.6 system-ui; }
+  .site { background: var(--paper); color: var(--site); font: 16px/1.6 "DM Sans", system-ui, sans-serif; }
+  .shead { display: flex; align-items: center; justify-content: space-between; padding: 12px 24px; border-bottom: 3px solid var(--site); }
+  .shead .t { font: 800 28px/1 Nunito, system-ui; } .shead .s { font: 600 12px Nunito, system-ui; text-transform: uppercase; letter-spacing: .08em; }
+  .nav { display: flex; gap: 6px; } .nav span { font: 700 12px Nunito, system-ui; padding: 6px 10px; background: var(--green); } .nav span:nth-child(2n) { background: var(--yellow); }
+  .menu { width: 44px; height: 40px; border: 3px solid var(--site); display:flex; flex-direction:column; justify-content:center; gap:5px; padding:0 8px; } .menu i { height:3px; background: var(--site); display:block; }
+  .sfoot { background: var(--site); color: var(--paper); padding: 12px 24px; font-size: 13px; }
+  h1 { font: 800 34px/1.15 Nunito, system-ui; margin: 0 0 10px; }
+  h2 { font: 800 22px/1.2 Nunito, system-ui; margin: 18px 0 8px; }
+  .tag { display:inline-block; font: 13px "DM Mono", ui-monospace, monospace; border: 2px solid var(--site); padding: 1px 8px; margin: 0 6px 6px 0; background: var(--beige); }
+  .tag.r { background: var(--yellow); }
+  .btn { display:inline-block; font: 800 15px Nunito, system-ui; padding: 9px 18px; background: var(--yellow); border: 0; }
+  .btn.dark { background: var(--site); color: var(--paper); }
+  .link { font-weight: 700; text-decoration: underline; }
+  .cover { background: linear-gradient(135deg,#c9aa7e,#e8dcc6); border: 3px solid var(--site); display:flex; align-items:center; justify-content:center; font: 12px system-ui; color:#5b4a2e; }
+  .col { max-width: 640px; margin: 0 auto; font-size: 18px; line-height: 1.75; }
+  .col p { margin: 0 0 14px; }
+  .before { border: 3px solid var(--site); background: #fff8; padding: 10px 14px; margin: 14px 0 20px; font-size: 15px; line-height: 1.5; }
+  .before strong { font: 800 15px Nunito, system-ui; display:block; }
+  .brk { text-align: center; margin: 22px 0; font-size: 20px; letter-spacing: .3em; }
+  .chnav { display: flex; gap: 10px; justify-content: space-between; margin: 18px 0; }
+  .chnav .btn { flex: 1; text-align: center; }
+  .small .btn { padding: 5px 10px; font-size: 13px; flex: 0 0 auto; }
+  ol.ch { padding: 0; list-style: none; border-top: 2px solid var(--site); margin: 0; }
+  ol.ch li { padding: 10px 0; border-bottom: 2px solid var(--site); display:flex; justify-content: space-between; }
+  ol.ch .d { color: #6b5b3e; font-size: 14px; }
+  .anno { font: 12px system-ui; color: #fff; background: #111827; padding: 3px 8px; display: inline-block; }
+  /* editor */
+  .top { display: flex; align-items: center; justify-content: space-between; padding: 8px 16px; background: var(--panel); border-bottom: 1px solid var(--line); }
+  .status { display: inline-flex; padding: 3px 10px; border-radius: 999px; font-size: 13px; background: var(--okbg); color: var(--ok); }
+  .ebtn { padding: 6px 12px; border-radius: 4px; border: 1px solid var(--line); background: #fff; font-weight: 600; font-size: 13px; display:inline-block; }
+  .ebtn.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .cols { display: grid; grid-template-columns: 200px 260px 1fr; min-height: 640px; }
+  .cols.four { grid-template-columns: 52px 200px 1fr 1fr; }
+  .c { background: var(--panel); border-right: 1px solid var(--line); padding: 10px 12px; }
+  .c .it { padding: 7px 8px; border-radius: 4px; } .c .it.sel { background: #eef2ff; }
+  .doc { background: var(--panel); border-right: 1px solid var(--line); display:flex; flex-direction: column; }
+  .doc .hd { padding: 10px 20px; border-bottom: 1px solid var(--line); font-weight: 700; }
+  .doc .bd { padding: 14px 20px; flex: 1; }
+  .tl { display:flex; justify-content: space-between; align-items: center; margin-bottom: 12px; } .hl { color: var(--accent); font-weight: 600; text-decoration: underline; }
+  .f { margin-bottom: 12px; } .f label { font-weight: 600; display:block; } .f .h { color: var(--muted); font-size: 12px; margin: 0 0 3px; }
+  .in { border: 1px solid var(--line); border-radius: 4px; padding: 7px 10px; min-height: 32px; background:#fff; }
+  .tb { border: 1px solid var(--line); border-bottom: 0; border-radius: 4px 4px 0 0; padding: 4px 8px; background: #fafafa; display:flex; gap: 6px; }
+  .tb span { border: 1px solid var(--line); border-radius: 3px; padding: 1px 8px; font-size: 12px; background:#fff; }
+  .pt { border: 1px solid var(--line); border-radius: 0 0 4px 4px; padding: 10px; font: 14px/1.6 Georgia, serif; min-height: 160px; }
+  .pt p { margin: 0 0 8px; } .ptbrk { text-align:center; color: var(--muted); border: 1px dashed var(--line); margin: 6px 40px; font: 12px system-ui; padding: 2px; }
+  .req { color: #b91c1c; font-size: 11px; margin-left: 6px; font-weight: 400; }
+  .chl .row { display:flex; justify-content: space-between; border: 1px solid var(--line); border-radius: 4px; padding: 6px 10px; margin-bottom: 6px; }
+  .pill { font-size: 11px; padding: 1px 8px; border-radius: 999px; background: var(--okbg); color: var(--ok); } .pill.no { background: #f3f4f6; color: var(--muted); }
+  .bar { display:flex; justify-content: flex-end; padding: 10px 20px; border-top: 1px solid var(--line); }
+  .card { display:grid; grid-template-columns: 150px 1fr; gap: 16px; border: 3px solid var(--site); background: var(--beige); margin-bottom: 16px; }
+  .card .b { padding: 12px 14px 14px 0; }
+  .share { width: 520px; border: 1px solid #cfd9de; border-radius: 14px; overflow: hidden; background: #fff; font-family: system-ui; }
+  .share .img { height: 270px; background: var(--paper); display:flex; align-items:center; justify-content:center; }
+  .chk { display:inline-flex; align-items:center; gap:8px; } .chk b { width:18px; height:18px; border:1px solid #9ca3af; border-radius:3px; display:inline-block; background:#fff; }
+  .chk b.on { background: var(--accent); border-color: var(--accent); position:relative; } .chk b.on::after { content:'✓'; color:#fff; font:700 13px system-ui; position:absolute; left:3px; top:-1px; }
+</style>
+</head>
+<body>
+<div class="frame" id="m1" style="width:1100px"><h6>1 · The editor: Mature or explicit content in place of Rating</h6><div class="top"><strong>Kettlebird Creations</strong><span><span class="ebtn">Help ▾</span> &nbsp;<span class="status">● Live · 2:41 pm</span></span></div><div class="cols" style="grid-template-columns:180px 220px 1fr;min-height:620px"><div class="c"><div class="it">Comics</div><div class="it">Art</div><div class="it sel">Writing</div><div class="it">Shop</div><div class="it">Commissions</div><div class="it">Site settings</div></div><div class="c"><div class="it" style="color:var(--accent)">+ New story</div><div class="it sel">Night Shift · 3 Nov 2026</div><div class="it">The Long Road · 2 Oct 2026</div></div>
+<div class="doc"><div class="hd">Night Shift</div><div class="bd"><div class="tl"><span class="hl">Help: Start a new story ↗</span><span class="ebtn">Preview</span></div>
+<div class="f"><label>Title<span class="req">Required</span></label><p class="h">The story's title.</p><div class="in">Night Shift</div></div>
+<div class="f"><label>Web address</label><p class="h">It's the last part of the story's link: kettlebird.com/writing/the-kettles-song. Filled in from the title. Changing it after people have shared links breaks them.</p><div class="in">night-shift</div></div>
+<div class="f"><label>Short description</label><p class="h">A sentence or two, shown on the Writing page and when the story is shared.</p><div class="in">A diner, a storm, and a stranger who won't leave.</div></div>
+<div class="f"><label>Cover</label><p class="h">Shown beside the story on the Writing page and at the top of its page.</p><div class="in">[picture]</div></div>
+<div class="f"><label>Genres</label><p class="h">Shown as tags. Type one, then press Enter.</p><div class="in">Horror ×</div></div>
+<div class="f" style="outline:2px dashed var(--accent);outline-offset:4px"><span class="chk"><b class="on"></b><label style="display:inline">Mature or explicit content</label></span><p class="h" style="margin:3px 0 0 26px">Tick it for sex scenes, graphic violence or other strong content. Readers are then asked before the text shows, and the story's card and page say so. Left unticked, readers go straight to the text. It covers the story and all its chapters.</p></div>
+<div class="f"><label>Content notes</label><p class="h">Anything a reader should know before starting, such as "Mild violence". Shown before the story.</p><div class="in">Violence, swearing.</div></div>
+<div class="f"><label>Status</label><p class="h">For a story in chapters: In progress or Complete.</p><div class="in">In progress</div></div>
+<div class="f"><label>Chapters</label><p class="h">For a story in chapters. Each chapter has its own page.</p><div class="chl"><div class="row"><span>Chapter 1: Closing Time</span><span class="pill">On the site</span></div></div><span class="ebtn">+ Add chapter</span></div>
+<span class="anno">Rating (General, Teen, Mature, Explicit, Not rated) is gone, and so is "Choose a rating, or Not rated."</span>
+</div><div class="bar"><span class="ebtn primary">Publish</span></div></div></div></div>
+
+<div class="frame" id="m2"><h6>2 · The Writing page's card and the top of the story's page: the Mature or explicit tag (beige on the card, yellow on the page)</h6><div class="site"><div class="shead"><div><div class="t">Kettlebird</div><div class="s">Comics + Illustration</div></div><div class="nav"><span>PORTFOLIO</span><span>COMICS</span><span>WRITING</span><span>SHOP</span><span>COMMISSIONS</span><span>ABOUT</span><span>NEWS</span></div></div>
+<div style="max-width:1000px;margin:0 auto;padding:20px 24px 10px"><h1>Writing</h1>
+<div class="card"><div class="cover" style="height:200px">cover</div><div class="b"><div style="font:800 24px Nunito,system-ui">Night Shift</div><div style="margin:6px 0"><span class="tag">Horror</span><span class="tag">Mature or explicit</span><span class="tag">In progress · 1 chapter</span></div><p style="margin:0 0 10px">A diner, a storm, and a stranger who won't leave.</p><span class="btn dark">Read</span></div></div>
+<div class="card"><div class="cover" style="height:200px">cover</div><div class="b"><div style="font:800 24px Nunito,system-ui">The Kettle's Song</div><div style="margin:6px 0"><span class="tag">Cozy</span></div><p style="margin:0 0 10px">One winter night, the kettle sings.</p><span class="btn dark">Read</span> <span class="anno">Unticked: no tag, where it had "Rated Teen"</span></div></div></div>
+<div style="max-width:1000px;margin:0 auto;padding:10px 24px 30px;border-top:3px dashed var(--site)"><div style="display:grid;grid-template-columns:260px 1fr;gap:24px;margin-top:16px"><div class="cover" style="height:360px">cover</div><div><h1>Night Shift</h1><span class="tag">Horror</span><span class="tag r">Mature or explicit</span><span class="tag">In progress</span><p>A diner, a storm, and a stranger who won't leave.</p><span class="anno">The story's page: the same tag, above Before you read</span></div></div></div>
+<div class="sfoot">© Kettlebird Creations</div></div></div>
+
+<div class="frame phone" id="m3"><h6>3 · Ticked, on a phone: Continue to the story</h6><div class="site"><div class="shead" style="padding:10px 16px"><div><div class="t" style="font-size:24px">Kettlebird</div><div class="s" style="font-size:11px">Comics + Illustration</div></div><div class="menu"><i></i><i></i><i></i></div></div><div style="padding:14px 16px 20px">
+<div style="font-size:15px"><span class="link">Night Shift</span></div><h1 style="font-size:28px">Chapter 1: Closing Time</h1>
+<div class="before" style="padding:14px"><strong>Before you read</strong><span style="font-weight:600">This story has mature or explicit content.</span><br>Violence, swearing.<div style="margin-top:12px"><span class="btn dark">Continue to the story</span></div></div>
+<span class="anno">After Continue, the text shows here, and the browser remembers for every ticked story (and fans who continued before the change aren't asked again)</span></div></div></div>
+
+<div class="frame phone" id="m4"><h6>4 · Unticked, with content notes: the notes alone</h6><div class="site"><div class="shead" style="padding:10px 16px"><div><div class="t" style="font-size:24px">Kettlebird</div><div class="s" style="font-size:11px">Comics + Illustration</div></div><div class="menu"><i></i><i></i><i></i></div></div><div style="padding:14px 16px 20px">
+<h1 style="font-size:30px">The Kettle's Song</h1><div style="display:flex;gap:12px;align-items:flex-start"><div class="cover" style="width:90px;height:126px;flex:none">cover</div><div><span class="tag">Cozy</span><p style="margin:4px 0 0;font-size:15px">One winter night, the kettle sings.</p></div></div>
+<div class="before"><strong>Before you read</strong>A storm, and a scary dream.</div>
+<div class="col" style="font-size:17px"><p>The kitchen was cold when Fox came down, and the kettle, <em>as ever</em>, said nothing.</p><p>"You're early," Fox said.</p></div>
+<span class="anno">No line above the notes, and no tag. Without notes, no box at all</span></div></div></div>
+
+<div class="frame phone" id="m5"><h6>5 · Preview of a ticked story: the line and notes, no button</h6><div style="background:#111827;color:#fff;font:12px system-ui;padding:6px 12px">Preview · not published yet</div><div class="site"><div class="shead" style="padding:10px 16px"><div><div class="t" style="font-size:24px">Kettlebird</div><div class="s" style="font-size:11px">Comics + Illustration</div></div><div class="menu"><i></i><i></i><i></i></div></div><div style="padding:14px 16px 20px">
+<h1 style="font-size:30px">Night Shift</h1><div style="display:flex;gap:12px;align-items:flex-start"><div class="cover" style="width:90px;height:126px;flex:none">cover</div><div><span class="tag">Horror</span><span class="tag r">Mature or explicit</span><p style="margin:4px 0 0;font-size:15px">A diner, a storm, and a stranger who won't leave.</p></div></div>
+<div class="before"><strong>Before you read</strong><span style="font-weight:600">This story has mature or explicit content.</span><br>Violence, swearing.</div>
+<div class="col" style="font-size:17px"><p>The neon sign buzzed twice and went dark.</p><p>"We're closed," said Mara, without looking up.</p></div>
+<span class="anno">Preview: no Continue to the story; the text shows, as on the site after Continue</span></div></div></div>
+
+<div class="frame phone" id="m6"><h6>6 · A ticked story in chapters, on a phone: the chapter list hidden</h6><div class="site"><div class="shead" style="padding:10px 16px"><div><div class="t" style="font-size:24px">Kettlebird</div><div class="s" style="font-size:11px">Comics + Illustration</div></div><div class="menu"><i></i><i></i><i></i></div></div><div style="padding:14px 16px 20px">
+<h1 style="font-size:30px">Night Shift</h1><div style="display:flex;gap:12px;align-items:flex-start"><div class="cover" style="width:90px;height:126px;flex:none">cover</div><div><span class="tag">Horror</span><span class="tag r">Mature or explicit</span><span class="tag">In progress</span><p style="margin:4px 0 0;font-size:15px">A diner, a storm, and a stranger who won't leave.</p></div></div>
+<div class="before" style="padding:14px"><strong>Before you read</strong><span style="font-weight:600">This story has mature or explicit content.</span><br>Violence, swearing.<div style="margin-top:12px"><span class="btn dark">Continue to the story</span></div></div>
+<span class="anno">Start reading and the chapter list show after Continue to the story</span></div></div></div>
+</body>
+</html>
