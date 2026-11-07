@@ -31,7 +31,7 @@ describe('story-reader-editor#AC-1 story fields', () => {
       description: "It's the last part of the story's link: kettlebird.com/writing/the-kettles-song. Filled in from the title. Changing it after people have shared links breaks them.",
     });
     // story-mature-content AC-1: the checkbox in place of Rating.
-    expect(fieldText('writtenWork', 'mature')).toEqual({ title: 'Mature or explicit content', description: "Tick it for sex scenes, graphic violence or other strong content. Readers are then asked before the text shows, and the story's card and page say so. Left unticked, readers go straight to the text. It covers the story and all its chapters." });
+    expect(fieldText('writtenWork', 'mature')).toEqual({ title: 'Mature or explicit content', description: "Tick it for sex scenes, graphic violence or other strong content. Readers are then asked before the text shows, and the story's card and page say so. Left unticked, readers go straight to the text. It covers the story and all its chapters. Search engines are told too, so it can be left out for people searching with safe search on." });
     expect(fieldText('writtenWork', 'contentNotes')).toEqual({ title: 'Content notes', description: 'Anything a reader should know before starting, such as "Mild violence". Shown before the story.' });
     expect(fieldText('writtenWork', 'status')).toEqual({ title: 'Status', description: 'For a story in chapters: In progress or Complete.' });
     expect(fieldText('writtenWork', 'content')).toEqual({ title: 'Text', description: 'For a one-shot: upload the whole story as a Word document (.docx). For a story in chapters, add chapters instead.' });

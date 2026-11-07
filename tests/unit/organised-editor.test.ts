@@ -99,7 +99,7 @@ const EXPECTED: Record<ItemType, [string, string, string][]> = {
     ['excerpt', 'Short description', 'A sentence or two, shown on the Writing page and when the story is shared.'],
     ['coverImage', 'Cover', 'Shown beside the story on the Writing page and at the top of its page.'],
     ['genre', 'Genres', 'Shown as tags. Type one, then press Enter.'],
-    ['mature', 'Mature or explicit content', "Tick it for sex scenes, graphic violence or other strong content. Readers are then asked before the text shows, and the story's card and page say so. Left unticked, readers go straight to the text. It covers the story and all its chapters."],
+    ['mature', 'Mature or explicit content', "Tick it for sex scenes, graphic violence or other strong content. Readers are then asked before the text shows, and the story's card and page say so. Left unticked, readers go straight to the text. It covers the story and all its chapters. Search engines are told too, so it can be left out for people searching with safe search on."],
     ['contentNotes', 'Content notes', 'Anything a reader should know before starting, such as "Mild violence". Shown before the story.'],
     ['status', 'Status', 'For a story in chapters: In progress or Complete.'],
     ['content', 'Text', 'For a one-shot: upload the whole story as a Word document (.docx). For a story in chapters, add chapters instead.'],

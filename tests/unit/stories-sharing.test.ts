@@ -6,7 +6,7 @@ import type { NewsPost } from '../../src/lib/queries';
 import { FIXTURE_STORIES } from '../fixtures/stories';
 
 const SITE = 'https://newsite.kettlebird.com';
-const LOGO = `${SITE}/assets/images/kblogo.png`;
+const LOGO = `${SITE}/assets/images/site-card.jpg`;
 const by = (slug: string) => FIXTURE_STORIES.find((s) => s.slug === slug)!;
 const road = by('the-long-road');
 
