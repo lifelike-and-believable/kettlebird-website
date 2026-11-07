@@ -1,6 +1,6 @@
 # Kettlebird Creations Website - Project Plan
 
-<!-- docs/PROJECT_PLAN.md. Brought up to date on 2026-11-06 (three times). The first version (2025-12-24) planned the site as
+<!-- docs/PROJECT_PLAN.md. Brought up to date on 2026-11-06 (three times) and 2026-11-07. The first version (2025-12-24) planned the site as
 nine milestones of checklists; the work has since moved to the process in docs/product (epics, stories,
 designs, guides and specs), and this plan now summarises where things stand and what's left. The first
 version is in the repository's history. -->
@@ -34,7 +34,7 @@ The project follows rules-for-robots (`.rfr/`, `docs/product/process.yml`):
 
 The look of the site is recorded in `docs/STYLE_GUIDE.md` and in the Kettlebird design system (on claude.ai), which tracks every change to the look and the pull request that built it.
 
-## Where things stand (2026-11-06)
+## Where things stand (2026-11-07)
 
 | Area | On the site | Where it's described |
 |---|---|---|
@@ -42,23 +42,28 @@ The look of the site is recorded in `docs/STYLE_GUIDE.md` and in the Kettlebird 
 | Site-wide | Torn-paper header (shorter on phones, with a menu), one arrow style everywhere, keyboard focus and reduced motion respected, link previews | design-phone-header, design-arrows, design-comic-share-and-announce |
 | Portfolio | Artwork in category bands with a filter; any piece full screen, with zoom and moving between pieces | epic-portfolio-full-screen |
 | Comics | Series and chapter pages; a reader with First, Previous, Next and Newest, all pages of a chapter on one sheet, sharing, screen reader announcements; two pages side by side and a page-flip on wide screens, per comic; panel by panel, with panels found when Star uploads and corrected by Star in the editor; on a computer, pages that fit the screen, the width or the height, set per comic by Star and choosable by fans | epic-comic-reader, epic-comic-reader-flip-and-panels, design-comic-page-width |
-| Writing | Stories read on the site, as one-shots or in chapters, with scene breaks; news | epic-story-reader |
+| Writing | Stories read on the site, as one-shots or in chapters, with scene breaks and Star's pictures; Star uploads each chapter as a Word document; stories with mature or explicit content ask before showing the text; news | epic-story-reader, design-story-import, design-story-mature-content |
 | Shop | Products by category, each linking to Ko-fi | requirements-shop (REQ-shop-1) |
 | Commissions | Open or closed, types and prices, how it works, and an email link to start | requirements-commissions (REQ-commissions-1 to 3) |
 | About and contact | Star's about page, quick facts and social links | design-site-settings |
 | Star runs the site | Sign-in at `/studio`; an editor organised as Comics, Art, Writing, Shop, Commissions and Site settings; preview before publishing; knowing when a change is live; help links to Star's guides on every item | epic-content-editing |
 
-The newest change is **how pages fit on a computer** (design-comic-page-width, docs/specs/comic-reader-page-size.md):
-- Star sets each comic's **Page size on a computer**: Fit the screen (as before), Fit the width or Fit the height, with an optional **Largest page width**. By default, pages are never wider than their pictures.
-- Fans on a computer can choose their own size with **Page size** in the reader's bar, kept in their browser for every comic.
-- Pairs and spreads take the size too, and pictures are fetched at the size they show.
+The newest changes are to stories:
+- **Writing from Word documents** (design-story-import, docs/specs/story-import-word.md):
+  - Star uploads each chapter, or a one-shot, as a .docx in place of pasting; there's no text box.
+  - Italics, bold, scene breaks and her pictures come through, and a note says what came in and what didn't.
+  - Each picture takes alt text from Word or the editor, or is marked decorative.
+  - A new version asks before replacing the text, and an upload can be undone until it's published.
+  - Pictures show in the story's column, at its width or their own, and open full screen.
+- **Mature or explicit content** (design-story-mature-content, docs/specs/story-mature-content.md):
+  - one checkbox replaces the five ratings, at Star's request;
+  - a ticked story is tagged **Mature or explicit** and asks before showing its text;
+  - content notes show before any story that has them.
 
-Fixes since the last update:
-- In the reader, the edge strip no longer tints the page.
-- Panel by panel no longer pans into a page's first panel.
-- In the editor, a panel follows the pointer while it's moved or resized.
-- A flaky arrows test was fixed.
-- In the portfolio, Featured is always the top row, and first in the Index.
+Also since the last update:
+- The story reader's user stories were brought up to date with these designs.
+- The Commissions page no longer has the line "Custom artwork made just for you", at Star's request.
+- How pages fit on a computer (design-comic-page-width) is done, with four fixes to the reader and the editor.
 
 ## What's left
 
@@ -79,7 +84,13 @@ Fixes since the last update:
 - The two pictures for **Panel by panel** and **All pages** on phones; interim ones are in place until they come.
 - The **home tiles' label colours**: white with a shadow for now; the alternatives (an ink outline, or ink) are in design-home-tiles-and-icon, mock-up 3.
 
+### To run once
+
+- The one-off change for the test story's old rating (`npx sanity migration run mature-from-rating` in `sanity-studio/`, a dry run first, then with `--no-dry-run`). Until it runs, the site counts an old Mature or Explicit rating as ticked; once no story has a rating, a later change removes the hidden field and that fallback.
+
 ### Checks only a person can do
+
+- The Word upload tutorial (`docs/tutorials/publishing-stories.md`) with one of Star's own chapters, including its pictures and a phone photo's location data being removed (story-import-word AC-12, AC-28).
 
 - The page-flip on a page taller than the window, in Chrome and Safari on a computer (comic-reader-page-size AC-24).
 - The reader on a real iPhone in Safari, and in the in-app browsers fans arrive from, for the reader bar on phones.
@@ -93,7 +104,7 @@ Fixes since the last update:
 | 2. Design and branding | Done: `docs/STYLE_GUIDE.md`, then the design system. The radial menu became the home page's tiles. |
 | 3. Portfolio | Done, and extended with the full-screen view. Built with the site's own code rather than PhotoSwipe. |
 | 3A. Comic reader | Done, and extended: page-flip, two pages side by side, panel by panel with panels found automatically, and page sizes on a computer. Built without panzoom. |
-| 3B. Written works page-flip | Replaced: stories read as web pages, which suit phones and screen readers better than a page-flip (epic-story-reader). |
+| 3B. Written works page-flip | Replaced: stories read as web pages, which suit phones and screen readers better than a page-flip (epic-story-reader), uploaded from Word documents with their pictures. |
 | 3C. Commerce | In part: the shop lists products and links to Ko-fi; buying on the site is open (above). |
 | 3D. Commission requests | In part: the commissions page; the request form is open (above). Google Forms and a public queue board weren't used. |
 | 4. Core pages | Done: home, about, news, contact links, the header and its phone menu, the page-not-found page. |
@@ -111,3 +122,4 @@ Fixes since the last update:
 | 2026-11-06 | Brought up to date: what's built, what's left, the decisions waiting, how work is planned, and what happened to each milestone. |
 | 2026-11-06 | Later the same day: how pages fit on a computer, four fixes, and the page-flip check on tall pages. |
 | 2026-11-06 | That evening: Featured is always the portfolio's top row. |
+| 2026-11-07 | Writing from Word documents, mature or explicit content in place of ratings, the stories brought up to date, the Commissions page's subtitle removed, and the one-off change to run. |
