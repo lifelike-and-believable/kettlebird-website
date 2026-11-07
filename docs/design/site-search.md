@@ -1,6 +1,6 @@
 ---
 id: design-site-search
-status: draft
+status: approved
 derived-from:
   - requirements-site#open-questions: ba017b8c2500
   - persona-fan#goals: 2b047e4cae5d
