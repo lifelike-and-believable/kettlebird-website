@@ -11,12 +11,15 @@ derived-from:
 
 <!-- docs/product/stories/story-reader/put-a-story-on-the-site.md. Story 3 of epic-story-reader. -->
 
-As Star, I want to paste a story or a chapter into the editor from a document such as Google Docs or Word (or from AO3, when it's back) and have its paragraphs, italics, bold and scene breaks kept, so that putting a story on the site is as quick as copying it.
+As Star, I want to upload a story or a chapter to the editor as the Word document I wrote it in, and have its paragraphs, italics, bold, scene breaks and pictures kept, so that putting a story on the site takes one upload and my document stays the one place the writing lives.
 
 ## Acceptance criteria
 
-- In a story, Star can paste its text, and paragraphs, italics, bold and scene breaks are kept, from Google Docs and Word. (AO3 is offline for the foreseeable future; lead, 2026-11-04.)
-- A one-shot is one piece of text. A story with chapters has its chapters added one at a time, each with a number, an optional title and its text, as comic chapters are added to a series.
+- Star uploads a story's or a chapter's text as a Word document (.docx), one document per chapter, from Word or downloaded from Google Docs; paragraphs, italics, bold and scene breaks are kept. There's no text box to paste or type in: to change the text, she changes the document and uploads it again (lead, 2026-11-07). AO3 is offline for the foreseeable future (lead, 2026-11-04).
+- Pictures in the document come in where they are, and show on the site at the column's width or their own, whichever is smaller (lead, 2026-11-07). Each has alt text, from Word or written in the editor, or is marked decorative; publishing isn't stopped without it.
+- After an upload, Star is told what came in and what didn't, a new version asks before replacing the text, and an upload can be undone until she publishes.
+- A file that can't be read (not a .docx, an older .doc, locked, too big) says why and what to do, and changes nothing.
+- A one-shot is one piece of text. A story with chapters has its chapters added one at a time, each with a number, an optional title and its text, as comic chapters are added to a series. Whole works with chapter breaks in one document come later (lead, 2026-11-07).
 - Star can preview a story or a chapter before publishing it, as other items can.
 - Publishing a story or a chapter puts it on the site with no other step, and the status says when it's live.
 - Star's guide to stories joins the online help, and the story and chapter items link to it.
