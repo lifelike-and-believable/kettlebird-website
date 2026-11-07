@@ -5,7 +5,7 @@ import { StoryTextInput } from '../../components/StoryTextInput';
 import { fieldText, ITEM_NAMES, listDetail, requiredMessage } from '../../lib/editor-content';
 import { storyNeedsIn } from '../../lib/story-checks';
 import { TEXT_UPLOAD_FIELD } from '../../lib/word/schema';
-import { RATING_MESSAGE, RATINGS, STATUSES, WEB_ADDRESS_MESSAGE } from '../../lib/stories';
+import { STATUSES, WEB_ADDRESS_MESSAGE } from '../../lib/stories';
 
 // A story (Writing). Labels and help: design-story-reader (What Star enters);
 // docs/specs/story-reader-editor.md AC-1, AC-2, AC-6 to AC-8. `slug` and `content` keep their
@@ -49,13 +49,19 @@ export default defineType({
       ...fieldText('writtenWork', 'genre'),
       options: { layout: 'tags' },
     }),
+    // Mature or explicit content, in place of the old ratings (story-mature-content AC-1).
+    defineField({
+      name: 'mature',
+      type: 'boolean',
+      ...fieldText('writtenWork', 'mature'),
+      initialValue: false,
+    }),
+    // The old rating, kept hidden until the one-off change removes it, so the editor shows no warning for it.
     defineField({
       name: 'rating',
       type: 'string',
-      ...fieldText('writtenWork', 'rating'),
-      options: { list: RATINGS, layout: 'radio' },
-      validation: (Rule) =>
-        Rule.custom(async (_value, context) => ((await storyNeedsIn(context)).includes(RATING_MESSAGE) ? RATING_MESSAGE : true)),
+      hidden: true,
+      readOnly: true,
     }),
     defineField({
       name: 'contentNotes',

@@ -1,5 +1,6 @@
 ---
 status: draft
+tests-commit: eb914f546cd1010d813e35558e2823f188e264fd
 unlocks:
   - tests/unit/story-editor.test.ts: the story's fields have Mature or explicit content (`mature`) in place of Rating, and the publish checks no longer ask for a rating (story-mature-content AC-1, AC-2), as design-story-mature-content says.
   - tests/unit/organised-editor.test.ts: the story's field texts and the "needed only sometimes" fields: Rating gives way to Mature or explicit content, which is never needed (AC-1, AC-2).
@@ -8,6 +9,9 @@ unlocks:
   - tests/unit/stories-preview.test.ts: the draft's mature content in place of its rating (AC-8).
   - tests/unit/help.test.ts, tests/unit/story-import.test.ts: the guide's summary no longer names ratings (AC-10).
   - tests/e2e/stories.spec.ts: the cards, Before you read and the gate use the new wording (AC-5, AC-6, AC-7).
+  - tests/unit/story-editor.test.ts: "keeps the stored names … shown" now lets the old `rating` be the one hidden field, as AC-1 says, until the one-off change. The criterion is unchanged.
+  - tests/unit/story-mature.test.ts: AC-2's check that the editor's texts never name a rating also read editor-content.ts, whose hidden-fields list must name `rating` (AC-1); that file's texts are checked by AC-1 instead. The criteria are unchanged.
+  - tests/unit/stories-edges.test.ts: its sample story is unticked (`mature: false`), as every story now says whether it's ticked (AC-4); the type check asks for it. The criteria are unchanged.
   - tests/fixtures/stories.ts, tests/fixtures/drafts.ts: fixture stories are ticked (`mature`) or not in place of their ratings; Night Market is ticked; the draft of The Kettle's Song is ticked.
 ---
 

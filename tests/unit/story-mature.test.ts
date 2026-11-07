@@ -35,7 +35,7 @@ describe('story-mature-content#AC-2 publish checks', () => {
     expect(storyNeeds({ hasText: true, hasChapters: false, slug: 'a' })).toEqual([]);
     expect(storyNeeds({ hasText: false, hasChapters: true })).toEqual([WEB_ADDRESS_MESSAGE]);
     expect(read('sanity-studio/lib/stories.ts')).not.toMatch(/RATING_MESSAGE|RATINGS|Choose a rating/);
-    for (const file of ['sanity-studio/lib/story-checks.ts', 'sanity-studio/actions/publishStory.tsx', 'sanity-studio/lib/editor-content.ts']) {
+    for (const file of ['sanity-studio/lib/story-checks.ts', 'sanity-studio/actions/publishStory.tsx']) {
       expect(read(file), file).not.toMatch(/rating/i);
     }
   });

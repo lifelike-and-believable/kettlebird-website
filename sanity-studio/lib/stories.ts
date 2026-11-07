@@ -1,20 +1,12 @@
-// Stories in the editor: ratings, scene breaks, the paste clean-up, chapters, and the messages
+// Stories in the editor: mature content, scene breaks, the paste clean-up, chapters, and the messages
 // (docs/specs/story-reader-editor.md; design-story-reader). Pure.
 import { chapterLabel, nextChapterNumber } from './comic-pages';
 
-export const RATINGS = [
-  { title: 'General', value: 'general' },
-  { title: 'Teen', value: 'teen' },
-  { title: 'Mature', value: 'mature' },
-  { title: 'Explicit', value: 'explicit' },
-  { title: 'Not rated', value: 'notRated' },
-];
 export const STATUSES = [
   { title: 'In progress', value: 'inProgress' },
   { title: 'Complete', value: 'complete' },
 ];
 export const WEB_ADDRESS_MESSAGE = 'Add a web address so readers can find this story.';
-export const RATING_MESSAGE = 'Choose a rating, or Not rated.';
 export const CHAPTER_TEXT_MESSAGE = "Add the chapter's text.";
 export const HAS_CHAPTERS_NOTE = 'This story has chapters, so its text is in them. To make it a one-shot again, remove its chapters and upload the whole story here.';
 export const MOVED_NOTE = "Your story's text is now in Chapter 1.";
@@ -82,12 +74,19 @@ function randomKey(): string {
 }
 
 /** AC-2: what a story still needs before it can be published, in Star's words. */
-export function storyNeeds(story: { slug?: string; rating?: string; hasText: boolean; hasChapters: boolean }): string[] {
+export function storyNeeds(story: { slug?: string; hasText: boolean; hasChapters: boolean }): string[] {
   if (!story.hasText && !story.hasChapters) return [];
-  const needs: string[] = [];
-  if (!story.slug?.trim()) needs.push(WEB_ADDRESS_MESSAGE);
-  if (!story.rating) needs.push(RATING_MESSAGE);
-  return needs;
+  return story.slug?.trim() ? [] : [WEB_ADDRESS_MESSAGE];
+}
+
+/**
+ * story-mature-content AC-3: the one-off change for a story saved with a rating: tick Mature or explicit content
+ * where the rating was Mature or Explicit (and it isn't ticked yet), and remove the rating. Nothing to do twice.
+ */
+export function matureFromRating(doc: { mature?: unknown; rating?: unknown }): { setMature: boolean; unsetRating: boolean } {
+  const hasRating = doc.rating !== undefined;
+  const wasMature = doc.rating === 'mature' || doc.rating === 'explicit';
+  return { setMature: wasMature && doc.mature !== true, unsetRating: hasRating };
 }
 
 /** AC-6: a chapter's row in its story's list. */

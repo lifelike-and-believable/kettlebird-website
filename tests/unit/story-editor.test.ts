@@ -43,7 +43,8 @@ describe('story-reader-editor#AC-1 story fields', () => {
     const source = read('sanity-studio/schemas/objects/writtenWork.ts');
     const uses = [...source.matchAll(/fieldText\('writtenWork', '(\w+)'\)/g)].map((m) => m[1]);
     expect(uses).toEqual(Object.keys(FIELDS.writtenWork));
-    expect(source).not.toMatch(/hidden: true/);
+    // story-mature-content AC-1: only the old rating is hidden, until the one-off change removes it.
+    expect([...source.matchAll(/name: '(\w+)',[^}]*hidden: true/gs)].map((m) => m[1])).toEqual(['rating']);
   });
 });
 

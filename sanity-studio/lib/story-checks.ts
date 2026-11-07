@@ -15,7 +15,6 @@ export async function storyNeedsIn(context: ValidationContext): Promise<string[]
     : await context.getClient({ apiVersion: '2024-01-01' }).fetch<boolean>(CHAPTERS, { id }, { perspective: 'raw' });
   return storyNeeds({
     slug: (doc.slug as { current?: string } | undefined)?.current,
-    rating: doc.rating as string | undefined,
     hasText,
     hasChapters,
   });
