@@ -4,7 +4,7 @@ tests-commit: 5bb80574355c4052cc92792b92c329f835d50c68
 unlocks:
   - tests/unit/story-editor.test.ts: the one-shot's Text help and the story-with-chapters note now speak of uploading a Word document (story-import-word AC-1, AC-2), as design-story-import says; pasting and typing are gone.
   - tests/unit/organised-editor.test.ts: the one-shot's Text help, as above.
-  - tests/unit/organised-editor.test.ts: "no developer words" now lets "Word document" through, as the design's help text says it (story-import-word AC-1): it's Star's word for her files, not the editor's "document". The criterion is unchanged.
+  - tests/unit/organised-editor.test.ts: "no developer words" now lets "Word document" through, as the design's help text says it (story-import-word AC-1): it's Star's word for their files, not the editor's "document". The criterion is unchanged.
   - tests/e2e/story-pictures.spec.ts: AC-26 looked for the full-screen view by a `role` attribute, which a `dialog` element has without one; it now finds the `dialog`, once it shows. The criterion is unchanged.
   - tests/fixtures/word/make-docx.mjs, word-chapter.docx, edited.docx: the maker escaped a table cell's picture as text, and wrote line breaks in alt text as spaces where Word writes `&#xA;`; both now as Word saves them. Four short paragraphs were added near the end of the Word sample, so its scene breaks (4 in 20 paragraphs) are below the "a lot of scene breaks" warning, as the test expected. The criteria are unchanged.
   - tests/unit/story-import.test.ts: jsdom is loaded as story-editor.test.ts loads it, as it has no types here, and a sample picture's type is typed as the value it is, which the type check asks for. The criteria are unchanged.
@@ -26,12 +26,12 @@ A plan-feature spec without an id. -->
 
 ## Problem
 
-Star writes in Word documents, one per chapter, some with her own pictures. Today she copies each chapter and pastes it into **Text**: a long chapter is slow to select, a copy can miss the end, and her pictures are left out. Fans never see the pictures she put in.
+Star writes in Word documents, one per chapter, some with their own pictures. Today they copy each chapter and paste it into **Text**: a long chapter is slow to select, a copy can miss the end, and their pictures are left out. Fans never see the pictures they put in.
 
 ## User stories
 
 - As Star, I want to upload a chapter's Word document and have its text, italics, bold, scene breaks and pictures come in, so that my document stays the one place my writing lives. (design-story-import#personas)
-- As a fan, I want to see Star's pictures where she put them, described for screen readers, so that I read the chapter as she made it. (design-story-import#personas)
+- As a fan, I want to see Star's pictures where they put them, described for screen readers, so that I read the chapter as they made it. (design-story-import#personas)
 
 ## Acceptance criteria
 

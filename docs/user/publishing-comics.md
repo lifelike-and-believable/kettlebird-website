@@ -19,7 +19,7 @@ derived-from:
   - design-comic-panels#how-it-works: cce393bb0002
   - story-comic-reader-flip-and-panels-panels-found: 61aa1e576413
   - story-comic-reader-flip-and-panels-correct-the-panels: 0e8299e7679c
-  - design-comic-page-width#for-the-guides: 52902c1e5b18
+  - design-comic-page-width#for-the-guides: 83f4c25ba8e5
 ---
 
 # Publishing comic pages and chapters

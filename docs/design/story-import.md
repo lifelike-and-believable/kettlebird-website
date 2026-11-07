@@ -2,7 +2,7 @@
 id: design-story-import
 status: approved
 derived-from:
-  - story-story-reader-put-a-story-on-the-site: 4b2793fd6e8a
+  - story-story-reader-put-a-story-on-the-site: 049a7f7ffdc7
   - design-story-reader#what-star-enters: cb3b54ba7c25
   - design-story-reader#flow-star: 8f4a733f5f05
   - design-story-reader#layout: 97cf455208c8
@@ -13,15 +13,15 @@ derived-from:
 
 <!-- docs/design/story-import.md. A design amendment asked for by the lead (2026-11-07): Star puts a story's or a
 chapter's writing on the site by uploading it as a file, in place of pasting it into the Text box. The lead's
-decisions (2026-11-07): Star will always upload a .docx, one file per chapter for now; later she may upload whole
+decisions (2026-11-07): Star will always upload a .docx, one file per chapter for now; later they may upload whole
 works with chapter breaks; the documents may have pictures in them; no text box; pictures at the column's width or
 their own, whichever is smaller. Mock-ups are in docs/design/mockups/story-import/: PNG images, mockups.html (their
 source, in the style of the story reader's mock-ups) and render.mjs. Checked against Sanity Studio 5.1. -->
 
 ## Personas
 
-- persona-artist: Star writes in Word documents (or Google Docs, downloaded as .docx), one per chapter, sometimes with her own pictures in them. Today she copies each chapter and pastes it into **Text** (design-story-reader, "Flow: Star"); a long chapter is slow to select and copy, a copy can miss the end, and a paste leaves her pictures out. With the document as the one place the writing lives, she uploads it, and to change a word she changes the document and uploads it again.
-- persona-fan: reads the chapter on the site, often on a phone, now with Star's pictures where she put them, described for screen readers.
+- persona-artist: Star writes in Word documents (or Google Docs, downloaded as .docx), one per chapter, sometimes with their own pictures in them. Today they copy each chapter and paste it into **Text** (design-story-reader, "Flow: Star"); a long chapter is slow to select and copy, a copy can miss the end, and a paste leaves their pictures out. With the document as the one place the writing lives, they upload it, and to change a word they change the document and upload it again.
+- persona-fan: reads the chapter on the site, often on a phone, now with Star's pictures where they put them, described for screen readers.
 
 ## The change
 
@@ -97,9 +97,9 @@ A message above **Text** says why and what to do, and nothing changes; a new mes
 
 ### No stories to carry over, and splitting a one-shot
 
-No stories are on the site yet (the lead, 2026-11-07: the one test story will be uploaded again), so nothing pasted needs carrying over: pasting and typing simply go. Star's Word documents are where her writing lives; the editor holds what was uploaded from them, plus the alt text and Decorative set for pictures.
+No stories are on the site yet (the lead, 2026-11-07: the one test story will be uploaded again), so nothing pasted needs carrying over: pasting and typing simply go. Star's Word documents are where their writing lives; the editor holds what was uploaded from them, plus the alt text and Decorative set for pictures.
 
-**Add chapter** on a one-shot moves its text into Chapter 1, as now. To split it, Star uploads each chapter's document into its own chapter, replacing Chapter 1's text with Chapter 1's document. To make a story a one-shot again, she removes its chapters and uploads the whole story into the story's **Text**. The notes that said "move the text back" say this.
+**Add chapter** on a one-shot moves its text into Chapter 1, as now. To split it, Star uploads each chapter's document into its own chapter, replacing Chapter 1's text with Chapter 1's document. To make a story a one-shot again, they remove its chapters and upload the whole story into the story's **Text**. The notes that said "move the text back" say this.
 
 ## Later: whole works with chapter breaks
 

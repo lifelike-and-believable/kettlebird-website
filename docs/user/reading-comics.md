@@ -32,7 +32,7 @@ derived-from:
   - story-comic-reader-flip-and-panels-read-panel-by-panel: 0cd610fa0545
   - design-comic-reader-phone-bar#for-the-guide: 321a518145c9
   - design-comic-panels-two-up#for-the-guide: af472bda9347
-  - design-comic-page-width#for-the-guides: 52902c1e5b18
+  - design-comic-page-width#for-the-guides: 83f4c25ba8e5
 ---
 
 # Reading comics

@@ -118,6 +118,6 @@ A walkthrough for persona-fan, and for persona-artist on the look (2026-11-02), 
 - **Slower:**
   - whether the series cover's workaround is lifted (now an open question);
   - the checks for the spec were incomplete (now cover enlarged text, narrow screens, the subtitle, the title link, the button size, the 768 px boundary and the menu panel);
-  - nothing recorded Star's sign-off on her look (now an open question).
+  - nothing recorded Star's sign-off on their look (now an open question).
 
 The laptop change and the series cover were added after this walkthrough, at the lead's review, and checked with the mock-ups above.

@@ -2,9 +2,9 @@
 id: design-story-reader
 status: approved
 derived-from:
-  - story-story-reader-read-a-story: 6529740e68b4
+  - story-story-reader-read-a-story: 033d16540d7d
   - story-story-reader-read-by-chapter: 8d31c3859be5
-  - story-story-reader-put-a-story-on-the-site: 4b2793fd6e8a
+  - story-story-reader-put-a-story-on-the-site: 049a7f7ffdc7
   - story-story-reader-find-and-share-a-story: ee6200751bf0
   - epic-story-reader#outcome: 5b8ea42e2e6b
   - design-organised-editor#sections-and-fields: 20d25885468d
