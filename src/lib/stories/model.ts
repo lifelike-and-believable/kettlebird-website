@@ -72,7 +72,7 @@ export interface Story {
 export const MATURE_TAG = 'Mature or explicit';
 export const MATURE_LINE = 'This story has mature or explicit content.';
 export const STATUS_TITLES: Record<StoryStatus, string> = { inProgress: 'In progress', complete: 'Complete' };
-// Kept as it was when stories had ratings, so a fan who continued then isn't asked again (story-mature-content AC-7).
+// Named from when stories had ratings, and kept so a fan who continued then isn't asked again (story-mature-content AC-7).
 export const GATE_STORAGE_KEY = 'kb-continue-rated';
 
 const SITE_NAME = 'Kettlebird Creations';

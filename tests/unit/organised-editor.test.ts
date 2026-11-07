@@ -140,7 +140,7 @@ describe('content-editing-organised-editor#AC-3 AC-5 field labels and help', () 
   }
   it('hides the fields the site doesn\'t use', () => {
     expect(HIDDEN).toEqual({
-      comicSeries: [], galleryItem: ['slug', 'featured'], writtenWork: ['rating'], product: ['slug', 'tags', 'inventory'], commissionType: [],
+      comicSeries: [], galleryItem: ['slug', 'featured'], writtenWork: [], product: ['slug', 'tags', 'inventory'], commissionType: [],
     });
   });
   it('refuses a field it has no text for', () => {

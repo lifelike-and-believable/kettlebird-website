@@ -49,19 +49,12 @@ export default defineType({
       ...fieldText('writtenWork', 'genre'),
       options: { layout: 'tags' },
     }),
-    // Mature or explicit content, in place of the old ratings (story-mature-content AC-1).
+    // Mature or explicit content (story-mature-content AC-1).
     defineField({
       name: 'mature',
       type: 'boolean',
       ...fieldText('writtenWork', 'mature'),
       initialValue: false,
-    }),
-    // The old rating, kept hidden until the one-off change removes it, so the editor shows no warning for it.
-    defineField({
-      name: 'rating',
-      type: 'string',
-      hidden: true,
-      readOnly: true,
     }),
     defineField({
       name: 'contentNotes',

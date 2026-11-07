@@ -1,9 +1,9 @@
-// Mature or explicit content, in place of ratings: the field, the publish checks, the one-off change, the site's
+// Mature or explicit content, in place of ratings: the field, the publish checks, no old ratings left, the site's
 // reading of it, the tag and the guide. Criteria: docs/specs/story-mature-content.md.
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { fieldText, FIELDS, HIDDEN } from '../../sanity-studio/lib/editor-content';
-import { matureFromRating, storyNeeds, WEB_ADDRESS_MESSAGE } from '../../sanity-studio/lib/stories';
+import { storyNeeds, WEB_ADDRESS_MESSAGE } from '../../sanity-studio/lib/stories';
 import { MATURE_LINE, MATURE_TAG } from '../../src/lib/stories/model';
 import { fromSanity, isMature, STORIES_QUERY } from '../../src/lib/stories/source';
 
@@ -20,12 +20,12 @@ describe('story-mature-content#AC-1 fields', () => {
     });
   });
 
-  it('stores it as a boolean, unticked at first, and keeps rating hidden', () => {
+  it('stores it as a boolean, unticked at first, with no old rating field', () => {
     const schema = read('sanity-studio/schemas/objects/writtenWork.ts');
     expect(schema).toMatch(/name: 'mature',\s*type: 'boolean',[^}]*initialValue: false/s);
-    expect(schema).toMatch(/name: 'rating',[^}]*hidden: true/s);
+    expect(schema).not.toMatch(/name: 'rating'/);
     expect(schema).not.toMatch(/RATINGS|RATING_MESSAGE/);
-    expect(HIDDEN.writtenWork).toEqual(['rating']);
+    expect(HIDDEN.writtenWork).toEqual([]);
     expect(read('sanity-studio/schemas/objects/storyChapter.ts')).not.toMatch(/name: 'mature'/);
   });
 });
@@ -41,47 +41,26 @@ describe('story-mature-content#AC-2 publish checks', () => {
   });
 });
 
-describe('story-mature-content#AC-3 one-off change', () => {
-  it('ticks the box for Mature and Explicit, and removes every rating', () => {
-    expect(matureFromRating({ rating: 'mature' })).toEqual({ setMature: true, unsetRating: true });
-    expect(matureFromRating({ rating: 'explicit', mature: false })).toEqual({ setMature: true, unsetRating: true });
-    for (const rating of ['general', 'teen', 'notRated', 'spicy', '']) {
-      expect(matureFromRating({ rating }), rating).toEqual({ setMature: false, unsetRating: true });
-    }
-    expect(matureFromRating({ rating: 'teen', mature: true })).toEqual({ setMature: false, unsetRating: true });
-  });
-
-  it('changes nothing the second time', () => {
-    expect(matureFromRating({ mature: true })).toEqual({ setMature: false, unsetRating: false });
-    expect(matureFromRating({})).toEqual({ setMature: false, unsetRating: false });
-    expect(matureFromRating({ rating: 'mature', mature: true })).toEqual({ setMature: false, unsetRating: true });
-  });
-
-  it('is a migration for stories that uses that rule', () => {
-    const migration = read('sanity-studio/migrations/mature-from-rating/index.ts');
-    expect(migration).toContain("from 'sanity/migrate'");
-    expect(migration).toMatch(/documentTypes: \['writtenWork'\]/);
-    expect(migration).toContain('matureFromRating');
+describe('story-mature-content#AC-3 no old ratings left', () => {
+  it('has no one-off change and no rating rule left, the test story being deleted', () => {
+    expect(existsSync('sanity-studio/migrations/mature-from-rating')).toBe(false);
+    expect(read('sanity-studio/lib/stories.ts')).not.toMatch(/matureFromRating|rating/i);
   });
 });
 
 describe('story-mature-content#AC-4 source', () => {
-  it('reads mature and the old rating', () => {
+  it('reads mature, and no rating', () => {
     expect(STORIES_QUERY).toMatch(/\bmature\b/);
-    expect(STORIES_QUERY).toMatch(/\brating\b/);
+    expect(STORIES_QUERY).not.toMatch(/\brating\b/);
   });
 
-  it('counts a story as ticked when mature is true, or its old rating is Mature or Explicit', () => {
+  it('counts a story as ticked only when mature is true', () => {
     expect(isMature({ mature: true })).toBe(true);
-    expect(isMature({ rating: 'mature' })).toBe(true);
-    expect(isMature({ rating: 'explicit' })).toBe(true);
-    expect(isMature({ mature: false, rating: 'explicit' })).toBe(true);
-    for (const raw of [{}, { mature: false }, { rating: 'teen' }, { rating: 'general' }, { rating: 'notRated' }, { mature: 'yes' as unknown as boolean }]) {
+    for (const raw of [{}, { mature: false }, { mature: 'yes' as unknown as boolean }, { rating: 'explicit' } as { mature?: boolean }]) {
       expect(isMature(raw), JSON.stringify(raw)).toBe(false);
     }
-    expect(fromSanity({ _id: 'a', title: 'A', rating: 'explicit' }).mature).toBe(true);
+    expect(fromSanity({ _id: 'a', title: 'A', mature: true }).mature).toBe(true);
     expect(fromSanity({ _id: 'a', title: 'A' }).mature).toBe(false);
-    expect(fromSanity({ _id: 'a', title: 'A', rating: 'teen' })).not.toHaveProperty('rating');
   });
 });
 

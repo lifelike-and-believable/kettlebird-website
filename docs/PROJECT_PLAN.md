@@ -61,6 +61,7 @@ The newest changes are to stories:
   - content notes show before any story that has them.
 
 Also since the last update:
+- The old ratings are gone from the editor and the site: the test story, the only one saved with a rating, is deleted, so no one-off change was needed.
 - The story reader's user stories were brought up to date with these designs.
 - The Commissions page no longer has the line "Custom artwork made just for you", at Star's request.
 - How pages fit on a computer (design-comic-page-width) is done, with four fixes to the reader and the editor.
@@ -83,10 +84,6 @@ Also since the last update:
 
 - The two pictures for **Panel by panel** and **All pages** on phones; interim ones are in place until they come.
 - The **home tiles' label colours**: white with a shadow for now; the alternatives (an ink outline, or ink) are in design-home-tiles-and-icon, mock-up 3.
-
-### Tidying after the test story
-
-- The lead is deleting the test story (2026-11-07), the only story saved with a rating, so the one-off change (`mature-from-rating`) needn't be run. Once it's deleted, a small change can remove the hidden `rating` field, the site's fallback for old ratings, and the one-off change itself.
 
 ### Checks only a person can do
 
@@ -123,3 +120,4 @@ Also since the last update:
 | 2026-11-06 | Later the same day: how pages fit on a computer, four fixes, and the page-flip check on tall pages. |
 | 2026-11-06 | That evening: Featured is always the portfolio's top row. |
 | 2026-11-07 | Writing from Word documents, mature or explicit content in place of ratings, the stories brought up to date, the Commissions page's subtitle removed, and the tidying once the test story is deleted. |
+| 2026-11-07 | Later: the hidden old rating, its fallback and the one-off change removed, as the test story is deleted. |

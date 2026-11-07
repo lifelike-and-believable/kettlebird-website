@@ -24,7 +24,7 @@ describe('story-reader-editor#AC-1 story fields', () => {
     expect(Object.keys(FIELDS.writtenWork)).toEqual([
       'title', 'slug', 'excerpt', 'coverImage', 'genre', 'mature', 'contentNotes', 'status', 'content', 'chapters', 'publishDate', 'externalLink',
     ]);
-    expect(HIDDEN.writtenWork).toEqual(['rating']);
+    expect(HIDDEN.writtenWork).toEqual([]);
     expect(fieldText('writtenWork', 'title')).toEqual({ title: 'Title (required)', description: "The story's title." });
     expect(fieldText('writtenWork', 'slug')).toEqual({
       title: 'Web address',
@@ -43,8 +43,7 @@ describe('story-reader-editor#AC-1 story fields', () => {
     const source = read('sanity-studio/schemas/objects/writtenWork.ts');
     const uses = [...source.matchAll(/fieldText\('writtenWork', '(\w+)'\)/g)].map((m) => m[1]);
     expect(uses).toEqual(Object.keys(FIELDS.writtenWork));
-    // story-mature-content AC-1: only the old rating is hidden, until the one-off change removes it.
-    expect([...source.matchAll(/name: '(\w+)',[^}]*hidden: true/gs)].map((m) => m[1])).toEqual(['rating']);
+    expect(source).not.toMatch(/hidden: true/);
   });
 });
 
