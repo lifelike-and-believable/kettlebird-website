@@ -2,6 +2,8 @@ import { defineField, defineType } from 'sanity';
 import { StoryTextInput } from '../../components/StoryTextInput';
 import { chapterLabel } from '../../lib/comic-pages';
 import { ITEM_NAMES } from '../../lib/editor-content';
+import { CHAPTER_TEXT_HELP } from '../../lib/word/messages';
+import { TEXT_UPLOAD_FIELD } from '../../lib/word/schema';
 import { CHAPTER_TEXT_MESSAGE, duplicateStoryChapterMessage } from '../../lib/stories';
 
 // A chapter of a story (docs/specs/story-reader-editor.md AC-6; design-story-reader, What Star enters).
@@ -50,10 +52,12 @@ export default defineType({
       name: 'content',
       title: 'Text',
       type: 'storyText',
-      description: 'Paste or type the chapter.',
+      description: CHAPTER_TEXT_HELP,
       components: { input: StoryTextInput },
       validation: (Rule) => Rule.custom((value) => (Array.isArray(value) && value.length > 0 ? true : CHAPTER_TEXT_MESSAGE)),
     }),
+    // The last upload: its file, when, the note and what Undo puts back (story-import-word AC-3).
+    defineField(TEXT_UPLOAD_FIELD),
     defineField({
       name: 'publishDate',
       title: 'Date posted',

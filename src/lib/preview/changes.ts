@@ -21,8 +21,10 @@ export interface ChangeContext {
   duplicateNumber?: number;
 }
 
-const SYSTEM_FIELDS = new Set(['_id', '_type', '_rev', '_createdAt', '_updatedAt', '_originalId', '_system']);
-const ALT_FIELDS = new Set(['alt', 'altText']);
+// textUpload is the editor's record of a Word upload (story-import-word AC-3), never on the page.
+const SYSTEM_FIELDS = new Set(['_id', '_type', '_rev', '_createdAt', '_updatedAt', '_originalId', '_system', 'textUpload']);
+// A picture's hidden settings from a Word upload change with its alt text (story-import-word AC-3).
+const ALT_FIELDS = new Set(['alt', 'altText', 'decorative', 'edited', 'fromWord', 'wordAlt', 'wordDecorative']);
 
 /** A value with alt text removed at any depth (lists become objects keyed by position), to tell alt-text-only changes apart. */
 function withoutAlt(value: unknown): unknown {

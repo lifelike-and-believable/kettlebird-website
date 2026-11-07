@@ -13,21 +13,30 @@ export const STORY_TEXT_SCHEMA = {
   lists: [],
   decorators: [{ name: 'em', value: 'em', title: 'Italic' }, { name: 'strong', value: 'strong', title: 'Bold' }],
   annotations: [],
-  blockObjects: [{ name: 'sceneBreak', title: 'Scene break', fields: [] }],
+  blockObjects: [
+    { name: 'sceneBreak', title: 'Scene break', fields: [] },
+    { name: 'storyPicture', title: 'Picture', fields: [] },
+  ],
   inlineObjects: [],
 };
 
-/** Clipboard HTML as story blocks, cleaned. */
-export function pasteHtml(html: string, parseHtml: (html: string) => Document): Block[] {
+/**
+ * Clipboard HTML, or the Word reader's (lib/word/read-docx.ts), as story blocks, cleaned. A picture the Word reader
+ * placed (`img data-picture="n"`) becomes a picture block pointing at its n; other pictures are dropped.
+ */
+export function pasteHtml(html: string, parseHtml: (html: string) => Document, key?: () => string): Block[] {
   const blocks = htmlToBlocks(html, STORY_TEXT_SCHEMA, {
     parseHtml,
     rules: [
       {
         deserialize(el) {
-          return (el as Element).tagName?.toLowerCase() === 'hr' ? { _type: 'sceneBreak' } : undefined;
+          const tag = (el as Element).tagName?.toLowerCase();
+          if (tag === 'hr') return { _type: 'sceneBreak' };
+          const picture = tag === 'img' ? (el as Element).getAttribute('data-picture') : null;
+          return picture !== null ? { _type: 'storyPicture', picture: Number(picture) } : undefined;
         },
       },
     ],
   }) as unknown as Block[];
-  return cleanPastedBlocks(blocks);
+  return cleanPastedBlocks(blocks, key);
 }

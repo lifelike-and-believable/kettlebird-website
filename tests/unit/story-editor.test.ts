@@ -33,7 +33,7 @@ describe('story-reader-editor#AC-1 story fields', () => {
     expect(fieldText('writtenWork', 'rating').description).toBe('Shown before the story and on the Writing page. Mature and Explicit stories ask readers before showing the text.');
     expect(fieldText('writtenWork', 'contentNotes')).toEqual({ title: 'Content notes', description: 'Anything a reader should know before starting, such as "Mild violence". Shown before the story.' });
     expect(fieldText('writtenWork', 'status')).toEqual({ title: 'Status', description: 'For a story in chapters: In progress or Complete.' });
-    expect(fieldText('writtenWork', 'content')).toEqual({ title: 'Text', description: 'For a one-shot: paste or type the whole story. For a story in chapters, add chapters instead.' });
+    expect(fieldText('writtenWork', 'content')).toEqual({ title: 'Text', description: 'For a one-shot: upload the whole story as a Word document (.docx). For a story in chapters, add chapters instead.' });
     expect(fieldText('writtenWork', 'chapters')).toEqual({ title: 'Chapters', description: 'For a story in chapters. Each chapter has its own page.' });
     expect(fieldText('writtenWork', 'externalLink').description).toBe("Optional: the story somewhere else, such as AO3. Without text on the site, the Writing page's Read it opens it; with text, it's shown as \"Also on AO3\".");
   });
@@ -66,7 +66,7 @@ describe('story-reader-editor#AC-2 AC-8 story checks', () => {
   });
 
   it('says where the text is on a story with chapters', () => {
-    expect(HAS_CHAPTERS_NOTE).toBe('This story has chapters, so its text is in them. To make it a one-shot again, move the text back and remove the chapters.');
+    expect(HAS_CHAPTERS_NOTE).toBe('This story has chapters, so its text is in them. To make it a one-shot again, remove its chapters and upload the whole story here.');
   });
 });
 

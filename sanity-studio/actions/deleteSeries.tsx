@@ -4,14 +4,17 @@
 // transaction; then the series goes through Sanity's own delete operation, which the open document
 // pane listens for, so the series' Published and Draft tabs close as they do for any deletion. If
 // that second step fails, the series is left with no chapters, and Delete can be chosen again.
+// A story's pictures from Word documents, and its chapters', are removed from the picture library once the
+// deletes have gone through (story-import-word AC-18).
 import { useState } from 'react';
 import { useClient, useDocumentOperation, type DocumentActionComponent } from 'sanity';
 import { chapterDocsToDelete, deleteSeriesDialog, publishedIds, type PublishDialog } from '../lib/comic-pages';
 import { deleteStoryDialog } from '../lib/stories';
+import { cleanUpAfterDelete, picturesOf } from '../lib/word/cleanup';
 
-interface Kind { query: string; dialog: (title: string | undefined, count: number) => PublishDialog }
+interface Kind { query: string; dialog: (title: string | undefined, count: number) => PublishDialog; pictures?: boolean }
 const SERIES: Kind = { query: '*[_type == "comicChapter" && series._ref == $id]._id', dialog: deleteSeriesDialog };
-const STORY: Kind = { query: '*[_type == "storyChapter" && story._ref == $id]._id', dialog: deleteStoryDialog };
+const STORY: Kind = { query: '*[_type == "storyChapter" && story._ref == $id]._id', dialog: deleteStoryDialog, pictures: true };
 
 export const withStoryChapters = (original: DocumentActionComponent) => withChapters(original, STORY);
 
@@ -50,6 +53,10 @@ export function withChapters(original: DocumentActionComponent, kind: Kind = SER
             onConfirm: async () => {
               setBusy(true);
               try {
+                // The pictures the story and its chapters use, read before they go.
+                const docs = kind.pictures
+                  ? await client.fetch<Record<string, unknown>[]>('*[_id in $ids]{ content, textUpload }', { ids: [...pending.chapterIds, id, `drafts.${id}`] }, { perspective: 'raw' })
+                  : [];
                 const chapters = chapterDocsToDelete(pending.chapterIds);
                 if (chapters.length) {
                   const tx = client.transaction();
@@ -57,6 +64,8 @@ export function withChapters(original: DocumentActionComponent, kind: Kind = SER
                   await tx.commit();
                 }
                 ops.delete.execute();
+                const candidates = docs.flatMap(picturesOf);
+                if (candidates.length) void cleanUpAfterDelete(client, [id, ...publishedIds(pending.chapterIds)], candidates);
               } finally {
                 setBusy(false);
                 setPending(null);

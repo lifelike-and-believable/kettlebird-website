@@ -102,7 +102,7 @@ const EXPECTED: Record<ItemType, [string, string, string][]> = {
     ['rating', 'Rating', 'Shown before the story and on the Writing page. Mature and Explicit stories ask readers before showing the text.'],
     ['contentNotes', 'Content notes', 'Anything a reader should know before starting, such as "Mild violence". Shown before the story.'],
     ['status', 'Status', 'For a story in chapters: In progress or Complete.'],
-    ['content', 'Text', 'For a one-shot: paste or type the whole story. For a story in chapters, add chapters instead.'],
+    ['content', 'Text', 'For a one-shot: upload the whole story as a Word document (.docx). For a story in chapters, add chapters instead.'],
     ['chapters', 'Chapters', 'For a story in chapters. Each chapter has its own page.'],
     ['publishDate', 'Date posted', 'The Writing page shows newest first.'],
     ['externalLink', 'Link to read it', "Optional: the story somewhere else, such as AO3. Without text on the site, the Writing page's Read it opens it; with text, it's shown as \"Also on AO3\"."],
@@ -228,7 +228,8 @@ describe('content-editing-organised-editor#AC-4 no developer words', () => {
       EMPTY_LIST, PIECE_ALT_TEXT_WARNING,
     ];
     expect(DEVELOPER_WORDS).toEqual(['slug', 'reference', 'document', 'schema', 'array', 'category', 'boolean']);
-    const hits = texts.filter((t) => DEVELOPER_WORDS.some((w) => new RegExp(`\\b${w}`, 'i').test(t)));
+    // "Word document" is Star's word for her files (story-import-word AC-1), not the editor's.
+    const hits = texts.map((t) => t.replace(/Word document/g, '')).filter((t) => DEVELOPER_WORDS.some((w) => new RegExp(`\\b${w}`, 'i').test(t)));
     expect(hits).toEqual([]);
   });
 });

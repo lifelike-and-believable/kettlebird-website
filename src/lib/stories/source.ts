@@ -1,7 +1,8 @@
 // Loads stories with their chapters at build time: from Sanity normally (published only, src/lib/sanity.ts),
 // from tests/fixtures/stories.ts when KETTLEBIRD_FIXTURES=1. Spec: docs/specs/story-reader-pages.md AC-1, AC-14.
 import { sanityClient, urlFor } from '../sanity';
-import { RATING_TITLES, STATUS_TITLES, type Rating, type Story, type StoryImage, type StoryStatus, type TextBlock } from './model';
+import { RATING_TITLES, STATUS_TITLES, type Rating, type Story, type StoryImage, type StoryPicture, type StoryStatus, type TextBlock } from './model';
+import { pictureWidths } from './text';
 
 interface SanityImage { asset?: { _ref: string }; hotspot?: { x: number; y: number }; dimensions?: { width: number; height: number } }
 
@@ -22,10 +23,13 @@ export interface SanityStory {
   chapters?: { number?: number; title?: string; publishDate?: string; content?: unknown[] }[];
 }
 
+// A text's blocks, with each picture's size (story-import-word AC-21).
+const CONTENT = 'content[]{ ..., _type == "storyPicture" => { _key, _type, alt, decorative, image, "dimensions": image.asset->metadata.dimensions } }';
+
 export const STORIES_QUERY = `*[_type == "writtenWork"] {
-  _id, title, slug, excerpt, genre, rating, contentNotes, status, externalLink, publishDate, content,
+  _id, title, slug, excerpt, genre, rating, contentNotes, status, externalLink, publishDate, ${CONTENT},
   coverImage { asset, hotspot, "dimensions": asset->metadata.dimensions },
-  "chapters": *[_type == "storyChapter" && story._ref == ^._id] | order(number asc) { number, title, publishDate, content }
+  "chapters": *[_type == "storyChapter" && story._ref == ^._id] | order(number asc) { number, title, publishDate, ${CONTENT} }
 }`;
 
 const COVER_WIDTHS = [300, 500, 800];
@@ -45,7 +49,32 @@ function cover(image: SanityImage | undefined): StoryImage | undefined {
 
 const known = <T extends string>(value: string | undefined, values: Record<T, string>): T | undefined =>
   value && value in values ? (value as T) : undefined;
-const blocks = (value: unknown[] | undefined) => (value ?? []) as TextBlock[];
+interface SanityPicture { _type: 'storyPicture'; _key?: string; image?: SanityImage; dimensions?: { width: number; height: number }; alt?: string; decorative?: boolean }
+
+/** AC-21: a stored picture as the model's, at the widths the site makes; none without an image or a size. */
+function picture(raw: SanityPicture): StoryPicture | undefined {
+  const size = raw.dimensions;
+  if (!raw.image?.asset?._ref || !size?.width || !size.height) return undefined;
+  const at = (w: number) => urlFor(raw.image!).width(w).auto('format').url();
+  const widths = pictureWidths(size.width);
+  return {
+    _type: 'storyPicture',
+    _key: raw._key,
+    src: at(Math.min(800, size.width)),
+    srcset: widths.map((w) => `${at(w)} ${w}w`).join(', '),
+    width: size.width,
+    height: size.height,
+    alt: raw.alt,
+    decorative: !!raw.decorative,
+  };
+}
+
+const blocks = (value: unknown[] | undefined): TextBlock[] =>
+  (value ?? []).flatMap((block) => {
+    if ((block as { _type?: string })?._type !== 'storyPicture') return [block as TextBlock];
+    const made = picture(block as SanityPicture);
+    return made ? [made] : [];
+  });
 
 export function fromSanity(raw: SanityStory): Story {
   return {

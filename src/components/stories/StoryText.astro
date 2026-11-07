@@ -1,5 +1,6 @@
 ---
-// A story's or chapter's text in the reading column (docs/specs/story-reader-pages.md AC-4, AC-13).
+// A story's or chapter's text in the reading column (docs/specs/story-reader-pages.md AC-4, AC-13), with its
+// pictures, which open full screen (docs/specs/story-import-word.md AC-22 to AC-24).
 // The article takes focus when Continue to the story reveals it.
 import { storyHtml } from '../../lib/stories/text';
 import type { TextBlock } from '../../lib/stories/model';
@@ -27,4 +28,91 @@ const { text, label } = Astro.props as { text: TextBlock[]; label: string };
   }
   .story-text :global(hr.scene-break)::after { content: '⁂'; font-size: 1.4em; }
   .story-text[hidden] { display: none; }
+  /* Pictures: the column's width or their own, whichever is smaller; their space kept while they load. */
+  .story-text :global(.story-picture) {
+    display: block;
+    width: fit-content;
+    max-width: 100%;
+    margin: 1.5em auto;
+    padding: 0;
+    border: 0;
+    background: none;
+  }
+  .story-text :global(button.story-picture) { cursor: zoom-in; }
+  .story-text :global(button.story-picture:focus-visible) { outline: 3px solid var(--color-ink); outline-offset: 4px; }
+  .story-text :global(.story-picture img),
+  .story-text :global(img.story-picture) {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+  .story-text :global(.story-picture img) { margin: 0; }
+
+  :global(.story-picture-view) {
+    width: 100vw;
+    height: 100dvh;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: #111;
+  }
+  :global(.story-picture-view::backdrop) { background: #111; }
+  :global(.story-picture-view img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  :global(.story-picture-view button) {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0.5rem 1rem;
+    border: 2px solid #fff;
+    border-radius: 999px;
+    background: #111;
+    color: #fff;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  :global(.story-picture-view button:focus-visible) { outline: 3px solid #fff; outline-offset: 3px; }
 </style>
+
+<script>
+  // Full screen for a picture in the text (story-import-word AC-24): a modal dialog named by the picture's alt
+  // text, the picture as large as the window allows at its largest width, and Close; Escape closes it too, and
+  // focus goes back to the picture.
+  function largest(img: HTMLImageElement): string {
+    const candidates = (img.getAttribute('srcset') ?? '').split(',').map((s) => s.trim().split(/\s+/)[0]).filter(Boolean);
+    return candidates[candidates.length - 1] ?? img.currentSrc ?? img.src;
+  }
+
+  document.addEventListener('click', (event) => {
+    const opener = (event.target as Element | null)?.closest<HTMLButtonElement>('[data-story-picture]');
+    const img = opener?.querySelector('img');
+    if (!opener || !img) return;
+    const view = document.createElement('dialog');
+    view.className = 'story-picture-view';
+    view.setAttribute('aria-label', img.alt);
+    const big = document.createElement('img');
+    big.src = largest(img);
+    big.alt = img.alt;
+    const close = document.createElement('button');
+    close.type = 'button';
+    close.textContent = 'Close';
+    close.addEventListener('click', () => view.close());
+    view.append(big, close);
+    view.addEventListener('close', () => {
+      view.remove();
+      opener.focus();
+    });
+    document.body.append(view);
+    view.showModal();
+    close.focus();
+  });
+</script>
