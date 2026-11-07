@@ -1,6 +1,6 @@
 ---
 id: design-story-import
-status: draft
+status: approved
 derived-from:
   - story-story-reader-put-a-story-on-the-site: d1c236216e8c
   - design-story-reader#what-star-enters: cb3b54ba7c25
