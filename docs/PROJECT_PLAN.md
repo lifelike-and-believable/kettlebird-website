@@ -1,6 +1,6 @@
 # Kettlebird Creations Website - Project Plan
 
-<!-- docs/PROJECT_PLAN.md. Brought up to date on 2026-11-06 (twice). The first version (2025-12-24) planned the site as
+<!-- docs/PROJECT_PLAN.md. Brought up to date on 2026-11-06 (three times). The first version (2025-12-24) planned the site as
 nine milestones of checklists; the work has since moved to the process in docs/product (epics, stories,
 designs, guides and specs), and this plan now summarises where things stand and what's left. The first
 version is in the repository's history. -->
@@ -58,6 +58,7 @@ Fixes since the last update:
 - Panel by panel no longer pans into a page's first panel.
 - In the editor, a panel follows the pointer while it's moved or resized.
 - A flaky arrows test was fixed.
+- In the portfolio, Featured is always the top row, and first in the Index.
 
 ## What's left
 
@@ -109,3 +110,4 @@ Fixes since the last update:
 | 2025-12-24 | First version: nine milestones of checklists. |
 | 2026-11-06 | Brought up to date: what's built, what's left, the decisions waiting, how work is planned, and what happened to each milestone. |
 | 2026-11-06 | Later the same day: how pages fit on a computer, four fixes, and the page-flip check on tall pages. |
+| 2026-11-06 | That evening: Featured is always the portfolio's top row. |
