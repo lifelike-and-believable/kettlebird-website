@@ -3,10 +3,10 @@ id: tutorial-site-settings
 status: draft
 runner: manual
 derived-from:
-  - docs-site-settings#open-or-close-commissions: b6e86737c8d8
+  - docs-site-settings#open-or-close-commissions: 8b32c1d65f80
   - docs-site-settings#your-about-page: b0c8d2ba279d
   - docs-site-settings#the-home-page: 84165fe26b5d
-  - docs-site-settings#your-contact-email-and-social-links: 5c3267532169
+  - docs-site-settings#your-contact-email-and-social-links: f3af61baccf1
   - docs-site-settings#if-something-goes-wrong: 442ab49781fe
 ---
 

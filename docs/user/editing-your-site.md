@@ -3,6 +3,7 @@ id: docs-editing-your-site
 status: approved
 summary: "Adding, changing and removing pieces, stories, products and commission types."
 derived-from:
+  - design-site-search#for-the-guide: 427e5de90400
   - design-help-links#for-the-guides: 3a4dfc02e6e9
   - design-organised-editor#flow: c41806ea6111
   - design-organised-editor#sections-and-fields: 20d25885468d
@@ -36,7 +37,7 @@ Your portfolio pieces, newest first, each with the portfolio sections it's in. C
 | **Title** (required) | Shown when someone points at the picture, and as the heading when it's opened. |
 | **Picture** (required) | Upload the original file; the site makes smaller copies. Your portfolio shows square thumbnails: to keep the important part in view, choose the picture's **Edit** button, then drag the circle over the part that matters. |
 | **Alt text** | What the picture shows, for people using screen readers. If it's empty, they hear only the title. You can publish without it, but the field reminds you. |
-| **Portfolio sections** (choose at least one) | Original Work, Fan Work, Past Clients, Featured, Work in Progress. A piece can be in more than one. |
+| **Portfolio sections** (choose at least one) | Original Work, Fan Work, Past Clients, Featured, Work in Progress. A piece can be in more than one. The newest piece in Featured is also the picture when someone shares the Portfolio's link. |
 | **Description** | Shown when someone opens the picture on your portfolio. |
 | **Tags** | Words shown under the picture when it's opened, like a character's name. Type one, then press Enter. |
 | **Date** | When you made it. The portfolio shows newest first; pieces without a date come last. |

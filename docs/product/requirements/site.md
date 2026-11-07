@@ -30,6 +30,10 @@ Every interactive element shows a visible focus indicator when reached by keyboa
 
 The site builds and every page renders when the content source is unreachable or not configured; pages with no content show an empty-state message instead of failing.
 
+## REQ-site-6: Search engines and link previews
+
+Every public page has a canonical address, a link preview (with the site card when there's no other picture) and, where it applies, structured data; the build writes `robots.txt` and a sitemap. Search engines are asked not to list the site unless its address is `https://kettlebird.com` (design-site-search, docs/specs/site-search.md).
+
 ## Constraints
 
 - Current implementation, not a commitment: a static Astro build (astro.config.mjs) that reads content from Sanity at build time, so new content appears after a rebuild.
@@ -43,4 +47,4 @@ The site builds and every page renders when the content source is unreachable or
 ## Open questions
 
 1. Is WCAG 2.1 AA still the target, or 2.2 AA?
-2. Should pages have social sharing previews (Open Graph), a sitemap, and a favicon? None exist today.
+2. Should pages have social sharing previews (Open Graph), a sitemap, and a favicon? Answered: all three exist (design-comic-share-and-announce, design-home-tiles-and-icon, design-site-search; REQ-site-6).

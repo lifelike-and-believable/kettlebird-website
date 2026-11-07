@@ -5,6 +5,7 @@ import { getSettings } from '../lib/site-settings-source';
 import type { Settings } from '../lib/site-settings';
 import type { PreviewInfo } from '../lib/preview/load';
 import PreviewFrame from '../components/PreviewFrame.astro';
+import { jsonLd, pageNoindex, SITE_CARD, siteHref } from '../lib/seo';
 
 const {
   title = 'Kettlebird Creations',
@@ -12,6 +13,8 @@ const {
   noindex = false,
   canonical,
   preview,
+  structuredData,
+  adult = false,
   settings: givenSettings,
   previewInfo,
 } = Astro.props as {
@@ -20,8 +23,13 @@ const {
   noindex?: boolean;
   /** Absolute canonical address. */
   canonical?: string;
-  /** A link preview for social sites (design-comic-share-and-announce). */
-  preview?: { title: string; description: string; image: string; url: string; type?: string };
+  /** A link preview for social sites (design-comic-share-and-announce, design-site-search): the site card's
+   * picture and alt text unless an image is given. */
+  preview?: { title: string; description: string; image?: string; imageAlt?: string; url: string; type?: string };
+  /** Structured data for search engines (docs/specs/site-search.md AC-9). */
+  structuredData?: Record<string, unknown>;
+  /** A ticked story's page or chapter: marked adult for safe search (site-search AC-10). */
+  adult?: boolean;
   /** Site settings to use instead of the published ones: the preview route passes a draft in. */
   settings?: Settings;
   /** Only on preview pages: outlines, notes and inactive links (docs/specs/content-editing-preview.md). */
@@ -29,6 +37,10 @@ const {
 };
 
 const settings = givenSettings ?? (await getSettings());
+// site-search AC-1: every page asks not to be listed until the site is at https://kettlebird.com.
+const robotsNoindex = pageNoindex(Astro.site, noindex);
+const previewImage = preview?.image ?? new URL(SITE_CARD.path, siteHref(Astro.site)).href;
+const previewImageAlt = preview?.image ? preview.imageAlt : SITE_CARD.alt;
 ---
 
 <!doctype html>
@@ -38,7 +50,8 @@ const settings = givenSettings ?? (await getSettings());
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    {noindex && <meta name="robots" content="noindex" />}
+    {robotsNoindex && <meta name="robots" content="noindex" />}
+    {adult && <meta name="rating" content="adult" />}
     {canonical && <link rel="canonical" href={canonical} />}
     {preview && (
       <>
@@ -46,11 +59,15 @@ const settings = givenSettings ?? (await getSettings());
         <meta property="og:type" content={preview.type ?? 'website'} />
         <meta property="og:title" content={preview.title} />
         <meta property="og:description" content={preview.description} />
-        <meta property="og:image" content={preview.image} />
         <meta property="og:url" content={preview.url} />
+        <meta property="og:image" content={previewImage} />
+        <meta property="og:image:width" content={String(SITE_CARD.width)} />
+        <meta property="og:image:height" content={String(SITE_CARD.height)} />
+        {previewImageAlt && <meta property="og:image:alt" content={previewImageAlt} />}
         <meta name="twitter:card" content="summary_large_image" />
       </>
     )}
+    {structuredData && <script type="application/ld+json" set:html={jsonLd(structuredData)} />}
     <!-- The site's icon: the Kettlebird bird on its own orange (design-home-tiles-and-icon). -->
     <link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16" />
     <link rel="icon" type="image/png" href="/favicon-16.png" sizes="16x16" />

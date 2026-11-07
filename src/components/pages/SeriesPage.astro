@@ -16,6 +16,7 @@ import {
   type ComicSeries,
 } from '../../lib/comics/model';
 import { readNewestPath, seriesPreview } from '../../lib/comics/sharing';
+import { previewImageAlt, seriesData } from '../../lib/seo';
 
 
 const { series } = Astro.props as { series: ComicSeries };
@@ -24,6 +25,7 @@ const chapters = visibleChapters(series);
 const listChapters = showsChapterList(series);
 const newest = readNewestPath(series);
 const preview = seriesPreview(series, Astro.site!.href);
+const structuredData = seriesData(Astro.site!.href, series);
 /** In the preview route: what the preview shows and outlines (docs/specs/content-editing-preview.md). */
 const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
 ---
@@ -33,7 +35,8 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
   title={`${series.title} · Comics · Kettlebird Creations`}
   description={series.description ?? `${series.title}, a comic by Star Goldberg.`}
   canonical={preview.url}
-  preview={preview}
+  preview={{ ...preview, imageAlt: previewImageAlt(preview.image, series.title) }}
+  structuredData={structuredData}
 >
   <article class="series">
     <div class="series__cover" data-part="series-cover">

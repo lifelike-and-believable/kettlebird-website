@@ -5,17 +5,24 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import type { PreviewInfo } from '../../lib/preview/load';
 import CommissionsContent, { type TypeCard } from '../settings/CommissionsContent.astro';
 import type { Settings } from '../../lib/site-settings';
+import { canonicalUrl, commissionsDescription, siteHref } from '../../lib/seo';
 
 const { settings, types } = Astro.props as { settings: Settings; types: TypeCard[] };
 /** In the preview route: what the preview shows and outlines (docs/specs/content-editing-preview.md). */
 const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
+// site-search AC-4 to AC-8: the canonical address and link preview.
+const pageTitle = 'Commissions • Kettlebird Creations';
+const pageDescription = commissionsDescription(settings.commissions.open);
+const canonical = canonicalUrl(siteHref(Astro.site), '/commissions');
 ---
 
 <BaseLayout
   previewInfo={previewInfo}
   settings={settings}
-  title="Commissions • Kettlebird Creations"
-  description="Commission artwork from Kettlebird Creations. Pricing, examples, and how to order."
+  title={pageTitle}
+  description={pageDescription}
+  canonical={canonical}
+  preview={{ title: pageTitle, description: pageDescription, url: canonical }}
 >
   <CommissionsContent settings={settings} types={types} />
 </BaseLayout>

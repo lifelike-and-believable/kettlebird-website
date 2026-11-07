@@ -5,7 +5,7 @@ runner: manual
 derived-from:
   - docs-publishing-stories#start-a-new-story: 495b769709a1
   - docs-publishing-stories#add-a-chapter-to-a-story: 656607209cf4
-  - docs-publishing-stories#mature-content-and-content-notes: d452557d2f4f
+  - docs-publishing-stories#mature-content-and-content-notes: 57e020ecac9a
   - docs-publishing-stories#check-it-then-publish: 5cc9188892d4
 ---
 

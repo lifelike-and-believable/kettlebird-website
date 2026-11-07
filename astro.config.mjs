@@ -3,9 +3,11 @@ import react from '@astrojs/react';
 import node from '@astrojs/node';
 import vercel from '@astrojs/vercel';
 import { buildInfo } from './src/integrations/build-info.ts';
+import { seoFiles } from './src/integrations/seo-files.ts';
 
 // The site's own address: shared links, link previews and canonical addresses use it
 // (design-comic-share-and-announce, Addresses). Change it here, or with SITE_URL, when the site moves.
+// Search engines may list the site only at https://kettlebird.com (docs/specs/site-search.md AC-1).
 const site = process.env.SITE_URL ?? 'https://newsite.kettlebird.com';
 
 // Every page is built ahead of time except /preview/, which is made on request
@@ -18,7 +20,7 @@ const onVercel = process.env.VERCEL === '1';
 
 export default defineConfig({
   site,
-  integrations: [react(), buildInfo()],
+  integrations: [react(), buildInfo(), seoFiles()],
   srcDir: 'src',
   output: 'static',
   adapter: fixtures && !onVercel ? node({ mode: 'standalone' }) : vercel(),

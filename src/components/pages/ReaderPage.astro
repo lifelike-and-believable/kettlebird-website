@@ -18,6 +18,7 @@ import {
 } from '../../lib/comics/model';
 import { allPagesHref, playControls, type ControlKind, type PlayControl } from '../../lib/comics/navigation';
 import { pageAnnouncement, pagePreview, shareTitle } from '../../lib/comics/sharing';
+import { previewImageAlt, readerPageData } from '../../lib/seo';
 import { readsAs, wideView, type WideView } from '../../lib/comics/spreads';
 import { previewTurn } from '../../lib/preview/turns';
 import { offersPanels, pagePanels, readerSizes } from '../../lib/comics/panels';
@@ -72,6 +73,7 @@ const allPages = allPagesHref(entry);
 const panelled = offersPanels(entry);
 const panels = pagePanels(entry.page);
 const preview = { ...pagePreview(entry, Astro.site!.href), type: 'article' };
+const structuredData = readerPageData(Astro.site!.href, entry);
 // How pages fit on a computer (docs/design/comic-page-width.md, docs/specs/comic-reader-page-size.md): the comic's
 // size, each page's largest width, and the chapter's column; a fan's own choice is applied before the page shows.
 const comicSize = entry.series.pageSize ?? 'screen';
@@ -99,7 +101,8 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
   title={tabTitle(entry)}
   description={`${entry.series.title}, a comic by Star Goldberg.`}
   canonical={preview.url}
-  preview={preview}
+  structuredData={structuredData}
+  preview={{ ...preview, imageAlt: previewImageAlt(preview.image, entry.series.title) }}
 >
   <!-- Don't draw the page until the scroll below has run, so the site header never flashes on a
        turn, even when the page arrives in pieces. Browsers without render-blocking ignore it. -->

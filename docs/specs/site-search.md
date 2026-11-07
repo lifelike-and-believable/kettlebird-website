@@ -1,5 +1,6 @@
 ---
-status: draft
+status: implemented
+tests-commit: 43f2b3b1730e8b39c4af62f4102a83b304adfdc3
 unlocks:
   - tests/unit/comic-sharing-edges.test.ts, tests/unit/stories-sharing.test.ts, tests/e2e/comic-share-and-announce.spec.ts: a comic or story without a cover now falls back on the site card, not the square logo (site-search AC-6), as design-site-search says.
   - tests/unit/story-mature.test.ts, tests/unit/story-editor.test.ts, tests/unit/organised-editor.test.ts: the Mature or explicit content help text gains the design's sentence about search engines (site-search AC-11).

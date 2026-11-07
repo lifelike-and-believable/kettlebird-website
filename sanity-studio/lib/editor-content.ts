@@ -96,7 +96,7 @@ export const FIELDS: Record<ItemType, Record<string, FieldText>> = {
     // story-mature-content AC-1.
     mature: {
       label: 'Mature or explicit content',
-      help: "Tick it for sex scenes, graphic violence or other strong content. Readers are then asked before the text shows, and the story's card and page say so. Left unticked, readers go straight to the text. It covers the story and all its chapters.",
+      help: "Tick it for sex scenes, graphic violence or other strong content. Readers are then asked before the text shows, and the story's card and page say so. Left unticked, readers go straight to the text. It covers the story and all its chapters. Search engines are told too, so it can be left out for people searching with safe search on.",
     },
     contentNotes: { label: 'Content notes', help: 'Anything a reader should know before starting, such as "Mild violence". Shown before the story.' },
     status: { label: 'Status', help: 'For a story in chapters: In progress or Complete.' },

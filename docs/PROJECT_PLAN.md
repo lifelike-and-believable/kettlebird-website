@@ -39,7 +39,7 @@ The look of the site is recorded in `docs/STYLE_GUIDE.md` and in the Kettlebird 
 | Area | On the site | Where it's described |
 |---|---|---|
 | Home page | Tiles for each section over Star's photos and colours, the logo tile in the logo's own orange; the site's icon in browser tabs and on phones' home screens | design-home-tiles-and-icon |
-| Site-wide | Torn-paper header (shorter on phones, with a menu), one arrow style everywhere, keyboard focus and reduced motion respected, link previews | design-phone-header, design-arrows, design-comic-share-and-announce |
+| Site-wide | Torn-paper header (shorter on phones, with a menu), one arrow style everywhere, keyboard focus and reduced motion respected, link previews on every page, a sitemap, and structured data for search engines, listed once the site is at kettlebird.com | design-phone-header, design-arrows, design-comic-share-and-announce, design-site-search |
 | Portfolio | Artwork in category bands with a filter; any piece full screen, with zoom and moving between pieces | epic-portfolio-full-screen |
 | Comics | Series and chapter pages; a reader with First, Previous, Next and Newest, all pages of a chapter on one sheet, sharing, screen reader announcements; two pages side by side and a page-flip on wide screens, per comic; panel by panel, with panels found when Star uploads and corrected by Star in the editor; on a computer, pages that fit the screen, the width or the height, set per comic by Star and choosable by fans | epic-comic-reader, epic-comic-reader-flip-and-panels, design-comic-page-width |
 | Writing | Stories read on the site, as one-shots or in chapters, with scene breaks and Star's pictures; Star uploads each chapter as a Word document; stories with mature or explicit content ask before showing the text; news | epic-story-reader, design-story-import, design-story-mature-content |
@@ -60,6 +60,13 @@ The newest changes are to stories:
   - a ticked story is tagged **Mature or explicit** and asks before showing its text;
   - content notes show before any story that has them.
 
+- **Search engines and link previews** (design-site-search, docs/specs/site-search.md):
+  - every public page has a canonical address and a link preview, with a new site card where there's no other picture;
+  - the Portfolio's preview is the newest piece in Featured, and the Commissions page's says whether commissions are open;
+  - a sitemap, `robots.txt` and structured data describing Star and their work;
+  - ticked stories are marked adult for safe search;
+  - search engines are asked not to list the site until it moves to kettlebird.com (below).
+
 Also since the last update:
 - The old ratings are gone from the editor and the site: the test story, the only one saved with a rating, is deleted, so no one-off change was needed.
 - The story reader's user stories were brought up to date with these designs.
@@ -79,6 +86,15 @@ Also since the last update:
    - who handles sales tax, shipping and fulfilment (Star, or a print-on-demand service);
    - whether stock is shown ("sold out"), and stops sales at zero;
    - whether the Ko-fi links stay, for tips or some products.
+
+### The move to kettlebird.com (launch)
+
+Search engines list the site only once its address is `https://kettlebird.com` (design-site-search, The move to kettlebird.com). On the day, the lead:
+
+1. Adds `kettlebird.com` and `www.kettlebird.com` to the Vercel project, with `www` forwarding to `kettlebird.com`, and waits until Vercel shows both as set up; only then points the domain at Vercel and stops its forwarding to Tumblr at the registrar.
+2. In one sitting: sets `SITE_URL` to `https://kettlebird.com` in Vercel's production settings; redeploys production, which turns listing on; and makes `newsite.kettlebird.com` forward permanently to the same address on `kettlebird.com`.
+3. Adds the site to Google Search Console and Bing Webmaster Tools (each checks ownership with a DNS record) and gives each `https://kettlebird.com/sitemap-index.xml`.
+4. Checks the live site: `robots.txt` names the sitemap; a page's source has no noindex, and has its canonical address and preview tags; a shared link shows its card; `https://newsite.kettlebird.com/writing` forwards to `https://kettlebird.com/writing`; `https://kettlebird.com/help` still has its noindex.
 
 ### Waiting on Star
 
@@ -121,3 +137,4 @@ Also since the last update:
 | 2026-11-06 | That evening: Featured is always the portfolio's top row. |
 | 2026-11-07 | Writing from Word documents, mature or explicit content in place of ratings, the stories brought up to date, the Commissions page's subtitle removed, and the tidying once the test story is deleted. |
 | 2026-11-07 | Later: the hidden old rating, its fallback and the one-off change removed, as the test story is deleted. |
+| 2026-11-07 | Search engines and link previews, and the move to kettlebird.com as a launch step. |

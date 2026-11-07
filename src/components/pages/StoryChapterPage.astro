@@ -10,9 +10,11 @@ import StoryText from '../stories/StoryText.astro';
 import type { PreviewInfo } from '../../lib/preview/load';
 import { chapterLabel, chapterNav, chapterTabTitle, storyPath, type Story, type StoryChapter } from '../../lib/stories/model';
 import { chapterPreview } from '../../lib/stories/sharing';
+import { chapterData, previewImageAlt } from '../../lib/seo';
 
 const { story, chapter, previewInfo } = Astro.props as { story: Story; chapter: StoryChapter; previewInfo?: PreviewInfo };
 const preview = chapterPreview(story, chapter, Astro.site!.href);
+const structuredData = chapterData(Astro.site!.href, story, chapter);
 const nav = chapterNav(story, chapter.number);
 const label = chapterLabel(chapter);
 ---
@@ -22,7 +24,9 @@ const label = chapterLabel(chapter);
   title={chapterTabTitle(story, chapter)}
   description={preview.description}
   canonical={preview.url}
-  preview={{ ...preview, type: 'article' }}
+  preview={{ ...preview, type: 'article', imageAlt: previewImageAlt(preview.image, story.title) }}
+  structuredData={structuredData}
+  adult={story.mature}
 >
   <div class="chapter">
     <header class="chapter__top">

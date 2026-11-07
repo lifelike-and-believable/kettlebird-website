@@ -3,6 +3,7 @@ id: docs-site-settings
 status: approved
 summary: "Opening and closing commissions, and the text on your site's pages."
 derived-from:
+  - design-site-search#for-the-guide: 427e5de90400
   - design-help-links#the-help-page: 9b6650022c9f
   - design-site-settings#flow: 057431850691
   - design-site-settings#fields: a8158ed2c5ad
@@ -59,6 +60,8 @@ Your commission types themselves (names, prices, examples) are in the **Commissi
 
 Don't mention whether commissions are open in your home page text or your bio: the Commissions page says that, and changes when you do.
 
+Search results and shared links to the Commissions page also say whether commissions are open, after the next time those sites check the page.
+
 ## Your about page
 
 | Field | What it does |
@@ -94,6 +97,8 @@ Anything you leave empty is left off the page entirely, with no empty heading or
 Each link's row shows its name and its link, like "Instagram · https://www.instagram.com/kettlebirdart". To change a link, choose its row, change its **Name** or **Link**, and choose **Done**. To add one, choose "+ Add a link" under the list. To change the order, drag the dotted grip (⠿) at the left of a link's row. Choose **Remove** to take a link away.
 
 For a **Link**, copy the address from your browser's address bar while you're on that page: it starts with https://. Email addresses go in **Contact email**, not as links.
+
+Add only your own profiles here: the links also tell search engines which profiles are yours.
 
 The Ko-fi button is called "Ko-fi ☕" everywhere once you publish this item. Today the about page calls it "Support on Ko-fi ☕", so that's the one change you'll see the first time you publish, even if you changed nothing else.
 
