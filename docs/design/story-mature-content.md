@@ -2,8 +2,8 @@
 id: design-story-mature-content
 status: approved
 derived-from:
-  - story-story-reader-read-a-story: 8c8226a23162
-  - story-story-reader-put-a-story-on-the-site: d1c236216e8c
+  - story-story-reader-read-a-story: 6529740e68b4
+  - story-story-reader-put-a-story-on-the-site: 4b2793fd6e8a
   - design-story-reader#what-star-enters: cb3b54ba7c25
   - design-story-reader#layout: 97cf455208c8
   - design-story-reader#flow-a-fan: 7ec1e88c8148
