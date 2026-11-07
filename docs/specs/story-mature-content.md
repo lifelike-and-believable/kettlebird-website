@@ -1,5 +1,5 @@
 ---
-status: draft
+status: implemented
 tests-commit: eb914f546cd1010d813e35558e2823f188e264fd
 unlocks:
   - tests/unit/story-editor.test.ts: the story's fields have Mature or explicit content (`mature`) in place of Rating, and the publish checks no longer ask for a rating (story-mature-content AC-1, AC-2), as design-story-mature-content says.
