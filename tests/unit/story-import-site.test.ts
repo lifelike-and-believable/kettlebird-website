@@ -71,9 +71,9 @@ describe('story-import-word#AC-22 story html', () => {
   const p = (text: string) => ({ _type: 'block', children: [{ _type: 'span', text }] });
 
   it('sizes a picture to the column or its own width, whichever is smaller', () => {
-    expect(STORY_COLUMN).toBe('min(100vw - 2rem, 45rem)');
-    expect(pictureSizes(2400)).toBe('min(2400px, 100vw - 2rem, 45rem)');
-    expect(pictureSizes(300)).toBe('min(300px, 100vw - 2rem, 45rem)');
+    expect(STORY_COLUMN).toBe('min(100vw - 4rem, 50rem)');
+    expect(pictureSizes(2400)).toBe('min(2400px, 100vw - 4rem, 50rem)');
+    expect(pictureSizes(300)).toBe('min(300px, 100vw - 4rem, 50rem)');
   });
 
   it('puts a picture where it was, in a button that opens it full screen', () => {
@@ -81,7 +81,7 @@ describe('story-import-word#AC-22 story html', () => {
       '<p>Before.</p>' +
         '<button type="button" class="story-picture" data-story-picture aria-label="Show full screen: A map &amp; a &quot;road&quot;">' +
         '<img src="https://cdn.test/a.jpg?w=800" srcset="https://cdn.test/a.jpg?w=480 480w, https://cdn.test/a.jpg?w=800 800w" ' +
-        'sizes="min(2400px, 100vw - 2rem, 45rem)" width="2400" height="1600" loading="lazy" decoding="async" alt="A map &amp; a &quot;road&quot;">' +
+        'sizes="min(2400px, 100vw - 4rem, 50rem)" width="2400" height="1600" loading="lazy" decoding="async" alt="A map &amp; a &quot;road&quot;">' +
         '</button>' +
         '<p>After.</p>',
     );
@@ -90,12 +90,12 @@ describe('story-import-word#AC-22 story html', () => {
   it('names a picture without alt text "Picture", and shows a decorative one plainly', () => {
     expect(storyHtml([picture({ alt: undefined, srcset: undefined })])).toBe(
       '<button type="button" class="story-picture" data-story-picture aria-label="Show full screen: Picture">' +
-        '<img src="https://cdn.test/a.jpg?w=800" sizes="min(2400px, 100vw - 2rem, 45rem)" width="2400" height="1600" loading="lazy" decoding="async" alt="Picture">' +
+        '<img src="https://cdn.test/a.jpg?w=800" sizes="min(2400px, 100vw - 4rem, 50rem)" width="2400" height="1600" loading="lazy" decoding="async" alt="Picture">' +
         '</button>',
     );
     expect(storyHtml([picture({ decorative: true })])).toBe(
       '<img class="story-picture story-picture--decorative" src="https://cdn.test/a.jpg?w=800" srcset="https://cdn.test/a.jpg?w=480 480w, https://cdn.test/a.jpg?w=800 800w" ' +
-        'sizes="min(2400px, 100vw - 2rem, 45rem)" width="2400" height="1600" loading="lazy" decoding="async" alt="">',
+        'sizes="min(2400px, 100vw - 4rem, 50rem)" width="2400" height="1600" loading="lazy" decoding="async" alt="">',
     );
   });
 

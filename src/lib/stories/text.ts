@@ -7,8 +7,9 @@ import { pictureAlt, type StoryPicture, type TextBlock } from './model';
 /** Widths the text's pictures are made at, never wider than the picture (AC-22). */
 export const PICTURE_WIDTHS = [480, 800, 1200, 1600] as const;
 const WIDEST = PICTURE_WIDTHS[PICTURE_WIDTHS.length - 1];
-/** The reading column's width, for `sizes`: StoryText.astro's column is no wider. */
-export const STORY_COLUMN = 'min(100vw - 2rem, 45rem)';
+/** The reading column's width, for `sizes`: the page's column on a phone (its padding is 2rem a side) and
+ * 65 characters (about 50rem) on a computer (docs/specs/story-text-frame.md AC-5). */
+export const STORY_COLUMN = 'min(100vw - 4rem, 50rem)';
 
 export function pictureWidths(width: number): number[] {
   const under = PICTURE_WIDTHS.filter((w) => w < width);
@@ -17,7 +18,7 @@ export function pictureWidths(width: number): number[] {
 
 /** The column's width or the picture's, whichever is smaller. */
 export function pictureSizes(width: number): string {
-  return `min(${width}px, 100vw - 2rem, 45rem)`;
+  return `min(${width}px, ${STORY_COLUMN.slice('min('.length, -1)})`;
 }
 
 const SCENE_BREAK = '<hr class="scene-break" aria-label="Scene break">';

@@ -10,13 +10,25 @@ const { text, label } = Astro.props as { text: TextBlock[]; label: string };
 <article class="story-text" aria-label={label} tabindex="-1" data-story-start data-story-gated data-part="story-text" set:html={storyHtml(text)} />
 
 <style>
+  /* The text on a white sheet (docs/specs/story-text-frame.md): content-box, so the text keeps its width
+     at every size and the sheet's padding sits outside it; the side margins reach into the page's own
+     margin, never closer than 16px to the screen's edges; the side padding grows from 1rem to 3rem only
+     where there's room. */
   .story-text {
+    --sheet-pad: clamp(1rem, (100vw - 65ch) / 2 - 1rem, 3rem);
+    box-sizing: content-box;
     max-width: 65ch;
-    margin: 0 auto;
+    padding: clamp(1.5rem, 3vw, 2.5rem) var(--sheet-pad);
+    margin-block: 0;
+    margin-inline: max(-1 * var(--sheet-pad), (100% - 65ch) / 2 - var(--sheet-pad));
+    background: #fff;
+    box-shadow: var(--shadow-paper);
     font-size: 1.125rem;
     line-height: 1.7;
     overflow-wrap: break-word;
   }
+  .story-text > :global(:first-child) { margin-top: 0; }
+  .story-text > :global(:last-child) { margin-bottom: 0; }
   .story-text:focus { outline: none; }
   .story-text:focus-visible { outline: 3px solid var(--color-ink); outline-offset: 4px; }
   .story-text :global(p) { margin: 0 0 1em; }
