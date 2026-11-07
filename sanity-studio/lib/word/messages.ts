@@ -125,7 +125,7 @@ const counted = (paragraphs: number, pictures: number) =>
 export function replaceQuestion(input: {
   what: { number?: number };
   now: { fileName?: string; addedAt?: string; paragraphs: number; pictures: number };
-  next: { fileName: string; paragraphs: number; pictures: number; kept: number; fresh: number };
+  next: { fileName: string; paragraphs: number; pictures: number; kept: number; changed?: number; fresh: number };
   today: Date;
 }): { title: string; lines: string[]; cancel: string; confirm: string } {
   const { now, next } = input;
@@ -133,6 +133,7 @@ export function replaceQuestion(input: {
   const was = now.fileName && now.addedAt ? `Now: ${now.fileName}, added ${addedTime(now.addedAt, input.today)}: ` : 'Now: ';
   const matched = [
     next.kept && (next.kept === 1 ? '1 keeps its alt text' : `${next.kept} keep their alt text`),
+    next.changed && (next.changed === 1 ? "1 takes Word's new alt text" : `${next.changed} take Word's new alt text`),
     next.fresh && (next.fresh === 1 ? '1 is new' : `${next.fresh} are new`),
   ].filter(Boolean);
   return {

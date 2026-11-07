@@ -1,37 +1,29 @@
 // Pictures from Word documents that nothing uses any more are removed from the picture library when a story or
-// chapter is published or deleted (docs/specs/story-import-word.md AC-18): those replaced or undone (`discarded`),
-// and those the published version used that the new one doesn't. Each is removed only if nothing refers to it.
-import { useClient, type DocumentActionComponent } from 'sanity';
-import { pictureAssets, unusedPictures } from '../lib/word/pictures';
-
-type Doc = Record<string, unknown> | null | undefined;
-const content = (doc: Doc) => doc?.content as Parameters<typeof pictureAssets>[0];
-const discarded = (doc: Doc) => ((doc?.textUpload as { discarded?: string[] } | undefined)?.discarded ?? []).filter((id) => typeof id === 'string');
-// Long enough for a publish or delete to have reached the dataset, so the published version no longer refers to them.
-const SETTLE_MS = 4000;
+// chapter is published or deleted (docs/specs/story-import-word.md AC-18). The removal waits until the publish or
+// delete has reached the dataset (lib/word/cleanup.ts), so a cancelled Delete or a Publish stopped by validation
+// removes nothing. Publishing also drops the upload's Undo copy: once published, an upload can't be undone.
+// A story's own Delete (with its chapters) cleans up in actions/deleteSeries.tsx.
+import { useClient, useDocumentOperation, type DocumentActionComponent } from 'sanity';
+import { cleanUpAfterDelete, cleanUpAfterPublish, picturesOf } from '../lib/word/cleanup';
 
 export function withUnusedPictures(original: DocumentActionComponent): DocumentActionComponent {
   const RemoveUnused: DocumentActionComponent = (props) => {
     const base = original(props);
     const client = useClient({ apiVersion: '2024-01-01' });
+    const ops = useDocumentOperation(props.id, props.type);
     if (!base) return base;
     const deleting = original.action === 'delete';
     const onHandle = () => {
-      const after = deleting ? [] : pictureAssets(content(props.draft ?? props.published));
-      const before = [...pictureAssets(content(props.published)), ...(deleting ? pictureAssets(content(props.draft)) : [])];
-      const candidates = unusedPictures({ discarded: [...discarded(props.draft), ...discarded(props.published)], before, after, referenced: new Set() });
+      if (deleting) {
+        const candidates = [...picturesOf(props.draft), ...picturesOf(props.published)];
+        base.onHandle?.();
+        void cleanUpAfterDelete(client, [props.id], candidates);
+        return;
+      }
+      if ((props.draft?.textUpload as { previous?: string } | undefined)?.previous) ops.patch.execute([{ unset: ['textUpload.previous'] }]);
+      const before = props.published;
       base.onHandle?.();
-      if (!candidates.length) return;
-      setTimeout(async () => {
-        for (const id of candidates) {
-          try {
-            const refs = await client.fetch<number>('count(*[references($id)])', { id });
-            if (refs === 0) await client.delete(id);
-          } catch {
-            // Already gone, or still in use: the library refuses to delete a picture in use.
-          }
-        }
-      }, SETTLE_MS);
+      void cleanUpAfterPublish(client, props.id, before);
     };
     return { ...base, onHandle };
   };

@@ -202,12 +202,18 @@ export async function loadPreview(
 const NOT_DRAFT = '!(_id in path("drafts.**"))';
 const PAGE_PROJECTION = 'pages[]{ _key, asset, altText, "dimensions": asset->metadata.dimensions }';
 const COVER_PROJECTION = 'coverImage{ asset, hotspot, "dimensions": asset->metadata.dimensions }';
+// Pictures from Word documents with their sizes, as the site's stories query reads them (story-import-word AC-21).
+const STORY_TEXT_PROJECTION = 'content[]{ ..., _type == "storyPicture" => { _key, _type, alt, decorative, image, "dimensions": image.asset->metadata.dimensions } }';
 const project = (type: string | undefined) =>
   type === 'comicChapter'
     ? `{ ..., "pages": ${PAGE_PROJECTION} }`
-    : type === 'comicSeries' || type === 'writtenWork'
-      ? `{ ..., "coverImage": ${COVER_PROJECTION} }`
-      : '';
+    : type === 'writtenWork'
+      ? `{ ..., "coverImage": ${COVER_PROJECTION}, ${STORY_TEXT_PROJECTION} }`
+      : type === 'comicSeries'
+        ? `{ ..., "coverImage": ${COVER_PROJECTION} }`
+        : type === 'storyChapter'
+          ? `{ ..., ${STORY_TEXT_PROJECTION} }`
+          : '';
 
 /** Reads with the preview token. Called only when a preview is requested, never at build time. */
 export function sanitySource(token: string, projectId: string, dataset: string): PreviewSource {
@@ -228,7 +234,7 @@ export function sanitySource(token: string, projectId: string, dataset: string):
         { seriesId },
       ),
     storyChapters: (storyId) =>
-      client.fetch<RawDoc[]>(`*[_type == "storyChapter" && story._ref == $storyId && ${NOT_DRAFT}] | order(number asc)`, { storyId }),
+      client.fetch<RawDoc[]>(`*[_type == "storyChapter" && story._ref == $storyId && ${NOT_DRAFT}] | order(number asc) { ..., ${STORY_TEXT_PROJECTION} }`, { storyId }),
   };
 }
 

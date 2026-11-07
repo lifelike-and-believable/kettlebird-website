@@ -96,7 +96,8 @@ export function ChaptersList(_props: StringInputProps) {
         number: first.number,
         content: first.content,
         // story-import-word AC-19: the upload line moves with the text.
-        ...(first.textUpload ? { textUpload: first.textUpload } : {}),
+        // Without its Undo copy: the story's upload may already be published, and Undo would bring back pictures removed since.
+        ...(first.textUpload ? { textUpload: { ...first.textUpload, previous: undefined } } : {}),
       });
       ops.patch.execute([{ unset: ['content', 'textUpload'] }]);
       const panes = (routerPanesState as Panes).slice(0, groupIndex + 1).concat([[{ id: chapterId, params: { moved: '1' } }]]);

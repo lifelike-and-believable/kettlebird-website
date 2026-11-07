@@ -437,7 +437,7 @@ describe('story-import-word#AC-11 the note', () => {
       '3 pictures in tables were left out.',
       '1 drawing or chart made in Word was left out.',
     ]);
-    const pic = { data: new Uint8Array(), type: 'image/png' as const, wordAlt: undefined, alt: undefined, fromWord: false, decorative: false, cropped: false, moved: true };
+    const pic = { number: 1, data: new Uint8Array(), type: 'image/png' as const, wordAlt: undefined, alt: undefined, fromWord: false, decorative: false, cropped: false, moved: true };
     expect(note({ pictures: [pic, pic] })[1]).toBe('2 pictures that sat beside the text now sit below their paragraphs.');
     expect(note({ failed: [{ number: 2, reason: 'format' }] })[1]).toBe(
       "Picture 2 in a.docx couldn't be added (it's in a format the site can't show), so the chapter was added without it. Save it in the document as a picture (JPEG or PNG) and upload again, or publish without it.",
@@ -520,6 +520,12 @@ describe('story-import-word#AC-14 the question', () => {
       'New: b.docx: 2 paragraphs, 1 picture; 1 keeps its alt text.',
     ]);
     expect(q({ paragraphs: 2, pictures: 0 }, { fileName: 'b.docx', paragraphs: 2, pictures: 2, kept: 0, fresh: 2 }).lines[1]).toBe('New: b.docx: 2 paragraphs, 2 pictures; 2 are new.');
+    expect(q({ paragraphs: 2, pictures: 3 }, { fileName: 'b.docx', paragraphs: 2, pictures: 4, kept: 1, changed: 1, fresh: 2 }).lines[1]).toBe(
+      "New: b.docx: 2 paragraphs, 4 pictures; 1 keeps its alt text, 1 takes Word's new alt text, 2 are new.",
+    );
+    expect(q({ paragraphs: 2, pictures: 2 }, { fileName: 'b.docx', paragraphs: 2, pictures: 2, kept: 0, changed: 2, fresh: 0 }).lines[1]).toBe(
+      "New: b.docx: 2 paragraphs, 2 pictures; 2 take Word's new alt text.",
+    );
   });
 
   it('gives times as the design does', () => {
@@ -565,7 +571,7 @@ describe('story-import-word#AC-15 same pictures', () => {
       was({ hash: 'letter', alt: 'A letter from Tam, in faded ink', fromWord: true, wordAlt: 'A letter from Tam, in faded ink' }),
       was({ hash: 'f', alt: undefined, decorative: true, wordDecorative: true }),
     ]);
-    expect(result.kept).toBe(2);
+    expect(result).toMatchObject({ kept: 0, changed: 2, fresh: 0 });
   });
 
   it('takes Word\'s alt text for new pictures, without the automatic kind', () => {
@@ -581,7 +587,7 @@ describe('story-import-word#AC-15 same pictures', () => {
     const [b, a] = [await hashes(before), await hashes(after)];
     const previous = before.pictures.map((p, i) => was({ hash: b[i], alt: p.alt, fromWord: p.fromWord, wordAlt: p.wordAlt, decorative: p.decorative, wordDecorative: p.decorative }));
     const result = matchPictures(previous, after.pictures.map((p, i) => ({ hash: a[i], wordAlt: p.wordAlt, wordDecorative: p.decorative })));
-    expect(result).toMatchObject({ kept: 5, fresh: 1 });
+    expect(result).toMatchObject({ kept: 4, changed: 1, fresh: 1 });
     expect(result.pictures[2].alt).toBe('A letter from Tam, in faded ink');
   });
 });

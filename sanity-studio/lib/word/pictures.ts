@@ -45,13 +45,18 @@ export async function pictureHash(data: Uint8Array): Promise<string> {
   return Array.from(new Uint8Array(digest), (b) => b.toString(16).padStart(2, '0')).join('');
 }
 
-/** AC-15: a new version's pictures, keeping what was set for the same pictures (by data, in order of use). */
+/**
+ * AC-15: a new version's pictures, keeping what was set for the same pictures (by data, in order of use). `kept`
+ * counts the same pictures that keep their settings, `changed` those whose alt text or mark changed in Word (Word's
+ * wins), and `fresh` the new pictures.
+ */
 export function matchPictures(
   previous: PictureSettings[],
   incoming: { hash: string; wordAlt?: string; wordDecorative: boolean }[],
-): { pictures: PictureSettings[]; kept: number; fresh: number } {
+): { pictures: PictureSettings[]; kept: number; changed: number; fresh: number } {
   const left = [...previous];
   let kept = 0;
+  let changed = 0;
   const pictures = incoming.map((next): PictureSettings => {
     const at = left.findIndex((p) => p.hash === next.hash);
     const fromWord = (): PictureSettings => {
@@ -60,11 +65,14 @@ export function matchPictures(
     };
     if (at < 0) return fromWord();
     const [was] = left.splice(at, 1);
+    if (was.wordAlt !== next.wordAlt || was.wordDecorative !== next.wordDecorative) {
+      changed += 1;
+      return fromWord();
+    }
     kept += 1;
-    if (was.wordAlt !== next.wordAlt || was.wordDecorative !== next.wordDecorative) return fromWord();
     return { ...was };
   });
-  return { pictures, kept, fresh: incoming.length - kept };
+  return { pictures, kept, changed, fresh: incoming.length - kept - changed };
 }
 
 /** AC-13: how many pictures have neither alt text nor Decorative. */
@@ -122,6 +130,11 @@ export function editedSince(content: Blockish[] | undefined): boolean {
 export function pictureAssets(content: Blockish[] | undefined): string[] {
   const ids = (content ?? []).filter((b) => b._type === 'storyPicture').map((b) => b.image?.asset?._ref);
   return [...new Set(ids.filter((id): id is string => !!id))];
+}
+
+/** AC-18: the pictures that a draft's Undo copy (`textUpload.previous`, text) still holds, so they stay. */
+export function inUndoCopies(ids: string[], copies: (string | null | undefined)[]): string[] {
+  return ids.filter((id) => copies.some((copy) => typeof copy === 'string' && copy.includes(`"${id}"`)));
 }
 
 /** AC-18: discarded pictures, and those the published version used that the new one doesn't, that nothing refers to. */

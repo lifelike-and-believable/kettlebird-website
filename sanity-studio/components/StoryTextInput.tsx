@@ -217,7 +217,8 @@ export function StoryTextInput(props: PortableTextInputProps) {
   const moved = !isStory && params?.moved === '1' && !editState.published;
   const blocks = (Array.isArray(props.value) ? props.value : []) as TextBlock[];
   const publishedUpload = (editState.published?.textUpload as TextUpload | undefined)?.addedAt;
-  const published = !!upload?.addedAt && publishedUpload === upload.addedAt && !editState.draft;
+  // Published once the published version has this upload, whatever has been changed since (AC-16).
+  const published = !!upload?.addedAt && publishedUpload === upload.addedAt;
 
   const [reading, setReading] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
@@ -275,7 +276,7 @@ export function StoryTextInput(props: PortableTextInputProps) {
         const q = replaceQuestion({
           what: isStory ? {} : { number },
           now: { fileName: upload?.fileName, addedAt: upload?.addedAt, paragraphs: blocks.filter((b) => b._type === 'block').length, pictures: blocks.filter((b) => b._type === 'storyPicture').length },
-          next: { fileName: file.name, paragraphs: doc.counts.paragraphs, pictures: doc.counts.pictures, kept: match.kept, fresh: match.fresh },
+          next: { fileName: file.name, paragraphs: doc.counts.paragraphs, pictures: doc.counts.pictures, kept: match.kept, changed: match.changed, fresh: match.fresh },
           today: new Date(),
         });
         if (!(await ask(q))) return;
@@ -297,16 +298,19 @@ export function StoryTextInput(props: PortableTextInputProps) {
           const asset = await client.assets.upload('image', blob, { filename: `${file.name.replace(/\.docx$/i, '')} picture ${n + 1}` });
           assets.set(i, asset._id);
         } catch {
-          failed.push({ number: n + 1, reason: 'upload' });
+          failed.push({ number: doc.pictures[i].number, reason: 'upload' });
         }
       }
       let pictureAt = 0;
+      // The pictures that came in, in the text's order, with where their alt text came from after matching (AC-11).
+      const added: typeof doc.pictures = [];
       const content = doc.blocks.flatMap((b) => {
         if (b._type !== 'storyPicture') return [b];
         const i = (b as unknown as { picture: number }).picture;
         const settings = match.pictures[pictureAt++];
         const asset = assets.get(i);
         if (!asset) return [];
+        added.push({ ...doc.pictures[i], alt: settings.alt, fromWord: settings.fromWord });
         return [{
           _type: 'storyPicture',
           _key: b._key ?? randomKey(),
@@ -317,13 +321,14 @@ export function StoryTextInput(props: PortableTextInputProps) {
           wordAlt: settings.wordAlt,
           wordDecorative: settings.wordDecorative,
           hash: settings.hash,
-          edited: settings.edited,
+          // "Changed since the upload" starts again with each upload (AC-16).
+          edited: false,
         }];
       });
       const kept = new Set(pictureAssets(content as never));
       const dropped = pictureAssets(blocks as never).filter((a) => !kept.has(a));
       const { previous: _p, ...uploadNow } = upload ?? {};
-      const note = uploadNote({ fileName: file.name, doc: { ...doc, failed, counts: { ...doc.counts, pictures: content.filter((b) => b._type === 'storyPicture').length } }, what: of, onlyOne });
+      const note = uploadNote({ fileName: file.name, doc: { ...doc, pictures: added, failed, counts: { ...doc.counts, pictures: added.length } }, what: of, onlyOne });
       patch({
         content,
         textUpload: {
@@ -332,7 +337,8 @@ export function StoryTextInput(props: PortableTextInputProps) {
           note,
           noteClosed: false,
           previous: undoSnapshot(blocks, Object.keys(uploadNow).length ? { ...uploadNow, discarded: undefined } : undefined),
-          discarded: [...(upload?.discarded ?? []), ...dropped],
+          // A published upload's discarded pictures were removed when it was published.
+          discarded: [...(published ? [] : (upload?.discarded ?? [])), ...dropped],
         },
       });
     } catch {
@@ -343,7 +349,8 @@ export function StoryTextInput(props: PortableTextInputProps) {
   };
 
   const onFiles = (files: FileList | null) => {
-    if (!files?.length) return;
+    // One document at a time: nothing while one is being read, or while the text can't be changed (AC-17).
+    if (!files?.length || reading || props.readOnly) return;
     void addFile(files[0], files.length > 1);
   };
 
