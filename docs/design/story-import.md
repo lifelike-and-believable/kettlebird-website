@@ -2,7 +2,7 @@
 id: design-story-import
 status: approved
 derived-from:
-  - story-story-reader-put-a-story-on-the-site: d1c236216e8c
+  - story-story-reader-put-a-story-on-the-site: 4b2793fd6e8a
   - design-story-reader#what-star-enters: cb3b54ba7c25
   - design-story-reader#flow-star: 8f4a733f5f05
   - design-story-reader#layout: 97cf455208c8

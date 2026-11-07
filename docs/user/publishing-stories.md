@@ -8,7 +8,7 @@ derived-from:
   - design-story-reader#what-star-enters: cb3b54ba7c25
   - design-story-reader#states-and-errors: 0d1c96946295
   - design-story-reader#for-the-guide: 17bce7ae41ca
-  - story-story-reader-put-a-story-on-the-site: d1c236216e8c
+  - story-story-reader-put-a-story-on-the-site: 4b2793fd6e8a
   - design-story-import#for-the-guide: ee5c06f05bb5
 ---
 
