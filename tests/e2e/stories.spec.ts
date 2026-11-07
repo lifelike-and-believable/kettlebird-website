@@ -16,12 +16,13 @@ test('story-reader-pages#AC-2 writing page', async ({ page }) => {
   const road = card(page, 'The Long Road');
   await expect(road.getByRole('link', { name: 'Read', exact: true })).toHaveAttribute('href', '/writing/the-long-road');
   await expect(road.getByRole('heading', { name: 'The Long Road' }).getByRole('link')).toHaveAttribute('href', '/writing/the-long-road');
-  await expect(road).toContainText('Rated General');
+  await expect(road).not.toContainText('Mature or explicit');
+  await expect(card(page, 'Night Market')).toContainText('Mature or explicit');
   await expect(road).toContainText('In progress · 3 chapters');
 
   const song = card(page, "The Kettle's Song");
   await expect(song.getByRole('link', { name: 'Also on AO3' })).toHaveAttribute('href', 'https://archiveofourown.org/works/1');
-  await expect(card(page, 'Finished Tale')).not.toContainText('Rated');
+  await expect(page.locator('main')).not.toContainText('Rated');
 
   const elsewhere = card(page, 'Elsewhere Tale');
   await expect(elsewhere.getByRole('link', { name: /Read it/ })).toHaveAttribute('href', 'https://kettlebird.tumblr.com/post/1');
@@ -35,7 +36,7 @@ test('story-reader-pages#AC-3 AC-4 AC-5 AC-9 a one-shot', async ({ page }) => {
   await expect(page.locator('h1')).toHaveCount(1);
   await expect(page.locator('h1')).toHaveText("The Kettle's Song");
   const box = page.getByRole('region', { name: 'Before you read' });
-  await expect(box).toContainText('Rated Teen');
+  await expect(box).not.toContainText('Rated');
   await expect(box).toContainText('Mild peril.');
   const article = page.locator('main article');
   await expect(article.locator('em')).toHaveText('midnight');
@@ -88,7 +89,7 @@ test('story-reader-pages#AC-8 AC-9 chapter pages', async ({ page }) => {
 
   await page.goto('/writing/finished-tale/2');
   await expect(page.getByRole('navigation', { name: 'Chapters, end of chapter' })).toContainText('The end.');
-  await expect(page.getByRole('region', { name: 'Before you read' })).toContainText('Not rated');
+  await expect(page.getByRole('region', { name: 'Before you read' })).not.toContainText('Not rated');
 
   // By keyboard: the end's Next chapter is reachable with Tab and opens the next chapter.
   await page.goto('/writing/the-long-road/1');
@@ -101,7 +102,7 @@ test('story-reader-pages#AC-8 AC-9 chapter pages', async ({ page }) => {
 test('story-reader-pages#AC-6 a Mature story asks first, once per browser', async ({ page }) => {
   await page.goto('/writing/night-market');
   const box = page.getByRole('region', { name: 'Before you read' });
-  await expect(box).toContainText('This story is rated Mature.');
+  await expect(box).toContainText('This story has mature or explicit content.');
   await expect(page.locator('main article')).toBeHidden();
   await box.getByRole('button', { name: 'Continue to the story' }).click();
   await expect(page.locator('main article')).toBeVisible();

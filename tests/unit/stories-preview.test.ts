@@ -30,11 +30,12 @@ describe('story-reader-pages#AC-12 preview targets', () => {
 });
 
 describe('story-reader-pages#AC-12 preview pages', () => {
-  it('shows a story\'s draft text, whatever its rating', async () => {
+  it('shows a story\'s draft text, ticked or not', async () => {
     const result = await load('writtenWork', 'story-song');
     expect(result?.model.page).toBe('story');
     if (result?.model.page !== 'story') return;
-    expect(result.model.story.rating).toBe('mature');
+    // story-mature-content AC-8: the draft is ticked.
+    expect(result.model.story.mature).toBe(true);
     expect(JSON.stringify(result.model.story.text)).toContain('Draft text.');
   });
 

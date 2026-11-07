@@ -27,8 +27,8 @@ export const FIXTURE_PUBLISHED: RawDoc[] = [
   // (docs/specs/comic-reader-comic-settings.md AC-8, AC-9).
   { _id: 'series-sheets', _type: 'comicSeries', title: 'Single Sheets', slug: { current: 'single-sheets' }, status: 'ongoing', type: 'original', twoUp: false, pageFlip: true },
   // Stories (docs/specs/story-reader-pages.md AC-12): a one-shot, and a story in chapters.
-  { _id: 'story-song', _type: 'writtenWork', title: "The Kettle's Song", slug: { current: 'the-kettles-song' }, rating: 'teen', publishDate: '2026-10-01', content: [block('Published text.')] },
-  { _id: 'story-road', _type: 'writtenWork', title: 'The Long Road', slug: { current: 'the-long-road' }, rating: 'general', status: 'inProgress', publishDate: '2026-09-01' },
+  { _id: 'story-song', _type: 'writtenWork', title: "The Kettle's Song", slug: { current: 'the-kettles-song' }, publishDate: '2026-10-01', content: [block('Published text.')] },
+  { _id: 'story-road', _type: 'writtenWork', title: 'The Long Road', slug: { current: 'the-long-road' }, status: 'inProgress', publishDate: '2026-09-01' },
   { _id: 'road-1', _type: 'storyChapter', story: storyRef('story-road'), number: 1, title: 'Setting Out', publishDate: '2026-09-01', content: [block('She left at dawn.')] },
   { _id: 'road-2', _type: 'storyChapter', story: storyRef('story-road'), number: 2, title: 'Over the Ridge', publishDate: '2026-10-20', content: [block('The ridge was steep.')] },
   { _id: 'story-elsewhere', _type: 'writtenWork', title: 'Elsewhere Tale', slug: { current: 'elsewhere-tale' }, externalLink: 'https://kettlebird.tumblr.com/post/1' },
@@ -60,11 +60,11 @@ export const FIXTURE_DRAFTS: RawDoc[] = [
     ],
   },
   // A Mature draft of a published one-shot: the preview shows its text without asking first.
-  { _id: 'drafts.story-song', _type: 'writtenWork', title: "The Kettle's Song", slug: { current: 'the-kettles-song' }, rating: 'mature', publishDate: '2026-10-01', content: [block('Draft text.')] },
+  { _id: 'drafts.story-song', _type: 'writtenWork', title: "The Kettle's Song", slug: { current: 'the-kettles-song' }, mature: true, publishDate: '2026-10-01', content: [block('Draft text.')] },
   { _id: 'drafts.road-2', _type: 'storyChapter', story: storyRef('story-road'), number: 2, title: 'Over the Ridge', publishDate: '2026-10-20', content: [block('The ridge was steeper.')] },
   { _id: 'drafts.road-5', _type: 'storyChapter', story: storyRef('story-road'), number: 5, content: [] },
   // A story never published, with its first chapter, and a story without a web address.
-  { _id: 'drafts.story-new', _type: 'writtenWork', title: 'New Story', slug: { current: 'new-story' }, rating: 'general', status: 'inProgress' },
+  { _id: 'drafts.story-new', _type: 'writtenWork', title: 'New Story', slug: { current: 'new-story' }, status: 'inProgress' },
   { _id: 'drafts.new-1', _type: 'storyChapter', story: storyRef('story-new'), number: 1, title: 'Hello', content: [block('A first line.')] },
   { _id: 'drafts.story-nameless', _type: 'writtenWork', title: 'Nameless', content: [block('Words.')] },
   { _id: 'drafts.commissionSettings', _type: 'commissionSettings', status: 'closed', note: 'Back in March.' },

@@ -99,7 +99,7 @@ const EXPECTED: Record<ItemType, [string, string, string][]> = {
     ['excerpt', 'Short description', 'A sentence or two, shown on the Writing page and when the story is shared.'],
     ['coverImage', 'Cover', 'Shown beside the story on the Writing page and at the top of its page.'],
     ['genre', 'Genres', 'Shown as tags. Type one, then press Enter.'],
-    ['rating', 'Rating', 'Shown before the story and on the Writing page. Mature and Explicit stories ask readers before showing the text.'],
+    ['mature', 'Mature or explicit content', "Tick it for sex scenes, graphic violence or other strong content. Readers are then asked before the text shows, and the story's card and page say so. Left unticked, readers go straight to the text. It covers the story and all its chapters."],
     ['contentNotes', 'Content notes', 'Anything a reader should know before starting, such as "Mild violence". Shown before the story.'],
     ['status', 'Status', 'For a story in chapters: In progress or Complete.'],
     ['content', 'Text', 'For a one-shot: upload the whole story as a Word document (.docx). For a story in chapters, add chapters instead.'],
@@ -140,7 +140,7 @@ describe('content-editing-organised-editor#AC-3 AC-5 field labels and help', () 
   }
   it('hides the fields the site doesn\'t use', () => {
     expect(HIDDEN).toEqual({
-      comicSeries: [], galleryItem: ['slug', 'featured'], writtenWork: [], product: ['slug', 'tags', 'inventory'], commissionType: [],
+      comicSeries: [], galleryItem: ['slug', 'featured'], writtenWork: ['rating'], product: ['slug', 'tags', 'inventory'], commissionType: [],
     });
   });
   it('refuses a field it has no text for', () => {
@@ -161,10 +161,10 @@ describe('content-editing-organised-editor#AC-5 AC-7 required messages', () => {
       const source = read(file);
       for (const [name, field] of Object.entries(FIELDS[type])) {
         if (!field.missing) continue;
-        // A story's web address and rating are needed only once it has text or chapters, with the
-        // story spec's messages (story-reader-editor AC-2).
+        // A story's web address is needed only once it has text or chapters, with the story spec's
+        // message (story-reader-editor AC-2); no rating is asked for (story-mature-content AC-2).
         if (type === 'writtenWork' && field.sometimes) {
-          expect(source, `${type}.${name}`).toMatch(name === 'slug' ? /WEB_ADDRESS_MESSAGE/ : /RATING_MESSAGE/);
+          expect(source, `${type}.${name}`).toMatch(/WEB_ADDRESS_MESSAGE/);
           continue;
         }
         // The series' web address keeps the publishing spec's message (comic-publish-pages AC-10).
