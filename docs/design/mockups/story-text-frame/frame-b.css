@@ -1,9 +1,14 @@
-/* Option B: a white sheet with a soft shadow and no border; sizes as option A. */
-main .story-text {
+/* The chosen frame (design-story-text-frame, option B): a white sheet with a soft shadow and no border.
+   content-box: the text keeps its width at every screen size; the sheet's padding sits outside it, and the
+   sheet's negative side margins let it reach out into the page's own gutter, never closer than 16px to the
+   screen's edges. Its side padding grows from 1rem to 3rem only where there's room for it. */
+main .story-text.story-text {
+  --sheet-pad: clamp(1rem, (100vw - 65ch) / 2 - 1rem, 3rem);
   box-sizing: content-box;
   background: #fff;
   box-shadow: var(--shadow-paper);
-  padding: clamp(1.5rem, 3vw, 2.5rem) clamp(1rem, 4vw, 3rem);
+  padding: clamp(1.5rem, 3vw, 2.5rem) var(--sheet-pad);
+  margin-inline: max(-1 * var(--sheet-pad), (100% - 65ch) / 2 - var(--sheet-pad));
 }
 main .story-text > :first-child { margin-top: 0; }
 main .story-text > :last-child { margin-bottom: 0; }
