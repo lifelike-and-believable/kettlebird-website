@@ -147,11 +147,11 @@ Star's guide `publishing-stories.md`:
 
 ## Decisions at review
 
-Settled by the lead (2026-11-07): .docx only, one file per chapter for now; pictures kept; no text box.
-
-For the lead:
-1. **No text box at all**, as proposed, so every change goes through Word; or keep a small way to fix a typo in the editor (which would then differ from the document until it's uploaded again)?
-2. **Pictures on the site**: at the column's width or their own, whichever is smaller, as proposed; or always the column's full width?
+Settled by the lead (2026-11-07):
+- .docx only, one file per chapter for now; whole works with chapter breaks later;
+- pictures kept;
+- no text box at all: every change goes through Word, and the editor shows the text read-only;
+- pictures on the site at the column's width or their own, whichever is smaller.
 
 ## Persona walkthrough
 
