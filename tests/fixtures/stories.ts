@@ -1,5 +1,5 @@
 // Fixture stories for tests and the fixture build (KETTLEBIRD_FIXTURES=1). Spec: docs/specs/story-reader-pages.md.
-import type { Story, StoryImage, TextBlock } from '../../src/lib/stories/model';
+import type { Story, StoryImage, StoryPicture, TextBlock } from '../../src/lib/stories/model';
 
 function cover(label: string): StoryImage {
   const svg =
@@ -17,6 +17,14 @@ const p = (...parts: (string | [string, ...string[]])[]): TextBlock => ({
   children: parts.map((part) => (typeof part === 'string' ? { _type: 'span', text: part, marks: [] } : { _type: 'span', text: part[0], marks: part.slice(1) })),
 });
 const brk: TextBlock = { _type: 'sceneBreak', _key: 'brk' };
+/** A picture from a Word document (docs/specs/story-import-word.md), as the site's model has it. */
+function picture(label: string, width: number, height: number, alt?: string, decorative = false): StoryPicture {
+  const svg =
+    `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">` +
+    `<rect width="100%" height="100%" fill="#b8c9a3"/>` +
+    `<text x="50%" y="50%" font-family="sans-serif" font-size="${Math.round(height / 6)}" text-anchor="middle" fill="#2b2b2b">${label}</text></svg>`;
+  return { _type: 'storyPicture', _key: `pic-${label}`, src: `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`, width, height, alt, decorative };
+}
 
 export const FIXTURE_STORIES: Story[] = [
   {
@@ -54,7 +62,18 @@ export const FIXTURE_STORIES: Story[] = [
       // Out of order on purpose: the site sorts by number.
       { number: 2, title: 'Over the Ridge', date: '2026-10-20', text: [p('The ridge was steep.')] },
       { number: 1, title: 'Setting Out', date: '2026-09-01', text: [p('She left at dawn.')] },
-      { number: 3, date: '2026-11-01', text: [p('Rain, all day.')] },
+      {
+        number: 3,
+        date: '2026-11-01',
+        text: [
+          p('Rain, all day.'),
+          picture('Map', 2400, 1600, 'A map of the valley'),
+          p('Mira drew the ridge on the back of a letter.'),
+          picture('Sketch', 300, 200, 'A small sketch'),
+          picture('Flourish', 600, 80, undefined, true),
+          p('Then they slept.'),
+        ],
+      },
       // No text: not shown anywhere on the site.
       { number: 4, title: 'Not Written Yet', text: [] },
     ],
@@ -68,7 +87,7 @@ export const FIXTURE_STORIES: Story[] = [
     rating: 'mature',
     contentNotes: 'Violence.',
     date: '2026-08-01',
-    text: [p('The stalls opened at midnight.')],
+    text: [p('The stalls opened at midnight.'), picture('Lantern', 800, 1000, 'A lantern')],
     chapters: [],
   },
   {

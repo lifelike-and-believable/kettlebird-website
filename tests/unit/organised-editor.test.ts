@@ -102,7 +102,7 @@ const EXPECTED: Record<ItemType, [string, string, string][]> = {
     ['rating', 'Rating', 'Shown before the story and on the Writing page. Mature and Explicit stories ask readers before showing the text.'],
     ['contentNotes', 'Content notes', 'Anything a reader should know before starting, such as "Mild violence". Shown before the story.'],
     ['status', 'Status', 'For a story in chapters: In progress or Complete.'],
-    ['content', 'Text', 'For a one-shot: paste or type the whole story. For a story in chapters, add chapters instead.'],
+    ['content', 'Text', 'For a one-shot: upload the whole story as a Word document (.docx). For a story in chapters, add chapters instead.'],
     ['chapters', 'Chapters', 'For a story in chapters. Each chapter has its own page.'],
     ['publishDate', 'Date posted', 'The Writing page shows newest first.'],
     ['externalLink', 'Link to read it', "Optional: the story somewhere else, such as AO3. Without text on the site, the Writing page's Read it opens it; with text, it's shown as \"Also on AO3\"."],
