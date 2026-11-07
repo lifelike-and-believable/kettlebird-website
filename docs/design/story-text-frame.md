@@ -1,6 +1,6 @@
 ---
 id: design-story-text-frame
-status: draft
+status: approved
 derived-from:
   - design-story-reader#layout: 97cf455208c8
   - design-story-import#mock-ups: 35f30fa64392
