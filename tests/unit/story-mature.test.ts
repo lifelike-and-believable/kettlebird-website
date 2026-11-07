@@ -16,7 +16,7 @@ describe('story-mature-content#AC-1 fields', () => {
     expect(fieldText('writtenWork', 'mature')).toEqual({
       title: 'Mature or explicit content',
       description:
-        "Tick it for sex scenes, graphic violence or other strong content. Readers are then asked before the text shows, and the story's card and page say so. Left unticked, readers go straight to the text. It covers the story and all its chapters.",
+        "Tick it for sex scenes, graphic violence or other strong content. Readers are then asked before the text shows, and the story's card and page say so. Left unticked, readers go straight to the text. It covers the story and all its chapters. Search engines are told too, so it can be left out for people searching with safe search on.",
     });
   });
 

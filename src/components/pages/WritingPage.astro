@@ -7,6 +7,7 @@ import Arrow from '../Arrow.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import type { PreviewInfo } from '../../lib/preview/load';
 import { alsoOn, cardLine, hasPage, matureTag, sortForWriting, storyPath, type Story } from '../../lib/stories/model';
+import { canonicalUrl, siteHref } from '../../lib/seo';
 
 const { stories } = Astro.props as { stories: Story[] };
 const works = sortForWriting(stories);
@@ -14,13 +15,19 @@ const works = sortForWriting(stories);
 const GENRE_COLORS = ['--color-yellow', '--color-green', '--color-orange'];
 /** In the preview route: what the preview shows and outlines (docs/specs/content-editing-preview.md). */
 const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
+// site-search AC-4 to AC-8: the canonical address and link preview.
+const pageTitle = 'Writing • Kettlebird Creations';
+const pageDescription = 'Fiction and other written works by Star Goldberg (Kettlebird).';
+const canonical = canonicalUrl(siteHref(Astro.site), '/writing');
 ---
 
 
 <BaseLayout
   previewInfo={previewInfo}
-  title="Writing • Kettlebird Creations"
-  description="Fiction and other written works by Star Goldberg (Kettlebird)."
+  title={pageTitle}
+  description={pageDescription}
+  canonical={canonical}
+  preview={{ title: pageTitle, description: pageDescription, url: canonical }}
 >
   <section class="writing-page">
     <header class="page-header">

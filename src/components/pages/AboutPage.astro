@@ -5,17 +5,26 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import type { PreviewInfo } from '../../lib/preview/load';
 import AboutContent from '../settings/AboutContent.astro';
 import type { Settings } from '../../lib/site-settings';
+import { canonicalUrl, aboutData, siteHref } from '../../lib/seo';
 
 const { settings } = Astro.props as { settings: Settings };
 /** In the preview route: what the preview shows and outlines (docs/specs/content-editing-preview.md). */
 const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
+const structuredData = aboutData(siteHref(Astro.site), settings.contact.links, settings.about.portrait ? new URL(settings.about.portrait.src, siteHref(Astro.site)).href : undefined);
+// site-search AC-4 to AC-8: the canonical address and link preview.
+const pageTitle = 'About • Kettlebird Creations';
+const pageDescription = 'About Star Goldberg — writer, illustrator, and creator behind Kettlebird Creations.';
+const canonical = canonicalUrl(siteHref(Astro.site), '/about');
 ---
 
 <BaseLayout
   previewInfo={previewInfo}
   settings={settings}
-  title="About • Kettlebird Creations"
-  description="About Star Goldberg — writer, illustrator, and creator behind Kettlebird Creations."
+  title={pageTitle}
+  description={pageDescription}
+  canonical={canonical}
+  preview={{ title: pageTitle, description: pageDescription, url: canonical }}
+  structuredData={structuredData}
 >
   <AboutContent settings={settings} />
 </BaseLayout>

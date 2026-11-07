@@ -132,7 +132,7 @@ test('comic-reader-share-and-announce#AC-5 link previews and canonical addresses
   await page.goto('/comics/kettle-tales/2/1');
   await expect(meta('og:title')).toHaveAttribute('content', 'Kettle Tales · Chapter 2, page 1');
   await expect(meta('og:description')).toHaveAttribute('content', 'Chapter 2: The Long Road, page 1 of 2. A fox and a kettle set out across the hills.');
-  await expect(meta('og:image')).toHaveAttribute('content', `${SITE}/assets/images/kblogo.png`);
+  await expect(meta('og:image')).toHaveAttribute('content', `${SITE}/assets/images/site-card.jpg`);
   await expect(meta('og:url')).toHaveAttribute('content', `${SITE}/comics/kettle-tales/2/1`);
   await expect(meta('og:type')).toHaveAttribute('content', 'article');
   await expect(meta('twitter:card')).toHaveAttribute('content', 'summary_large_image');
@@ -142,8 +142,8 @@ test('comic-reader-share-and-announce#AC-5 link previews and canonical addresses
   await expect(meta('og:title')).toHaveAttribute('content', 'Kettle Tales');
   await expect(meta('og:description')).toHaveAttribute('content', 'A fox and a kettle set out across the hills.');
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `${SITE}/comics/kettle-tales`);
-  // The logo the previews fall back on exists.
-  const logo = await page.request.get('/assets/images/kblogo.png');
+  // The site card the previews fall back on exists (site-search AC-6).
+  const logo = await page.request.get('/assets/images/site-card.jpg');
   expect(logo.status()).toBe(200);
 });
 

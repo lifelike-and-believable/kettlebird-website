@@ -13,9 +13,11 @@ import {
   STATUS_TITLES, storyTabTitle, type Story,
 } from '../../lib/stories/model';
 import { storyPreview } from '../../lib/stories/sharing';
+import { previewImageAlt, storyData } from '../../lib/seo';
 
 const { story, previewInfo } = Astro.props as { story: Story; previewInfo?: PreviewInfo };
 const preview = storyPreview(story, Astro.site!.href);
+const structuredData = storyData(Astro.site!.href, story);
 const chapters = shownChapters(story);
 const byChapter = inChapters(story);
 const start = startReadingPath(story);
@@ -30,7 +32,9 @@ const formatDate = (date?: string) =>
   title={storyTabTitle(story)}
   description={preview.description}
   canonical={preview.url}
-  preview={{ ...preview, type: 'article' }}
+  preview={{ ...preview, type: 'article', imageAlt: previewImageAlt(preview.image, story.title) }}
+  structuredData={structuredData}
+  adult={story.mature}
 >
   <div class="story">
     <header class="story__top">

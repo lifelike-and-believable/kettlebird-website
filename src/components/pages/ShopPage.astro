@@ -7,6 +7,7 @@ import type { PreviewInfo } from '../../lib/preview/load';
 import type { Product } from '../../lib/queries';
 import { shopSections } from '../../lib/shop';
 import { urlFor } from '../../lib/sanity';
+import { canonicalUrl, siteHref } from '../../lib/seo';
 
 const { products } = Astro.props as { products: Product[] };
 
@@ -14,13 +15,19 @@ const { products } = Astro.props as { products: Product[] };
 const sections = shopSections(products);
 /** In the preview route: what the preview shows and outlines (docs/specs/content-editing-preview.md). */
 const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
+// site-search AC-4 to AC-8: the canonical address and link preview.
+const pageTitle = 'Shop • Kettlebird Creations';
+const pageDescription = 'Prints, stickers, and digital goods from Kettlebird Creations. Buy on Ko-fi.';
+const canonical = canonicalUrl(siteHref(Astro.site), '/shop');
 ---
 
 
 <BaseLayout
   previewInfo={previewInfo}
-  title="Shop • Kettlebird Creations"
-  description="Prints, stickers, and digital goods from Kettlebird Creations. Buy on Ko-fi."
+  title={pageTitle}
+  description={pageDescription}
+  canonical={canonical}
+  preview={{ title: pageTitle, description: pageDescription, url: canonical }}
 >
   <section class="shop-page">
     <header class="page-header">

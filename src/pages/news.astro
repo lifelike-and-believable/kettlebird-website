@@ -6,6 +6,7 @@ import { getNewsFeed, type NewsPost } from '../lib/queries';
 import { urlFor } from '../lib/sanity';
 import { newsEntries } from '../lib/stories/sharing';
 import { getStories } from '../lib/stories/source';
+import { canonicalUrl, siteHref } from '../lib/seo';
 
 let posts: NewsPost[] = [];
 try {
@@ -31,11 +32,17 @@ function formatDate(dateStr?: string) {
     year: 'numeric', month: 'long', day: 'numeric'
   });
 }
+// site-search AC-4 to AC-8: the canonical address and link preview.
+const pageTitle = 'News • Kettlebird Creations';
+const pageDescription = 'Latest updates, new artwork, and writing from Kettlebird Creations.';
+const canonical = canonicalUrl(siteHref(Astro.site), '/news');
 ---
 
 <BaseLayout
-  title="News • Kettlebird Creations"
-  description="Latest updates, new artwork, and writing from Kettlebird Creations."
+  title={pageTitle}
+  description={pageDescription}
+  canonical={canonical}
+  preview={{ title: pageTitle, description: pageDescription, url: canonical }}
 >
   <section class="news-page">
     <header class="page-header">

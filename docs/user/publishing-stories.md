@@ -3,6 +3,7 @@ id: docs-publishing-stories
 status: approved
 summary: "Starting a story, uploading its text, and chapters."
 derived-from:
+  - design-site-search#for-the-guide: 427e5de90400
   - design-story-reader#how-it-works: d58d5d9e1b0f
   - design-story-reader#flow-star: 8f4a733f5f05
   - design-story-reader#what-star-enters: cb3b54ba7c25
@@ -111,7 +112,7 @@ To make a story in chapters a one-shot again, remove its chapters, then upload t
 
 <!-- The rule of thumb below is a starting point, close to AO3's; Star to confirm or rewrite it. -->
 
-Tick **Mature or explicit content** for what would be Mature or Explicit on AO3: sex scenes, graphic violence, strong themes. Readers are then asked before the text shows.
+Tick **Mature or explicit content** for what would be Mature or Explicit on AO3: sex scenes, graphic violence, strong themes. Readers are then asked before the text shows. Search engines are told too, so the story can be left out for people searching with safe search on.
 
 Use **Content notes** for anything else a reader may want to know first, ticked or not: some violence, swearing, a scary scene. They show exactly as you write them, before the story. Keep them short: a list of what to expect works best. With no tick and no notes, nothing shows before the story.
 

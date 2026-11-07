@@ -6,18 +6,27 @@ import type { PreviewInfo } from '../../lib/preview/load';
 import HomeArtist from '../settings/HomeArtist.astro';
 import SocialLinks from '../settings/SocialLinks.astro';
 import type { Settings } from '../../lib/site-settings';
+import { canonicalUrl, homeData, siteHref } from '../../lib/seo';
 
 const { settings } = Astro.props as { settings: Settings };
 /** In the preview route: what the preview shows and outlines (docs/specs/content-editing-preview.md). */
 const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
+const structuredData = homeData(siteHref(Astro.site), settings.contact.links);
+// site-search AC-4 to AC-8: the canonical address and link preview.
+const pageTitle = 'Kettlebird Creations • Writer & Illustrator';
+const pageDescription = 'Portfolio of Star Goldberg (they/them) - UPA-inspired illustrations, comics, and written works featuring fantasy characters and fanart.';
+const canonical = canonicalUrl(siteHref(Astro.site), '/');
 ---
 
 
 <BaseLayout
   previewInfo={previewInfo}
   settings={settings}
-  title="Kettlebird Creations • Writer & Illustrator"
-  description="Portfolio of Star Goldberg (they/them) - UPA-inspired illustrations, comics, and written works featuring fantasy characters and fanart."
+  title={pageTitle}
+  description={pageDescription}
+  canonical={canonical}
+  preview={{ title: pageTitle, description: pageDescription, url: canonical }}
+  structuredData={structuredData}
 >
   <div class="homepage">
     <!-- Main Grid -->

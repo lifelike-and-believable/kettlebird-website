@@ -9,6 +9,7 @@ derived-from:
   - design-know-when-live#layout: 42269756f09c
   - design-know-when-live#states-and-errors: 63669b250f5a
   - story-content-editing-know-when-live: 709ddfb00d36
+  - design-site-search#for-the-guide: 427e5de90400
 ---
 
 # When your change is live
@@ -60,3 +61,15 @@ You never need to wait between changes. One **Publish** is one change: a whole c
 | **Can't check the site right now** | Your connection dropped, or the site couldn't be reached. | Nothing; the editor tries again every 15 seconds and never says **Live** without seeing it. |
 
 Saved changes you haven't published are drafts. The item shows the editor's "not published" mark, the status ignores them, and fans see the last published version until you publish.
+
+## In search results and link previews
+
+Until the site moves to kettlebird.com, search engines are asked not to list it. Once it has moved, they can.
+
+- A comic or a story shows its title, its short description and its cover, both in search results and when someone shares its link on a social site or in a message. Without a cover, it shows the site's own picture: the Kettlebird logo with "Kettlebird Creations".
+- The main pages (home, Portfolio, Comics, Writing, Shop, Commissions, About and News) have titles and descriptions that are part of the site, not the editor. To change one, ask the lead.
+- A shared Portfolio link shows the newest piece in your **Featured** section.
+- The Commissions page says whether commissions are open.
+- A story with **Mature or explicit content** ticked can be left out for people searching with safe search on.
+
+Search engines and social sites check again in their own time, so a change can take days to show there. There's nothing you need to do to make them check.

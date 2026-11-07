@@ -23,9 +23,9 @@ describe('comic-reader-share-and-announce#AC-4 page not found, edges', () => {
 });
 
 describe('comic-reader-share-and-announce#AC-5 link previews, edges', () => {
-  it("falls back on the site's logo, at its address on the site", () => {
+  it("falls back on the site card, at its address on the site", () => {
     expect(pagePreview(readerPages(twoPages)[0], 'https://newsite.kettlebird.com/').image).toBe(
-      'https://newsite.kettlebird.com/assets/images/kblogo.png',
+      'https://newsite.kettlebird.com/assets/images/site-card.jpg',
     );
   });
 });

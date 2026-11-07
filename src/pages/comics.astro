@@ -3,6 +3,7 @@ import Lines from '../components/Lines.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getComicSeries } from '../lib/comics/source';
 import { pageCountOf, seriesPath, STATUS_LABELS, TYPE_LABELS } from '../lib/comics/model';
+import { canonicalUrl, siteHref } from '../lib/seo';
 
 const series = await getComicSeries();
 
@@ -11,11 +12,17 @@ const STATUS_COLORS: Record<string, string> = {
   complete: 'var(--color-yellow)',
   hiatus: 'var(--color-orange)',
 };
+// site-search AC-4 to AC-8: the canonical address and link preview.
+const pageTitle = 'Comics • Kettlebird Creations';
+const pageDescription = 'Original comics and fancomics by Star Goldberg (Kettlebird).';
+const canonical = canonicalUrl(siteHref(Astro.site), '/comics');
 ---
 
 <BaseLayout
-  title="Comics • Kettlebird Creations"
-  description="Original comics and fancomics by Star Goldberg (Kettlebird)."
+  title={pageTitle}
+  description={pageDescription}
+  canonical={canonical}
+  preview={{ title: pageTitle, description: pageDescription, url: canonical }}
 >
   <section class="comics-page">
     <header class="page-header">

@@ -5,6 +5,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import type { PreviewInfo } from '../../lib/preview/load';
 import GalleryGrid from '../GalleryGrid';
 import type { GalleryItem } from '../../lib/queries';
+import { canonicalUrl, siteHref } from '../../lib/seo';
+import { featuredPiece, portfolioPreviewImage } from '../../lib/portfolio-preview';
 
 const { items, focusId, openId, preview = false } = Astro.props as {
   items: GalleryItem[];
@@ -14,13 +16,21 @@ const { items, focusId, openId, preview = false } = Astro.props as {
 };
 /** In the preview route: what the preview shows and outlines (docs/specs/content-editing-preview.md). */
 const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
+// site-search AC-4 to AC-8: the canonical address and link preview.
+const pageTitle = 'Portfolio • Kettlebird Creations';
+const pageDescription = 'Illustrations, fanart, original characters, and commissioned work by Star Goldberg (Kettlebird).';
+const canonical = canonicalUrl(siteHref(Astro.site), '/portfolio');
+const piece = featuredPiece(items);
+const picture = piece && portfolioPreviewImage(piece);
 ---
 
 
 <BaseLayout
   previewInfo={previewInfo}
-  title="Portfolio • Kettlebird Creations"
-  description="Illustrations, fanart, original characters, and commissioned work by Star Goldberg (Kettlebird)."
+  title={pageTitle}
+  description={pageDescription}
+  canonical={canonical}
+  preview={{ title: pageTitle, description: pageDescription, url: canonical, image: picture?.image, imageAlt: picture?.alt }}
 >
   <section class="portfolio-page">
     <header class="portfolio-header">

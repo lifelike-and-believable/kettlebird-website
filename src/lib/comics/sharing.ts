@@ -38,8 +38,8 @@ export type NavigationKind = 'navigate' | 'reload' | 'back_forward' | 'prerender
 /** How long a remembered turn counts, in milliseconds. */
 export const TURN_WINDOW_MS = 30_000;
 
-/** The site's own picture, used when a series has no cover. */
-export const FALLBACK_IMAGE_PATH = '/assets/images/kblogo.png';
+/** The site card (site-search AC-6), used when a series or story has no cover. */
+export const FALLBACK_IMAGE_PATH = '/assets/images/site-card.jpg';
 
 export function absoluteUrl(site: string, path: string): string {
   return new URL(path, site).href;
