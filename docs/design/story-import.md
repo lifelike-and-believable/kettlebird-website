@@ -5,170 +5,156 @@ derived-from:
   - story-story-reader-put-a-story-on-the-site: d1c236216e8c
   - design-story-reader#what-star-enters: cb3b54ba7c25
   - design-story-reader#flow-star: 8f4a733f5f05
+  - design-story-reader#layout: 97cf455208c8
   - persona-artist#skills-and-tools: 4e28d5374320
 ---
 
-# Writing from a file: design
+# Writing from Word documents: design
 
-<!-- docs/design/story-import.md. A design amendment asked for by the lead (2026-11-07): Star can upload a
-story's or a chapter's writing from a .txt, .md, .pdf or .docx file, as an alternative to pasting it into the
-Text box. Mock-ups are in docs/design/mockups/story-import/: PNG images, mockups.html (their source, in the
-style of the story reader's editor mock-ups) and render.mjs. -->
+<!-- docs/design/story-import.md. A design amendment asked for by the lead (2026-11-07): Star puts a story's or a
+chapter's writing on the site by uploading it as a file, in place of pasting it into the Text box. The lead's
+decisions (2026-11-07): Star will always upload a .docx, one file per chapter for now; later she may upload whole
+works with chapter breaks; the documents may have pictures in them; the text box isn't needed. Mock-ups are in
+docs/design/mockups/story-import/: PNG images, mockups.html (their source, in the style of the story reader's
+mock-ups) and render.mjs. -->
 
 ## Personas
 
-- persona-artist: Star writes in documents (the story names Google Docs and Word; plain text and Markdown files are the lead's request), and today copies each story or chapter and pastes it into **Text** (design-story-reader, "Flow: Star"). A long story is slow to select and copy, and a copy can miss the end. Uploading the file puts the whole of it in at once, by the same rules as a paste where the file allows.
+- persona-artist: Star writes in Word documents (or Google Docs, downloaded as .docx), one per chapter, sometimes with her own pictures in them. Today she copies each chapter and pastes it into **Text** (design-story-reader, "Flow: Star"); a long chapter is slow to select and copy, a copy can miss the end, and a paste leaves her pictures out. With the document as the one place the writing lives, she uploads it, and to change a word she changes the document and uploads it again.
+- persona-fan: reads the chapter on the site, now with Star's pictures where she put them, described for screen readers.
 
 ## The change
 
-This amends design-story-reader, "What Star enters" and "Flow: Star": **Text** on a one-shot and on a chapter can be filled from a file as well as by pasting or typing.
+This amends design-story-reader, "What Star enters", "Flow: Star" and "Layout": a story's and a chapter's **Text** is filled by uploading a Word document, and the text can have pictures.
 
-**Upload a file** (mock-ups 1, 2 and 6):
-- Above each **Text** box, a button, **Upload a file**, with ".docx, .pdf, .md or .txt, or drop one on the box" beside it. Dropping a file on the box does the same; while one is dragged over, the box says "Drop the file here to add its text" (mock-up 2; a browser doesn't give a dragged file's name until it's dropped). The guide says to drop it on the box: dropped anywhere else, the browser may open it instead.
-- **Text**'s help text gains "or upload it from a file": "For a one-shot: paste or type the whole story, or upload it from a file. For a story in chapters, add chapters instead." On a chapter: "Paste or type the chapter, or upload it from a file."
-- On a story with chapters, where **Text** shows its note (design-story-reader, mock-up 7), there's no button: chapters are where the text goes. Text left in such a story stays visible, as now, to move into a chapter.
-- One file at a time; one file fills one **Text** box. A file can't be selected from as a paste can, so for a whole book in one file the guide gives a recipe: upload it into a one-shot's **Text**, choose **Add chapter** (which moves the text into Chapter 1), then cut each later chapter out and paste it into a new chapter. The book's own title and chapter headings come in as plain paragraphs, to delete (Decisions at review, 1, would make this a split instead).
-- While a file is read, the note says "Reading The Kettle's Song.docx…" and the button waits; nothing else can be uploaded into that box until it's done (mock-up 8).
+**Upload a Word document** (mock-ups 1, 2 and 6):
+- **Text**, on a one-shot story and on a chapter, is no longer a box to paste or type in. It has a button, **Upload a Word document**, with ".docx, or drop one below", and below it a space that says "No text yet. Drop the chapter's .docx here, or use Upload a Word document." Dropping a .docx on that space does the same (while one is dragged over it, it says "Drop the file here"; a browser doesn't give a dragged file's name until it's dropped).
+- **Text**'s help text: on a chapter, "Upload the chapter as a Word document (.docx). Its text and pictures come in as written; to change them, change the document and upload it again." On a one-shot: "For a one-shot: upload the whole story as a Word document (.docx). For a story in chapters, add chapters instead."
+- On a story with chapters, **Text** shows its note as now (design-story-reader, mock-up 7), with no button: chapters are where the text goes.
+- One document at a time, one per chapter (or per one-shot). Whole works with chapter breaks come later (Later, below).
+- While a document is read and its pictures added, the note says "Reading The Long Road 3.docx… adding picture 1 of 2." and the button waits (mock-up 2).
 
-**What comes through** is what a paste brings, by the same rules (design-story-reader, "What Star enters"; Star's guide, "Paste your text"):
-- A **scene break** comes from what the paste rules already know (`isSceneBreakLine` in `lib/stories.ts`): a line of three or more of `* ~ - # = • ·` (such as `* * *`, `***`, `---`, `~~~`), a line of only `~`, `#` or `⁂`, or a gap of two or more empty paragraphs. A document double-spaced with empty paragraphs gets a scene break between every paragraph, as a paste does; the note's count shows it.
-- **.docx** (Word, and Google Docs' File, Download, Microsoft Word): paragraphs, *italics* and **bold**, and scene breaks as above. Word's drawn horizontal line (Insert, Horizontal Line, or a paragraph with only a bottom border) is turned into a scene break by the site's own rule, since the Word reader leaves it out; the spec proves it with files from Word and from Google Docs. Line breaks within a paragraph (Shift+Enter, in poems and letters) are kept, as when pasted. Headings and tables come in as plain paragraphs of their text; footnotes come at the end as plain paragraphs; pictures, text boxes and comments are left out, and the note counts what was. Tracked changes come in as if accepted, and the note says so (see below).
-- **.md** (Markdown) is read as Markdown: paragraphs, `*italics*` or `_italics_`, `**bold**`, and scene break lines with an empty line before them (a `---` straight under a line of text makes that line a Markdown heading, which comes in as a plain paragraph). Empty lines don't add up in Markdown, so gaps don't make scene breaks. Headings come in as plain paragraphs; a line starting with `- ` or `> ` is a Markdown list or quote, and loses its `- ` or `>`; links keep their words only.
-- **.txt**: when the file has an empty line between its paragraphs, the lines of each paragraph are joined into one (so a file wrapped at a fixed width reads as paragraphs); otherwise each line is a paragraph, as a paste of plain text is. Scene breaks as above. No italics or bold: plain text has none.
-- **.txt and .md** are read as UTF-8, or as Windows' own encoding when they aren't UTF-8, so curly quotes and dashes from older Notepad files come through.
-- **.pdf**: the words only, in paragraphs worked out from the gaps between lines. Italics, bold and scene breaks don't come through; page numbers and headings repeated on each page come in with the text, and a paragraph that runs over a page is split in two (mock-up 5). A word broken across lines keeps its hyphen ("beau-tiful"), since joining would also join real compounds ("well-known"); the note says to check.
+**After a document is added** (mock-up 3):
+- **Text** shows the chapter as readers will get it, read-only: its paragraphs, italics, bold, scene breaks (as the "Scene break" bar) and pictures, in order. Above it, the button becomes **Upload a new version**, with the file's name and when it was added ("The Long Road 3.docx, added 2:38 pm").
+- A note says what came in and what didn't: "Added The Long Road 3.docx: 48 paragraphs, 3 scene breaks and 2 pictures, with its italics and bold. 1 heading came in as a plain paragraph. Check it, then publish." Its middle sentences name only what the document had: headings, tables and footnotes come in as plain paragraphs; text boxes, comments and charts are left out. With tracked changes or Google Docs suggestions: "It had tracked changes, and they came in as if accepted: check them, or accept or reject them in Word and upload it again."
+- The note has **Undo this upload**, which puts **Text** and **Pictures** back as they were before, and ✕ to close it; it stays until closed or the item is published.
+- **Pictures**, below **Text**, lists each picture in the order it appears, with a **Description** each (mock-up 3). A description is filled in from the picture's alt text in Word (Right-click, Edit Alt Text) when it has one. Until a picture has one, it has a yellow "Description" mark and "Add a description so people using screen readers know what it shows. You can still publish.", and **Pictures** says "1 needs a description", as comic pages ask for alt text (Star's guide to comics, "Describe each page"). A picture marked decorative in Word needs none, and screen readers skip it.
+- Nothing goes live until Star publishes; **Preview** shows the chapter as it will be, pictures included.
 
-**After a file is added** (mock-ups 3 and 5):
-- The text appears in the box, focus goes to the box at the end of the added text, and a note above it says what came in and what didn't:
-  - .docx: "Added The Kettle's Song.docx: 48 paragraphs and 3 scene breaks, with its italics and bold. Left out: 2 pictures. 1 heading came in as a plain paragraph. Read it through, then publish." The second and third sentences name only what the file had (pictures, text boxes, comments; headings, tables, footnotes). With tracked changes or Google Docs suggestions: "It had tracked changes, and they came in as if accepted: check them, or accept or reject them in the document first and upload it again."
-  - .md: "Added Notes.md: 12 paragraphs and 1 scene break, with its italics and bold."
-  - .txt: "Added Notes.txt: 12 paragraphs and 1 scene break."
-  - .pdf: "Added The Kettle's Song.pdf: the words only. A PDF doesn't keep italics, bold or scene breaks, so add them back. Also check where each page ended: delete page numbers and headings that repeat, and join any paragraph split in two." (no count, which would include page numbers and split halves.)
-- The note has **Undo this upload**, which puts the box back as it was before the file came in, and ✕ to close it. It stays until it's closed or the item is published, so a PDF's checklist stays while Star works through it; **Undo this upload** goes once the text has been edited after the upload. Nothing goes live until Star publishes, as with a paste; **Preview** shows it first.
+**A new version** (mock-up 4): uploading into a **Text** that has text asks first: "Replace Chapter 3's text? The Long Road 3 (edited).docx replaces its 48 paragraphs and 2 pictures. Picture descriptions you typed are kept for pictures that are still there. You can undo this until you publish." with **Cancel** (focused first, so Enter by habit changes nothing) and **Replace**. A description is kept for a picture that's the same picture (the same file in the document); a new or changed picture takes its alt text from Word, or needs one.
 
-**When the box already has text** (mock-up 4): a dialog, "This text box already has text. It has 48 paragraphs. Add The Kettle's Song (new).docx after them, or replace them with it?", with **Cancel** (focused first, so Enter by habit changes nothing), **Add at the end** and **Replace the text**. **Add at the end** adds no scene break between the old and new text; Star adds one if wanted. The note counts only what the file added. A box with nothing but empty paragraphs counts as empty, and is filled with no question.
+**What comes through** from a .docx:
+- paragraphs, *italics* and **bold**; line breaks within a paragraph (Shift+Enter, in poems and letters), as when pasted;
+- a **scene break** from what the paste rules already know (`isSceneBreakLine` in `lib/stories.ts`): a line of three or more of `* ~ - # = • ·` (such as `* * *`, `***`, `---`), a line of only `~`, `#` or `⁂`, or a gap of two or more empty paragraphs; and Word's drawn horizontal line (Insert, Horizontal Line, or an empty paragraph with only a bottom border), which the site turns into a scene break itself, since Word readers leave it out. A document double-spaced with empty paragraphs gets a scene break between every paragraph; the note's count shows it, and the guide says to use Word's line spacing instead;
+- **pictures**, where they are in the text, each on its own line between paragraphs (a picture set inside a paragraph's line moves to just after that paragraph). They're added to the editor's picture library like any other image, and shown on the site at the column's width or their own, whichever is smaller (mock-up 7). JPEG, PNG, GIF and WebP pictures come in; others (such as Word's drawings and charts) are left out, and the note says how many;
+- headings, tables (their text, row by row) and footnotes (at the end) as plain paragraphs; text boxes, comments, page headers and footers left out.
 
-**Undo**: **Undo this upload** in the note, or the editor's own undo (Ctrl+Z or ⌘Z) with focus in the box, takes the upload back out as one step; the document's history has it too.
+**When a document can't be added** (mock-up 5), a message above **Text** says why and what to do, and nothing changes; a new message replaces the last:
+- not a Word document: "Notes.pdf isn't a Word document. Upload the chapter as a .docx: in Word, File, Save As, Word Document; in Google Docs, File, Download, Microsoft Word (.docx)."
+- an older Word file (.doc): "The Long Road 3.doc is an older Word file, which can't be read here. Open it in Word or Google Docs, save or download it as .docx, and upload that."
+- a Google Drive shortcut (.gdoc): "The Long Road 3.gdoc is a link to a Google Doc, not the document. In Google Docs, choose File, Download, Microsoft Word (.docx), and upload that."
+- a password-locked document: "The Long Road 3.docx is locked with a password. Save an unlocked copy and upload that."
+- no words: "The Long Road 3.docx has no words in it, so nothing was added."
+- over 50 MB: "The Long Road 3.docx is over 50 MB, too big to read here. Make its pictures smaller in Word (Compress Pictures), or split the chapter."
+- a picture that can't be added: the chapter comes in without it, and the message says "Picture 2 in The Long Road 3.docx couldn't be added (it's a kind of picture the site can't show), so the chapter was added without it. Save it in the document as a JPEG or PNG and upload again, or publish without it."
+- anything else: "Something went wrong reading The Long Road 3.docx, and nothing was added. Try again."
+- more than one file dropped: only the first is added, and the note begins "Only one document at a time: added The Long Road 3.docx."
+- The file chooser lists .docx files only; most of these messages come from dropped files.
 
-**When a file can't be added** (mock-up 7), a message above the box says why and what to do, and the box is left as it was. A new message replaces the last one:
-- an older Word file (.doc), .rtf or .odt: "The Kettle's Song.doc is an older Word file, which can't be read here. Open it in Word or Google Docs, save or download it as .docx, and upload that." (.rtf and .odt: "…is a … file, which can't be read here…", the same steps.)
-- a Google Drive shortcut (.gdoc): "The Kettle's Song.gdoc is a link to a Google Doc, not the document. In Google Docs, choose File, Download, Microsoft Word (.docx), and upload that."
-- a Pages file: "The Kettle's Song.pages can't be read here. In Pages, choose File, Export To, Word, and upload that."
-- a web page or e-book (.html, .epub, as AO3 downloads are): "The Kettle's Song.epub can't be read here. Open it, copy the text, and paste it into the box."
-- a picture: "Fox sketch.png is a picture, not writing."
-- any other kind of file: "The Kettle's Song.xyz can't be read here. Upload a .docx, .pdf, .md or .txt file, or paste the text."
-- a PDF of scanned pages, with no words in it: "The Kettle's Song.pdf has no words in it, only pictures of pages (it was probably scanned). Upload the document it was made from instead."
-- a locked PDF: "The Kettle's Song.pdf is locked with a password. Upload an unlocked copy, or the document it was made from."
-- a file with no words: "Draft.docx has no words in it, so nothing was added."
-- a file over 20 MB: "The Kettle's Song.docx is over 20 MB, too big to read here. Save a copy without its pictures, or upload the chapter on its own." (for a PDF: "…too big to read here. Upload the document it was made from, or the chapter on its own.")
-- anything else going wrong: "Something went wrong reading Notes.md, and nothing was added. Try again, or paste the text instead."
-- more than one file dropped at once: only the first is added, and the note begins "Only one file at a time: added The Kettle's Song.docx."
-- The file chooser lists .docx, .pdf, .md and .txt files; the messages above mostly come from dropped files.
+**Where things go**: the document is read in Star's browser. Its text is kept in **Text**, its pictures in the editor's picture library; the .docx itself isn't kept, only its name and when it was added. The pictures are public on the site once the chapter is published, as comic pages are.
 
-**Where the file goes**: it's read in Star's browser and only its text is kept, in **Text**, as a paste is. The file itself isn't uploaded or stored anywhere.
+**On the site** (mock-up 7, design-story-reader "Layout"): a picture shows in the text column where it was in the document, at the column's width or its own, whichever is smaller, with space above and below, sized for the screen (phones get a smaller copy). Its description is its alt text; a decorative picture has an empty one. Pictures load as the reader reaches them, so a chapter opens as fast as before.
+
+**Stories already on the site**: their pasted text stays and shows read-only, as above. **Upload a Word document** replaces it, with the same question as a new version. Pasting and typing aren't offered any more.
+
+## Later: whole works with chapter breaks
+
+When Star uploads a whole work (lead, 2026-11-07, for later): a document whose chapters start at a Word heading, or after a page break, could fill a story's chapters, one per chapter, with titles from the headings. That's its own design when it's wanted; this one keeps to one document per chapter, and stores the text so the later split can reuse the same reading.
 
 ## Where it applies
 
 | # | Where | After |
 |---|---|---|
-| 1 | A story's and a chapter's **Text** (`sanity-studio/components/StoryTextInput.tsx`) | **Upload a file**, dropping a file on the box, reading, the replace or add dialog, the notes (a status message, with **Undo this upload** and ✕) and messages (an alert) above the box. Today the input only handles a paste; the spec confirms how Sanity Studio's editor takes text from outside it as one undo step. |
-| 2 | The paste rules (`sanity-studio/lib/story-paste.ts`, `lib/stories.ts`) | Each kind of file turned into the HTML the paste rules already read: .docx by a Word reader, .md by a Markdown reader, .txt as a paste of plain text is, .pdf by a PDF reader's words and line gaps; then the same clean-up as a paste. The readers load only when a file is chosen, so the editor isn't slower to open. |
-| 3 | **Text**'s help text (`sanity-studio/lib/stories.ts` or the schema) | "or upload it from a file". |
-| 4 | Star's guide `publishing-stories.md` | "Upload a file", and the passages that say pasting is the only way (For the guide). |
+| 1 | A story's and a chapter's **Text** (`sanity-studio/components/StoryTextInput.tsx`) | The upload button and drop space in place of the text box; reading; the read-only text; the note (a status message, with **Undo this upload** and ✕); the replace question; the messages (an alert). |
+| 2 | Reading a .docx (`sanity-studio/lib/`) | A Word reader turns the document into the HTML the paste rules read, with Word's horizontal lines as scene breaks and its pictures kept in place; then the same clean-up as a paste. The reader loads only when a document is chosen. |
+| 3 | The text's schema (`sanity-studio/schemas/objects/storyText.ts`) and **Pictures** | A picture block in the text (an image with its description and whether it's decorative); **Pictures** lists them with their descriptions, as a view of the same blocks. |
+| 4 | The site's story text (`src/lib/stories/text.ts` and the story pages) | Pictures in the column, with alt text, sizes and lazy loading. |
+| 5 | **Text**'s help texts | As above. |
+| 6 | Star's guide `publishing-stories.md` | Uploading in place of pasting throughout (For the guide). |
 
 ## Mock-ups
 
-Low-fidelity, in the style of the story reader's editor mock-ups. Source: `mockups/story-import/mockups.html`.
+Low-fidelity, in the style of the story reader's mock-ups. Source: `mockups/story-import/mockups.html`.
 
 | # | What it shows | File |
 |---|---|---|
-| 1 | A one-shot's **Text**, empty, with **Upload a file** above the box | `mockups/story-import/1-upload-button.png` |
-| 2 | A file dragged over the box: "Drop the file here to add its text" | `mockups/story-import/2-drop.png` |
-| 3 | After a Word document: the text, and the note saying what came in and what was left out, with **Undo this upload** | `mockups/story-import/3-after-docx.png` |
-| 4 | Uploading into a box that already has text: how much is there; **Cancel** (focused), **Add at the end**, **Replace the text** | `mockups/story-import/4-replace-or-add.png` |
-| 5 | After a PDF: the words, and the note saying what to check | `mockups/story-import/5-after-pdf.png` |
-| 6 | A chapter's **Text**, with the same button | `mockups/story-import/6-chapter.png` |
-| 7 | The messages when a file can't be added, each for its kind of file | `mockups/story-import/7-errors.png` |
-| 8 | Reading a long file | `mockups/story-import/8-reading.png` |
+| 1 | A new chapter: **Upload a Word document** and the drop space, no text box | `mockups/story-import/1-new-chapter.png` |
+| 2 | Reading the document and adding its pictures | `mockups/story-import/2-reading.png` |
+| 3 | After uploading: the note with **Undo this upload**; the chapter read-only, with its pictures and scene breaks; **Pictures** with their descriptions, one missing | `mockups/story-import/3-after-upload.png` |
+| 4 | **Upload a new version** on a chapter with text: **Cancel** (focused) or **Replace** | `mockups/story-import/4-new-version.png` |
+| 5 | The messages when a document can't be added | `mockups/story-import/5-errors.png` |
+| 6 | A one-shot story's **Text** | `mockups/story-import/6-one-shot.png` |
+| 7 | The chapter on a phone, with its picture | `mockups/story-import/7-chapter-phone.png` |
 
 ## States and errors
 
 | Situation | What happens |
 |---|---|
-| An empty **Text**, a file chosen or dropped | Its text fills the box; a note says what came in. |
-| **Text** with text in it | The dialog: **Add at the end**, **Replace the text**, or **Cancel** (nothing changes). |
-| A story with chapters | No **Upload a file** on the story's **Text**; each chapter has its own. |
-| .docx, .md, .txt | Paragraphs and scene breaks; italics and bold from .docx and .md. |
-| .pdf with words | The words in paragraphs; a note to add back italics, bold and scene breaks, and to check page ends. |
-| A .docx with tracked changes | In as if accepted; the note says so. |
-| A file being read | "Reading …"; the button waits. |
-| .pdf of scanned pages, a locked .pdf, another kind of file, a file with no words, over 20 MB, an error | A message above the box saying why and what to do, for that kind of file; the box unchanged. |
-| More than one file dropped | The first is added; the note says only one at a time. |
-| A mistake | **Undo this upload**, or Ctrl+Z in the box, takes it back out. |
+| A chapter or one-shot with no text | **Upload a Word document** and the drop space. |
+| A .docx chosen or dropped | Read, pictures added, then the text read-only, the note, and **Pictures**. |
+| A chapter with text, a .docx uploaded | The replace question: **Cancel** (focused) or **Replace**. |
+| A picture with alt text in Word | Its description, filled in. |
+| A picture without | The yellow mark and its line; publishing is allowed. |
+| A picture marked decorative in Word | No description needed; screen readers skip it. |
+| Tracked changes or suggestions | In as if accepted; the note says so. |
+| A picture the site can't show | Left out; the message says which. |
+| Not a .docx, a .doc, a .gdoc, locked, no words, over 50 MB, an error | A message saying why and what to do; nothing changes. |
+| A mistake | **Undo this upload** until publishing. |
+| A story with chapters | No button on the story's **Text**. |
+| A story already on the site | Its text read-only; uploading replaces it, after the question. |
 
 ## Accessibility
 
-- **Upload a file** is a button reached with Tab and opened with Enter or Space; it opens the computer's own file chooser, so it works with a keyboard and a screen reader. Dropping a file is an extra, never the only way.
-- The note after a file is added is a status message, read out by a screen reader; an error is an alert.
-- The dialog is a modal dialog with its question as its name; focus starts on **Cancel**, Escape is **Cancel**; after **Cancel** focus returns to **Upload a file**, and after adding or replacing it goes into the box, so Ctrl+Z works there.
-- "Reading …" is a status message too, and the button is disabled, not hidden, while a file is read.
-- The added text is ordinary text in the box, editable as a paste is.
+- **Upload a Word document** is a button reached with Tab and opened with Enter or Space; it opens the computer's own file chooser. Dropping a file is an extra, never the only way.
+- "Reading …" and the note after an upload are status messages; a message about a document that can't be added is an alert.
+- The replace question is a modal dialog named by its question; focus starts on **Cancel**, Escape is **Cancel**, and focus returns to the button.
+- Each picture's **Description** is a labelled field ("Description of picture 2"), and the count of missing ones is text, not only colour.
+- On the site, every picture has its description as alt text, or an empty one when decorative, and is in the reading order where Star put it.
 
 ## For the guide
 
 Star's guide `publishing-stories.md`:
-- a new section, "Upload a file", after "Paste your text":
-  - choose **Upload a file** above **Text**, or drop a file on the box (on the box: elsewhere the browser may open it); .docx, .pdf, .md or .txt;
-  - from Google Docs: File, Download, Microsoft Word (.docx), then upload that from your Downloads; .docx keeps the most;
-  - what comes through from each kind of file, and that PDFs keep only the words and need checking at page ends;
-  - before uploading a Word document with tracked changes or comments, accept or reject them;
-  - a document double-spaced with empty paragraphs gets scene breaks between them; use Word's line spacing instead, or delete the extra breaks;
-  - adding to a box that already has text: **Add at the end** or **Replace the text**; **Undo this upload**;
-  - the messages when a file can't be added;
-  - that the file itself isn't kept, only its text;
-  - a whole book in one file: upload it into a one-shot, choose **Add chapter**, then cut each later chapter into its own chapter; delete the title and chapter headings that came in as text.
-- The passages that say pasting is the only way: the intro ("You put a story up by pasting it in"), "Start a new story" step 5, "Add a chapter to a story" step 3, and the "If something goes wrong" rows "Add the chapter's text." and "Italics are missing after pasting": "paste or upload".
-- Its `summary:` ("Starting a story, pasting its text, chapters, and ratings.") becomes "…pasting or uploading its text…". It's an existing guide, so the help menu and the items' help links need nothing new (the standing decision of 2026-11-03 is for new guides).
+- "Paste your text" becomes "Upload the text": save the chapter as a .docx (from Google Docs: File, Download, Microsoft Word (.docx)); choose **Upload a Word document**, or drop the file on the space below it; what comes through; one document per chapter.
+- To change a word or a picture: change the document and upload it again (**Upload a new version**); descriptions you typed are kept for pictures that are still there.
+- Pictures: where they appear, giving each a description (in Word with Edit Alt Text, or in **Pictures**), marking decorative pictures in Word, and keeping them JPEG or PNG; and that they're public once published.
+- Before uploading: accept or reject tracked changes; use line spacing in place of empty paragraphs.
+- "Scene breaks": the ways a document marks one, including Word's horizontal line.
+- The passages that say pasting is the way: the intro, "Start a new story" step 5, "Add a chapter to a story" step 3, and the "If something goes wrong" rows.
+- Its `summary:` becomes "Starting a story, uploading its text, chapters, and ratings." It's an existing guide, so the help menu and the items' help links need nothing new (the standing decision of 2026-11-03 is for new guides).
 
 ## For the spec to check
 
-- **Upload a file** on a one-shot's and a chapter's **Text**, not on a story with chapters; the help texts.
-- Each kind of file, from sample files kept with the tests: a .docx from Word and one from Google Docs (italics, bold, Word's horizontal line both ways, `* * *`, two empty paragraphs, a Shift+Enter line break, a heading, a table, a footnote, a picture, a text box, a comment, a tracked insertion and deletion, a Google Docs suggestion); a .md (emphasis both ways, bold, `---` after an empty line and straight under text, `~~~`, headings, a `- ` and a `> ` line, a link); a .txt wrapped with empty lines between paragraphs, and one without; a .txt in Windows' own encoding with curly quotes; a .pdf with words (two pages, a paragraph over the page break, page numbers, a hyphenated word); each note's wording and counts.
-- The same text from a .docx and from pasting the same document give the same blocks.
-- The dialog: its count; Add at the end keeps the text and adds after it, with no scene break added; Replace replaces it; Cancel and Escape change nothing; focus on Cancel first, then into the box or back to the button; a box of only empty paragraphs is filled with no dialog.
-- **Undo this upload** and Ctrl+Z each take an upload out in one step; the note stays until closed or published.
-- Reading: the status, and a second file not accepted until the first is done.
-- Each message: a .doc, .rtf, .odt, .gdoc, .pages, .html, .epub, a picture, another kind; a scanned .pdf, a locked .pdf, a .docx with no words, a file over 20 MB, a broken file; the box unchanged; a new message replacing the last.
-- More than one file dropped.
-- The readers load only when a file is chosen (the editor's first load doesn't fetch them).
-- The file isn't stored: no asset is created.
+- **Upload a Word document** and the drop space in place of the text box, on a one-shot and a chapter, not on a story with chapters; the help texts; pasting not offered.
+- Sample .docx files kept with the tests, from Word and from Google Docs: italics, bold, Shift+Enter breaks, `* * *`, two empty paragraphs, Word's horizontal line both ways, a heading, a table, a footnote, a text box, a comment, tracked changes and a suggestion, pictures (JPEG, PNG, one inline in a line, one with alt text, one marked decorative, one EMF drawing); each note's wording and counts.
+- The same document pasted and uploaded give the same paragraphs, marks and scene breaks.
+- Pictures: added to the picture library, placed in order, descriptions from alt text, decorative ones needing none; the count and marks; publishing allowed without.
+- A new version: the question, Cancel and Escape changing nothing, Replace replacing, descriptions kept for unchanged pictures.
+- **Undo this upload** putting text and pictures back; the note staying until closed or published.
+- Each message, with nothing changed; one document at a time.
+- The Word reader loading only when a document is chosen.
+- The site: pictures in the column, alt text (empty when decorative), sizes and lazy loading; a chapter without pictures as before.
+- A story with pasted text: shown read-only, replaced by an upload.
 
 ## Decisions at review
 
+Settled by the lead (2026-11-07): .docx only, one file per chapter for now; pictures kept; no text box.
+
 For the lead:
-1. **A book in one file**: one file fills one text box, with the guide's recipe (upload into a one-shot, **Add chapter**, then cut chapter by chapter), as proposed; or should a file with chapter headings ("Chapter 1", "Chapter 2: Over the Ridge") be split into the story's chapters, made for Star? The walkthrough thinks one file per book is Star's likeliest case, which favours splitting.
-2. **Text already in the box**: ask, as proposed (Add at the end or Replace, with Cancel focused); or always replace?
-3. **PDFs**: the words only, with a note, as proposed; or leave PDFs out, so every upload keeps italics and scene breaks? Star always has the document a PDF was made from, except for PDFs downloaded from AO3 (offline for now), which also repeat AO3's title on every page.
+1. **No text box at all**, as proposed, so every change goes through Word; or keep a small way to fix a typo in the editor (which would then differ from the document until it's uploaded again)?
+2. **Pictures on the site**: at the column's width or their own, whichever is smaller, as proposed; or always the column's full width?
 
 ## Persona walkthrough
 
-A walkthrough for persona-artist, and persona-fan through the published text (2026-11-07), read the design against the story reader's design, Star's guide and the paste code. Nothing stopped Star on the main path (a .docx into an empty box), but it found three blocking problems, twelve misleading ones and six slower ones. Addressed above:
-- **Blocking:**
-  - a dragged file's name can't be shown before it's dropped (the box now says "Drop the file here");
-  - Word's horizontal lines are likely dropped by a Word reader (now turned into scene breaks by the site's own rule, proved in the spec);
-  - undo wouldn't reach the box with focus on the button (focus now goes into the box, and the note has **Undo this upload**).
-- **Misleading:**
-  - the .txt rule contradicted the paste rule (now one rule, with wrapped files joined);
-  - Markdown differs from a paste (now said: scene break lines need an empty line before them, gaps don't count, `- ` and `>` lines lose their marker, and the real scene break rule is given);
-  - tracked changes came in silently as accepted (now in the note and the guide);
-  - pictures and other left-out parts were silent (now counted in the note);
-  - the PDF checklist vanished at the first edit (the note now stays until closed or published);
-  - PDFs split paragraphs at page breaks and joining hyphens joins real compounds (now said, and hyphens kept);
-  - one message for every unreadable file (now one for each kind, including Google Drive shortcuts, Pages and AO3's downloads);
-  - "empty" and "without pictures" wordings, and text encodings (fixed);
-  - a book in one file was harder to upload than to paste (now a guide recipe, and Decision 1);
-  - the dialog's default destroyed text on Enter (Cancel now first, with a count);
-  - no reading state (now mock-up 8);
-  - the guide needed more than one new section (now listed);
-  - the persona didn't support the file types (softened).
-- **Slower:** a mock-up's file name; one message at a time; the notes' roles; double-spaced documents; Google Docs' download steps (all in the design or the guide).
+A walkthrough of the first version (any of .docx, .pdf, .md or .txt, into a text box), for persona-artist (2026-11-07), found three blocking problems and twelve misleading ones, all addressed then; those that still apply are carried here: a dragged file's name can't be shown; Word's horizontal lines need the site's own rule; undo after an upload; tracked changes; left-out parts counted in the note; the note staying until closed; a message for each kind of wrong file; Cancel first in the question; a reading state; the guide's other passages.
+
+This version (Word only, no text box, pictures) has yet to be walked through; its findings will be folded in here before review.
