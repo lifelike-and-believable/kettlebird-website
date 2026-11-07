@@ -1,7 +1,7 @@
 // Loads stories with their chapters at build time: from Sanity normally (published only, src/lib/sanity.ts),
 // from tests/fixtures/stories.ts when KETTLEBIRD_FIXTURES=1. Spec: docs/specs/story-reader-pages.md AC-1, AC-14.
 import { sanityClient, urlFor } from '../sanity';
-import { RATING_TITLES, STATUS_TITLES, type Rating, type Story, type StoryImage, type StoryPicture, type StoryStatus, type TextBlock } from './model';
+import { STATUS_TITLES, type Story, type StoryImage, type StoryPicture, type StoryStatus, type TextBlock } from './model';
 import { pictureWidths } from './text';
 
 interface SanityImage { asset?: { _ref: string }; hotspot?: { x: number; y: number }; dimensions?: { width: number; height: number } }
@@ -14,6 +14,8 @@ export interface SanityStory {
   excerpt?: string;
   coverImage?: SanityImage;
   genre?: string[];
+  mature?: boolean;
+  /** The old rating, until the one-off change removes it (story-mature-content AC-4). */
   rating?: string;
   contentNotes?: string;
   status?: string;
@@ -27,7 +29,7 @@ export interface SanityStory {
 const CONTENT = 'content[]{ ..., _type == "storyPicture" => { _key, _type, alt, decorative, image, "dimensions": image.asset->metadata.dimensions } }';
 
 export const STORIES_QUERY = `*[_type == "writtenWork"] {
-  _id, title, slug, excerpt, genre, rating, contentNotes, status, externalLink, publishDate, ${CONTENT},
+  _id, title, slug, excerpt, genre, mature, rating, contentNotes, status, externalLink, publishDate, ${CONTENT},
   coverImage { asset, hotspot, "dimensions": asset->metadata.dimensions },
   "chapters": *[_type == "storyChapter" && story._ref == ^._id] | order(number asc) { number, title, publishDate, ${CONTENT} }
 }`;
@@ -45,6 +47,11 @@ function cover(image: SanityImage | undefined): StoryImage | undefined {
     // Link previews: the whole cover on a paper-coloured 1200 × 630 background, as comics do.
     social: urlFor(image).ignoreImageParams().width(1200).height(630).fit('fill').bg('f5f1e8').format('jpg').url(),
   };
+}
+
+/** story-mature-content AC-4: ticked, or saved with a Mature or Explicit rating before the one-off change. */
+export function isMature(raw: { mature?: unknown; rating?: unknown }): boolean {
+  return raw.mature === true || raw.rating === 'mature' || raw.rating === 'explicit';
 }
 
 const known = <T extends string>(value: string | undefined, values: Record<T, string>): T | undefined =>
@@ -84,7 +91,7 @@ export function fromSanity(raw: SanityStory): Story {
     description: raw.excerpt,
     cover: cover(raw.coverImage),
     genres: raw.genre ?? [],
-    rating: known<Rating>(raw.rating, RATING_TITLES),
+    mature: isMature(raw),
     contentNotes: raw.contentNotes,
     status: known<StoryStatus>(raw.status, STATUS_TITLES),
     link: raw.externalLink,

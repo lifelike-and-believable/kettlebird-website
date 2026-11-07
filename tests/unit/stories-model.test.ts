@@ -1,8 +1,8 @@
 // Stories on the site: the model (docs/specs/story-reader-pages.md).
 import { describe, expect, it } from 'vitest';
 import {
-  alsoOn, beforeYouRead, cardLine, chapterLabel, chapterNav, chapterPath, chapterTabTitle, gateLine, hasPage,
-  inChapters, latestDate, ratingLine, readNewestPath, shownChapters, sortForWriting, startReadingPath, storyPath,
+  alsoOn, asksFirst, beforeYouRead, cardLine, chapterLabel, chapterNav, chapterPath, chapterTabTitle, hasPage,
+  inChapters, latestDate, matureTag, readNewestPath, shownChapters, sortForWriting, startReadingPath, storyPath,
   storyTabTitle, type Story,
 } from '../../src/lib/stories/model';
 import { FIXTURE_STORIES } from '../fixtures/stories';
@@ -13,7 +13,7 @@ const road = by('the-long-road');
 const market = by('night-market');
 const finished = by('finished-tale');
 const elsewhere = by('elsewhere-tale');
-const story = (over: Partial<Story>): Story => ({ id: 'x', title: 'X', genres: [], text: [], chapters: [], ...over });
+const story = (over: Partial<Story>): Story => ({ id: 'x', title: 'X', genres: [], mature: false, text: [], chapters: [], ...over });
 const para = { _type: 'block', children: [{ _type: 'span', text: 'Words.' }] };
 
 describe('story-reader-pages#AC-1 pages', () => {
@@ -52,11 +52,10 @@ describe('story-reader-pages#AC-2 writing page', () => {
     expect(cardLine(song)).toBeUndefined();
   });
 
-  it('names the rating, and the other site', () => {
-    expect(ratingLine('teen')).toBe('Rated Teen');
-    expect(ratingLine('explicit')).toBe('Rated Explicit');
-    expect(ratingLine('notRated')).toBeUndefined();
-    expect(ratingLine(undefined)).toBeUndefined();
+  it('tags mature or explicit content, and names the other site', () => {
+    // story-mature-content AC-5: the tag in place of "Rated …".
+    expect(matureTag(market)).toBe('Mature or explicit');
+    expect(matureTag(song)).toBeUndefined();
     expect(alsoOn('https://archiveofourown.org/works/1')).toBe('Also on AO3');
     expect(alsoOn('https://ko-fi.com/kettlebird')).toBe('Also on Ko-fi');
     expect(alsoOn('https://kettlebird.tumblr.com/post/1')).toBe('Also on Tumblr');
@@ -67,22 +66,25 @@ describe('story-reader-pages#AC-2 writing page', () => {
 });
 
 describe('story-reader-pages#AC-5 before you read', () => {
-  it('shows the rating and the notes, or nothing', () => {
-    expect(beforeYouRead(song)).toEqual({ rating: 'Rated Teen', notes: 'Mild peril.\nA very loud kettle.' });
-    expect(beforeYouRead(road)).toEqual({ rating: 'Rated General' });
-    expect(beforeYouRead(finished)).toEqual({ rating: 'Not rated', notes: 'Grief.' });
-    expect(beforeYouRead(story({ rating: 'notRated' }))).toBeNull();
+  it('shows the line and the notes, the notes alone, or nothing', () => {
+    // story-mature-content AC-6.
+    expect(beforeYouRead(market)).toEqual({ line: 'This story has mature or explicit content.', notes: 'Violence.' });
+    expect(beforeYouRead(story({ mature: true }))).toEqual({ line: 'This story has mature or explicit content.' });
+    expect(beforeYouRead(song)).toEqual({ notes: 'Mild peril.\nA very loud kettle.' });
+    expect(beforeYouRead(finished)).toEqual({ notes: 'Grief.' });
+    expect(beforeYouRead(road)).toBeNull();
     expect(beforeYouRead(story({}))).toBeNull();
     expect(beforeYouRead(story({ contentNotes: '  ' }))).toBeNull();
   });
 });
 
 describe('story-reader-pages#AC-6 gate', () => {
-  it('asks first on Mature and Explicit stories only', () => {
-    expect(gateLine(market)).toBe('This story is rated Mature.');
-    expect(gateLine(story({ rating: 'explicit' }))).toBe('This story is rated Explicit.');
-    expect(gateLine(song)).toBeUndefined();
-    expect(gateLine(finished)).toBeUndefined();
+  it('asks first on ticked stories only', () => {
+    // story-mature-content AC-7.
+    expect(asksFirst(market)).toBe(true);
+    expect(asksFirst(story({ mature: true }))).toBe(true);
+    expect(asksFirst(song)).toBe(false);
+    expect(asksFirst(finished)).toBe(false);
   });
 });
 

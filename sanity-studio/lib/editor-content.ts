@@ -93,11 +93,10 @@ export const FIELDS: Record<ItemType, Record<string, FieldText>> = {
     excerpt: { label: 'Short description', help: 'A sentence or two, shown on the Writing page and when the story is shared.' },
     coverImage: { label: 'Cover', help: 'Shown beside the story on the Writing page and at the top of its page.' },
     genre: { label: 'Genres', help: 'Shown as tags. Type one, then press Enter.' },
-    rating: {
-      label: 'Rating',
-      help: 'Shown before the story and on the Writing page. Mature and Explicit stories ask readers before showing the text.',
-      missing: 'a rating',
-      sometimes: true,
+    // story-mature-content AC-1.
+    mature: {
+      label: 'Mature or explicit content',
+      help: "Tick it for sex scenes, graphic violence or other strong content. Readers are then asked before the text shows, and the story's card and page say so. Left unticked, readers go straight to the text. It covers the story and all its chapters.",
     },
     contentNotes: { label: 'Content notes', help: 'Anything a reader should know before starting, such as "Mild violence". Shown before the story.' },
     status: { label: 'Status', help: 'For a story in chapters: In progress or Complete.' },
@@ -135,7 +134,7 @@ export const FIELDS: Record<ItemType, Record<string, FieldText>> = {
 export const HIDDEN: Record<ItemType, string[]> = {
   comicSeries: [],
   galleryItem: ['slug', 'featured'],
-  writtenWork: [],
+  writtenWork: ['rating'],
   product: ['slug', 'tags', 'inventory'],
   commissionType: [],
 };

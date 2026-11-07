@@ -1,7 +1,7 @@
 ---
 id: docs-publishing-stories
 status: approved
-summary: "Starting a story, uploading its text, chapters, and ratings."
+summary: "Starting a story, uploading its text, and chapters."
 derived-from:
   - design-story-reader#how-it-works: d58d5d9e1b0f
   - design-story-reader#flow-star: 8f4a733f5f05
@@ -10,6 +10,7 @@ derived-from:
   - design-story-reader#for-the-guide: 17bce7ae41ca
   - story-story-reader-put-a-story-on-the-site: 4b2793fd6e8a
   - design-story-import#for-the-guide: ee5c06f05bb5
+  - design-story-mature-content#for-the-guide: 276c5eafd1c5
 ---
 
 # Putting stories on the site
@@ -26,12 +27,12 @@ Everything here happens in the editor, at `kettlebird.com/studio`, in **Writing*
 
 1. In **Writing**, choose **New story**, and type the **Title**. The **Web address** fills itself in from the title: it's the end of the story's link, like `kettlebird.com/writing/the-kettles-song`. Once people have shared links, leave it alone.
 2. Add a **Short description**, a **Cover** and **Genres** if you like.
-3. Further down, choose a **Rating**: General, Teen, Mature, Explicit, or Not rated. It shows before the story and on the Writing page.
-4. If readers should know something before they start, write it in **Content notes**, such as "Mild violence". It shows under the rating.
+3. If the story has sex scenes, graphic violence or other strong content, tick **Mature or explicit content**. Readers are asked before the text shows, and the Writing page says so. Left unticked, readers go straight to the text.
+4. If readers should know something before they start, write it in **Content notes**, such as "Mild violence". It shows before the story.
 5. Then either upload the whole story into **Text** (a one-shot, below), or add chapters (further below).
 6. Choose **Publish**.
 
-A story rated Mature or Explicit asks readers before showing its text: they see your rating and notes, and **Continue to the story**. Their browser remembers once they've continued, so they aren't asked again on that browser. General, Teen and Not rated stories open straight to the text.
+A story with **Mature or explicit content** ticked asks readers before showing its text: they see "This story has mature or explicit content.", your notes, and **Continue to the story**. Their browser remembers once they've continued, for every ticked story, so they aren't asked again on that browser. Its card on the Writing page and the top of its page say **Mature or explicit**. Unticked stories open straight to the text. The box covers the story and all its chapters.
 
 ## Upload the text
 
@@ -106,23 +107,17 @@ If you started a story as a one-shot and want to split it, choose **Add chapter*
 
 To make a story in chapters a one-shot again, remove its chapters, then upload the whole story into the story's **Text**.
 
-## Ratings and content notes
+## Mature content and content notes
 
-<!-- The descriptions below are a starting point, close to AO3's; Star to confirm or rewrite them. -->
+<!-- The rule of thumb below is a starting point, close to AO3's; Star to confirm or rewrite it. -->
 
-| Rating | Use it for |
-|---|---|
-| General | Fine for anyone. |
-| Teen | Some violence, swearing or mature themes. |
-| Mature | Strong violence, sex or themes, not explicit. Readers are asked before the text shows. |
-| Explicit | Graphic sex or violence. Readers are asked before the text shows. |
-| Not rated | You'd rather not say. With no content notes, nothing shows before the story. |
+Tick **Mature or explicit content** for what would be Mature or Explicit on AO3: sex scenes, graphic violence, strong themes. Readers are then asked before the text shows.
 
-Content notes show exactly as you write them, under the rating. Keep them short: a list of what to expect works best.
+Use **Content notes** for anything else a reader may want to know first, ticked or not: some violence, swearing, a scary scene. They show exactly as you write them, before the story. Keep them short: a list of what to expect works best. With no tick and no notes, nothing shows before the story.
 
 ## Check it, then publish
 
-Choose **Preview** at the top of a story or a chapter to see its page before you publish ([See it before you publish](previewing.md)). The preview shows the text whatever the rating.
+Choose **Preview** at the top of a story or a chapter to see its page before you publish ([See it before you publish](previewing.md)). The preview shows the text, ticked or not, with the line readers will see.
 
 After **Publish**, **View on site** opens the story's page, or the chapter's.
 
@@ -145,7 +140,7 @@ Choose ⋯ next to **Publish**, then **Delete**. For a story in chapters, the ed
 | What you see | What it means | What to do |
 |---|---|---|
 | "Add a web address so readers can find this story." | A story with text or chapters needs its web address. | Fill in **Web address**, such as the title in small letters with hyphens: `the-kettles-song`. |
-| "Choose a rating, or Not rated." | A story with text or chapters needs a rating. | Choose one under **Rating**. |
+| A story with strong content opens straight to the text | **Mature or explicit content** wasn't ticked. | Tick it and publish again: the tag and the question show from the next update. |
 | "Chapter 2 already exists in this story. Choose another number." | Two chapters have the same number. | Change the number on one of them. |
 | "Add the chapter's text." | The chapter is empty. | Upload its Word document. |
 | "This story has chapters, so its text is in them. To make it a one-shot again, remove its chapters and upload the whole story here." | The story has chapters, so its own **Text** isn't used. | Upload to the chapters. To go back to a one-shot, remove the chapters, then upload the whole story into the story's **Text**. |

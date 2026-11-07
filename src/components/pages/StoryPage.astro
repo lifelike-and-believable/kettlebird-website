@@ -9,7 +9,7 @@ import StoryGate from '../stories/StoryGate.astro';
 import StoryText from '../stories/StoryText.astro';
 import type { PreviewInfo } from '../../lib/preview/load';
 import {
-  alsoOn, chapterLabel, chapterPath, inChapters, ratingLine, readNewestPath, shownChapters, startReadingPath,
+  alsoOn, chapterLabel, chapterPath, inChapters, matureTag, readNewestPath, shownChapters, startReadingPath,
   STATUS_TITLES, storyTabTitle, type Story,
 } from '../../lib/stories/model';
 import { storyPreview } from '../../lib/stories/sharing';
@@ -20,7 +20,7 @@ const chapters = shownChapters(story);
 const byChapter = inChapters(story);
 const start = startReadingPath(story);
 const newest = readNewestPath(story);
-const rating = ratingLine(story.rating);
+const mature = matureTag(story);
 const formatDate = (date?: string) =>
   date ? new Date(`${date}T12:00:00Z`).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' }) : '';
 ---
@@ -43,7 +43,7 @@ const formatDate = (date?: string) =>
       <div class="story__details">
         <ul class="story__tags" aria-label="About this story" data-part="story-tags">
           {story.genres.map((g) => <li class="tag">{g}</li>)}
-          {rating && <li class="tag tag--rating">{rating}</li>}
+          {mature && <li class="tag tag--mature">{mature}</li>}
           {byChapter && story.status && <li class="tag tag--status" data-status={story.status}>{STATUS_TITLES[story.status]}</li>}
         </ul>
         {story.description && <p class="story__description" data-part="story-description"><Lines text={story.description} /></p>}
@@ -96,7 +96,7 @@ const formatDate = (date?: string) =>
   .story__top:not(:has(.story__cover)) .story__details { grid-column: 1 / -1; }
   .story__tags { display: flex; flex-wrap: wrap; gap: 0.4rem; list-style: none; margin: 0; padding: 0; }
   .tag { font-family: 'DM Mono', monospace; font-size: 0.85rem; padding: 0.15rem 0.6rem; border: 2px solid var(--color-ink); background: var(--color-beige); }
-  .tag--rating { background: var(--color-yellow); }
+  .tag--mature { background: var(--color-yellow); }
   .tag--status { background: var(--color-green); }
   .story__description { margin: 0; }
   .story__chapters { max-width: 65ch; margin: 0 auto; }

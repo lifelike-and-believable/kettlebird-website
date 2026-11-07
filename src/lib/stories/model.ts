@@ -1,7 +1,6 @@
 // Stories on the site: the model, addresses, which stories and chapters show, and their labels.
 // Design: docs/design/story-reader.md. Spec: docs/specs/story-reader-pages.md. Pure; loading is in source.ts.
 
-export type Rating = 'general' | 'teen' | 'mature' | 'explicit' | 'notRated';
 export type StoryStatus = 'inProgress' | 'complete';
 
 /** A block of Portable Text as the editor stores a story's text (story-reader-editor AC-3). */
@@ -56,7 +55,8 @@ export interface Story {
   description?: string;
   cover?: StoryImage;
   genres: string[];
-  rating?: Rating;
+  /** Mature or explicit content (docs/specs/story-mature-content.md): asks before showing the text. */
+  mature: boolean;
   contentNotes?: string;
   status?: StoryStatus;
   /** Link to read it (elsewhere). */
@@ -68,8 +68,11 @@ export interface Story {
   chapters: StoryChapter[];
 }
 
-export const RATING_TITLES: Record<Rating, string> = { general: 'General', teen: 'Teen', mature: 'Mature', explicit: 'Explicit', notRated: 'Not rated' };
+/** story-mature-content AC-5, AC-6: one wording everywhere. */
+export const MATURE_TAG = 'Mature or explicit';
+export const MATURE_LINE = 'This story has mature or explicit content.';
 export const STATUS_TITLES: Record<StoryStatus, string> = { inProgress: 'In progress', complete: 'Complete' };
+// Kept as it was when stories had ratings, so a fan who continued then isn't asked again (story-mature-content AC-7).
 export const GATE_STORAGE_KEY = 'kb-continue-rated';
 
 const SITE_NAME = 'Kettlebird Creations';
@@ -103,22 +106,21 @@ export function chapterLabel(chapter: { number: number; title?: string }): strin
   return title ? `Chapter ${chapter.number}: ${title}` : `Chapter ${chapter.number}`;
 }
 
-/** "Rated Teen"; nothing for Not rated or no rating. */
-export function ratingLine(rating: Rating | undefined): string | undefined {
-  return rating && rating !== 'notRated' ? `Rated ${RATING_TITLES[rating]}` : undefined;
+/** story-mature-content AC-5: the tag on a ticked story's card and page. */
+export function matureTag(story: Story): string | undefined {
+  return story.mature ? MATURE_TAG : undefined;
 }
 
-/** AC-5: what the Before you read box says, or null for no box. */
-export function beforeYouRead(story: Story): { rating: string; notes?: string } | null {
+/** story-mature-content AC-6: what the Before you read box says, or null for no box. */
+export function beforeYouRead(story: Story): { line?: string; notes?: string } | null {
   const notes = story.contentNotes?.trim() ? story.contentNotes : undefined;
-  const rating = ratingLine(story.rating);
-  if (rating) return notes ? { rating, notes } : { rating };
-  return notes ? { rating: RATING_TITLES.notRated, notes } : null;
+  if (story.mature) return notes ? { line: MATURE_LINE, notes } : { line: MATURE_LINE };
+  return notes ? { notes } : null;
 }
 
-/** AC-6: Mature and Explicit stories ask first. */
-export function gateLine(story: Story): string | undefined {
-  return story.rating === 'mature' || story.rating === 'explicit' ? `This story is rated ${RATING_TITLES[story.rating]}.` : undefined;
+/** story-mature-content AC-7: ticked stories ask first. */
+export function asksFirst(story: Story): boolean {
+  return story.mature;
 }
 
 /** AC-2: "In progress · 3 chapters", for a story in chapters. */

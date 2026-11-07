@@ -39,7 +39,7 @@ export function withStoryChapterChecks(original: DocumentActionComponent): Docum
 
     const newStory = story.draft && !story.published ? story.draft : null;
     // A new story goes up with its chapter, so it needs what any story with chapters needs (AC-2).
-    const needs = newStory ? storyNeeds({ slug: slugOf(newStory), rating: newStory.rating as string | undefined, hasText: false, hasChapters: true }) : [];
+    const needs = newStory ? storyNeeds({ slug: slugOf(newStory), hasText: false, hasChapters: true }) : [];
     const blocked = needs.length > 0;
     const draft = props.draft;
     const published = props.published;

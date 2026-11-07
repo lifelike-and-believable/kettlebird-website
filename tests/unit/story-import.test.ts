@@ -665,7 +665,7 @@ describe('story-import-word#AC-19 one-shot to chapters', () => {
 describe('story-import-word#AC-27 guide', () => {
   it("says to upload, not paste, in Star's guide", () => {
     const guide = readFileSync('docs/user/publishing-stories.md', 'utf8');
-    expect(guide).toContain('summary: "Starting a story, uploading its text, chapters, and ratings."');
+    expect(guide).toContain('summary: "Starting a story, uploading its text, and chapters."');
     expect(guide).not.toMatch(/\bpast(e|ed|ing)\b/i);
     for (const heading of ['## Upload the text', '### Change something', '## Pictures', '## Scene breaks', '## Add a chapter to a story']) expect(guide).toContain(heading);
     for (const words of ['Upload a Word document', 'Upload a new version', 'Undo this upload', '**Alt text**', '**Decorative**', 'Compress Pictures', 'tracked changes']) {

@@ -6,7 +6,7 @@ import Lines from '../Lines.astro';
 import Arrow from '../Arrow.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import type { PreviewInfo } from '../../lib/preview/load';
-import { alsoOn, cardLine, hasPage, ratingLine, sortForWriting, storyPath, type Story } from '../../lib/stories/model';
+import { alsoOn, cardLine, hasPage, matureTag, sortForWriting, storyPath, type Story } from '../../lib/stories/model';
 
 const { stories } = Astro.props as { stories: Story[] };
 const works = sortForWriting(stories);
@@ -37,7 +37,7 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
       <ul class="works-list">
         {works.map((work) => {
           const page = hasPage(work) ? storyPath(work.slug!) : undefined;
-          const rating = ratingLine(work.rating);
+          const mature = matureTag(work);
           const line = cardLine(work);
           const cover = work.cover
             ? <img src={work.cover.src} srcset={work.cover.srcset} sizes="200px" alt="" class="work-card__img" width={work.cover.width} height={work.cover.height} loading="lazy" />
@@ -50,12 +50,12 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
               </div>
               <div class="work-card__body">
                 <h2 class="work-card__title">{page ? <a href={page}>{work.title}</a> : work.title}</h2>
-                {(work.genres.length > 0 || rating) && (
+                {(work.genres.length > 0 || mature) && (
                   <ul class="tag-list" aria-label="About this story">
                     {work.genres.map((g, i) => (
                       <li class="tag" style={`background: var(${GENRE_COLORS[i % GENRE_COLORS.length]})`}>{g}</li>
                     ))}
-                    {rating && <li class="tag tag--rating">{rating}</li>}
+                    {mature && <li class="tag tag--mature">{mature}</li>}
                   </ul>
                 )}
                 {line && <p class="work-card__line">{line}</p>}
@@ -83,7 +83,7 @@ const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
 <style>
   .work-card__title a { color: inherit; }
   .work-card__line { margin: 0.25rem 0; font-family: 'DM Mono', monospace; font-size: 0.9rem; }
-  .tag--rating { background: var(--color-beige); }
+  .tag--mature { background: var(--color-beige); }
   .work-card__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1rem; }
   .work-card__also { font-family: 'Nunito', sans-serif; font-weight: 700; color: var(--color-ink); }
   .work-card__cover a { display: block; height: 100%; }

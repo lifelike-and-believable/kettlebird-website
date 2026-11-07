@@ -8,7 +8,7 @@ import { storyHtml } from '../../src/lib/stories/text';
 import { FIXTURE_STORIES } from '../fixtures/stories';
 
 const para = (text = 'Words.') => ({ _type: 'block', children: [{ _type: 'span', text }] });
-const story = (over: Partial<Story>): Story => ({ id: 'x', slug: 's', title: 'X', genres: [], text: [], chapters: [], ...over });
+const story = (over: Partial<Story>): Story => ({ id: 'x', slug: 's', title: 'X', genres: [], mature: false, text: [], chapters: [], ...over });
 const road = FIXTURE_STORIES.find((s) => s.slug === 'the-long-road')!;
 
 describe('story-reader-pages#AC-2 edges', () => {

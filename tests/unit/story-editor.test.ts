@@ -9,7 +9,7 @@ import { CONTENT_TYPES, viewOnSitePath } from '../../sanity-studio/lib/live-stat
 import { isPreviewable } from '../../sanity-studio/lib/preview';
 import {
   CHAPTER_TEXT_MESSAGE, cleanPastedBlocks, deleteStoryDialog, duplicateStoryChapterMessage, firstChapterFrom, HAS_CHAPTERS_NOTE,
-  isSceneBreakLine, MOVED_NOTE, RATING_MESSAGE, RATINGS, STATUSES, storyChapterPaneTitle, storyChapterRow, storyLinkDialog, storyNeeds,
+  isSceneBreakLine, MOVED_NOTE, STATUSES, storyChapterPaneTitle, storyChapterRow, storyLinkDialog, storyNeeds,
   WEB_ADDRESS_MESSAGE, type Block,
 } from '../../sanity-studio/lib/stories';
 
@@ -22,15 +22,16 @@ const key = () => `k${n++}`;
 describe('story-reader-editor#AC-1 story fields', () => {
   it('has every field, in order, with the design\'s labels and help, and hides none', () => {
     expect(Object.keys(FIELDS.writtenWork)).toEqual([
-      'title', 'slug', 'excerpt', 'coverImage', 'genre', 'rating', 'contentNotes', 'status', 'content', 'chapters', 'publishDate', 'externalLink',
+      'title', 'slug', 'excerpt', 'coverImage', 'genre', 'mature', 'contentNotes', 'status', 'content', 'chapters', 'publishDate', 'externalLink',
     ]);
-    expect(HIDDEN.writtenWork).toEqual([]);
+    expect(HIDDEN.writtenWork).toEqual(['rating']);
     expect(fieldText('writtenWork', 'title')).toEqual({ title: 'Title (required)', description: "The story's title." });
     expect(fieldText('writtenWork', 'slug')).toEqual({
       title: 'Web address',
       description: "It's the last part of the story's link: kettlebird.com/writing/the-kettles-song. Filled in from the title. Changing it after people have shared links breaks them.",
     });
-    expect(fieldText('writtenWork', 'rating').description).toBe('Shown before the story and on the Writing page. Mature and Explicit stories ask readers before showing the text.');
+    // story-mature-content AC-1: the checkbox in place of Rating.
+    expect(fieldText('writtenWork', 'mature')).toEqual({ title: 'Mature or explicit content', description: "Tick it for sex scenes, graphic violence or other strong content. Readers are then asked before the text shows, and the story's card and page say so. Left unticked, readers go straight to the text. It covers the story and all its chapters." });
     expect(fieldText('writtenWork', 'contentNotes')).toEqual({ title: 'Content notes', description: 'Anything a reader should know before starting, such as "Mild violence". Shown before the story.' });
     expect(fieldText('writtenWork', 'status')).toEqual({ title: 'Status', description: 'For a story in chapters: In progress or Complete.' });
     expect(fieldText('writtenWork', 'content')).toEqual({ title: 'Text', description: 'For a one-shot: upload the whole story as a Word document (.docx). For a story in chapters, add chapters instead.' });
@@ -42,27 +43,25 @@ describe('story-reader-editor#AC-1 story fields', () => {
     const source = read('sanity-studio/schemas/objects/writtenWork.ts');
     const uses = [...source.matchAll(/fieldText\('writtenWork', '(\w+)'\)/g)].map((m) => m[1]);
     expect(uses).toEqual(Object.keys(FIELDS.writtenWork));
-    expect(source).not.toMatch(/hidden: true/);
+    // story-mature-content AC-1: only the old rating is hidden, until the one-off change removes it.
+    expect([...source.matchAll(/name: '(\w+)',[^}]*hidden: true/gs)].map((m) => m[1])).toEqual(['rating']);
   });
 });
 
 describe('story-reader-editor#AC-2 AC-8 story checks', () => {
-  it('offers the ratings and statuses with their stored values', () => {
-    expect(RATINGS).toEqual([
-      { title: 'General', value: 'general' }, { title: 'Teen', value: 'teen' }, { title: 'Mature', value: 'mature' },
-      { title: 'Explicit', value: 'explicit' }, { title: 'Not rated', value: 'notRated' },
-    ]);
+  it('offers the statuses with their stored values', () => {
+    // story-mature-content AC-1: no ratings to offer.
     expect(STATUSES).toEqual([{ title: 'In progress', value: 'inProgress' }, { title: 'Complete', value: 'complete' }]);
   });
 
-  it('needs a web address and a rating only once there is text or a chapter', () => {
+  it('needs a web address only once there is text or a chapter', () => {
+    // story-mature-content AC-2: no rating is asked for.
     expect(WEB_ADDRESS_MESSAGE).toBe('Add a web address so readers can find this story.');
-    expect(RATING_MESSAGE).toBe('Choose a rating, or Not rated.');
     expect(storyNeeds({ hasText: false, hasChapters: false })).toEqual([]);
-    expect(storyNeeds({ hasText: true, hasChapters: false })).toEqual([WEB_ADDRESS_MESSAGE, RATING_MESSAGE]);
-    expect(storyNeeds({ hasText: false, hasChapters: true, slug: 'the-long-road' })).toEqual([RATING_MESSAGE]);
-    expect(storyNeeds({ hasText: true, hasChapters: false, slug: '  ', rating: 'teen' })).toEqual([WEB_ADDRESS_MESSAGE]);
-    expect(storyNeeds({ hasText: true, hasChapters: false, slug: 'a', rating: 'notRated' })).toEqual([]);
+    expect(storyNeeds({ hasText: true, hasChapters: false })).toEqual([WEB_ADDRESS_MESSAGE]);
+    expect(storyNeeds({ hasText: false, hasChapters: true, slug: 'the-long-road' })).toEqual([]);
+    expect(storyNeeds({ hasText: true, hasChapters: false, slug: '  ' })).toEqual([WEB_ADDRESS_MESSAGE]);
+    expect(storyNeeds({ hasText: true, hasChapters: false, slug: 'a' })).toEqual([]);
   });
 
   it('says where the text is on a story with chapters', () => {
