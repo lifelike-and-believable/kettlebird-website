@@ -1,0 +1,12 @@
+/* The proposed frame (design-story-text-frame), option A: white, with a thin ink border.
+   content-box: the text keeps its measure (65ch); the frame's padding and border sit outside it.
+   The padding scales with the screen: 1rem at the sides on a phone, up to 3rem on a computer. */
+main .story-text {
+  box-sizing: content-box;
+  background: #fff;
+  border: 2px solid var(--color-ink);
+  padding: clamp(1.5rem, 3vw, 2.5rem) clamp(1rem, 4vw, 3rem);
+}
+/* The frame's padding is the space: no paragraph or picture margin adds to it at the ends. */
+main .story-text > :first-child { margin-top: 0; }
+main .story-text > :last-child { margin-bottom: 0; }

@@ -1,0 +1,9 @@
+/* Option B: a white sheet with a soft shadow and no border; sizes as option A. */
+main .story-text {
+  box-sizing: content-box;
+  background: #fff;
+  box-shadow: var(--shadow-paper);
+  padding: clamp(1.5rem, 3vw, 2.5rem) clamp(1rem, 4vw, 3rem);
+}
+main .story-text > :first-child { margin-top: 0; }
+main .story-text > :last-child { margin-bottom: 0; }
