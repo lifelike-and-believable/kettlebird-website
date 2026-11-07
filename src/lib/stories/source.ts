@@ -15,8 +15,6 @@ export interface SanityStory {
   coverImage?: SanityImage;
   genre?: string[];
   mature?: boolean;
-  /** The old rating, until the one-off change removes it (story-mature-content AC-4). */
-  rating?: string;
   contentNotes?: string;
   status?: string;
   externalLink?: string;
@@ -29,7 +27,7 @@ export interface SanityStory {
 const CONTENT = 'content[]{ ..., _type == "storyPicture" => { _key, _type, alt, decorative, image, "dimensions": image.asset->metadata.dimensions } }';
 
 export const STORIES_QUERY = `*[_type == "writtenWork"] {
-  _id, title, slug, excerpt, genre, mature, rating, contentNotes, status, externalLink, publishDate, ${CONTENT},
+  _id, title, slug, excerpt, genre, mature, contentNotes, status, externalLink, publishDate, ${CONTENT},
   coverImage { asset, hotspot, "dimensions": asset->metadata.dimensions },
   "chapters": *[_type == "storyChapter" && story._ref == ^._id] | order(number asc) { number, title, publishDate, ${CONTENT} }
 }`;
@@ -49,9 +47,9 @@ function cover(image: SanityImage | undefined): StoryImage | undefined {
   };
 }
 
-/** story-mature-content AC-4: ticked, or saved with a Mature or Explicit rating before the one-off change. */
-export function isMature(raw: { mature?: unknown; rating?: unknown }): boolean {
-  return raw.mature === true || raw.rating === 'mature' || raw.rating === 'explicit';
+/** story-mature-content AC-4: ticked. */
+export function isMature(raw: { mature?: unknown }): boolean {
+  return raw.mature === true;
 }
 
 const known = <T extends string>(value: string | undefined, values: Record<T, string>): T | undefined =>

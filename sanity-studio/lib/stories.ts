@@ -79,15 +79,6 @@ export function storyNeeds(story: { slug?: string; hasText: boolean; hasChapters
   return story.slug?.trim() ? [] : [WEB_ADDRESS_MESSAGE];
 }
 
-/**
- * story-mature-content AC-3: the one-off change for a story saved with a rating: tick Mature or explicit content
- * where the rating was Mature or Explicit (and it isn't ticked yet), and remove the rating. Nothing to do twice.
- */
-export function matureFromRating(doc: { mature?: unknown; rating?: unknown }): { setMature: boolean; unsetRating: boolean } {
-  const hasRating = doc.rating !== undefined;
-  const wasMature = doc.rating === 'mature' || doc.rating === 'explicit';
-  return { setMature: wasMature && doc.mature !== true, unsetRating: hasRating };
-}
 
 /** AC-6: a chapter's row in its story's list. */
 export function storyChapterRow(c: { number: number; title?: string; published: boolean }): string {

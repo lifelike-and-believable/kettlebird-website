@@ -6,7 +6,7 @@ describe('story-reader-pages#AC-1 source', () => {
   it('reads each story with its chapters, in number order', () => {
     expect(STORIES_QUERY).toMatch(/\*\[_type == "writtenWork"\]/);
     expect(STORIES_QUERY).toMatch(/"chapters": \*\[_type == "storyChapter" && story\._ref == \^\._id\] \| order\(number asc\)/);
-    for (const field of ['content', 'mature', 'rating', 'contentNotes', 'status', 'externalLink', 'publishDate', 'genre', 'excerpt']) expect(STORIES_QUERY).toContain(field);
+    for (const field of ['content', 'mature', 'contentNotes', 'status', 'externalLink', 'publishDate', 'genre', 'excerpt']) expect(STORIES_QUERY).toContain(field);
   });
 
   it('turns a stored story into the model, keeping only known values', () => {
@@ -22,7 +22,7 @@ describe('story-reader-pages#AC-1 source', () => {
       status: 'complete', link: 'https://archiveofourown.org/works/1', date: '2026-10-01', text: [para],
       chapters: [{ number: 1, title: 'One', date: '2026-10-02', text: [para] }, { number: 0, title: undefined, date: undefined, text: [] }],
     });
-    expect(fromSanity({ _id: 'b', title: 'B', slug: { current: '' }, rating: 'spicy', status: 'paused' })).toEqual({
+    expect(fromSanity({ _id: 'b', title: 'B', slug: { current: '' }, status: 'paused' })).toEqual({
       id: 'b', slug: undefined, title: 'B', description: undefined, cover: undefined, genres: [], mature: false, contentNotes: undefined,
       status: undefined, link: undefined, date: undefined, text: [], chapters: [],
     });

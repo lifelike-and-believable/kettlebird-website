@@ -134,7 +134,7 @@ export const FIELDS: Record<ItemType, Record<string, FieldText>> = {
 export const HIDDEN: Record<ItemType, string[]> = {
   comicSeries: [],
   galleryItem: ['slug', 'featured'],
-  writtenWork: ['rating'],
+  writtenWork: [],
   product: ['slug', 'tags', 'inventory'],
   commissionType: [],
 };
