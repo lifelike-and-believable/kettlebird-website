@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Writing from a file: mock-ups</title>
+<!-- Source for the PNG mock-ups beside this file (docs/design/story-import.md). Low-fidelity, in the style of
+     docs/design/mockups/story-reader/mockups.html (its styles are copied below); the editor is Sanity Studio 5.1.
+     Render: node render.mjs -->
+<style>
+  :root { --ink:#1f2328; --muted:#6b7280; --line:#d8dce2; --bg:#f6f7f9; --panel:#fff; --accent:#2563eb; --ok:#15803d; --okbg:#dcfce7;
+          --paper:#f5f1e8; --site:#2b2b2b; --green:#a8d5ba; --yellow:#f4ce6a; --orange:#f3a76b; --purple:#4a4063; --beige:#ece4d3; }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 24px; background: #e5e7eb; font: 14px/1.4 system-ui, sans-serif; color: var(--ink); }
+  .frame { width: 1280px; background: var(--bg); border: 1px solid var(--line); margin-bottom: 32px; }
+  .frame.phone { width: 390px; }
+  .frame h6 { margin: 0; padding: 6px 12px; background: #111827; color: #fff; font: 600 12px/1.6 system-ui; }
+  .site { background: var(--paper); color: var(--site); font: 16px/1.6 "DM Sans", system-ui, sans-serif; }
+  .shead { display: flex; align-items: center; justify-content: space-between; padding: 12px 24px; border-bottom: 3px solid var(--site); }
+  .shead .t { font: 800 28px/1 Nunito, system-ui; } .shead .s { font: 600 12px Nunito, system-ui; text-transform: uppercase; letter-spacing: .08em; }
+  .nav { display: flex; gap: 6px; } .nav span { font: 700 12px Nunito, system-ui; padding: 6px 10px; background: var(--green); } .nav span:nth-child(2n) { background: var(--yellow); }
+  .menu { width: 44px; height: 40px; border: 3px solid var(--site); display:flex; flex-direction:column; justify-content:center; gap:5px; padding:0 8px; } .menu i { height:3px; background: var(--site); display:block; }
+  .sfoot { background: var(--site); color: var(--paper); padding: 12px 24px; font-size: 13px; }
+  h1 { font: 800 34px/1.15 Nunito, system-ui; margin: 0 0 10px; }
+  h2 { font: 800 22px/1.2 Nunito, system-ui; margin: 18px 0 8px; }
+  .tag { display:inline-block; font: 13px "DM Mono", ui-monospace, monospace; border: 2px solid var(--site); padding: 1px 8px; margin: 0 6px 6px 0; background: var(--beige); }
+  .tag.r { background: var(--yellow); }
+  .btn { display:inline-block; font: 800 15px Nunito, system-ui; padding: 9px 18px; background: var(--yellow); border: 0; }
+  .btn.dark { background: var(--site); color: var(--paper); }
+  .link { font-weight: 700; text-decoration: underline; }
+  .cover { background: linear-gradient(135deg,#c9aa7e,#e8dcc6); border: 3px solid var(--site); display:flex; align-items:center; justify-content:center; font: 12px system-ui; color:#5b4a2e; }
+  .col { max-width: 640px; margin: 0 auto; font-size: 18px; line-height: 1.75; }
+  .col p { margin: 0 0 14px; }
+  .before { border: 3px solid var(--site); background: #fff8; padding: 10px 14px; margin: 14px 0 20px; font-size: 15px; line-height: 1.5; }
+  .before strong { font: 800 15px Nunito, system-ui; display:block; }
+  .brk { text-align: center; margin: 22px 0; font-size: 20px; letter-spacing: .3em; }
+  .chnav { display: flex; gap: 10px; justify-content: space-between; margin: 18px 0; }
+  .chnav .btn { flex: 1; text-align: center; }
+  .small .btn { padding: 5px 10px; font-size: 13px; flex: 0 0 auto; }
+  ol.ch { padding: 0; list-style: none; border-top: 2px solid var(--site); margin: 0; }
+  ol.ch li { padding: 10px 0; border-bottom: 2px solid var(--site); display:flex; justify-content: space-between; }
+  ol.ch .d { color: #6b5b3e; font-size: 14px; }
+  .anno { font: 12px system-ui; color: #fff; background: #111827; padding: 3px 8px; display: inline-block; }
+  /* editor */
+  .top { display: flex; align-items: center; justify-content: space-between; padding: 8px 16px; background: var(--panel); border-bottom: 1px solid var(--line); }
+  .status { display: inline-flex; padding: 3px 10px; border-radius: 999px; font-size: 13px; background: var(--okbg); color: var(--ok); }
+  .ebtn { padding: 6px 12px; border-radius: 4px; border: 1px solid var(--line); background: #fff; font-weight: 600; font-size: 13px; display:inline-block; }
+  .ebtn.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .cols { display: grid; grid-template-columns: 200px 260px 1fr; min-height: 640px; }
+  .cols.four { grid-template-columns: 52px 200px 1fr 1fr; }
+  .c { background: var(--panel); border-right: 1px solid var(--line); padding: 10px 12px; }
+  .c .it { padding: 7px 8px; border-radius: 4px; } .c .it.sel { background: #eef2ff; }
+  .doc { background: var(--panel); border-right: 1px solid var(--line); display:flex; flex-direction: column; }
+  .doc .hd { padding: 10px 20px; border-bottom: 1px solid var(--line); font-weight: 700; }
+  .doc .bd { padding: 14px 20px; flex: 1; }
+  .tl { display:flex; justify-content: space-between; align-items: center; margin-bottom: 12px; } .hl { color: var(--accent); font-weight: 600; text-decoration: underline; }
+  .f { margin-bottom: 12px; } .f label { font-weight: 600; display:block; } .f .h { color: var(--muted); font-size: 12px; margin: 0 0 3px; }
+  .in { border: 1px solid var(--line); border-radius: 4px; padding: 7px 10px; min-height: 32px; background:#fff; }
+  .tb { border: 1px solid var(--line); border-bottom: 0; border-radius: 4px 4px 0 0; padding: 4px 8px; background: #fafafa; display:flex; gap: 6px; }
+  .tb span { border: 1px solid var(--line); border-radius: 3px; padding: 1px 8px; font-size: 12px; background:#fff; }
+  .pt { border: 1px solid var(--line); border-radius: 0 0 4px 4px; padding: 10px; font: 14px/1.6 Georgia, serif; min-height: 160px; }
+  .pt p { margin: 0 0 8px; } .ptbrk { text-align:center; color: var(--muted); border: 1px dashed var(--line); margin: 6px 40px; font: 12px system-ui; padding: 2px; }
+  .req { color: #b91c1c; font-size: 11px; margin-left: 6px; font-weight: 400; }
+  .chl .row { display:flex; justify-content: space-between; border: 1px solid var(--line); border-radius: 4px; padding: 6px 10px; margin-bottom: 6px; }
+  .pill { font-size: 11px; padding: 1px 8px; border-radius: 999px; background: var(--okbg); color: var(--ok); } .pill.no { background: #f3f4f6; color: var(--muted); }
+  .bar { display:flex; justify-content: flex-end; padding: 10px 20px; border-top: 1px solid var(--line); }
+  .card { display:grid; grid-template-columns: 150px 1fr; gap: 16px; border: 3px solid var(--site); background: var(--beige); margin-bottom: 16px; }
+  .card .b { padding: 12px 14px 14px 0; }
+  .share { width: 520px; border: 1px solid #cfd9de; border-radius: 14px; overflow: hidden; background: #fff; font-family: system-ui; }
+  .share .img { height: 270px; background: var(--paper); display:flex; align-items:center; justify-content:center; }
+</style>
+<style>
+  .up { display:flex; align-items:center; gap:10px; margin: 0 0 6px; }
+  .up .ebtn { font-weight: 600; }
+  .drop { border: 2px dashed var(--accent); background: #eef2ff; border-radius: 4px; display:flex; align-items:center; justify-content:center; min-height: 160px; font-weight: 600; color: var(--accent); }
+  .note { background: #eef2ff; border: 1px solid #c7d2fe; border-radius: 4px; padding: 8px 10px; margin: 0 0 8px; font-size: 13px; }
+  .warn { background: #fff7d6; border: 1px solid #ecd889; border-radius: 4px; padding: 8px 10px; margin: 0 0 8px; font-size: 13px; color: #7a5b00; }
+  .err { background: #fef2f2; border: 1px solid #fecaca; border-radius: 4px; padding: 8px 10px; margin: 0 0 8px; font-size: 13px; color: #991b1b; }
+  .dlg { position:absolute; left: 50%; top: 120px; transform: translateX(-50%); width: 460px; background: #fff; border-radius: 8px; box-shadow: 0 12px 40px #0004; padding: 18px 20px; }
+  .dlg h3 { margin: 0 0 8px; font-size: 16px; } .dlg p { margin: 0 0 14px; }
+  .dlg .row { display:flex; gap: 8px; justify-content: flex-end; }
+  .shade { position:absolute; inset:0; background:#0003; }
+  .wrap { position: relative; }
+  .narrow { width: 760px; }
+</style>
+</head>
+<body>
+<div class="frame narrow" id="m1"><h6>1 · A one-shot's Text, empty: Upload a file above the box</h6><div class="top"><strong>Kettlebird Creations</strong><span><span class="ebtn">Help ▾</span> &nbsp;<span class="status">● Live · 2:41 pm</span></span></div><div class="wrap"><div class="doc"><div class="hd">The Kettle's Song</div><div class="bd"><div class="tl"><span class="hl">Help: Start a new story ↗</span><span class="ebtn">Preview</span></div><div class="f"><label>Rating<span class="req">Required</span></label><div class="in">◉ Teen</div></div><div class="f"><label>Text</label><p class="h">For a one-shot: paste or type the whole story, or upload it from a file. For a story in chapters, add chapters instead.</p><div class="up"><span class="ebtn">⤒ Upload a file</span><span class="h" style="color:var(--muted);font-size:12px">.docx, .pdf, .md or .txt, or drop one on the box</span></div><div class="tb"><span><em>I</em></span><span><strong>B</strong></span><span>⁂ Scene break</span></div><div class="pt"></div></div></div><div class="bar"><span class="ebtn primary">Publish</span></div></div></div></div>
+<div class="frame narrow" id="m2"><h6>2 · Dragging a file over the box</h6><div class="top"><strong>Kettlebird Creations</strong><span><span class="ebtn">Help ▾</span> &nbsp;<span class="status">● Live · 2:41 pm</span></span></div><div class="wrap"><div class="doc"><div class="hd">The Kettle's Song</div><div class="bd"><div class="tl"><span class="hl">Help: Start a new story ↗</span><span class="ebtn">Preview</span></div><div class="f"><label>Text</label><p class="h">For a one-shot: paste or type the whole story, or upload it from a file. For a story in chapters, add chapters instead.</p><div class="up"><span class="ebtn">⤒ Upload a file</span><span class="h" style="color:var(--muted);font-size:12px">.docx, .pdf, .md or .txt, or drop one on the box</span></div><div class="tb"><span><em>I</em></span><span><strong>B</strong></span><span>⁂ Scene break</span></div><div class="drop">Drop The Kettle's Song.docx to add its text</div></div></div><div class="bar"><span class="ebtn primary">Publish</span></div></div></div></div>
+<div class="frame narrow" id="m3"><h6>3 · After uploading a Word document: the text, and what came through</h6><div class="top"><strong>Kettlebird Creations</strong><span><span class="ebtn">Help ▾</span> &nbsp;<span class="status">● Live · 2:41 pm</span></span></div><div class="wrap"><div class="doc"><div class="hd">The Kettle's Song</div><div class="bd"><div class="tl"><span class="hl">Help: Start a new story ↗</span><span class="ebtn">Preview</span></div><div class="f"><label>Text</label><p class="h">For a one-shot: paste or type the whole story, or upload it from a file. For a story in chapters, add chapters instead.</p><div class="up"><span class="ebtn">⤒ Upload a file</span><span class="h" style="color:var(--muted);font-size:12px">.docx, .pdf, .md or .txt, or drop one on the box</span></div><div class="note" role="status">Added The Kettle's Song.docx: 48 paragraphs and 3 scene breaks. Its italics and bold came through. Read it through, then publish.</div><div class="tb"><span><em>I</em></span><span><strong>B</strong></span><span>⁂ Scene break</span></div><div class="pt"><p>The kitchen was cold when Fox came down, and the kettle sat where it always sat…</p><p>"You're early," Fox said. The kettle, <em>as ever</em>, did not answer.</p><div class="ptbrk">Scene break</div><p><strong>Morning.</strong> The kettle sang.</p></div></div></div><div class="bar"><span class="ebtn primary">Publish</span></div></div></div></div>
+<div class="frame narrow" id="m4"><h6>4 · Uploading into a box that already has text</h6><div class="top"><strong>Kettlebird Creations</strong><span><span class="ebtn">Help ▾</span> &nbsp;<span class="status">● Live · 2:41 pm</span></span></div><div class="wrap"><div class="doc"><div class="hd">The Kettle's Song</div><div class="bd"><div class="tl"><span class="hl">Help: Start a new story ↗</span><span class="ebtn">Preview</span></div><div class="f"><label>Text</label><p class="h">For a one-shot: paste or type the whole story, or upload it from a file. For a story in chapters, add chapters instead.</p><div class="up"><span class="ebtn">⤒ Upload a file</span><span class="h" style="color:var(--muted);font-size:12px">.docx, .pdf, .md or .txt, or drop one on the box</span></div><div class="tb"><span><em>I</em></span><span><strong>B</strong></span><span>⁂ Scene break</span></div><div class="pt"><p>The kitchen was cold when Fox came down, and the kettle sat where it always sat…</p><p>"You're early," Fox said. The kettle, <em>as ever</em>, did not answer.</p><div class="ptbrk">Scene break</div><p><strong>Morning.</strong> The kettle sang.</p></div></div></div><div class="bar"><span class="ebtn primary">Publish</span></div></div><div class="shade"></div><div class="dlg" role="dialog" aria-label="Text"><h3>This text box already has text</h3><p>Add The Long Road.docx after the text that's there, or replace it?</p><div class="row"><span class="ebtn">Cancel</span><span class="ebtn">Add at the end</span><span class="ebtn primary">Replace the text</span></div></div></div></div>
+<div class="frame narrow" id="m5"><h6>5 · After uploading a PDF: the words, and a note to check them</h6><div class="top"><strong>Kettlebird Creations</strong><span><span class="ebtn">Help ▾</span> &nbsp;<span class="status">● Live · 2:41 pm</span></span></div><div class="wrap"><div class="doc"><div class="hd">The Kettle's Song</div><div class="bd"><div class="tl"><span class="hl">Help: Start a new story ↗</span><span class="ebtn">Preview</span></div><div class="f"><label>Text</label><p class="h">For a one-shot: paste or type the whole story, or upload it from a file. For a story in chapters, add chapters instead.</p><div class="up"><span class="ebtn">⤒ Upload a file</span><span class="h" style="color:var(--muted);font-size:12px">.docx, .pdf, .md or .txt, or drop one on the box</span></div><div class="warn" role="status">Added The Kettle's Song.pdf: 51 paragraphs. A PDF keeps only the words: italics, bold and scene breaks don't come through, so add them back, and delete any page numbers or headings that repeat on each page.</div><div class="tb"><span><em>I</em></span><span><strong>B</strong></span><span>⁂ Scene break</span></div><div class="pt"><p>The kitchen was cold when Fox came down, and the kettle sat where it always sat…</p><p>"You're early," Fox said. The kettle, as ever, did not answer.</p><p>Morning. The kettle sang.</p><p style="color:#b45309">2</p></div></div></div><div class="bar"><span class="ebtn primary">Publish</span></div></div></div></div>
+<div class="frame narrow" id="m6"><h6>6 · A chapter's Text: the same button</h6><div class="top"><strong>Kettlebird Creations</strong><span><span class="ebtn">Help ▾</span> &nbsp;<span class="status">● Live · 2:41 pm</span></span></div><div class="wrap"><div class="doc"><div class="hd">The Long Road · Chapter 3</div><div class="bd"><div class="tl"><span class="hl">Help: Add a chapter to a story ↗</span><span class="ebtn">Preview</span></div><div class="f"><label>Chapter<span class="req">Required</span></label><div class="in">3</div></div><div class="f"><label>Text<span class="req">Required</span></label><p class="h">Paste or type the chapter, or upload it from a file.</p><div class="up"><span class="ebtn">⤒ Upload a file</span><span class="h" style="color:var(--muted);font-size:12px">.docx, .pdf, .md or .txt, or drop one on the box</span></div><div class="tb"><span><em>I</em></span><span><strong>B</strong></span><span>⁂ Scene break</span></div><div class="pt"></div></div></div><div class="bar"><span class="ebtn primary">Publish</span></div></div></div></div>
+<div class="frame narrow" id="m7"><h6>7 · What it says when a file can't be added (one at a time, above the box)</h6><div class="top"><strong>Kettlebird Creations</strong><span><span class="ebtn">Help ▾</span> &nbsp;<span class="status">● Live · 2:41 pm</span></span></div><div class="wrap"><div class="doc"><div class="hd">The Kettle's Song</div><div class="bd"><div class="tl"><span class="hl">Help: Start a new story ↗</span><span class="ebtn">Preview</span></div><div class="f"><label>Text</label><p class="h">For a one-shot: paste or type the whole story, or upload it from a file. For a story in chapters, add chapters instead.</p><div class="up"><span class="ebtn">⤒ Upload a file</span><span class="h" style="color:var(--muted);font-size:12px">.docx, .pdf, .md or .txt, or drop one on the box</span></div><div class="err" role="alert">The Kettle's Song.doc can't be read here. Open it in Word or Google Docs, save or download it as .docx, and upload that.</div><div class="err" role="alert">The Kettle's Song.pdf has no words in it, only pictures of pages (it was probably scanned). Upload the document it was made from instead.</div><div class="err" role="alert">The Kettle's Song.pdf is locked with a password. Upload an unlocked copy, or the document it was made from.</div><div class="err" role="alert">Draft.docx is empty, so nothing was added.</div><div class="err" role="alert">The Kettle's Song.docx is over 20 MB, too big to read here. If it has pictures in it, save a copy without them.</div><div class="err" role="alert">Something went wrong reading Notes.md, and nothing was added. Try again, or paste the text instead.</div><div class="tb"><span><em>I</em></span><span><strong>B</strong></span><span>⁂ Scene break</span></div><div class="pt"></div></div></div><div class="bar"><span class="ebtn primary">Publish</span></div></div></div></div>
+
+</body>
+</html>
