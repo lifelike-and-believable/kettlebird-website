@@ -1,5 +1,5 @@
 ---
-status: draft
+status: implemented
 tests-commit: 5bb80574355c4052cc92792b92c329f835d50c68
 unlocks:
   - tests/unit/story-editor.test.ts: the one-shot's Text help and the story-with-chapters note now speak of uploading a Word document (story-import-word AC-1, AC-2), as design-story-import says; pasting and typing are gone.
