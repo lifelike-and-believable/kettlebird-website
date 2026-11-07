@@ -1,6 +1,6 @@
 ---
 id: design-story-mature-content
-status: draft
+status: approved
 derived-from:
   - story-story-reader-read-a-story: 8c8226a23162
   - story-story-reader-put-a-story-on-the-site: d1c236216e8c
@@ -59,6 +59,7 @@ This amends design-story-reader, "What Star enters", "Layout", "Flow: a fan", "F
 No stories are on the site yet except one test story, which the lead will upload again (2026-11-07). Until it's gone, it still has a saved `rating` (such as `mature`), and two things would go wrong if the field were simply removed: the editor would show an "Unknown field" warning for it, and the editor's box would show unticked while the site still asks.
 
 So:
+
 - `rating` stays in the story's schema as a hidden field, so the editor shows no warning for it, and nothing shows it to Star.
 - The build includes a one-off change, run once when it ships: on every story whose `rating` is `mature` or `explicit`, it ticks **Mature or explicit content**; on every story, it removes `rating`. After it, the editor and the site agree.
 - Until it has run, the site counts a saved Mature or Explicit rating as ticked, so the gate can't drop away on the day the change ships. A saved General, Teen or Not rated shows no tag and no line.
@@ -66,45 +67,45 @@ So:
 
 ## Where it applies
 
-| # | Where | After |
-|---|---|---|
-| 1 | The story's fields (`sanity-studio/schemas/objects/writtenWork.ts`, `sanity-studio/lib/editor-content.ts`) | **Mature or explicit content** (`mature`, a boolean) in place of **Rating**, with the help text above; `rating` kept as a hidden field. |
-| 2 | The story's publish checks (`sanity-studio/lib/stories.ts`, `story-checks.ts`, `actions/publishStory.tsx`) | No rating check or message; the "still needs" box no longer lists a rating. |
-| 3 | The one-off change (a Sanity migration in `sanity-studio/migrations/`) | Ticks the box where `rating` is Mature or Explicit, and removes `rating`. |
-| 4 | The site's stories (`src/lib/stories/source.ts`, `model.ts`) | `mature` read from Sanity, with a saved Mature or Explicit rating counted as ticked; the tag, the box's line and the gate from it. `beforeYouRead` drops the "Not rated" line; `ratingLine`, `gateLine` and `RATING_TITLES` give way to the one wording. |
-| 5 | The Writing card and story page (`WritingPage.astro`, `StoryPage.astro`) | The **Mature or explicit** tag in place of "Rated …", in the same colours. |
-| 6 | **Before you read** (`BeforeYouRead.astro`) and the gate (`StoryGate.astro`) | The ticked line, with **Continue to the story** outside preview; the notes alone when unticked; no box without notes. Both files' comments say "ticked" where they say "Mature or Explicit"; the storage key is kept. |
-| 7 | Star's guide `publishing-stories.md` and the tutorials | As For the guide says. |
+| #   | Where                                                                                                      | After                                                                                                                                                                                                                                                    |
+| --- | ---------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | The story's fields (`sanity-studio/schemas/objects/writtenWork.ts`, `sanity-studio/lib/editor-content.ts`) | **Mature or explicit content** (`mature`, a boolean) in place of **Rating**, with the help text above; `rating` kept as a hidden field.                                                                                                                  |
+| 2   | The story's publish checks (`sanity-studio/lib/stories.ts`, `story-checks.ts`, `actions/publishStory.tsx`) | No rating check or message; the "still needs" box no longer lists a rating.                                                                                                                                                                              |
+| 3   | The one-off change (a Sanity migration in `sanity-studio/migrations/`)                                     | Ticks the box where `rating` is Mature or Explicit, and removes `rating`.                                                                                                                                                                                |
+| 4   | The site's stories (`src/lib/stories/source.ts`, `model.ts`)                                               | `mature` read from Sanity, with a saved Mature or Explicit rating counted as ticked; the tag, the box's line and the gate from it. `beforeYouRead` drops the "Not rated" line; `ratingLine`, `gateLine` and `RATING_TITLES` give way to the one wording. |
+| 5   | The Writing card and story page (`WritingPage.astro`, `StoryPage.astro`)                                   | The **Mature or explicit** tag in place of "Rated …", in the same colours.                                                                                                                                                                               |
+| 6   | **Before you read** (`BeforeYouRead.astro`) and the gate (`StoryGate.astro`)                               | The ticked line, with **Continue to the story** outside preview; the notes alone when unticked; no box without notes. Both files' comments say "ticked" where they say "Mature or Explicit"; the storage key is kept.                                    |
+| 7   | Star's guide `publishing-stories.md` and the tutorials                                                     | As For the guide says.                                                                                                                                                                                                                                   |
 
 ## Mock-ups
 
 Low-fidelity, in the style of the story reader's mock-ups. Source: `mockups/story-mature-content/mockups.html`.
 
-| # | What it shows | File |
-|---|---|---|
-| 1 | The editor: a story's fields, with **Mature or explicit content** in place of **Rating** | `mockups/story-mature-content/1-editor.png` |
-| 2 | The Writing page's card (beige tag) and the top of the story's page (yellow tag) | `mockups/story-mature-content/2-card-and-page.png` |
-| 3 | A ticked story's chapter on a phone: **Before you read** and **Continue to the story** | `mockups/story-mature-content/3-ticked-phone.png` |
-| 4 | An unticked story with content notes on a phone: the notes alone | `mockups/story-mature-content/4-unticked-notes-phone.png` |
-| 5 | Preview of a ticked story: the line and notes, no button, the text | `mockups/story-mature-content/5-preview-ticked.png` |
-| 6 | A ticked story in chapters on a phone: the tag, the box, the chapter list hidden | `mockups/story-mature-content/6-ticked-story-page-phone.png` |
+| #   | What it shows                                                                            | File                                                         |
+| --- | ---------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
+| 1   | The editor: a story's fields, with **Mature or explicit content** in place of **Rating** | `mockups/story-mature-content/1-editor.png`                  |
+| 2   | The Writing page's card (beige tag) and the top of the story's page (yellow tag)         | `mockups/story-mature-content/2-card-and-page.png`           |
+| 3   | A ticked story's chapter on a phone: **Before you read** and **Continue to the story**   | `mockups/story-mature-content/3-ticked-phone.png`            |
+| 4   | An unticked story with content notes on a phone: the notes alone                         | `mockups/story-mature-content/4-unticked-notes-phone.png`    |
+| 5   | Preview of a ticked story: the line and notes, no button, the text                       | `mockups/story-mature-content/5-preview-ticked.png`          |
+| 6   | A ticked story in chapters on a phone: the tag, the box, the chapter list hidden         | `mockups/story-mature-content/6-ticked-story-page-phone.png` |
 
 ## States and errors
 
-| Situation | What happens |
-|---|---|
-| A new story | The box is unticked. |
-| Ticked | The tag on the card and page; **Before you read** with the line, any notes, and **Continue to the story**. |
-| Ticked, the fan has continued on any ticked (or before, Mature or Explicit) story | The text shows straight away. |
-| Ticked, without scripts | The box, then the text under it. |
-| Unticked, with content notes | **Before you read** with the notes only. |
-| Unticked, no content notes | No box, no tag. |
-| Forgot to tick it | The story is published without a gate; ticking it and publishing again adds the tag and the question. The help text says unticked means readers aren't asked. |
-| The test story, before the one-off change | The editor shows no warning and nothing about `rating`; the site counts its Mature or Explicit rating as ticked. |
-| The test story, after it | The box is ticked where it was Mature or Explicit; `rating` is gone. |
-| Publishing a story with text or chapters | Only the web address is checked, as before; the rating check is gone. |
-| Preview, ticked | The line and notes, no button, then the text. |
-| Preview, unticked | The notes alone, if any, then the text. |
+| Situation                                                                         | What happens                                                                                                                                                  |
+| --------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| A new story                                                                       | The box is unticked.                                                                                                                                          |
+| Ticked                                                                            | The tag on the card and page; **Before you read** with the line, any notes, and **Continue to the story**.                                                    |
+| Ticked, the fan has continued on any ticked (or before, Mature or Explicit) story | The text shows straight away.                                                                                                                                 |
+| Ticked, without scripts                                                           | The box, then the text under it.                                                                                                                              |
+| Unticked, with content notes                                                      | **Before you read** with the notes only.                                                                                                                      |
+| Unticked, no content notes                                                        | No box, no tag.                                                                                                                                               |
+| Forgot to tick it                                                                 | The story is published without a gate; ticking it and publishing again adds the tag and the question. The help text says unticked means readers aren't asked. |
+| The test story, before the one-off change                                         | The editor shows no warning and nothing about `rating`; the site counts its Mature or Explicit rating as ticked.                                              |
+| The test story, after it                                                          | The box is ticked where it was Mature or Explicit; `rating` is gone.                                                                                          |
+| Publishing a story with text or chapters                                          | Only the web address is checked, as before; the rating check is gone.                                                                                         |
+| Preview, ticked                                                                   | The line and notes, no button, then the text.                                                                                                                 |
+| Preview, unticked                                                                 | The notes alone, if any, then the text.                                                                                                                       |
 
 ## Accessibility
 
