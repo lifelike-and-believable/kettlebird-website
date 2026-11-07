@@ -9,7 +9,7 @@ derived-from:
   - design-story-reader#what-star-enters: cb3b54ba7c25
   - design-story-reader#states-and-errors: 0d1c96946295
   - design-story-reader#for-the-guide: 17bce7ae41ca
-  - story-story-reader-put-a-story-on-the-site: 4b2793fd6e8a
+  - story-story-reader-put-a-story-on-the-site: 049a7f7ffdc7
   - design-story-import#for-the-guide: ee5c06f05bb5
   - design-story-mature-content#for-the-guide: 276c5eafd1c5
 ---

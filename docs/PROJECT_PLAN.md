@@ -51,7 +51,7 @@ The look of the site is recorded in `docs/STYLE_GUIDE.md` and in the Kettlebird 
 The newest changes are to stories:
 - **Writing from Word documents** (design-story-import, docs/specs/story-import-word.md):
   - Star uploads each chapter, or a one-shot, as a .docx in place of pasting; there's no text box.
-  - Italics, bold, scene breaks and her pictures come through, and a note says what came in and what didn't.
+  - Italics, bold, scene breaks and their pictures come through, and a note says what came in and what didn't.
   - Each picture takes alt text from Word or the editor, or is marked decorative.
   - A new version asks before replacing the text, and an upload can be undone until it's published.
   - Pictures show in the story's column, at its width or their own, and open full screen.
