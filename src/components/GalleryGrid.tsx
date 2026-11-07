@@ -14,8 +14,8 @@ const CATEGORY_LABELS: Record<string, string> = {
   wip: 'Work in Progress',
 };
 
-// Preferred display order for folders
-const FOLDER_ORDER = ['original', 'fanart', 'commission', 'featured', 'wip'];
+// Preferred display order for folders: Featured is always the top-most carousel
+const FOLDER_ORDER = ['featured', 'original', 'fanart', 'commission', 'wip'];
 
 type DisplayItem = GalleryItem;
 
