@@ -12,6 +12,7 @@ import { ThingsToFixBadge } from './badges/thingsToFix';
 import { FixSummary } from './components/FixSummary';
 import { isSettingsType, SETTINGS_ACTIONS } from './lib/site-settings';
 import { withChapterChecks } from './actions/publishChapter';
+import { withUnusedPictures } from './actions/unusedPictures';
 import { CHAPTER_TEMPLATE, STORY_CHAPTER_TEMPLATE } from './components/ChaptersList';
 import { EMPTY_LIST, isItemType, SECTIONS } from './lib/editor-content';
 import { signInProviders, STUDIO_TITLE } from './lib/studio-settings';
@@ -117,6 +118,11 @@ export default defineConfig({
       let actions = prev;
       if (context.schemaType === 'comicChapter') actions = actions.map((action) => (action.action === 'publish' ? withChapterChecks(action) : action));
       if (context.schemaType === 'comicSeries') actions = actions.map((action) => (action.action === 'delete' ? withChapters(action) : action));
+      // Pictures from Word documents that nothing uses are removed on publish and delete (story-import-word AC-18).
+      // First, so the warnings' dialogs wrap it and nothing is removed if Star cancels.
+      if (context.schemaType === 'storyChapter' || context.schemaType === 'writtenWork') {
+        actions = actions.map((action) => (action.action === 'publish' || action.action === 'delete' ? withUnusedPictures(action) : action));
+      }
       // Stories and their chapters (story-reader-editor AC-9, AC-10).
       if (context.schemaType === 'storyChapter') actions = actions.map((action) => (action.action === 'publish' ? withStoryChapterChecks(action) : action));
       if (context.schemaType === 'writtenWork') {

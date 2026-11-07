@@ -16,7 +16,7 @@ export const STATUSES = [
 export const WEB_ADDRESS_MESSAGE = 'Add a web address so readers can find this story.';
 export const RATING_MESSAGE = 'Choose a rating, or Not rated.';
 export const CHAPTER_TEXT_MESSAGE = "Add the chapter's text.";
-export const HAS_CHAPTERS_NOTE = 'This story has chapters, so its text is in them. To make it a one-shot again, move the text back and remove the chapters.';
+export const HAS_CHAPTERS_NOTE = 'This story has chapters, so its text is in them. To make it a one-shot again, remove its chapters and upload the whole story here.';
 export const MOVED_NOTE = "Your story's text is now in Chapter 1.";
 export { nextChapterNumber };
 
@@ -44,6 +44,7 @@ const isEmpty = (block: Block) => block._type === 'block' && textOf(block).trim(
 
 /** AC-4: pasted blocks, cleaned: scene breaks made, single empty lines dropped, only paragraphs kept. */
 export function cleanPastedBlocks(blocks: Block[], key: () => string = randomKey): Block[] {
+  // Pictures are kept: only the Word reader makes them (story-import-word AC-8).
   const out: Block[] = [];
   let empties = 0;
   const sceneBreak = () => {
@@ -58,6 +59,10 @@ export function cleanPastedBlocks(blocks: Block[], key: () => string = randomKey
     empties = 0;
     if (block._type === 'sceneBreak' || (block._type === 'block' && isSceneBreakLine(textOf(block)))) {
       sceneBreak();
+      continue;
+    }
+    if (block._type === 'storyPicture') {
+      out.push({ ...block, _key: block._key ?? key() });
       continue;
     }
     if (block._type !== 'block') continue;
@@ -101,9 +106,16 @@ export function storyChapterPaneTitle(story: string | undefined, chapter: { numb
   return story ? `${story} · ${label}` : label;
 }
 
-/** AC-7: Add chapter on a one-shot: Chapter 1 takes the story's text, and the story's is emptied. */
-export function firstChapterFrom(storyText: Block[] | undefined): { number: number; content?: Block[]; moved: boolean } {
-  return storyText?.length ? { number: 1, content: storyText, moved: true } : { number: 1, moved: false };
+/**
+ * AC-7: Add chapter on a one-shot: Chapter 1 takes the story's text, and the story's is emptied; with its upload line
+ * (story-import-word AC-19).
+ */
+export function firstChapterFrom<U>(
+  storyText: Block[] | undefined,
+  upload?: U,
+): { number: number; content?: Block[]; moved: boolean; textUpload?: U } {
+  if (!storyText?.length) return { number: 1, moved: false };
+  return upload ? { number: 1, content: storyText, moved: true, textUpload: upload } : { number: 1, content: storyText, moved: true };
 }
 
 /** AC-9: the shared-link warning before publishing, or null. */

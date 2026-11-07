@@ -2,7 +2,7 @@
 // question, the upload line and undo. Criteria: docs/specs/story-import-word.md. The sample documents are made by
 // tests/fixtures/word/make-docx.mjs.
 import { readFileSync } from 'node:fs';
-import { JSDOM } from 'jsdom';
+import { createRequire } from 'node:module';
 import { describe, expect, it } from 'vitest';
 import { pasteHtml } from '../../sanity-studio/lib/story-paste';
 import { firstChapterFrom, HAS_CHAPTERS_NOTE, type Block } from '../../sanity-studio/lib/stories';
@@ -45,6 +45,8 @@ import { readDocx, WordProblem } from '../../sanity-studio/lib/word/read-docx';
 import { STORY_PICTURE_TYPE, TEXT_UPLOAD_FIELD } from '../../sanity-studio/lib/word/schema';
 import { readWordDocument, type WordDocument } from '../../sanity-studio/lib/word/upload';
 
+// jsdom has no types here, as in story-editor.test.ts.
+const { JSDOM } = createRequire(import.meta.url)('jsdom') as { JSDOM: new (html: string) => { window: Window & typeof globalThis } };
 const window = new JSDOM('').window;
 const parseXml = (xml: string) => new window.DOMParser().parseFromString(xml, 'application/xml');
 const parseHtml = (html: string) => new JSDOM(html).window.document;
@@ -435,7 +437,7 @@ describe('story-import-word#AC-11 the note', () => {
       '3 pictures in tables were left out.',
       '1 drawing or chart made in Word was left out.',
     ]);
-    const pic = { data: new Uint8Array(), type: 'image/png', wordAlt: undefined, alt: undefined, fromWord: false, decorative: false, cropped: false, moved: true };
+    const pic = { data: new Uint8Array(), type: 'image/png' as const, wordAlt: undefined, alt: undefined, fromWord: false, decorative: false, cropped: false, moved: true };
     expect(note({ pictures: [pic, pic] })[1]).toBe('2 pictures that sat beside the text now sit below their paragraphs.');
     expect(note({ failed: [{ number: 2, reason: 'format' }] })[1]).toBe(
       "Picture 2 in a.docx couldn't be added (it's in a format the site can't show), so the chapter was added without it. Save it in the document as a picture (JPEG or PNG) and upload again, or publish without it.",
@@ -651,5 +653,17 @@ describe('story-import-word#AC-19 one-shot to chapters', () => {
     expect(firstChapterFrom(text, upload)).toEqual({ number: 1, content: text, moved: true, textUpload: upload });
     expect(firstChapterFrom(text)).toEqual({ number: 1, content: text, moved: true });
     expect(firstChapterFrom([], upload)).toEqual({ number: 1, moved: false });
+  });
+});
+
+describe('story-import-word#AC-27 guide', () => {
+  it("says to upload, not paste, in Star's guide", () => {
+    const guide = readFileSync('docs/user/publishing-stories.md', 'utf8');
+    expect(guide).toContain('summary: "Starting a story, uploading its text, chapters, and ratings."');
+    expect(guide).not.toMatch(/\bpast(e|ed|ing)\b/i);
+    for (const heading of ['## Upload the text', '### Change something', '## Pictures', '## Scene breaks', '## Add a chapter to a story']) expect(guide).toContain(heading);
+    for (const words of ['Upload a Word document', 'Upload a new version', 'Undo this upload', '**Alt text**', '**Decorative**', 'Compress Pictures', 'tracked changes']) {
+      expect(guide, words).toContain(words);
+    }
   });
 });

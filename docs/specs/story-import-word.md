@@ -4,6 +4,13 @@ tests-commit: 5bb80574355c4052cc92792b92c329f835d50c68
 unlocks:
   - tests/unit/story-editor.test.ts: the one-shot's Text help and the story-with-chapters note now speak of uploading a Word document (story-import-word AC-1, AC-2), as design-story-import says; pasting and typing are gone.
   - tests/unit/organised-editor.test.ts: the one-shot's Text help, as above.
+  - tests/unit/organised-editor.test.ts: "no developer words" now lets "Word document" through, as the design's help text says it (story-import-word AC-1): it's Star's word for her files, not the editor's "document". The criterion is unchanged.
+  - tests/e2e/story-pictures.spec.ts: AC-26 looked for the full-screen view by a `role` attribute, which a `dialog` element has without one; it now finds the `dialog`, once it shows. The criterion is unchanged.
+  - tests/fixtures/word/make-docx.mjs, word-chapter.docx, edited.docx: the maker escaped a table cell's picture as text, and wrote line breaks in alt text as spaces where Word writes `&#xA;`; both now as Word saves them. Four short paragraphs were added near the end of the Word sample, so its scene breaks (4 in 20 paragraphs) are below the "a lot of scene breaks" warning, as the test expected. The criteria are unchanged.
+  - tests/unit/story-import.test.ts: jsdom is loaded as story-editor.test.ts loads it, as it has no types here, and a sample picture's type is typed as the value it is, which the type check asks for. The criteria are unchanged.
+  - tests/unit/story-import.test.ts: AC-27's "guide" check was missing from the tests commit; added. The criterion is unchanged.
+  - tests/unit/help.test.ts: the guide's summary is now "Starting a story, uploading its text, chapters, and ratings." (story-import-word AC-27, the design's For the guide). The criterion is unchanged.
+  - tests/unit/story-editor-edges.test.ts: the paste rules' schema now has the picture block too (story-import-word AC-3, AC-8), as the editor's Text type does.
 ---
 
 # Stories: writing from Word documents

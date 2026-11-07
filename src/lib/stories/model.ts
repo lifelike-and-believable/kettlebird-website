@@ -12,6 +12,26 @@ export interface TextBlock {
   children?: { _type: string; text?: string; marks?: string[] }[];
 }
 
+/**
+ * A picture from a Word document in a story's text (docs/specs/story-import-word.md AC-21), as the site uses it.
+ * It's a block like the others, so a text is still a list of blocks.
+ */
+export interface StoryPicture extends TextBlock {
+  _type: 'storyPicture';
+  src: string;
+  srcset?: string;
+  width: number;
+  height: number;
+  alt?: string;
+  decorative?: boolean;
+}
+
+/** AC-21: its alt text: Alt text when there is some, empty when decorative, else "Picture". */
+export function pictureAlt(picture: { alt?: string; decorative?: boolean }): string {
+  if (picture.decorative) return '';
+  return picture.alt?.trim() || 'Picture';
+}
+
 export interface StoryImage {
   src: string;
   srcset?: string;

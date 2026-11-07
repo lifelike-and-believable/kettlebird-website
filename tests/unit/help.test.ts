@@ -22,7 +22,7 @@ describe('content-editing-help-links#AC-1 guides', () => {
       ["Getting started with your site's editor", 'Your invitation, signing in, and finding your way around.'],
       ['Editing your art, writing, shop and commissions', 'Adding, changing and removing pieces, stories, products and commission types.'],
       ['Publishing comic pages and chapters', 'Starting a comic, adding chapters and pages, and publishing them.'],
-      ['Putting stories on the site', 'Starting a story, pasting its text, chapters, and ratings.'],
+      ['Putting stories on the site', 'Starting a story, uploading its text, chapters, and ratings.'],
       ['Commissions, your about page, the home page and your links', "Opening and closing commissions, and the text on your site's pages."],
       ['See it before you publish', 'Previewing a change on its page, on a computer and a phone.'],
       ['When your change is live', 'What the status at the top right means after you publish.'],

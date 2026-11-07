@@ -228,7 +228,8 @@ describe('content-editing-organised-editor#AC-4 no developer words', () => {
       EMPTY_LIST, PIECE_ALT_TEXT_WARNING,
     ];
     expect(DEVELOPER_WORDS).toEqual(['slug', 'reference', 'document', 'schema', 'array', 'category', 'boolean']);
-    const hits = texts.filter((t) => DEVELOPER_WORDS.some((w) => new RegExp(`\\b${w}`, 'i').test(t)));
+    // "Word document" is Star's word for her files (story-import-word AC-1), not the editor's.
+    const hits = texts.map((t) => t.replace(/Word document/g, '')).filter((t) => DEVELOPER_WORDS.some((w) => new RegExp(`\\b${w}`, 'i').test(t)));
     expect(hits).toEqual([]);
   });
 });

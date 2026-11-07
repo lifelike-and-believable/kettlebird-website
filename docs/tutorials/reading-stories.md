@@ -3,8 +3,8 @@ id: tutorial-reading-stories
 status: draft
 runner: manual
 derived-from:
-  - docs-publishing-stories#start-a-new-story: 603c472bb295
-  - docs-publishing-stories#add-a-chapter-to-a-story: 718c0986048b
+  - docs-publishing-stories#start-a-new-story: 49627f0d95e9
+  - docs-publishing-stories#add-a-chapter-to-a-story: 656607209cf4
   - docs-publishing-stories#ratings-and-content-notes: 2ccf95de2e23
   - docs-publishing-stories#check-it-then-publish: 55dbde038c42
 ---

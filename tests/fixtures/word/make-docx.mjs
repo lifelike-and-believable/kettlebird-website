@@ -23,7 +23,8 @@ const NS = [
   'xmlns:adec="http://schemas.microsoft.com/office/drawing/2017/decorative"',
 ].join(' ');
 
-const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+// Word writes line breaks in attributes (alt text) as &#xA;.
+const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/\n/g, '&#xA;');
 
 // Runs and paragraphs.
 const t = (text) => `<w:t xml:space="preserve">${esc(text)}</w:t>`;
@@ -73,7 +74,7 @@ const chart = (rel) =>
   `<w:r><w:drawing><wp:inline><wp:extent cx="3000000" cy="2000000"/>${docPr({ name: 'Chart 1' })}<a:graphic><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/chart"><c:chart r:id="${rel}"/></a:graphicData></a:graphic></wp:inline></w:drawing></w:r>`;
 const table = (rows) =>
   `<w:tbl><w:tblPr><w:tblStyle w:val="TableGrid"/></w:tblPr>${rows
-    .map((cells) => `<w:tr>${cells.map((c) => `<w:tc>${typeof c === 'string' ? para(run(c)) : c}</w:tc>`).join('')}</w:tr>`)
+    .map((cells) => `<w:tr>${cells.map((c) => `<w:tc>${typeof c === 'string' ? para(run(c)) : c.xml}</w:tc>`).join('')}</w:tr>`)
     .join('')}</w:tbl>`;
 const footnoteRef = (id) => `<w:r><w:rPr><w:rStyle w:val="FootnoteReference"/></w:rPr><w:footnoteReference w:id="${id}"/></w:r>`;
 const endnoteRef = (id) => `<w:r><w:rPr><w:rStyle w:val="EndnoteReference"/></w:rPr><w:endnoteReference w:id="${id}"/></w:r>`;
@@ -163,7 +164,7 @@ const wordBody = (changes = {}) => [
   table([
     ['Day', 'Miles'],
     ['Monday', '12'],
-    [para(inline('rIdImg7', { alt: 'A table picture' })), 'x'],
+    [{ xml: para(inline('rIdImg7', { alt: 'A table picture' })) }, 'x'],
   ]),
   para(run('She looked back at the valley.') + textBox(para(run('A note in a box')) + para(inline('rIdImg7', { alt: 'In a box' })))),
   para('<w:commentRangeStart w:id="0"/>' + run('A sentence with a comment.') + '<w:commentRangeEnd w:id="0"/><w:r><w:commentReference w:id="0"/></w:r>'),

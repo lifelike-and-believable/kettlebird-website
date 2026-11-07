@@ -88,6 +88,7 @@ test('story-import-word#AC-26 accessibility', async ({ page }) => {
   }
   await page.goto(CHAPTER);
   await map(page).click();
-  const results = await new AxeBuilder({ page }).include('[role="dialog"]').analyze();
+  await expect(page.getByRole('dialog', { name: 'A map of the valley' })).toBeVisible();
+  const results = await new AxeBuilder({ page }).include('dialog').analyze();
   expect(results.violations.filter((v) => v.impact === 'serious' || v.impact === 'critical').map((v) => v.id)).toEqual([]);
 });

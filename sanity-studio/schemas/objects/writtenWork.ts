@@ -4,6 +4,7 @@ import { ChaptersList } from '../../components/ChaptersList';
 import { StoryTextInput } from '../../components/StoryTextInput';
 import { fieldText, ITEM_NAMES, listDetail, requiredMessage } from '../../lib/editor-content';
 import { storyNeedsIn } from '../../lib/story-checks';
+import { TEXT_UPLOAD_FIELD } from '../../lib/word/schema';
 import { RATING_MESSAGE, RATINGS, STATUSES, WEB_ADDRESS_MESSAGE } from '../../lib/stories';
 
 // A story (Writing). Labels and help: design-story-reader (What Star enters);
@@ -75,6 +76,8 @@ export default defineType({
       // AC-8: replaced by a note once the story has chapters.
       components: { input: StoryTextInput },
     }),
+    // The last upload: its file, when, the note and what Undo puts back (story-import-word AC-3).
+    defineField(TEXT_UPLOAD_FIELD),
     // Not stored: the story's chapters and Add chapter (AC-6, AC-7).
     defineField({
       name: 'chapters',

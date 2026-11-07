@@ -101,7 +101,7 @@ export const FIELDS: Record<ItemType, Record<string, FieldText>> = {
     },
     contentNotes: { label: 'Content notes', help: 'Anything a reader should know before starting, such as "Mild violence". Shown before the story.' },
     status: { label: 'Status', help: 'For a story in chapters: In progress or Complete.' },
-    content: { label: 'Text', help: 'For a one-shot: paste or type the whole story. For a story in chapters, add chapters instead.' },
+    content: { label: 'Text', help: 'For a one-shot: upload the whole story as a Word document (.docx). For a story in chapters, add chapters instead.' },
     chapters: { label: 'Chapters', help: 'For a story in chapters. Each chapter has its own page.' },
     publishDate: { label: 'Date posted', help: 'The Writing page shows newest first.' },
     externalLink: {

@@ -46,6 +46,7 @@ export function ChaptersList(_props: StringInputProps) {
   const type = (useFormValue(['_type']) as string | undefined) === 'writtenWork' ? 'writtenWork' : 'comicSeries';
   const kind = KINDS[type];
   const storyText = useFormValue(['content']) as Block[] | undefined;
+  const storyUpload = useFormValue(['textUpload']) as Record<string, unknown> | undefined;
   const parent = id ? publishedId(id) : undefined;
   const client = useClient({ apiVersion: '2024-01-01' });
   const ops = useDocumentOperation(parent ?? 'none', type);
@@ -78,7 +79,7 @@ export function ChaptersList(_props: StringInputProps) {
   const list = [...chapters.values()].sort((a, b) => a.number - b.number);
   const next = nextChapterNumber(list.map((c) => c.number));
   // AC-7: a one-shot's Add chapter moves its text into Chapter 1.
-  const first = type === 'writtenWork' && rows !== null && list.length === 0 ? firstChapterFrom(storyText) : null;
+  const first = type === 'writtenWork' && rows !== null && list.length === 0 ? firstChapterFrom(storyText, storyUpload) : null;
 
   if (!parent) return null;
 
@@ -94,8 +95,10 @@ export function ChaptersList(_props: StringInputProps) {
         story: { _type: 'reference', _ref: parent, _weak: true, _strengthenOnPublish: { type: 'writtenWork' } },
         number: first.number,
         content: first.content,
+        // story-import-word AC-19: the upload line moves with the text.
+        ...(first.textUpload ? { textUpload: first.textUpload } : {}),
       });
-      ops.patch.execute([{ unset: ['content'] }]);
+      ops.patch.execute([{ unset: ['content', 'textUpload'] }]);
       const panes = (routerPanesState as Panes).slice(0, groupIndex + 1).concat([[{ id: chapterId, params: { moved: '1' } }]]);
       router.navigate({ ...router.state, panes });
     } finally {

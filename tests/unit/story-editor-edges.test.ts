@@ -75,7 +75,9 @@ describe('story-reader-editor#AC-3 AC-4 paste schema', () => {
     const source = (await import('node:fs')).readFileSync('sanity-studio/schemas/objects/storyText.ts', 'utf8');
     for (const style of STORY_TEXT_SCHEMA.styles) expect(source).toContain(`{ title: '${style.title}', value: '${style.value}' }`);
     for (const mark of STORY_TEXT_SCHEMA.decorators) expect(source).toContain(`{ title: '${mark.title}', value: '${mark.value}' }`);
-    expect(STORY_TEXT_SCHEMA.blockObjects.map((o) => o.name)).toEqual(['sceneBreak']);
+    // story-import-word AC-3: pictures from Word documents too.
+    expect(STORY_TEXT_SCHEMA.blockObjects.map((o) => o.name)).toEqual(['sceneBreak', 'storyPicture']);
+    expect(source).toContain("type: 'storyPicture'");
     expect(source).toMatch(/lists: \[\]/);
     expect(source).toMatch(/annotations: \[\]/);
   });
