@@ -21,7 +21,7 @@ derived-from:
 ## Find a piece
 
 1. Open Portfolio from the menu at the top of any page (on a phone, open the menu first).
-2. Star's art is in rows, one for each kind of work, such as Original Work or Fan Work. Scroll a row sideways, or use the arrows at its ends (a screen reader calls them "Scroll left" and "Scroll right"), to see more.
+2. Star's art is in rows, one for each kind of work, such as Original Work or Fan Work. When there's a Featured row, it's always at the top. Scroll a row sideways, or use the arrows at its ends (a screen reader calls them "Scroll left" and "Scroll right"), to see more.
 3. To see one kind only, choose it in the Index at the top. All shows every row again.
 4. Choose a piece. It opens in a window, larger, with its title, what it's about, and its tags. The **✕** at the window's top right takes you back to the portfolio.
 
