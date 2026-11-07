@@ -35,10 +35,10 @@ This amends design-story-reader, "What Star enters", "Flow: Star" and "Layout": 
 - One document at a time, one per chapter (or per one-shot). Whole works with chapter breaks come later (Later, below).
 - While a document is read and its pictures added, the note says "Reading The Long Road 3.docx… adding picture 1 of 2." and the button waits (mock-up 2).
 
-### After a document is added (mock-ups 3 and 9)
+### After a document is added (mock-ups 3 and 8)
 
 - **Text** shows the chapter as readers will get it, read-only: its paragraphs, italics, bold, scene breaks (as the "Scene break" bar) and pictures, in order.
-- Above it: **Upload a new version**, **Download as Word** (below), and a line with the file's name and when it was added, "The Long Road 3.docx, added 2:38 pm, not published yet · Undo this upload". "not published yet" goes when the item is published. **Undo this upload** puts **Text** and **Pictures** back as they were before the upload, including alt text typed since (it says so if there is any: "Undo this upload? Alt text you've typed since will go too."). It's there until the item is published, kept with the item, so closing the note or leaving the page doesn't lose it; one upload back.
+- Above it: **Upload a new version**, and a line with the file's name and when it was added, "The Long Road 3.docx, added 2:38 pm, not published yet · Undo this upload". "not published yet" goes when the item is published. **Undo this upload** puts **Text** and **Pictures** back as they were before the upload, including alt text typed since (it says so if there is any: "Undo this upload? Alt text you've typed since will go too."). It's there until the item is published, kept with the item, so closing the note or leaving the page doesn't lose it; one upload back.
 - A note says what came in and what didn't, naming what the document had:
   - "Added The Long Road 3.docx: 48 paragraphs, 3 scene breaks and 3 pictures, with its italics and bold."
   - a first line that repeats the chapter's title (or "Chapter 3"), as a heading or a paragraph, is left out: "Its first line, "Chapter 3: Over the Ridge", was left out, as the chapter's title shows it."
@@ -52,7 +52,7 @@ This amends design-story-reader, "What Star enters", "Flow: Star" and "Layout": 
   - **Alt text** is filled in from the picture's alt text in Word (Right-click, Edit Alt Text, or View Alt Text) when it has some, marked "alt text from Word". Word's own automatic alt text ("… Description automatically generated") and alt text that's only a file name don't count: they're left empty, to write.
   - **Decorative**, ticked for a picture that only decorates (a divider, a flourish), so screen readers skip it. It's ticked already for a picture marked decorative in Word. Google Docs and older Word can't mark one; ticking it here does the same.
   - Until a picture has alt text or is decorative, it has a yellow "Alt text" mark and "Add alt text so people using screen readers know what it shows, or tick Decorative. You can still publish.", and **Pictures** says "1 needs alt text", as comic pages ask for alt text (Star's guide to comics, "Describe each page"). The words are the comic pages' words, and Word's.
-- If one picture can't be added, the chapter comes in without it, and the message about it shows with the note (mock-up 9).
+- If one picture can't be added, the chapter comes in without it, and the message about it shows with the note (mock-up 8).
 - Nothing goes live until Star publishes; **Preview** shows the chapter as it will be, pictures included.
 
 ### A new version (mock-up 4)
@@ -60,10 +60,6 @@ This amends design-story-reader, "What Star enters", "Flow: Star" and "Layout": 
 Uploading into a **Text** that has text asks first, saying what's there and what's coming, so a wrong file stands out: "Replace Chapter 3's text? Now: The Long Road 3.docx, added 2:38 pm: 48 paragraphs, 3 pictures. New: The Long Road 3 (edited).docx: 51 paragraphs, 3 pictures; 2 keep their alt text, 1 is new. Anything changed in the editor since the last upload (alt text, Decorative) is kept for pictures that are still there. You can undo this until you publish." with **Cancel** (focused first, so Enter by habit changes nothing) and **Replace**.
 
 **Which picture is the same picture**: one with exactly the same picture data as before (Word renames its picture files on every save, so names don't count). A same picture keeps what was set for it in the editor, unless its alt text in Word has changed since the last upload, when Word's new alt text wins (the document is where the writing lives). A changed picture, such as one re-saved by Google Docs, counts as new: it takes its alt text from Word, or needs some, and the question's counts show it. A picture used twice keeps each place's settings in order.
-
-### Download as Word (mock-ups 3 and 8)
-
-**Download as Word** saves the chapter's text as it is in the editor (published or not) as a .docx: its paragraphs, italics, bold, scene breaks (as `* * *`), and pictures with their alt text and decorative marks. It's how Star gets a document to edit for a chapter whose document she no longer has, or one put up by pasting, whose last fixes were typed in the editor and are in no document. The guide says to download before editing when unsure which document is current.
 
 ### What comes through from a .docx
 
@@ -99,10 +95,11 @@ A message above **Text** says why and what to do, and nothing changes; a new mes
 - Tapping or clicking a picture shows it full screen, as artwork does, so a map or a letter in a picture can be read on a phone.
 - Mature and Explicit stories keep their text, pictures included, hidden until **Continue to the story**.
 
-### Stories already on the site, and chapters (mock-up 8)
+### No stories to carry over, and splitting a one-shot
 
-- A one-shot or chapter put up by pasting shows its text read-only, with **Upload a Word document**, **Download as Word**, and the line "Pasted in before uploads. To change it, download it as Word, edit it, and upload it." Uploading replaces it, after the question. Pasting and typing aren't offered any more.
-- **Add chapter** on a one-shot moves its text into Chapter 1, as now. To split it, Star uploads each chapter's document into its own chapter, replacing Chapter 1's text with Chapter 1's document. To make a story a one-shot again, she removes its chapters and uploads the whole story into the story's **Text**. The notes that said "move the text back" say this.
+No stories are on the site yet (the lead, 2026-11-07: the one test story will be uploaded again), so nothing pasted needs carrying over: pasting and typing simply go. Star's Word documents are where her writing lives; the editor holds what was uploaded from them, plus the alt text and Decorative set for pictures.
+
+**Add chapter** on a one-shot moves its text into Chapter 1, as now. To split it, Star uploads each chapter's document into its own chapter, replacing Chapter 1's text with Chapter 1's document. To make a story a one-shot again, she removes its chapters and uploads the whole story into the story's **Text**. The notes that said "move the text back" say this.
 
 ## Later: whole works with chapter breaks
 
@@ -112,14 +109,13 @@ When Star uploads a whole work (lead, 2026-11-07, for later): a document whose c
 
 | # | Where | After |
 |---|---|---|
-| 1 | A story's and a chapter's **Text** (`sanity-studio/components/StoryTextInput.tsx`) | The upload button and drop space in place of the text box (a read-only view that still shows pictures and scene breaks); reading; the note (a status message, ✕); the upload line with **Undo this upload** (kept with the item until publishing); **Download as Word**; the replace question; the messages (an alert); the notes for a story with chapters. |
+| 1 | A story's and a chapter's **Text** (`sanity-studio/components/StoryTextInput.tsx`) | The upload button and drop space in place of the text box (a read-only view that still shows pictures and scene breaks); reading; the note (a status message, ✕); the upload line with **Undo this upload** (kept with the item until publishing); the replace question; the messages (an alert); the notes for a story with chapters. |
 | 2 | Reading a .docx (`sanity-studio/lib/`) | A Word reader turns the document into the HTML the paste rules read, with Word's horizontal lines as scene breaks, pictures kept in place, and the counts the note needs; then the clean-up, which today keeps only paragraphs and scene breaks (`cleanPastedBlocks`) and keeps pictures too. The reader loads only when a document is chosen. |
 | 3 | Pictures (`sanity-studio/lib/`, the picture library) | Re-saved at most 3200 wide, uploaded, matched with the last upload's pictures by their data; unused ones removed when the item is published or deleted. |
-| 4 | Writing a .docx (`sanity-studio/lib/`) | **Download as Word**, from the text and pictures. |
-| 5 | The text's schema (`sanity-studio/schemas/objects/storyText.ts`) and **Pictures** | A picture block in the text (an image, its alt text, Decorative, and where its alt text came from); **Pictures** lists them, editing those blocks' alt text and Decorative. |
-| 6 | The site's stories (`src/lib/stories/source.ts`, `model.ts`, `text.ts`, `StoryText.astro`) | The query fetching pictures' sizes and addresses; pictures in the HTML, with alt text, width and height, sizes and lazy loading; full screen on tap. |
-| 7 | **Text**'s help texts, and the story's notes (`sanity-studio/lib/stories.ts`) | As above. |
-| 8 | Star's guide `publishing-stories.md` | Uploading in place of pasting throughout (For the guide). |
+| 4 | The text's schema (`sanity-studio/schemas/objects/storyText.ts`) and **Pictures** | A picture block in the text (an image, its alt text, Decorative, and where its alt text came from); **Pictures** lists them, editing those blocks' alt text and Decorative. |
+| 5 | The site's stories (`src/lib/stories/source.ts`, `model.ts`, `text.ts`, `StoryText.astro`) | The query fetching pictures' sizes and addresses; pictures in the HTML, with alt text, width and height, sizes and lazy loading; full screen on tap. |
+| 6 | **Text**'s help texts, and the story's notes (`sanity-studio/lib/stories.ts`) | As above. |
+| 7 | Star's guide `publishing-stories.md` | Uploading in place of pasting throughout (For the guide). |
 
 ## Mock-ups
 
@@ -129,13 +125,12 @@ Low-fidelity, in the style of the story reader's mock-ups. Source: `mockups/stor
 |---|---|---|
 | 1 | A new chapter: **Upload a Word document** and the drop space, no text box | `mockups/story-import/1-new-chapter.png` |
 | 2 | Reading the document and adding its pictures | `mockups/story-import/2-reading.png` |
-| 3 | After uploading: the upload line with **Undo this upload**, **Download as Word**; the note; the chapter read-only; **Pictures** with alt text from Word, one missing, one decorative | `mockups/story-import/3-after-upload.png` |
+| 3 | After uploading: the upload line with **Undo this upload**; the note; the chapter read-only; **Pictures** with alt text from Word, one missing, one decorative | `mockups/story-import/3-after-upload.png` |
 | 4 | **Upload a new version**: the question with what's there and what's coming | `mockups/story-import/4-new-version.png` |
 | 5 | The messages when a document can't be added | `mockups/story-import/5-errors.png` |
 | 6 | A one-shot story's **Text** | `mockups/story-import/6-one-shot.png` |
 | 7 | The chapter on a phone, with its picture | `mockups/story-import/7-chapter-phone.png` |
-| 8 | A chapter put up by pasting: **Download as Word** to get a document | `mockups/story-import/8-pasted-chapter.png` |
-| 9 | Added, but one picture couldn't be: the message and the note | `mockups/story-import/9-picture-left-out.png` |
+| 8 | Added, but one picture couldn't be: the message and the note | `mockups/story-import/8-picture-left-out.png` |
 
 ## States and errors
 
@@ -153,13 +148,11 @@ Low-fidelity, in the style of the story reader's mock-ups. Source: `mockups/stor
 | Many scene breaks | The note says the document may use empty paragraphs for spacing. |
 | Not a .docx, a .doc, a .gdoc, locked, no words, over 50 MB, an error | A message saying why and what to do; nothing changes. |
 | A mistake | **Undo this upload** until publishing, even after leaving the page. |
-| No document, or one older than the editor's text | **Download as Word**, edit it, upload it. |
 | A story with chapters | No button on the story's **Text**; each chapter has its own. |
-| A story already on the site | Its text read-only; download, edit and upload to change it. |
 
 ## Accessibility
 
-- **Upload a Word document** and **Download as Word** are buttons reached with Tab and used with Enter or Space; uploading opens the computer's own file chooser. Dropping a file is an extra, never the only way.
+- **Upload a Word document** is a button reached with Tab and used with Enter or Space; it opens the computer's own file chooser. Dropping a file is an extra, never the only way.
 - "Reading …" and the note after an upload are status messages; a message about a document that can't be added is an alert.
 - The replace question is a modal dialog named by its question; focus starts on **Cancel**, Escape is **Cancel**, and focus returns to the button.
 - Each picture's **Alt text** is a labelled field ("Alt text for picture 2"), and **Decorative** a labelled checkbox; the count of missing alt text is text, not only colour.
@@ -169,7 +162,7 @@ Low-fidelity, in the style of the story reader's mock-ups. Source: `mockups/stor
 
 Star's guide `publishing-stories.md`:
 - "Paste your text" becomes "Upload the text": save the chapter as a .docx (from Google Docs: File, Download, Microsoft Word (.docx)); choose **Upload a Word document**, or drop the file on the space below it; what comes through, and what doesn't (Word's layout and picture sizes); one document per chapter.
-- To change a word or a picture: change the document and upload it again (**Upload a new version**). If you don't have the document, or aren't sure it's the latest, choose **Download as Word** first and edit that.
+- To change a word or a picture: change the document and upload it again (**Upload a new version**). Keep your Word documents: they're where the writing lives.
 - Pictures: where they appear; alt text (in Word with Edit Alt Text, or in **Pictures**), Word's automatic alt text not counting; **Decorative**; Compress Pictures and Delete cropped areas before uploading; JPEG or PNG; a few pictures per chapter, for readers on phones; that they're uploaded when the document is read and public once the chapter is published.
 - Before uploading: accept or reject tracked changes; use line spacing in place of empty paragraphs; the chapter's title as the first line is fine (it's left out).
 - "Scene breaks": the ways a document marks one, including Word's horizontal line; to remove one, delete it in the document and upload again.
@@ -185,12 +178,11 @@ Star's guide `publishing-stories.md`:
 - Pictures: re-saved at most 3200 wide without location data; in the library, in order; alt text from Word, automatic alt text dropped; Decorative from Word and ticked; the count and marks; publishing allowed without.
 - A new version: the question's counts; Cancel and Escape changing nothing; Replace replacing; same pictures (by data) keeping their settings, unless Word's alt text changed; a re-encoded picture counting as new.
 - **Undo this upload**: putting text and pictures back, warning about typed alt text, kept after closing the note and reloading, gone after publishing.
-- **Download as Word**: a .docx that, uploaded again, gives the same text, pictures, alt text and Decorative.
 - Unused pictures removed when publishing or deleting, and only those.
 - Each message, with nothing changed; one document at a time; the partial-picture case.
 - The Word reader and writer loading only when used.
 - The site: pictures in the column, alt text (empty when decorative, "Picture" without), width and height, sizes and lazy loading, full screen on tap and from the keyboard, inside a Mature story's hidden text; a chapter without pictures as before.
-- A story with pasted text: read-only, downloadable, replaced by an upload; splitting a one-shot by uploads.
+- Splitting a one-shot by uploads, and making a story a one-shot again.
 
 ## Decisions at review
 
@@ -198,7 +190,8 @@ Settled by the lead (2026-11-07):
 - .docx only, one file per chapter for now; whole works with chapter breaks later;
 - pictures kept;
 - no text box at all: every change goes through Word, and the editor shows the text read-only;
-- pictures on the site at the column's width or their own, whichever is smaller.
+- pictures on the site at the column's width or their own, whichever is smaller;
+- no stories to carry over: the one test story will be uploaded again.
 
 ## Persona walkthrough
 
@@ -208,7 +201,7 @@ The first, of an earlier version (any of .docx, .pdf, .md or .txt, into a text b
 
 The second, of this version (Word only, no text box, pictures), for persona-artist and persona-fan, read it against the story reader's design, Star's guides, and the editor's and site's code. It found two blocking problems, twelve misleading ones and six slower ones for Star, and seven for fans. Addressed above:
 - **Blocking:**
-  - with no text box, a typo in a story put up by pasting (or fixed in the editor) couldn't be fixed without the right document (now **Download as Word**);
+  - with no text box, a typo in a story put up by pasting couldn't be fixed without the right document (no stories are on the site yet, the lead said, so none were pasted; Star's documents are the source);
   - a one-shot couldn't be split into chapters as the guide says (now by uploading each chapter's document; the guide and notes say how).
 - **Misleading:**
   - **Undo this upload** was lost when the note was closed (now on the upload line, kept with the item until publishing, warning about typed alt text);
@@ -223,5 +216,5 @@ The second, of this version (Word only, no text box, pictures), for persona-arti
   - many scene breaks from double spacing (now warned);
   - "Description" against comics' "Alt text" (now "Alt text" throughout);
   - "added 2:38 pm" beside "Live" (now "not published yet").
-- **Slower:** a pasted chapter's line; mock-ups for the decorative state, a pasted chapter and a left-out picture; the clean-up keeping pictures; the editor's read-only view.
+- **Slower:** mock-ups for the decorative state and a left-out picture; the clean-up keeping pictures; the editor's read-only view.
 - **For fans:** the site's query, model and HTML named; alt text rules; space kept while loading, sizes and lazy loading, also in hidden Mature text; full screen on tap; footnote markers and table rows; picture weight (re-saved at most 3200 wide, and the guide's advice); the mock-up no longer shows alt text as a caption.
