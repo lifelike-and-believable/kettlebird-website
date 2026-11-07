@@ -1,5 +1,6 @@
 ---
-status: draft
+status: implemented
+tests-commit: dab77b6eb2ec414e6af3e16ea2936b0d88fa870d
 unlocks:
   - tests/unit/story-import-site.test.ts: the column pictures fill is `min(100vw - 4rem, 50rem)`, the column as it is, in place of `min(100vw - 2rem, 45rem)` (story-text-frame AC-5), as design-story-text-frame, Where it applies, row 2, says. The criteria (story-import-word AC-22) are unchanged.
 ---
