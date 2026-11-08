@@ -32,14 +32,15 @@ This amends design-story-text-frame, "The change": the sheet comes out of a type
 - **At the end:** when the last line comes out, the typewriter stops following and stays under the last line, with the end of the sheet still in the machine; the chapter buttons and "That's the newest chapter." follow below it, on the paper background (mock-ups 4 and 5).
 - **Its size:** the roller is wider than the sheet, so the sheet's width is the middle 80% of the drawing, and the drawing's height follows its width. Measured on the fixture build:
 
-  | Screen width | Typewriter | Its height |
-  |---|---|---|
-  | 320 pixels | 360 pixels wide, cut by the screen's edges | 47 pixels |
-  | 390 pixels | 448 pixels wide, cut by the screen's edges | 58 pixels |
-  | 700 pixels | 835 pixels wide | 109 pixels |
-  | 1280 pixels | 1120 pixels wide | 146 pixels |
+  | Screen width | Typewriter                                 | Its height |
+  | ------------ | ------------------------------------------ | ---------- |
+  | 320 pixels   | 360 pixels wide, cut by the screen's edges | 47 pixels  |
+  | 390 pixels   | 448 pixels wide, cut by the screen's edges | 58 pixels  |
+  | 700 pixels   | 835 pixels wide                            | 109 pixels |
+  | 1280 pixels  | 1120 pixels wide                           | 146 pixels |
 
   On a phone the knobs reach past the screen's edges, as if the reader were sitting close to the machine; the page clips them, so nothing scrolls sideways at any of these widths.
+
 - **The space it takes:** while it follows the text, it covers the bottom of the screen: about 7% of a phone's screen and 18% of a laptop's. The text under it is the text the reader hasn't reached yet, and it comes up into view as they scroll. Paging down with the keyboard (Space, Page Down) moves by the screen less the typewriter's height, so no line is skipped under it.
 - **A ticked story** (design-story-mature-content): while **Before you read** asks first, the typewriter is hidden with the text and its sheet (mock-up 8); after **Continue to the story** they appear together. Without scripts, all three show under the box, as the sheet does now.
 - **Preview** shows it, as the site will.
@@ -57,41 +58,41 @@ This amends design-story-text-frame, "The change": the sheet comes out of a type
 
 Screenshots of the fixture build (The Long Road, chapter 3, with thirty paragraphs of stand-in text added; Night Market, a ticked one-shot) with `typewriter.css` and `typewriter.svg` added. Source: `mockups/story-typewriter/render.mjs`.
 
-| # | What it shows | File |
-|---|---|---|
-| 1 | On a computer, mid-chapter: the text scrolling up out of the typewriter at the bottom of the screen | `mockups/story-typewriter/1-middle-laptop.png` |
-| 2 | On a phone, mid-chapter | `mockups/story-typewriter/2-middle-phone.png` |
-| 3 | On a computer, on opening the page: the chapter's title and buttons, the top of the sheet already out of the machine | `mockups/story-typewriter/3-start-laptop.png` |
-| 4 | The end of a chapter on a computer: the typewriter at rest under the last line, the chapter buttons below | `mockups/story-typewriter/4-end-laptop.png` |
-| 5 | The end of a chapter on a phone | `mockups/story-typewriter/5-end-phone.png` |
-| 6 | On the narrowest phones (320 pixels), mid-chapter | `mockups/story-typewriter/6-middle-320.png` |
-| 7 | Option B, mid-chapter on a computer: no typewriter until the end | `mockups/story-typewriter/7-option-b-middle-laptop.png` |
-| 8 | A ticked one-shot on a phone before **Continue to the story**: no sheet and no typewriter | `mockups/story-typewriter/8-one-shot-ticked-phone.png` |
-| 9 | The end of a chapter with a plain body, no nameplate | `mockups/story-typewriter/9-end-laptop-plain.png` |
+| #   | What it shows                                                                                                        | File                                                    |
+| --- | -------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
+| 1   | On a computer, mid-chapter: the text scrolling up out of the typewriter at the bottom of the screen                  | `mockups/story-typewriter/1-middle-laptop.png`          |
+| 2   | On a phone, mid-chapter                                                                                              | `mockups/story-typewriter/2-middle-phone.png`           |
+| 3   | On a computer, on opening the page: the chapter's title and buttons, the top of the sheet already out of the machine | `mockups/story-typewriter/3-start-laptop.png`           |
+| 4   | The end of a chapter on a computer: the typewriter at rest under the last line, the chapter buttons below            | `mockups/story-typewriter/4-end-laptop.png`             |
+| 5   | The end of a chapter on a phone                                                                                      | `mockups/story-typewriter/5-end-phone.png`              |
+| 6   | On the narrowest phones (320 pixels), mid-chapter                                                                    | `mockups/story-typewriter/6-middle-320.png`             |
+| 7   | Option B, mid-chapter on a computer: no typewriter until the end                                                     | `mockups/story-typewriter/7-option-b-middle-laptop.png` |
+| 8   | A ticked one-shot on a phone before **Continue to the story**: no sheet and no typewriter                            | `mockups/story-typewriter/8-one-shot-ticked-phone.png`  |
+| 9   | The end of a chapter with a plain body, no nameplate                                                                 | `mockups/story-typewriter/9-end-laptop-plain.png`       |
 
 ## Where it applies
 
-| # | Where | After |
-|---|---|---|
-| 1 | `src/components/stories/StoryText.astro` | The typewriter drawing after the text, inside the sheet, marked decorative (`aria-hidden="true"`), as in `mockups/story-typewriter/typewriter.css`: `position: sticky; bottom: 0` (option A) or in the flow (option B); the sheet's width over 0.8 wide, centred on the sheet; the sheet's bottom padding moves above the typewriter, so the sheet ends inside it. Hidden in print. |
-| 2 | The typewriter drawing | A new SVG, `typewriter.svg`, drawn for the site; inline, so it costs no extra download (about 4 KB). |
-| 3 | The writing pages' layout | The main column clips what reaches past the screen's edges (`overflow-x: clip`, which keeps `sticky` working); `scroll-padding-bottom` of the typewriter's height while it follows the text. |
-| 4 | `docs/STYLE_GUIDE.md` and the Kettlebird design system | The typewriter as part of the story's sheet. |
+| #   | Where                                                  | After                                                                                                                                                                                                                                                                                                                                                                               |
+| --- | ------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | `src/components/stories/StoryText.astro`               | The typewriter drawing after the text, inside the sheet, marked decorative (`aria-hidden="true"`), as in `mockups/story-typewriter/typewriter.css`: `position: sticky; bottom: 0` (option A) or in the flow (option B); the sheet's width over 0.8 wide, centred on the sheet; the sheet's bottom padding moves above the typewriter, so the sheet ends inside it. Hidden in print. |
+| 2   | The typewriter drawing                                 | A new SVG, `typewriter.svg`, drawn for the site; inline, so it costs no extra download (about 4 KB).                                                                                                                                                                                                                                                                                |
+| 3   | The writing pages' layout                              | The main column clips what reaches past the screen's edges (`overflow-x: clip`, which keeps `sticky` working); `scroll-padding-bottom` of the typewriter's height while it follows the text.                                                                                                                                                                                        |
+| 4   | `docs/STYLE_GUIDE.md` and the Kettlebird design system | The typewriter as part of the story's sheet.                                                                                                                                                                                                                                                                                                                                        |
 
 Nothing changes in the editor, the guides or the tutorials: they don't describe how the text looks on the page.
 
 ## States and errors
 
-| Situation | What happens |
-|---|---|
-| A one-shot or a chapter, longer than the screen | The typewriter at the bottom of the screen while reading (option A), then at rest under the last line. |
-| A text shorter than the screen | The typewriter under the last line from the start. |
-| A story in chapters, on its own page | No sheet and no typewriter: the page has the chapter list, not text. |
-| A ticked story, before **Continue to the story** | Neither the sheet nor the typewriter shows. |
-| A ticked story, after it, or without scripts | The sheet and the typewriter under **Before you read**. |
-| A picture opened full screen | The full-screen view covers the page, typewriter included, as now. |
-| Preview | As on the site. |
-| Printing | No typewriter. |
+| Situation                                        | What happens                                                                                           |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------------------ |
+| A one-shot or a chapter, longer than the screen  | The typewriter at the bottom of the screen while reading (option A), then at rest under the last line. |
+| A text shorter than the screen                   | The typewriter under the last line from the start.                                                     |
+| A story in chapters, on its own page             | No sheet and no typewriter: the page has the chapter list, not text.                                   |
+| A ticked story, before **Continue to the story** | Neither the sheet nor the typewriter shows.                                                            |
+| A ticked story, after it, or without scripts     | The sheet and the typewriter under **Before you read**.                                                |
+| A picture opened full screen                     | The full-screen view covers the page, typewriter included, as now.                                     |
+| Preview                                          | As on the site.                                                                                        |
+| Printing                                         | No typewriter.                                                                                         |
 
 ## Accessibility
 
