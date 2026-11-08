@@ -34,7 +34,7 @@ colours, paper and arrow buttons, with Star's real pieces) and render.mjs. 0-sta
 
 From the epic: the arrows stay the site's (design-arrows); the "Portfolio" title and subtitle stay; Featured stays the top folder; the filter buttons go; any folder can have subfolders; **INDEX** shows only inside a subfolder; a subfolder belongs to one folder, so a piece can be in a subfolder in one folder and loose in another; a subfolder has its own address; Star chooses each subfolder's grid size; the widest pieces are taken to be 16:9.
 
-At the first look at the mock-ups (2026-11-08): the tabs' corners are rounded a little more, and the folders and tabs have a subtle contact shadow, so each folder stands apart from the one behind it.
+At the first look at the mock-ups (2026-11-08): the tabs' corners are rounded a little more, and the folders and tabs have a subtle contact shadow, so each folder stands apart from the one behind it. Then: the tabs keep a slight slant to their sides, as in the first mock-ups, with the rounded corners.
 
 ## How it works
 
@@ -42,7 +42,7 @@ At the first look at the mock-ups (2026-11-08): the tabs' corners are rounded a 
 
 - The header, title "Portfolio" and subtitle as today. The filter buttons and the pink "Index" label above them go.
 - One folder per Portfolio section that has pieces, in the order today: Featured, Original Work, Fan Work, Past Clients, Work in Progress.
-- **A folder** is kraft paper (the band's colour and texture today) with a **tab** at its top edge: the same kraft, top corners rounded (22 pixels on a computer, 14 on a phone), the folder's name in DM Mono (the site's typewriter face), 2.6rem on a computer and 1.35rem on a phone.
+- **A folder** is kraft paper (the band's colour and texture today) with a **tab** at its top edge: the same kraft, sides slanting in slightly and top corners rounded (22 pixels on a computer, 14 on a phone; drawn by tilting the tab's paper back a little in perspective, so the slant and the rounding go together), the folder's name in DM Mono (the site's typewriter face), 2.6rem on a computer and 1.35rem on a phone.
 - **Each section's tab has a fixed side:** Featured right, Original Work left, Fan Work right, Past Clients left, Work in Progress right. They alternate down the page when every section has pieces; a section with no pieces leaves its neighbours' sides as they are, so a folder never jumps sides when another empties.
 - **Shadows:** each folder overlaps the one above it a little. Its top edge and its tab have a thin contact line (`0 -1px 0` at 16% ink) and a soft shadow cast upward onto the folder behind (`0 -6px 12px -4px` at 28% ink); the tab also casts a little to each side. So the page reads as a stack of folders. The torn-paper seam and the highlighter labels of today go.
 

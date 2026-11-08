@@ -145,18 +145,30 @@
       .folder.left .tabs {
         left: 4rem;
       }
+      /* The tab's paper is drawn on ::before, tilted back in perspective so its
+         sides slant inward a little while its top corners stay rounded. */
       .tab {
-        background: inherit;
-        background-color: var(--kraft);
-        background-image: url("../../../../public/assets/images/Paper_2_Tileable.png");
-        background-size: 420px;
-        background-blend-mode: multiply;
+        --tab-bg: var(--kraft);
+        position: relative;
+        isolation: isolate;
         padding: 0.55rem 2.6rem 0.5rem;
-        border-radius: 22px 22px 0 0;
         font:
           500 2.6rem/1.1 "DM Mono",
           monospace;
         letter-spacing: 0.02em;
+      }
+      .tab::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        background-color: var(--tab-bg);
+        background-image: url("../../../../public/assets/images/Paper_2_Tileable.png");
+        background-size: 420px;
+        background-blend-mode: multiply;
+        border-radius: 22px 22px 0 0;
+        transform: perspective(120px) rotateX(9deg);
+        transform-origin: bottom;
         /* The same drop shadow as the folder, on the tab's top and sides only. */
         box-shadow:
           0 -1px 0 rgba(0, 0, 0, 0.16),
@@ -165,10 +177,10 @@
           4px -2px 8px -5px rgba(0, 0, 0, 0.25);
       }
       .folder:nth-child(even) .tab.own {
-        background-color: var(--kraft-dark);
+        --tab-bg: var(--kraft-dark);
       }
       .tab.index {
-        background-color: var(--magenta);
+        --tab-bg: var(--magenta);
         font-size: 2.1rem;
         padding: 0.45rem 2.2rem 0.4rem;
         color: var(--ink);
@@ -185,7 +197,10 @@
       .phone .tab {
         font-size: 1.35rem;
         padding: 0.4rem 1.2rem 0.35rem;
+      }
+      .phone .tab::before {
         border-radius: 14px 14px 0 0;
+        transform: perspective(70px) rotateX(9deg);
       }
       .phone .tab.index {
         font-size: 1.1rem;
