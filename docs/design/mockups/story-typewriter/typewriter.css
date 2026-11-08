@@ -1,0 +1,18 @@
+/* The typewriter under the story's sheet (design-story-typewriter), for the mock-ups.
+   Option A (sticky): it sits at the bottom of the screen while the text scrolls up out of it, and comes to rest
+   under the last line. Option B (at the end): add .tw-end to <html> and it stays under the last line only. */
+main { overflow-x: clip; } /* the machine is wider than a phone's screen; clip, not hidden, so sticky still works */
+main .story-text.story-text { padding-bottom: 0; }
+.story-typewriter {
+  --tw-w: calc((100% + 2 * var(--sheet-pad)) / 0.8); /* the paper slot is the middle 80% of the drawing */
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+  display: block;
+  width: var(--tw-w);
+  margin: clamp(1.5rem, 3vw, 2.5rem) 0 0 calc((100% - var(--tw-w)) / 2);
+  pointer-events: none;
+}
+.story-typewriter svg { display: block; width: 100%; height: auto; }
+.tw-end .story-typewriter { position: static; }
+.tw-plain .tw-nameplate { display: none; }
