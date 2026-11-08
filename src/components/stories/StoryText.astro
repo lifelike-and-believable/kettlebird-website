@@ -4,10 +4,16 @@
 // The article takes focus when Continue to the story reveals it.
 import { storyHtml } from '../../lib/stories/text';
 import type { TextBlock } from '../../lib/stories/model';
+import Typewriter from './Typewriter.astro';
 
 const { text, label } = Astro.props as { text: TextBlock[]; label: string };
 ---
-<article class="story-text" aria-label={label} tabindex="-1" data-story-start data-story-gated data-part="story-text" set:html={storyHtml(text)} />
+<article class="story-text" aria-label={label} tabindex="-1" data-story-start data-story-gated data-part="story-text">
+  <Fragment set:html={storyHtml(text)} />
+  <div class="story-typewriter" aria-hidden="true">
+    <Typewriter />
+  </div>
+</article>
 
 <style>
   /* The text on a white sheet (docs/specs/story-text-frame.md): content-box, so the text keeps its width
@@ -26,6 +32,29 @@ const { text, label } = Astro.props as { text: TextBlock[]; label: string };
     font-size: 1.125rem;
     line-height: 1.7;
     overflow-wrap: break-word;
+  }
+  /* The typewriter the sheet comes out of (docs/specs/story-typewriter.md): the sheet's last child, so the
+     sheet's bottom padding moves above it and the sheet ends inside the machine. Sticky at the screen's bottom
+     while the sheet runs past it, then at rest under the last line. The paper slot is the middle 80% of the
+     drawing, so it's the sheet's width over 0.8, centred on the sheet; its height follows the drawing. */
+  .story-text { padding-bottom: 0; }
+  .story-typewriter {
+    --typewriter-width: calc((100% + 2 * var(--sheet-pad)) / 0.8);
+    position: sticky;
+    bottom: 0;
+    z-index: 1;
+    display: block;
+    width: var(--typewriter-width);
+    margin-top: clamp(1.5rem, 3vw, 2.5rem);
+    margin-left: calc((100% - var(--typewriter-width)) / 2);
+    pointer-events: none;
+  }
+  .story-typewriter :global(svg) { display: block; width: 100%; height: auto; }
+  /* The machine is wider than a phone's screen: clip, not hidden, so sticky still works. */
+  :global(main:has(.story-typewriter)) { overflow-x: clip; }
+  @media print {
+    .story-text { padding-bottom: clamp(1.5rem, 3vw, 2.5rem); }
+    .story-typewriter { display: none; }
   }
   .story-text > :global(:first-child) { margin-top: 0; }
   .story-text > :global(:last-child) { margin-bottom: 0; }
@@ -102,6 +131,15 @@ const { text, label } = Astro.props as { text: TextBlock[]; label: string };
   function largest(img: HTMLImageElement): string {
     const candidates = (img.getAttribute('srcset') ?? '').split(',').map((s) => s.trim().split(/\s+/)[0]).filter(Boolean);
     return candidates[candidates.length - 1] ?? img.currentSrc ?? img.src;
+  }
+
+  // Keyboard paging (Space, Page Down) scrolls by the screen less the typewriter's height, so no line is skipped
+  // under it (story-typewriter AC-7). It's hidden on a ticked story until Continue to the story, so follow its size.
+  const typewriter = document.querySelector<HTMLElement>('.story-typewriter');
+  if (typewriter) {
+    new ResizeObserver(() => {
+      document.documentElement.style.scrollPaddingBottom = `${typewriter.offsetHeight}px`;
+    }).observe(typewriter);
   }
 
   document.addEventListener('click', (event) => {

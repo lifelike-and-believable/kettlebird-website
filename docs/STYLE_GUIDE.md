@@ -120,6 +120,8 @@ Based on the mockup design:
 
 The text of a story or a chapter sits on a white sheet (design-story-text-frame): plain white (`#fff`), the soft paper shadow (`--shadow-paper`), no border and square corners. The text keeps its reading width (at most about 65 characters); the sheet's padding sits outside it, 1rem at the sides on a phone and up to 3rem on a computer, and the sheet reaches into the page's margin, never closer than 16px to the screen's edges. Only the text and its pictures are on the sheet: titles, tags, **Before you read** and the chapter buttons stay on the paper background.
 
+The sheet comes out of a typewriter (design-story-typewriter): a 1950s office typewriter seen from the typist's chair, with a KETTLEBIRD nameplate, sits at the bottom of the screen while the text scrolls up out of it, then rests under the last line. The paper goes in behind the roller and the paper bail lies across it; the sheet is the middle 80% of the drawing's width. It's drawing only (hidden from screen readers, no taps, not printed). The drawing in `src/components/stories/Typewriter.astro` is a stand-in until Star's artwork replaces it.
+
 ## Motion
 
 Subtle, professional animations:
