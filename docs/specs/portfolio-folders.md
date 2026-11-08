@@ -1,5 +1,5 @@
 ---
-status: draft
+status: implemented
 tests-commit: bf3bbd973c060cb93edacc0b99a7cf86410bb180
 unlocks:
   - tests/unit/full-screen-view.test.tsx, tests/fixtures/drafts.ts: the pieces gain dates in the order they were listed, since AC-4 puts undated pieces in title order; what the tests check is unchanged.
