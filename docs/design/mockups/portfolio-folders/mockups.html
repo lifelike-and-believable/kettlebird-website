@@ -105,7 +105,7 @@
         padding: 1.2rem 1rem 0;
       }
       .phone .folders {
-        padding-top: 2.8rem;
+        padding-top: 4.4rem;
       }
       .phone .title h1 {
         font-size: 3rem;
@@ -133,7 +133,8 @@
       }
       .tabs {
         position: absolute;
-        top: -3.1rem;
+        /* Anchored at the folder's edge, so a tab whose words wrap grows upward. */
+        bottom: calc(100% - 0.3rem);
         display: flex;
         gap: 0.6rem;
         align-items: flex-end;
@@ -186,7 +187,8 @@
         color: var(--ink);
       }
       .phone .tabs {
-        top: -2.3rem;
+        bottom: calc(100% - 0.05rem);
+        max-width: calc(100% - 2rem);
       }
       .phone .folder.right .tabs {
         right: 1rem;
@@ -200,7 +202,11 @@
       }
       .phone .tab::before {
         border-radius: 14px 14px 0 0;
-        transform: perspective(70px) rotateX(9deg);
+        transform: perspective(var(--tilt, 70px)) rotateX(9deg);
+      }
+      /* "Fan Work: Murderbot" fits on one line on a 390-pixel phone. */
+      .phone .tab.own.open {
+        font-size: 1.15rem;
       }
       .phone .tab.index {
         font-size: 1.1rem;
@@ -353,7 +359,7 @@
       .addr {
         position: absolute;
         top: 0.6rem;
-        right: 1rem;
+        left: 1rem;
         z-index: 6;
         background: #fff;
         border: 1px solid #d1d5db;
@@ -578,7 +584,7 @@
 
     <div class="wrap">
       <h6>
-        3 · After choosing Murderbot: the tab reads "Murderbot", the pink INDEX
+        3 · After choosing Murderbot: the tab reads "Fan Work: Murderbot", the pink INDEX
         tab beside it goes back; the row shows Murderbot's pieces; its own
         address; a screen reader hears where it is
       </h6>
@@ -587,7 +593,7 @@
         <div class="folders">
           <section class="folder right" style="--h: 480px">
             <div class="tabs">
-              <span class="tab own">Murderbot</span
+              <span class="tab own open">Fan Work: Murderbot</span
               ><span class="tab index">INDEX</span>
             </div>
             <div class="row">
@@ -685,7 +691,7 @@
         <div class="folders">
           <section class="folder right" style="--h: 200px">
             <div class="tabs">
-              <span class="tab own">Murderbot</span
+              <span class="tab own open">Fan Work: Murderbot</span
               ><span class="tab index">INDEX</span>
             </div>
             <div class="row">
@@ -734,7 +740,7 @@
           <div class="item">Book covers<small>Past Clients · 2 × 2 · 3 pieces</small></div>
         </div>
         <div class="pane"><h2>Murderbot</h2>
-          <div class="field"><label>Name</label><p>Shown under its thumbnail, and on the section's tab when it's open.</p><div class="input">Murderbot</div></div>
+          <div class="field"><label>Name</label><p>Shown under its thumbnail, and on the section's tab after the section's name when it's open (&quot;Fan Work: Murderbot&quot;).</p><div class="input">Murderbot</div></div>
           <div class="field"><label>Web address</label><p>Made from the name. Leave it as it is once people may have shared links to it.</p><div class="input">murderbot</div></div>
           <div class="field"><label>Section</label><p>The Portfolio section it's in. Set when you make it; to move pieces to another section, make a subfolder there.</p><div class="input" style="color:#6b7280">Fan Work (set)</div></div>
           <div class="field"><label>Grid size</label><p>How many of its pieces its thumbnail shows, newest first. Murderbot has 4 pieces: 2 × 2 shows them all.</p><div class="radios"><span><i class="dot on"></i>2 × 2</span><span><i class="dot"></i>3 × 3</span><span><i class="dot"></i>4 × 4</span></div></div>
@@ -771,7 +777,7 @@
       <div class="screen" id="m10">
         <div style="background:#4a4063;color:#fff;font:600 14px system-ui;padding:8px 16px">Preview: not published yet</div>
         <div class="folders">
-          <section class="folder right" style="--h: 260px"><div class="tabs"><span class="tab own">Murderbot</span><span class="tab index">INDEX</span></div>
+          <section class="folder right" style="--h: 260px"><div class="tabs"><span class="tab own open">Fan Work: Murderbot</span><span class="tab index">INDEX</span></div>
             <div class="row"><p style="margin:0 5.5rem;padding-top:5rem;font:500 1.4rem 'DM Mono',monospace">No pieces in Murderbot yet. Put pieces in it from each piece's Subfolders.</p></div>
           </section>
         </div>
@@ -785,11 +791,11 @@
       </div>
     </div>
 
-    <div class="wrap"><h6>12 · On a 320-pixel phone: a long subfolder name wraps on its tab; thumbnails show at most 2 × 2 on a phone, with the name and count under them</h6>
+    <div class="wrap"><h6>12 · On a 320-pixel phone: a long tab ("Fan Work: The Amazing Digital Circus") wraps; thumbnails show at most 2 × 2 on a phone, with the name and count under them</h6>
       <div class="screen phone" id="m12" style="width:320px">
-        <div class="folders">
-          <section class="folder right" style="--h: 162px"><div class="tabs" style="max-width:300px"><span class="tab own" style="font-size:1.05rem">The Amazing Digital Circus</span><span class="tab index">INDEX</span></div>
-            <div class="row" style="margin-top:2.2rem"><div class="strip"><div class="piece"><img data-a="4"></div><div class="piece"><img data-a="5"></div></div>
+        <div class="folders" style="padding-top:6.4rem">
+          <section class="folder right" style="--h: 162px"><div class="tabs"><span class="tab own open" style="--tilt: 220px">Fan Work: The Amazing Digital Circus</span><span class="tab index">INDEX</span></div>
+            <div class="row"><div class="strip"><div class="piece"><img data-a="4"></div><div class="piece"><img data-a="5"></div></div>
               <span class="arrow l off"><svg viewBox="0 0 24 24"><path d="M17 4 L5 12 L17 20 Z" fill="currentColor"/></svg></span><span class="arrow r"><svg viewBox="0 0 24 24"><path d="M7 4 L19 12 L7 20 Z" fill="currentColor"/></svg></span></div>
           </section>
           <section class="folder left" style="--h: 162px"><div class="tabs"><span class="tab own">Past Clients</span></div>

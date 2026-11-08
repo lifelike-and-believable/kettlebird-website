@@ -61,8 +61,8 @@ At the first look at the mock-ups (2026-11-08): the tabs' corners are rounded a 
 ### Subfolders (mock-ups 2, 3, 5 and 12)
 
 - **A subfolder's thumbnail** is a square at the row's height: a grid of its newest pieces, each cropped to fill its cell around the point Star chose with the picture's hotspot (the circle in the picture's **Edit**; the centre if none), at the grid size Star chose (2 × 2, 3 × 3 or 4 × 4), with the subfolder's name under the grid in DM Mono. A subfolder with fewer pieces than cells shows paper-coloured empty cells for the rest. A subfolder with no published pieces doesn't show.
-- **On a phone** the grid shows at most 2 × 2, whatever Star chose: a 3 × 3 cell would be about 60 pixels. The name under it also gives the count, "Book covers · 3", since the grid no longer shows them all (mock-up 12). A long name wraps, on the thumbnail and on the tab.
-- **Opening a subfolder:** choosing its thumbnail shows its pieces in the folder's row, in place of the folder's top level, scrolled to the start; the folder's tab reads the subfolder's name ("Murderbot"), and a pink **INDEX** tab appears beside it, on the tab's inner side (mock-up 3). Choosing **INDEX** goes back to the folder's top level, scrolled to the subfolder's thumbnail. At the top level there's no **INDEX** tab.
+- **On a phone** the grid shows at most 2 × 2, whatever Star chose: a 3 × 3 cell would be about 60 pixels. The name under it also gives the count, "Book covers · 3", since the grid no longer shows them all (mock-up 12). On a phone an open tab's words are 1.15rem, so "Fan Work: Murderbot" fits on one line beside **INDEX** (mock-up 5). A longer name wraps, on the thumbnail and on the tab; the tab grows upward from the folder's edge, and its sides keep the same slant whatever its height (mock-up 12).
+- **Opening a subfolder:** choosing its thumbnail shows its pieces in the folder's row, in place of the folder's top level, scrolled to the start; the folder's tab reads the section's name and the subfolder's, "Fan Work: Murderbot" (the lead's choice at review: it says where you are), and a pink **INDEX** tab appears beside it, on the tab's inner side (mock-up 3). Choosing **INDEX** goes back to the folder's top level, scrolled to the subfolder's thumbnail. At the top level there's no **INDEX** tab.
 - **One subfolder open at a time** on the page. Opening a subfolder in another folder closes the open one (its folder goes back to its top level). Opening one changes only those folders; the page doesn't move.
 - **Its address:** each subfolder has one, `/portfolio/<folder>/<subfolder>` (for example `/portfolio/fan-work/murderbot`), built ahead of time like every page. The folders' parts are fixed: `featured`, `original-work`, `fan-work`, `past-clients`, `work-in-progress`. The subfolder's part is its **Web address** in the editor, made from its name when it's first made and kept when it's renamed, as a series' is (design-organised-editor), so a renamed subfolder's shared links keep working.
 - **History:**
@@ -77,7 +77,7 @@ At the first look at the mock-ups (2026-11-08): the tabs' corners are rounded a 
 
 - **Art** becomes a menu of two lists, **Pieces** (today's list) and **Subfolders** (new), as Comics lists its series and chapters (design-organised-editor).
 - **A subfolder** (mock-up 7) has:
-  - **Name** (required): shown under its thumbnail and on the section's tab when it's open.
+  - **Name** (required): shown under its thumbnail, and on the section's tab after the section's name when it's open ("Fan Work: Murderbot").
   - **Web address** (required): made from the name, editable, unique within its section; "Leave it as it is once people may have shared links to it."
   - **Section** (required): a choice of the five Portfolio sections. It's set when Star first publishes the subfolder and can't be changed afterwards: "Set when you make it; to move pieces to another section, make a subfolder there." (Changing it would leave its pieces in a subfolder of a section they aren't in.)
   - **Grid size**: 2 × 2, 3 × 3 or 4 × 4; 2 × 2 at first. Its help says how many pieces the subfolder holds: "Murderbot has 4 pieces: 2 × 2 shows them all."
@@ -99,7 +99,7 @@ Built from the site's own fonts, colours, paper and arrow buttons, with Star's r
 | 0   | Star's original concept                                                                                            | `mockups/portfolio-folders/0-star-concept.jpg`              |
 | 1   | On a computer: title and subtitle, then Featured (tab right) and Original Work (tab left) at 480 pixels            | `mockups/portfolio-folders/1-folders-laptop.png`            |
 | 2   | Fan Work's top level (tab right): two subfolders (2 × 2 and 3 × 3) and a loose piece; the left arrow can't be used | `mockups/portfolio-folders/2-subfolders-laptop.png`         |
-| 3   | Murderbot open: its name on the tab, **INDEX** beside it, its address, what a screen reader hears                  | `mockups/portfolio-folders/3-subfolder-open-laptop.png`     |
+| 3   | Murderbot open: "Fan Work: Murderbot" on the tab, **INDEX** beside it, its address, what a screen reader hears     | `mockups/portfolio-folders/3-subfolder-open-laptop.png`     |
 | 4   | On a phone: a 16:9 piece fills the width; the arrows sit under the row                                             | `mockups/portfolio-folders/4-folders-phone.png`             |
 | 5   | On a phone, a subfolder open                                                                                       | `mockups/portfolio-folders/5-subfolder-open-phone.png`      |
 | 6   | Today, for comparison                                                                                              | `mockups/portfolio-folders/6-today-laptop.png`              |
@@ -108,7 +108,7 @@ Built from the site's own fonts, colours, paper and arrow buttons, with Star's r
 | 9   | The editor: deleting a subfolder                                                                                   | `mockups/portfolio-folders/9-delete-subfolder.png`          |
 | 10  | Preview of a subfolder with no pieces yet                                                                          | `mockups/portfolio-folders/10-preview-empty-subfolder.png`  |
 | 11  | A subfolder's address after it's deleted, on a phone: Page not found                                               | `mockups/portfolio-folders/11-page-not-found-phone.png`     |
-| 12  | A 320-pixel phone: a long name wraps on the tab; a grid capped at 2 × 2 with its count                             | `mockups/portfolio-folders/12-long-name-320.png`            |
+| 12  | A 320-pixel phone: a long tab wraps and grows upward; a grid capped at 2 × 2 with its count                        | `mockups/portfolio-folders/12-long-name-320.png`            |
 | 13  | A piece wider than 16:9 on a phone                                                                                 | `mockups/portfolio-folders/13-wide-piece-phone.png`         |
 
 ## Where it applies
@@ -147,7 +147,7 @@ Built from the site's own fonts, colours, paper and arrow buttons, with Star's r
 
 ## Accessibility
 
-- Each folder is a region named by its folder's name; when a subfolder is open, by "Fan Work: Murderbot".
+- Each folder is a region named by its tab: its folder's name, or "Fan Work: Murderbot" when a subfolder is open.
 - A subfolder's thumbnail is a link named "Murderbot, 4 pieces"; its grid pictures are decorative (`alt=""`).
 - Opening a subfolder announces "Fan Work: Murderbot, 4 pieces." and moves focus to its first piece; **INDEX**, a link named "Index: back to Fan Work", returns focus to the subfolder's thumbnail. After Back or Forward, the change is announced the same way and focus stays where it was.
 - Every piece keeps its alt text; the arrows keep their names, and gain the "can't be used" state at the row's ends (`aria-disabled`, skipped by Tab).
@@ -173,17 +173,15 @@ Built from the site's own fonts, colours, paper and arrow buttons, with Star's r
 - The editor: the Art menu; the subfolder type and its fields (web address unique within its section; section fixed after the first publish); the piece's Subfolders field, its limits and the published-only choices; the note when unticking a section; the delete confirmation; references that let a subfolder be deleted, leaving its pieces loose; Preview; the help link and help texts.
 - Accessibility as above; the axe check.
 
-## Decisions at review
+## Decisions from the lead at review (2026-11-08)
 
-Proposed, for the lead to confirm or change:
-
-1. **Row height:** 9/16 of the row's width, at most 480 pixels (Star's concept). On a phone a portrait piece is about 150 by 200 pixels; a taller row (say 260 pixels) makes portrait pieces bigger but crops 16:9 pieces at the sides of the screen.
+1. **Row height:** 9/16 of the row's width, at most 480 pixels (Star's concept). A portrait piece about 150 by 200 pixels on a phone is fine.
 2. **Arrows' places:** over the row's ends on a computer; under the row on a phone, so the pieces keep the full width.
 3. **Grid sizes:** 2 × 2, 3 × 3 or 4 × 4, with 2 × 2 at first; the newest pieces fill the grid; empty cells are paper-coloured; at most 2 × 2 on a phone.
 4. **Order:** a subfolder sits where its newest piece would, among the loose pieces.
-5. **The tab when open:** the subfolder's name alone ("Murderbot"), with **INDEX** beside it; the screen reader hears "Fan Work: Murderbot". The alternative is "Fan Work: Murderbot" on the tab, which says where you are but is long on a phone.
+5. **The tab when open** reads "Fan Work: Murderbot", with **INDEX** beside it. (The story's example, "Murderbot", was the subfolder's name alone; the lead chose to put the section's name before it.)
 6. **Addresses:** `/portfolio/<folder>/<subfolder>`, with fixed folder parts and the subfolder's own **Web address**, kept when it's renamed.
-7. **Full screen** from a loose piece turns through the folder's loose pieces only, skipping subfolders. The alternative is the loose pieces, then each subfolder's pieces.
+7. **Full screen** from a loose piece turns through the folder's loose pieces; from a piece in a subfolder, through that subfolder's pieces.
 8. **The arrows' "can't be used" state** at the row's ends, amending design-arrows item 3.
 9. **A subfolder's section** can't be changed after its first publish.
 
