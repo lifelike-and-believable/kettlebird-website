@@ -3,6 +3,7 @@ status: implemented
 tests-commit: 8b4ab3f9d477fd241f8ddfe0d87faf6eed80eb87
 unlocks:
   - tests/e2e/story-text-frame.spec.ts: the sheet's bottom padding is 0, in place of the top padding, at 390 and 1280 pixels (story-text-frame AC-4), because the bottom space moves above the typewriter so the sheet ends inside it (story-typewriter AC-6), as design-story-typewriter, Where it applies, row 1, says.
+  - tests/e2e/story-typewriter.spec.ts: AC-3 no longer checks the 146-pixel height at 1280 pixels; there the sheet is 65 characters wide, so the height follows the font's measure on the test machine (150 in CI). The width-over-0.8, centring and proportion checks still cover 1280.
 ---
 
 # Stories: the sheet comes out of a typewriter
@@ -28,7 +29,7 @@ Source: design-story-typewriter sections as named. "The sheet" is the story text
 |---|---|---|---|
 | AC-1 | The typewriter is in the sheet, after the text, on a one-shot's page and on a chapter page, and on no other page; a story in chapters' own page has none. | test: e2e "where it is" | #the-change |
 | AC-2 | It is drawing only: `aria-hidden="true"`, nothing in it can take focus, it takes no taps or clicks (`pointer-events: none`), and the page's accessibility tree is as without it. | test: unit "drawing only"; e2e "drawing only" | #accessibility |
-| AC-3 | Its paper slot lines up with the sheet: it is the sheet's width over 0.8, within a pixel, centred on the sheet within a pixel, and as tall as its drawing's proportions make it (13 high for every 100 wide, for the stand-in): about 47, 58, 109 and 146 pixels tall at 320, 390, 700 and 1280 pixels, within 2. | test: e2e "size" | #the-change, #the-artwork-from-star |
+| AC-3 | Its paper slot lines up with the sheet: it is the sheet's width over 0.8, within a pixel, centred on the sheet within a pixel, and as tall as its drawing's proportions make it (13 high for every 100 wide, for the stand-in): about 47, 58 and 109 pixels tall at 320, 390 and 700 pixels, within 2, where the screen sets the sheet's width (at 1280 the sheet is 65 characters wide, so its height, about 146 pixels, follows the font's measure). | test: e2e "size" | #the-change, #the-artwork-from-star |
 | AC-4 | Nothing scrolls sideways at 320, 390, 640 (200% zoom on a 1280-pixel screen), 700 and 1280 pixels; what reaches past the screen's edges is clipped (`overflow-x: clip` on the page's main column, which keeps `sticky` working). | test: e2e "size" | #the-change, #accessibility |
 | AC-5 | It follows the reader: with a long text scrolled to its middle, the typewriter's bottom is the screen's bottom, within a pixel, on a phone and a computer. | test: e2e "follows the reader" | #the-change |
 | AC-6 | At the end it stays under the last line: scrolled past the text, the typewriter's bottom is the sheet's bottom, the sheet has no bottom padding, the space above it is the sheet's top padding (`clamp(1.5rem, 3vw, 2.5rem)`), and the chapter navigation is below it. | test: unit "sheet"; e2e "at the end" | #the-change |

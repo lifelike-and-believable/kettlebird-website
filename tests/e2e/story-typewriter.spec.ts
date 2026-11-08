@@ -64,7 +64,10 @@ test('story-typewriter#AC-2 drawing only', async ({ page }) => {
 });
 
 test('story-typewriter#AC-3 AC-4 size', async ({ page }) => {
-  const heights: Record<number, number> = { 320: 47, 390: 58, 700: 109, 1280: 146 };
+  // Heights where the screen sets the sheet's width. At 1280 the sheet is 65 characters wide, so its height
+  // follows the font's measure on the machine running the test (146 here, 150 in CI); the width and proportion
+  // checks cover it there.
+  const heights: Record<number, number> = { 320: 47, 390: 58, 700: 109 };
   for (const width of [320, 390, 640, 700, 1280]) {
     await page.setViewportSize({ width, height: 800 });
     await page.goto(CHAPTER);
