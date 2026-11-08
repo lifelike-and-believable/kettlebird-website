@@ -1,5 +1,8 @@
 ---
-status: approved
+status: implemented
+tests-commit: 8b4ab3f9d477fd241f8ddfe0d87faf6eed80eb87
+unlocks:
+  - tests/e2e/story-text-frame.spec.ts: the sheet's bottom padding is 0, in place of the top padding, at 390 and 1280 pixels (story-text-frame AC-4), because the bottom space moves above the typewriter so the sheet ends inside it (story-typewriter AC-6), as design-story-typewriter, Where it applies, row 1, says.
 ---
 
 # Stories: the sheet comes out of a typewriter
