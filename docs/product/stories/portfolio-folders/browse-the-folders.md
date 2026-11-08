@@ -17,7 +17,7 @@ As a fan, I want to look through the Portfolio's folders with each piece shown l
 
 - The page keeps its title "Portfolio" and its subtitle, then shows one folder per section that has pieces, in this order: Featured, Original Work, Fan Work, Past Clients, Work in Progress. There are no filter buttons.
 - Each folder looks like a kraft-paper file folder with a tab holding its name in a typewriter face, as in Star's concept; the tabs alternate sides down the page, and the folders overlap a little, as a stack.
-- A folder's pieces show in one row, each at its own shape (not cropped to a square), large enough that a row fills most of the screen's width on a computer. The row scrolls sideways; pieces cut off at the row's ends show that there is more.
+- A folder's pieces show in one row, each at its own shape (not cropped to a square), all at the row's height. The widest pieces are taken to be 16:9: on a phone, the row is as tall as a 16:9 piece filling the screen's width, so a taller piece is narrower and shows beside part of the next; on a computer, the row is large, as in Star's concept. The row scrolls sideways; pieces cut off at the row's ends show that there is more.
 - The row has the site's arrow buttons (design-arrows) to scroll it, as well as touch, trackpad and keyboard scrolling; an arrow that can't scroll further can't be used and says so to screen readers.
 - Choosing a piece opens it as now: its dialog, and full screen from there (epic-portfolio-full-screen).
 - Pictures are fetched at the size they show, and those off screen load as they come near, so the page stays quick on a phone connection.
