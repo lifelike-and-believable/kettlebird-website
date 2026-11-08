@@ -15,7 +15,9 @@ const PURPLE = 'rgb(74, 64, 99)';
 const CLEAR = 'rgba(0, 0, 0, 0)';
 
 const READER = '/comics/kettle-tales/1/2';
-const PORTFOLIO = '/preview/galleryItem/piece-moon?sanity-preview-secret=fixture-preview-key';
+// A subfolder's Preview, so Original Work's row starts at its beginning: a piece's Preview scrolls
+// its row to the piece, and the carousel's arrows now can't be used past either end (portfolio-folders AC-5).
+const PORTFOLIO = '/preview/portfolioSubfolder/sub-books?sanity-preview-secret=fixture-preview-key';
 const PICTURE = readFileSync('public/assets/images/bkgd-artwork.jpg');
 
 const controls = (page: Page) => page.getByRole('navigation', { name: 'Page navigation' });
@@ -113,6 +115,8 @@ test('site-arrows#AC-3 on paper', async ({ page }) => {
   await page.goto(PORTFOLIO);
   const right = carousel(page, 'Scroll right');
   expect(await look(right)).toMatchObject({ backgroundColor: BEIGE, color: INK, borderStyle: 'solid', borderWidth: '3px', borderColor: INK, radius: '0px', boxShadow: 'none' });
+  // This Preview opens scrolled to Past Clients; bring the row into view before measuring.
+  await right.scrollIntoViewIfNeeded();
   const was = await box(right);
   await right.hover();
   await expect.poll(async () => (await look(right)).backgroundColor).toBe(YELLOW);
@@ -181,10 +185,12 @@ test('site-arrows#AC-6 focus', async ({ page }) => {
   await page.keyboard.press('Shift');
   await right.focus();
   expect(await look(right)).toMatchObject({ outlineStyle: 'solid', outlineWidth: '2px', outlineColor: PURPLE, outlineOffset: '2px' });
-  const left = carousel(page, 'Scroll left');
-  await left.click();
-  await expect(left).toBeFocused();
-  expect((await look(left)).outlineStyle).toBe('none');
+  // A mouse click shows no focus ring. Scroll right, since at the row's start Scroll left can't be
+  // used (portfolio-folders AC-5).
+  await right.evaluate((el) => el.blur());
+  await right.click();
+  await expect(right).toBeFocused();
+  expect((await look(right)).outlineStyle).toBe('none');
 
   await page.setViewportSize({ width: 1280, height: 800 });
   await openFullScreen(page, 'Late Night Alibi');
@@ -256,8 +262,11 @@ test('site-arrows#AC-9 carousel', async ({ page }) => {
       const at = await box(b);
       expect(at.width, `${name} at ${width}`).toBe(44);
       expect(at.height, `${name} at ${width}`).toBe(44);
-      expect(await b.getAttribute('aria-disabled')).toBeNull();
-      expect(await b.evaluate((el) => el.classList.contains('is-off'))).toBe(false);
+      // The carousel now has the "can't be used" state (portfolio-folders AC-5): at the row's start,
+      // Scroll left can't be used; Scroll right can.
+      const off = name === 'Scroll left';
+      expect(await b.getAttribute('aria-disabled')).toBe(String(off));
+      expect(await b.evaluate((el) => el.classList.contains('is-off'))).toBe(off);
     }
   }
 });

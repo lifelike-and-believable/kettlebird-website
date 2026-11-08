@@ -2,7 +2,7 @@
 // messages and list details. No `sanity` imports, so the site's Vitest can check it against the
 // design. Spec: docs/specs/content-editing-organised-editor.md; design: docs/design/organised-editor.md.
 
-export type ItemType = 'comicSeries' | 'galleryItem' | 'writtenWork' | 'product' | 'commissionType';
+export type ItemType = 'comicSeries' | 'galleryItem' | 'portfolioSubfolder' | 'writtenWork' | 'product' | 'commissionType';
 
 export interface Section {
   title: string;
@@ -24,12 +24,19 @@ export const SECTIONS: Section[] = [
   { title: 'Site settings' },
 ];
 
+/** portfolio-folders AC-17: Art's two lists. */
+export const ART_LISTS: (Section & { type: ItemType })[] = [
+  { title: 'Pieces', type: 'galleryItem', newLabel: 'New piece', ordering: [['date', 'desc'], ['_createdAt', 'desc']] },
+  { title: 'Subfolders', type: 'portfolioSubfolder', newLabel: 'New subfolder', ordering: [['_createdAt', 'desc']] },
+];
+
 /** What each kind of item is called (Sanity's type titles). */
 export const ITEM_NAMES: Record<ItemType | 'comicChapter' | 'storyChapter', string> = {
   comicSeries: 'Series',
   comicChapter: 'Chapter',
   storyChapter: 'Chapter',
   galleryItem: 'Piece',
+  portfolioSubfolder: 'Subfolder',
   writtenWork: 'Story',
   product: 'Product',
   commissionType: 'Commission type',
@@ -68,7 +75,8 @@ export const FIELDS: Record<ItemType, Record<string, FieldText>> = {
     title: { label: 'Title', help: "Shown when someone points at the picture, and as the heading when it's opened.", missing: 'a title' },
     image: {
       label: 'Picture',
-      help: "Upload the original file; the site makes smaller copies. Your portfolio shows square thumbnails: to keep the important part in view, choose the picture's Edit button, then drag the circle over the part that matters.",
+      // portfolio-folders AC-24
+      help: "Upload the original file; the site makes smaller copies. Pieces show whole; in a subfolder's grid they're cropped square. To keep the important part in view there, choose the picture's Edit button, then drag the circle over the part that matters.",
       missing: 'the picture',
     },
     altText: { label: 'Alt text', help: "What the picture shows, for people using screen readers. If it's empty, they hear only the title." },
@@ -78,9 +86,29 @@ export const FIELDS: Record<ItemType, Record<string, FieldText>> = {
       missing: 'at least one portfolio section',
       atLeastOne: true,
     },
+    // portfolio-folders AC-20
+    subfolders: {
+      label: 'Subfolders',
+      help: 'Optional. At most one in each section this piece is in. Left as Loose, the piece shows on its own in that section.',
+    },
     description: { label: 'Description', help: 'Shown when someone opens the picture on your portfolio.' },
     tags: { label: 'Tags', help: "Words shown under the picture when it's opened, like a character's name. Type one, then press Enter." },
     date: { label: 'Date', help: 'When you made it. The portfolio shows newest first; pieces without a date come last.' },
+  },
+  // portfolio-folders AC-18, AC-19
+  portfolioSubfolder: {
+    name: {
+      label: 'Name',
+      help: 'Shown under its thumbnail, and on the section\'s tab after the section\'s name when it\'s open ("Fan Work: Murderbot").',
+      missing: 'a name',
+    },
+    slug: { label: 'Web address', help: 'Made from the name. Leave it as it is once people may have shared links to it.', missing: 'a web address' },
+    section: {
+      label: 'Section',
+      help: "The Portfolio section it's in. Set when you make it; to move pieces to another section, make a subfolder there.",
+      missing: 'a section',
+    },
+    gridSize: { label: 'Grid size', help: 'How many of its pieces its thumbnail shows, newest first.' },
   },
   writtenWork: {
     title: { label: 'Title', help: "The story's title.", missing: 'a title' },
@@ -134,6 +162,7 @@ export const FIELDS: Record<ItemType, Record<string, FieldText>> = {
 export const HIDDEN: Record<ItemType, string[]> = {
   comicSeries: [],
   galleryItem: ['slug', 'featured'],
+  portfolioSubfolder: [],
   writtenWork: [],
   product: ['slug', 'tags', 'inventory'],
   commissionType: [],
@@ -193,10 +222,18 @@ export function listDetail(type: ItemType, item: Record<string, unknown>): strin
     case 'comicSeries':
       return labelOf(SERIES_STATUS, item.status);
     case 'galleryItem': {
-      // In the portfolio's own order.
+      // In the portfolio's own order, then its subfolders (portfolio-folders AC-21).
       const chosen = item.category;
       const titles = PORTFOLIO_SECTIONS.filter((o) => Array.isArray(chosen) && chosen.includes(o.value)).map((o) => o.title);
-      return titles.length ? titles.join(', ') : undefined;
+      const subs = (Array.isArray(item.subfolderNames) ? item.subfolderNames : []).filter((n): n is string => typeof n === 'string' && n !== '');
+      return titles.length ? [titles.join(', '), ...(subs.length ? [subs.join(', ')] : [])].join(' · ') : undefined;
+    }
+    case 'portfolioSubfolder': {
+      // portfolio-folders AC-18: "Fan Work · 2 × 2 · 4 pieces".
+      if (typeof item.section !== 'string') return undefined;
+      const size = typeof item.gridSize === 'number' ? item.gridSize : 2;
+      const count = typeof item.count === 'number' ? item.count : 0;
+      return `${sectionTitle(item.section)} · ${size} × ${size} · ${count} ${count === 1 ? 'piece' : 'pieces'}`;
     }
     case 'writtenWork':
       return typeof item.publishDate === 'string' && item.publishDate ? item.publishDate : undefined;
@@ -234,5 +271,67 @@ export function missingFields(type: ItemType, errorPaths: unknown[][]): string[]
 }
 
 /** The kinds of item the editor organises, for the create menu (AC-11). */
-export const ITEM_TYPES = SECTIONS.flatMap((s) => (s.type ? [s.type] : []));
+export const ITEM_TYPES: ItemType[] = [...SECTIONS.flatMap((s) => (s.type ? [s.type] : [])), 'portfolioSubfolder'];
 export const isItemType = (name: string): name is ItemType => (ITEM_TYPES as string[]).includes(name);
+
+// ── Subfolders (portfolio-folders AC-18 to AC-22) ─────────────────────────────
+
+/** AC-18 */
+export const GRID_SIZES: { title: string; value: number }[] = [2, 3, 4].map((n) => ({ title: `${n} × ${n}`, value: n }));
+
+/** A section's title, as the portfolio shows it. */
+export const sectionTitle = (value: string) => labelOf(PORTFOLIO_SECTIONS, value) ?? value;
+
+const pieces = (count: number) => `${count} ${count === 1 ? 'piece' : 'pieces'}`;
+
+/** AC-18: the end of Grid size's help. */
+export function gridHint(name: string, count: number, size: number): string {
+  if (count <= 0) return `${name} has no pieces yet.`;
+  const cells = size * size;
+  const shows = count > cells ? `the newest ${cells}` : count === 1 ? `it, with ${cells - 1} empty cells` : 'them all';
+  return `${name} has ${pieces(count)}: ${size} × ${size} shows ${shows}.`;
+}
+
+/** AC-19: a published subfolder's section can't change. */
+export const sectionLocked = (published: string | undefined, draft: string | undefined) => Boolean(published) && published !== draft;
+
+/** AC-20: one choice per section the piece is in, in the portfolio's order. */
+export function subfolderChoices(
+  categories: string[],
+  subfolders: { _id: string; name: string; section: string }[],
+  chosen: string[],
+): { section: string; title: string; options: { id: string; name: string }[]; chosen: string | undefined; empty: string | undefined }[] {
+  return ['featured', 'original', 'fanart', 'commission', 'wip']
+    .filter((section) => categories.includes(section))
+    .map((section) => {
+      const options = subfolders.filter((s) => s.section === section).map((s) => ({ id: s._id, name: s.name }));
+      return {
+        section,
+        title: sectionTitle(section),
+        options,
+        chosen: options.find((o) => chosen.includes(o.id))?.id,
+        empty: options.length ? undefined : 'Loose (no subfolders yet)',
+      };
+    });
+}
+
+/** AC-20: what stops a piece's subfolders being published, if anything. */
+export function subfolderProblems(categories: string[], chosen: { name: string; section: string }[]): string | undefined {
+  const outside = chosen.find((s) => !categories.includes(s.section));
+  if (outside) {
+    const title = sectionTitle(outside.section);
+    return `${outside.name} is in ${title}, which this piece isn't in. Tick ${title}, or choose Loose.`;
+  }
+  const twice = chosen.find((s, i) => chosen.findIndex((t) => t.section === s.section) !== i);
+  return twice ? `Choose at most one subfolder in ${sectionTitle(twice.section)}.` : undefined;
+}
+
+/** AC-21 */
+export const leaveNote = (section: string, name: string) => `If you untick ${section}, this piece also leaves ${name} when you publish.`;
+
+/** AC-22 */
+export function deleteMessage(name: string, count: number, section: string): string {
+  const stay =
+    count <= 0 ? 'It has no pieces.' : count === 1 ? `Its 1 piece stays in ${section}, shown on its own.` : `Its ${count} pieces stay in ${section}, shown on their own.`;
+  return `Delete ${name}? ${stay} Its web address stops working: links people shared to it will show Page not found.`;
+}

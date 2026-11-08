@@ -7,9 +7,13 @@ import GalleryGrid from '../GalleryGrid';
 import type { GalleryItem } from '../../lib/queries';
 import { canonicalUrl, siteHref } from '../../lib/seo';
 import { featuredPiece, portfolioPreviewImage } from '../../lib/portfolio-preview';
+import { buildFolders, subfolderDescription, subfolderPath, subfolderTitle, type Subfolder } from '../../lib/portfolio/folders';
 
-const { items, focusId, openId, preview = false } = Astro.props as {
+const { items, subfolders = [], openSubfolder, focusId, openId, preview = false } = Astro.props as {
   items: GalleryItem[];
+  subfolders?: Subfolder[];
+  /** A subfolder's own page (portfolio-folders AC-12, AC-14), or its Preview. */
+  openSubfolder?: string;
   focusId?: string;
   openId?: string;
   preview?: boolean;
@@ -17,10 +21,14 @@ const { items, focusId, openId, preview = false } = Astro.props as {
 /** In the preview route: what the preview shows and outlines (docs/specs/content-editing-preview.md). */
 const previewInfo = (Astro.props as { previewInfo?: PreviewInfo }).previewInfo;
 // site-search AC-4 to AC-8: the canonical address and link preview.
-const pageTitle = 'Portfolio • Kettlebird Creations';
-const pageDescription = 'Illustrations, fanart, original characters, and commissioned work by Star Goldberg (Kettlebird).';
-const canonical = canonicalUrl(siteHref(Astro.site), '/portfolio');
-const piece = featuredPiece(items);
+// A subfolder's page has its own (portfolio-folders AC-14).
+const opened = openSubfolder ? buildFolders(items, subfolders).flatMap((v) => v.subfolders.map((s) => ({ ...s, folder: v.folder }))).find((s) => s.subfolder._id === openSubfolder) : undefined;
+const pageTitle = opened ? subfolderTitle(opened.subfolder.name, opened.folder.title) : 'Portfolio • Kettlebird Creations';
+const pageDescription = opened
+  ? subfolderDescription(opened.subfolder.name, opened.folder.title, opened.pieces.length)
+  : 'Illustrations, fanart, original characters, and commissioned work by Star Goldberg (Kettlebird).';
+const canonical = canonicalUrl(siteHref(Astro.site), (opened && subfolderPath(opened.subfolder)) || '/portfolio');
+const piece = opened ? opened.pieces[0] : featuredPiece(items);
 const picture = piece && portfolioPreviewImage(piece);
 ---
 
@@ -38,7 +46,7 @@ const picture = piece && portfolioPreviewImage(piece);
       <p class="portfolio-subtitle">Illustrations, fanart, and original characters</p>
     </header>
 
-    <GalleryGrid items={items} focusId={focusId} openId={openId} preview={preview} client:load />
+    <GalleryGrid items={items} subfolders={subfolders} openSubfolder={openSubfolder} focusId={focusId} openId={openId} preview={preview} client:load />
   </section>
 </BaseLayout>
 
@@ -65,192 +73,153 @@ const picture = piece && portfolioPreviewImage(piece);
     margin: 0;
   }
 
-  /* ── INDEX filter bar ─────────────────────────────────────── */
-  :global(.gallery-index) {
-    max-width: 1400px;
-    margin: 0 auto 2rem;
-    padding: 1.5rem 1rem 0;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-
-  :global(.gallery-index__label) {
-    font-family: 'DM Mono', monospace;
-    font-size: 1.15rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    padding: 0.3rem 1.1rem;
-    color: var(--color-ink, #2b2b2b);
-    background: url('/assets/images/Highlighter_M.png') no-repeat center;
-    background-size: 100% 100%;
-    flex-shrink: 0;
-  }
-
-  :global(.gallery-filters) {
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-  }
-
-  :global(.filter-btn) {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.9rem;
-    font-weight: 500;
-    padding: 0.35rem 1rem;
-    border: 2px solid var(--color-ink, #2b2b2b);
-    background: transparent;
-    color: var(--color-ink, #2b2b2b);
-    cursor: pointer;
-    transition: background 0.15s, color 0.15s;
-  }
-
-  :global(.filter-btn:hover),
-  :global(.filter-btn--active) {
-    background: var(--color-ink, #2b2b2b);
-    color: var(--color-beige, #f5f1e8);
-  }
-
-  /* ── Stacked, edge-to-edge folder bands ───────────────────── */
+  /* ── Folders (docs/design/portfolio-folders.md; docs/specs/portfolio-folders.md AC-1 to AC-8) ── */
   :global(.folder-stack) {
     display: flex;
     flex-direction: column;
+    /* Edge to edge: past the main column's 1rem padding (global.css .page__content). */
+    margin-inline: -1rem;
+    /* Room for the first folder's tab, which rises 3.9rem above its edge. */
+    padding-top: 5rem;
+    --kraft: #c4a274;
+    --kraft-dark: #b8956a;
   }
 
-  /* Each band runs the full viewport width and butts against its
-     neighbours — no gaps, no drop shadows. Kraft tone now; ready to
-     swap background-image for a texture asset from Star later. */
+  /* A folder: its tabs, then its kraft body. The body overlaps the one above, with a fine contact line
+     and a soft shadow cast upward (AC-2). The tabs are in the page's flow, their first line over the
+     folder above, so a tab whose words wrap pushes its own folder down rather than covering the one
+     above. The row's height is 9/16 of the folder's width, at most 480 px (AC-3). */
   :global(.folder-section) {
-    width: 100%;
     position: relative;
-    background-color: #c3a47d;
+    display: flex;
+    flex-direction: column;
+    margin-top: -0.3rem;
+  }
+  :global(.folder-body) {
+    position: relative;
+    container-type: inline-size;
+    padding: 2rem 0 4.4rem;
+    background-color: var(--kraft);
     background-image: url('/assets/images/Paper_2_Tileable.png');
     background-size: 420px;
     background-blend-mode: multiply;
+    box-shadow:
+      0 -1px 0 rgba(0, 0, 0, 0.16),
+      0 -6px 12px -4px rgba(0, 0, 0, 0.28);
   }
+  :global(.folder-section:nth-child(even) .folder-body) { background-color: var(--kraft-dark); }
 
-  :global(.folder-section[data-cat='original'])   { background-color: #c9aa7e; }
-  :global(.folder-section[data-cat='fanart'])      { background-color: #bd9f76; }
-  :global(.folder-section[data-cat='commission'])  { background-color: #c2a06e; }
-  :global(.folder-section[data-cat='featured'])    { background-color: #c9a87c; }
-  :global(.folder-section[data-cat='wip'])         { background-color: #bfa884; }
-
-  /* Torn-paper seam at the top edge of each band */
-  :global(.folder-section::before) {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 16px;
-    background: url('/assets/images/Paper_1_Torn.png') repeat-x top center;
-    background-size: auto 16px;
-    pointer-events: none;
-  }
-
-  :global(.folder-inner) {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 2.75rem 1rem 1.75rem;
+  /* The tabs, on the folder's top edge on its section's fixed side; one line high above the edge. */
+  :global(.folder-tabs) {
     position: relative;
+    z-index: 1;
+    display: flex;
+    gap: 0.6rem;
+    align-items: flex-end;
+    max-width: calc(100% - 5rem);
+    margin: -3.9rem 4rem -0.3rem;
   }
+  :global(.folder--right .folder-tabs) { align-self: flex-end; flex-direction: row-reverse; }
+  :global(.folder--left .folder-tabs) { align-self: flex-start; }
 
-  /* Section label as a monospace marker tab straddling the top edge */
-  :global(.folder-label) {
-    position: absolute;
-    top: -0.7rem;
-    left: 1rem;
+  /* The tab's paper is drawn on ::before, tilted back so its sides slant in a little while its top
+     corners stay rounded (the lead's choices, 2026-11-08). */
+  :global(.folder-tab) {
+    --tab-bg: var(--kraft);
+    --tilt: 120px;
+    position: relative;
+    isolation: isolate;
+    padding: 0.55rem 2.6rem 0.5rem;
     font-family: 'DM Mono', monospace;
     font-weight: 500;
-    /* Capped by the screen's width, as page titles are, so it stays on one line at phone width with
-       large text; it can still wrap between words rather than run off the screen. */
-    font-size: min(1.5rem, 7vw);
+    font-size: 2.6rem;
+    line-height: 1.1;
     letter-spacing: 0.02em;
     color: var(--color-ink, #2b2b2b);
-    padding: 0.2rem 1rem;
-    max-width: calc(100% - 2rem);
     overflow-wrap: break-word;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 100% 100%;
+    min-width: 0;
   }
-
-  :global(.folder-label[data-cat='original'])   { background-image: url('/assets/images/Highlighter_Y.png'); }
-  :global(.folder-label[data-cat='fanart'])      { background-image: url('/assets/images/Highlighter_G.png'); }
-  :global(.folder-label[data-cat='commission'])  { background-image: url('/assets/images/Highlighter_O.png'); }
-  :global(.folder-label[data-cat='featured'])    { background-image: url('/assets/images/Highlighter_M.png'); }
-  :global(.folder-label[data-cat='wip'])         { background-image: url('/assets/images/Highlighter_Y.png'); }
-
-  /* ── Carousel ─────────────────────────────────────────────── */
-  :global(.carousel) {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
+  :global(.folder-section:nth-child(even) .folder-tab:not(.folder-tab--index)) { --tab-bg: var(--kraft-dark); }
+  :global(.folder-tab::before) {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-color: var(--tab-bg);
+    background-image: url('/assets/images/Paper_2_Tileable.png');
+    background-size: 420px;
+    background-blend-mode: multiply;
+    border-radius: 22px 22px 0 0;
+    transform: perspective(var(--tilt)) rotateX(9deg);
+    transform-origin: bottom;
+    box-shadow:
+      0 -1px 0 rgba(0, 0, 0, 0.16),
+      0 -5px 10px -4px rgba(0, 0, 0, 0.28),
+      -4px -2px 8px -5px rgba(0, 0, 0, 0.25),
+      4px -2px 8px -5px rgba(0, 0, 0, 0.25);
   }
+  :global(.folder-tab--open) { --tilt: 220px; }
+  :global(.folder-tab--index) {
+    /* The highlighter pink of today's Index label, light enough for ink at any size (4.5:1). */
+    --tab-bg: #e88ab9;
+    flex: none;
+    font-size: 2.1rem;
+    padding: 0.45rem 2.2rem 0.4rem;
+    text-decoration: none;
+  }
+  :global(.folder-tab--index:focus-visible) { outline: 2px solid var(--color-dark-purple, #4a4063); outline-offset: 2px; }
 
+  /* ── The row (AC-3, AC-5) ─────────────────────────────────── */
+  :global(.folder-row) {
+    position: relative;
+    height: min(100cqw * 9 / 16, 480px);
+  }
   :global(.carousel__track) {
     display: flex;
-    gap: 0.85rem;
+    gap: 1.1rem;
+    height: calc(100% + 12px);
+    margin-block: -6px;
+    padding: 6px 5.5rem;
     overflow-x: auto;
-    scroll-snap-type: x mandatory;
+    overflow-y: hidden;
     scrollbar-width: none;
-    flex: 1;
-    /* Narrower than a card on a small screen with large text: the track scrolls, the page doesn't. */
-    min-width: 0;
-    padding-bottom: 0.25rem;
+    box-sizing: border-box;
   }
-
-  :global(.carousel__track::-webkit-scrollbar) {
-    display: none;
-  }
-
-  /* The arrow button (docs/design/arrows.md): 44 px at every width, the pictures giving up the room. */
+  :global(.carousel__track::-webkit-scrollbar) { display: none; }
   :global(.carousel__arrow) {
-    flex-shrink: 0;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
     width: 44px;
     height: 44px;
+    z-index: 2;
   }
+  :global(.carousel__arrow--left) { left: 1.25rem; }
+  :global(.carousel__arrow--right) { right: 1.25rem; }
+  :global(.folder-row--empty) { display: flex; align-items: center; padding: 0 5.5rem; }
 
-  /* ── Gallery card (thumbnail in carousel) ─────────────────── */
+  /* A piece: whole, at its own shape, at the row's height, with a paper edge and a soft shadow. */
   :global(.gallery-card) {
     position: relative;
-    border: 3px solid var(--color-ink, #2b2b2b);
-    overflow: hidden;
-    background: var(--color-beige, #f5f1e8);
+    flex: none;
+    height: 100%;
     padding: 0;
+    border: 0;
+    background: var(--color-beige, #f5f1e8);
+    box-shadow: 0 0 0 3px var(--color-beige, #f5f1e8), 0 2px 6px 3px rgba(0, 0, 0, 0.25);
     cursor: pointer;
-    flex-shrink: 0;
-    /* At most the track's width, so a whole piece shows on a small screen with large text. */
-    width: min(220px, 100%);
-    aspect-ratio: 1;
-    scroll-snap-align: start;
-    transition: transform 0.18s;
   }
-
-  :global(.gallery-card:hover) {
-    transform: scale(1.04);
-    z-index: 1;
-  }
-
-  :global(.gallery-card__img) {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-
+  :global(.gallery-card:focus-visible) { outline: 3px solid var(--color-dark-purple, #4a4063); outline-offset: 5px; }
+  :global(.gallery-card__img) { display: block; height: 100%; width: auto; }
   :global(.gallery-card__placeholder) {
-    width: 100%;
     height: 100%;
+    aspect-ratio: 1;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 3rem;
     background: var(--color-yellow, #f4ce6a);
   }
-
   :global(.gallery-card__overlay) {
     position: absolute;
     bottom: 0;
@@ -260,18 +229,67 @@ const picture = piece && portfolioPreviewImage(piece);
     padding: 1.5rem 0.75rem 0.6rem;
     opacity: 0;
     transition: opacity 0.2s;
+    text-align: left;
   }
-
   :global(.gallery-card:hover .gallery-card__overlay),
-  :global(.gallery-card:focus-visible .gallery-card__overlay) {
-    opacity: 1;
-  }
+  :global(.gallery-card:focus-visible .gallery-card__overlay) { opacity: 1; }
+  :global(.gallery-card__title) { font-family: 'DM Mono', monospace; font-weight: 500; font-size: 0.85rem; color: #fff; }
 
-  :global(.gallery-card__title) {
+  /* A subfolder's thumbnail: a square at the row's height, its grid of pieces, its name under it (AC-8). */
+  :global(.subfolder-card) {
+    flex: none;
+    height: 100%;
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    background: var(--color-beige, #f5f1e8);
+    box-shadow: 0 0 0 3px var(--color-beige, #f5f1e8), 0 2px 6px 3px rgba(0, 0, 0, 0.25);
+    color: var(--color-ink, #2b2b2b);
+    text-decoration: none;
+  }
+  :global(.subfolder-card:focus-visible) { outline: 3px solid var(--color-dark-purple, #4a4063); outline-offset: 5px; }
+  :global(.subfolder-grid) {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    gap: 3px;
+    aspect-ratio: 1;
+  }
+  :global(.subfolder-grid[data-size='2']) { grid-template: repeat(2, minmax(0, 1fr)) / repeat(2, minmax(0, 1fr)); }
+  :global(.subfolder-grid[data-size='3']) { grid-template: repeat(3, minmax(0, 1fr)) / repeat(3, minmax(0, 1fr)); }
+  :global(.subfolder-grid[data-size='4']) { grid-template: repeat(4, minmax(0, 1fr)) / repeat(4, minmax(0, 1fr)); }
+  :global(.subfolder-grid__cell) { min-height: 0; background: #ebe4d4; overflow: hidden; }
+  :global(.subfolder-grid__cell img) { display: block; width: 100%; height: 100%; object-fit: cover; }
+  :global(.subfolder-card__name) {
     font-family: 'DM Mono', monospace;
     font-weight: 500;
-    font-size: 0.85rem;
-    color: #fff;
+    font-size: 1.15rem;
+    padding: 0.35rem 0.6rem 0.25rem;
+    text-align: center;
+    overflow-wrap: break-word;
+  }
+  :global(.subfolder-card__count) { display: none; }
+
+  /* ── Phones (AC-3, AC-5, AC-8, AC-16) ─────────────────────── */
+  @media (max-width: 639px) {
+    :global(.folder-stack) { padding-top: 3.4rem; }
+    :global(.folder-body) { padding: 1.4rem 0 3rem; }
+    :global(.folder-tabs) { margin: -2.25rem 1rem -0.05rem; max-width: calc(100% - 2rem); }
+    :global(.folder-tab) { --tilt: 70px; font-size: 1.35rem; padding: 0.4rem 1.2rem 0.35rem; }
+    :global(.folder-tab::before) { border-radius: 14px 14px 0 0; }
+    :global(.folder-tab--open) { --tilt: 220px; font-size: 1.15rem; }
+    :global(.folder-tab--index) { font-size: 1.1rem; padding: 0.35rem 1rem 0.3rem; }
+    :global(.folder-row) { margin-bottom: 4rem; }
+    :global(.carousel__track) { padding: 6px 0; gap: 0.6rem; }
+    :global(.carousel__arrow) { top: auto; bottom: -3.6rem; transform: none; }
+    :global(.carousel__arrow--left) { left: 1rem; }
+    :global(.carousel__arrow--right) { right: 1rem; }
+    :global(.folder-row--empty) { padding: 0 1rem; }
+    /* At most 2 × 2 on a phone, with the count beside the name. */
+    :global(.subfolder-grid[data-size]) { grid-template: repeat(2, minmax(0, 1fr)) / repeat(2, minmax(0, 1fr)); }
+    :global(.subfolder-grid__cell:nth-child(n + 5)) { display: none; }
+    :global(.subfolder-card__name) { font-size: 0.85rem; padding: 0.2rem 0.4rem; }
+    :global(.subfolder-card__count) { display: inline; }
   }
 
   :global(.gallery-empty) {

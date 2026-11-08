@@ -53,7 +53,7 @@ Four kinds of arrow are in use, none from the style guide:
 - **Nothing moves:** no state changes a button's size or position, so full screen's side buttons, which centre themselves with `transform: translateY(-50%)`, stay where they are.
 - **Keyboard focus:** the site's focus ring, 2 px dark purple (`--color-dark-purple`) 2 px outside the border, shown only for the keyboard (`:focus-visible`).
 - **Can't be used:** a dashed border at 40% ink (`rgba(43,43,43,.4)`) and the arrow and caption at 45% ink (`rgba(43,43,43,.45)`), as today. New: no fill (today's controls keep their beige), so it reads as an empty outline, out of reach. On dark: border, arrow and caption at `#f5f1e877`, as today. These fall below 3:1 on purpose; WCAG exempts controls that can't be used from contrast, and they're also `aria-disabled` and skipped by Tab.
-- **The carousel has no "can't be used" state,** as today: its arrows scroll the row and do nothing at its ends.
+- **The carousel has the "can't be used" state too** (design-portfolio-folders, 2026-11-08): at the start of a row, Scroll left; at its end, Scroll right; both when the row fits.
 - **Motion:** only colour changes, over 120 ms (`--transition-fast`); with reduced motion, at once.
 
 **On dark** (full screen), the same button turned around: near-black (`#161616`) with a beige border, arrow and caption, and no shadow. With the pointer over it, it turns yellow with an ink arrow, as on paper; pressed, it fills beige with an ink arrow (inked in, the other way round). Its focus ring stays full screen's yellow, 3 px, which shows on near-black where purple wouldn't.

@@ -38,7 +38,8 @@ describe('site-arrows#AC-2 no typed arrows', () => {
     drawnArrow(right, 'next');
     for (const b of [left, right]) {
       expect(b.classList.contains('arrow-btn')).toBe(true);
-      expect(b.getAttribute('aria-disabled')).toBeNull();
+      // A row that fits (jsdom lays nothing out) can't be scrolled either way (portfolio-folders AC-5).
+      expect(b.getAttribute('aria-disabled')).toBe('true');
     }
   });
 

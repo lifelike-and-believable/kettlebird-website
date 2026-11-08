@@ -40,7 +40,7 @@ The look of the site is recorded in `docs/STYLE_GUIDE.md` and in the Kettlebird 
 |---|---|---|
 | Home page | Tiles for each section over Star's photos and colours, the logo tile in the logo's own orange; the site's icon in browser tabs and on phones' home screens | design-home-tiles-and-icon |
 | Site-wide | Torn-paper header (shorter on phones, with a menu), one arrow style everywhere, keyboard focus and reduced motion respected, link previews on every page, a sitemap, and structured data for search engines, listed once the site is at kettlebird.com | design-phone-header, design-arrows, design-comic-share-and-announce, design-site-search |
-| Portfolio | Artwork in category bands with a filter; any piece full screen, with zoom and moving between pieces | epic-portfolio-full-screen |
+| Portfolio | Kraft folders with tabs, pieces whole and large; subfolders Star makes in the editor, each with its own address; any piece full screen, with zoom and moving between pieces | epic-portfolio-full-screen, epic-portfolio-folders |
 | Comics | Series and chapter pages; a reader with First, Previous, Next and Newest, all pages of a chapter on one sheet, sharing, screen reader announcements; two pages side by side and a page-flip on wide screens, per comic; panel by panel, with panels found when Star uploads and corrected by Star in the editor; on a computer, pages that fit the screen, the width or the height, set per comic by Star and choosable by fans | epic-comic-reader, epic-comic-reader-flip-and-panels, design-comic-page-width |
 | Writing | Stories read on the site, as one-shots or in chapters, with scene breaks and Star's pictures; Star uploads each chapter as a Word document; stories with mature or explicit content ask before showing the text; news | epic-story-reader, design-story-import, design-story-mature-content |
 | Shop | Products by category, each linking to Ko-fi | requirements-shop (REQ-shop-1) |
@@ -140,3 +140,4 @@ Search engines list the site only once its address is `https://kettlebird.com` (
 | 2026-11-07 | Later: the hidden old rating, its fallback and the one-off change removed, as the test story is deleted. |
 | 2026-11-07 | Search engines and link previews, and the move to kettlebird.com as a launch step. |
 | 2026-11-07 | Brought up to date after the search engines build: the newest changes in one list, the Writing page's subtitle, the Commissions description, the docs' pronouns for Star, and the guide review as a check. |
+| 2026-11-08 | The Portfolio as folders, with subfolders, from Star's concept. |

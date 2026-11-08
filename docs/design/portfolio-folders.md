@@ -7,7 +7,7 @@ derived-from:
   - story-portfolio-folders-browse-the-folders: a8fb25e025c8
   - story-portfolio-folders-open-a-subfolder: 5ed224b1ccb6
   - story-portfolio-folders-put-pieces-in-subfolders: a33252fee277
-  - design-arrows#the-change: 5c138b2911e2
+  - design-arrows#the-change: 3bdcc7860e0c
   - design-portfolio-full-screen#how-it-works: a1a71c5c3e3f
   - design-organised-editor#sections-and-fields: 20d25885468d
   - persona-fan#goals: 2b047e4cae5d

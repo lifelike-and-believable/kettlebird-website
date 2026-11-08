@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 // The portfolio's sections: Featured is always the top-most carousel (and first in the Index),
 // whatever other sections there are. tier:fix: it came fourth, after Past Clients.
-import { cleanup, render, screen } from '@testing-library/react';
+import { cleanup, render } from '@testing-library/react';
 import { afterEach, describe, expect, it } from 'vitest';
 import GalleryGrid from '../../src/components/GalleryGrid';
 import type { GalleryItem } from '../../src/lib/queries';
@@ -14,10 +14,6 @@ const item = (id: string, category: string[]): GalleryItem => ({
 const sections = (container: HTMLElement) =>
   Array.from(container.querySelectorAll('section[data-cat]')).map((s) => s.getAttribute('data-cat'));
 
-const index = () =>
-  Array.from(screen.getByRole('navigation', { name: 'Filter gallery by category' }).querySelectorAll('button')).map(
-    (b) => b.textContent,
-  );
 
 afterEach(cleanup);
 
@@ -35,8 +31,8 @@ describe('portfolio section order', () => {
         ]}
       />,
     );
-    expect(sections(container)).toEqual(['featured', 'original', 'fanart', 'commission', 'wip', 'somethingNew']);
-    expect(index()).toEqual(['All', 'Featured', 'Original Work', 'Fan Work', 'Past Clients', 'Work in Progress', 'somethingNew']);
+    // The five sections only, and no filter bar (portfolio-folders AC-1): the editor offers no others.
+    expect(sections(container)).toEqual(['featured', 'original', 'fanart', 'commission', 'wip']);
   });
 
   it('puts Featured first when its pieces are also in other sections', () => {

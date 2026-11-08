@@ -29,7 +29,8 @@ describe('content-editing-organised-editor#AC-5 AC-6 what\'s missing: edge cases
 
 describe('content-editing-organised-editor#AC-11 the kinds of item', () => {
   it('organises the five kinds of item, and not chapters', () => {
-    expect(ITEM_TYPES).toEqual(['comicSeries', 'galleryItem', 'writtenWork', 'product', 'commissionType']);
+    // Portfolio subfolders are items too, listed under Art (portfolio-folders AC-17).
+    expect(ITEM_TYPES).toEqual(['comicSeries', 'galleryItem', 'writtenWork', 'product', 'commissionType', 'portfolioSubfolder']);
     expect(isItemType('product')).toBe(true);
     expect(isItemType('comicChapter')).toBe(false);
     expect(isItemType('')).toBe(false);

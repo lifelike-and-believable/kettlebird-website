@@ -7,7 +7,7 @@ import { isPreviewable } from './lib/preview';
 import { CHAPTER_TEMPLATE, STORY_CHAPTER_TEMPLATE } from './components/ChaptersList';
 import { chapterPaneTitle } from './lib/comic-pages';
 import { storyChapterPaneTitle } from './lib/stories';
-import { SECTIONS } from './lib/editor-content';
+import { ART_LISTS, SECTIONS } from './lib/editor-content';
 import { SETTINGS_ITEMS } from './lib/site-settings';
 
 /** The form, and the preview the Preview button opens beside it (content-editing-preview AC-1). */
@@ -38,6 +38,32 @@ export const structure: StructureResolver = (S) =>
                 .items(
                   SETTINGS_ITEMS.map(({ type, title }) =>
                     S.listItem().id(type).title(title).schemaType(type).child(S.document().schemaType(type).documentId(type).title(title).views(views(S, type))),
+                  ),
+                ),
+            );
+        }
+        // Art: Pieces and Subfolders (portfolio-folders AC-17).
+        if (section.type === 'galleryItem') {
+          return S.listItem()
+            .id(id)
+            .title(section.title)
+            .child(
+              S.list()
+                .id(id)
+                .title(section.title)
+                .items(
+                  ART_LISTS.map((art) =>
+                    S.listItem()
+                      .id(art.type)
+                      .title(art.title)
+                      .schemaType(art.type)
+                      .child(
+                        S.documentTypeList(art.type)
+                          .id(art.type)
+                          .title(art.title)
+                          .defaultOrdering((art.ordering ?? []).map(([field, direction]) => ({ field, direction })))
+                          .initialValueTemplates([S.initialValueTemplateItem(art.type)]),
+                      ),
                   ),
                 ),
             );

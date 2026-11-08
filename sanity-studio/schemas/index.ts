@@ -1,4 +1,5 @@
 import galleryItem from './objects/galleryItem';
+import portfolioSubfolder from './objects/portfolioSubfolder';
 import comicChapter from './objects/comicChapter';
 import comicSeries from './objects/comicSeries';
 import writtenWork from './objects/writtenWork';
@@ -12,4 +13,4 @@ import aboutPage from './objects/aboutPage';
 import homePage from './objects/homePage';
 import contactSettings from './objects/contactSettings';
 
-export default [galleryItem, comicChapter, comicSeries, writtenWork, storyChapter, storyText, sceneBreak, storyPicture, product, commissionType, siteStatus, commissionSettings, aboutPage, homePage, contactSettings];
+export default [galleryItem, portfolioSubfolder, comicChapter, comicSeries, writtenWork, storyChapter, storyText, sceneBreak, storyPicture, product, commissionType, siteStatus, commissionSettings, aboutPage, homePage, contactSettings];

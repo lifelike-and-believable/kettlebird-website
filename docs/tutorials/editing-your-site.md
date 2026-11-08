@@ -3,7 +3,7 @@ id: tutorial-editing-your-site
 status: draft
 runner: manual
 derived-from:
-  - docs-editing-your-site#art: 531882d7006b
+  - docs-editing-your-site#art: 3b055ae09b54
   - docs-editing-your-site#shop: b33cdf34e074
   - docs-editing-your-site#commissions: 4fc1781e03fb
   - docs-editing-your-site#publish: 095e41b97127

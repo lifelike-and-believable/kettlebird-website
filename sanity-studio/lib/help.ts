@@ -28,6 +28,7 @@ export const ITEM_HELP: Record<string, HelpLink> = {
   comicSeries: item('Start a new comic', '/help/publishing-comics#start-a-new-comic'),
   comicChapter: item('Add a chapter', '/help/publishing-comics#add-a-chapter'),
   galleryItem: item('Art', '/help/editing-your-site#art'),
+  portfolioSubfolder: item('Subfolders', '/help/editing-your-site#subfolders'),
   writtenWork: item('Start a new story', '/help/publishing-stories#start-a-new-story'),
   storyChapter: item('Add a chapter to a story', '/help/publishing-stories#add-a-chapter-to-a-story'),
   product: item('Shop', '/help/editing-your-site#shop'),

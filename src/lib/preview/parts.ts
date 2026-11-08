@@ -17,6 +17,7 @@ const FIELD_PARTS: Partial<Record<PreviewKind, Record<string, string>>> = {
 /** Items shown as one card: any change outlines the card. */
 const WHOLE_ITEM: Partial<Record<PreviewKind, string>> = {
   galleryItem: 'piece',
+  portfolioSubfolder: 'subfolder',
   writtenWork: 'item',
   product: 'item',
   commissionType: 'item',

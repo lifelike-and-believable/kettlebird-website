@@ -3,6 +3,7 @@
 
 export type PreviewKind =
   | 'galleryItem'
+  | 'portfolioSubfolder'
   | 'comicChapter'
   | 'comicSeries'
   | 'commissionSettings'
@@ -18,6 +19,7 @@ export type PreviewPage = 'portfolio' | 'reader' | 'series' | 'commissions' | 'a
 
 export const PREVIEW_KINDS: PreviewKind[] = [
   'galleryItem',
+  'portfolioSubfolder',
   'comicChapter',
   'comicSeries',
   'commissionSettings',
@@ -41,6 +43,7 @@ export const PORTFOLIO_SECTION_TITLES: Record<string, string> = {
 
 export const PREVIEW_MESSAGES = {
   noSection: 'Choose a portfolio section to see where this piece goes.',
+  noSubfolderSection: 'Choose a section to see where this subfolder goes.',
   noPicture: 'Add the picture to preview it.',
   noAddress: 'Add a web address so readers can find this comic. The preview needs it too.',
   noPages: 'Add a page to preview this chapter.',
@@ -98,6 +101,13 @@ export function previewTarget(doc: RawDoc, context: TargetContext = {}): Preview
       if (sections.length === 0) return { page: 'portfolio', name, message: PREVIEW_MESSAGES.noSection };
       if (!hasImage(doc)) return { page: 'portfolio', name, message: PREVIEW_MESSAGES.noPicture };
       return { page: 'portfolio', name, anchor: `section-${sections[0]}` };
+    }
+    // portfolio-folders AC-23: the Portfolio with the subfolder open.
+    case 'portfolioSubfolder': {
+      const section = text(doc.section);
+      const name = `the Portfolio, with ${text(doc.name) || 'this subfolder'} open`;
+      if (!section) return { page: 'portfolio', name, message: PREVIEW_MESSAGES.noSubfolderSection };
+      return { page: 'portfolio', name, anchor: `section-${section}` };
     }
     case 'comicSeries': {
       const name = `the ${text(doc.title)} series page`;
