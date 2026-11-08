@@ -122,7 +122,10 @@
           url("../../../../public/assets/images/Paper_2_Tileable.png");
         background-size: 420px;
         background-blend-mode: multiply;
-        box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.12);
+        /* A fine contact line where it lies on the folder above, and a soft drop shadow above it. */
+        box-shadow:
+          0 -1px 0 rgba(0, 0, 0, 0.16),
+          0 -6px 12px -4px rgba(0, 0, 0, 0.28);
         padding: 2rem 0 4.4rem;
       }
       .folder:nth-child(even) {
@@ -149,12 +152,17 @@
         background-size: 420px;
         background-blend-mode: multiply;
         padding: 0.55rem 2.6rem 0.5rem;
-        border-radius: 14px 14px 0 0;
+        border-radius: 22px 22px 0 0;
         font:
           500 2.6rem/1.1 "DM Mono",
           monospace;
         letter-spacing: 0.02em;
-        clip-path: polygon(4% 0, 96% 0, 100% 100%, 0 100%);
+        /* The same drop shadow as the folder, on the tab's top and sides only. */
+        box-shadow:
+          0 -1px 0 rgba(0, 0, 0, 0.16),
+          0 -5px 10px -4px rgba(0, 0, 0, 0.28),
+          -4px -2px 8px -5px rgba(0, 0, 0, 0.25),
+          4px -2px 8px -5px rgba(0, 0, 0, 0.25);
       }
       .folder:nth-child(even) .tab.own {
         background-color: var(--kraft-dark);
@@ -177,6 +185,7 @@
       .phone .tab {
         font-size: 1.35rem;
         padding: 0.4rem 1.2rem 0.35rem;
+        border-radius: 14px 14px 0 0;
       }
       .phone .tab.index {
         font-size: 1.1rem;
@@ -507,7 +516,7 @@
       </h6>
       <div class="screen" id="m2">
         <div class="folders">
-          <section class="folder left" style="--h: 480px">
+          <section class="folder right" style="--h: 480px">
             <div class="tabs"><span class="tab own">Fan Work</span></div>
             <div class="row">
               <div class="strip">
@@ -544,7 +553,7 @@
               ></span>
             </div>
           </section>
-          <section class="folder right" style="--h: 100px">
+          <section class="folder left" style="--h: 100px">
             <div class="tabs"><span class="tab own">Past Clients</span></div>
             <div class="row"></div>
           </section>
@@ -561,7 +570,7 @@
       <div class="screen" id="m3">
         <span class="addr">kettlebird.com/portfolio/fan-work/murderbot</span>
         <div class="folders">
-          <section class="folder left" style="--h: 480px">
+          <section class="folder right" style="--h: 480px">
             <div class="tabs">
               <span class="tab own">Murderbot</span
               ><span class="tab index">INDEX</span>
@@ -585,7 +594,7 @@
               ></span>
             </div>
           </section>
-          <section class="folder right" style="--h: 100px">
+          <section class="folder left" style="--h: 100px">
             <div class="tabs"><span class="tab own">Past Clients</span></div>
             <div class="row"></div>
           </section>
@@ -659,7 +668,7 @@
       </h6>
       <div class="screen phone" id="m5">
         <div class="folders">
-          <section class="folder left" style="--h: 200px">
+          <section class="folder right" style="--h: 200px">
             <div class="tabs">
               <span class="tab own">Murderbot</span
               ><span class="tab index">INDEX</span>
@@ -682,7 +691,7 @@
               ></span>
             </div>
           </section>
-          <section class="folder right" style="--h: 60px">
+          <section class="folder left" style="--h: 60px">
             <div class="tabs"><span class="tab own">Past Clients</span></div>
             <div class="row"></div>
           </section>
@@ -700,76 +709,89 @@
       </div>
     </div>
 
-    <div class="wrap">
-      <h6>
-        7 · The editor (illustration): Art lists Pieces and Subfolders; a
-        subfolder has a Name, a Folder and a Grid size; a piece chooses at most
-        one subfolder in each of its sections
-      </h6>
+    <div class="wrap"><h6>7 · The editor (illustration): Art lists Pieces and Subfolders; a subfolder has a Name, a Web address, a Section (set once) and a Grid size, whose help says how many pieces it holds</h6>
       <div class="studio" id="m7">
-        <div class="col">
-          <h3>Art</h3>
-          <div class="item">Pieces</div>
-          <div class="item on">Subfolders</div>
+        <div class="col"><h3>Art</h3><div class="item">Pieces</div><div class="item on">Subfolders</div></div>
+        <div class="col"><h3>Subfolders <span style="float:right;font-size:18px;line-height:1">+</span></h3>
+          <div class="item on">Murderbot<small>Fan Work · 2 × 2 · 4 pieces</small></div>
+          <div class="item">The Amazing Digital Circus<small>Fan Work · 3 × 3 · 9 pieces</small></div>
+          <div class="item">The Great God Grove<small>Fan Work · 2 × 2 · 3 pieces</small></div>
+          <div class="item">Book covers<small>Past Clients · 2 × 2 · 3 pieces</small></div>
         </div>
-        <div class="col">
-          <h3>Subfolders</h3>
-          <div class="item on">
-            Murderbot<small>Fan Work · 2 × 2 · 6 pieces</small>
-          </div>
-          <div class="item">
-            The Amazing Digital Circus<small
-              >Fan Work · 3 × 3 · 12 pieces</small
-            >
-          </div>
-          <div class="item">
-            The Great God Grove<small>Fan Work · 2 × 2 · 4 pieces</small>
-          </div>
-          <div class="item">
-            Book covers<small>Past Clients · 2 × 2 · 3 pieces</small>
-          </div>
+        <div class="pane"><h2>Murderbot</h2>
+          <div class="field"><label>Name</label><p>Shown under its thumbnail, and on the section's tab when it's open.</p><div class="input">Murderbot</div></div>
+          <div class="field"><label>Web address</label><p>Made from the name. Leave it as it is once people may have shared links to it.</p><div class="input">murderbot</div></div>
+          <div class="field"><label>Section</label><p>The Portfolio section it's in. Set when you make it; to move pieces to another section, make a subfolder there.</p><div class="input" style="color:#6b7280">Fan Work (set)</div></div>
+          <div class="field"><label>Grid size</label><p>How many of its pieces its thumbnail shows, newest first. Murderbot has 4 pieces: 2 × 2 shows them all.</p><div class="radios"><span><i class="dot on"></i>2 × 2</span><span><i class="dot"></i>3 × 3</span><span><i class="dot"></i>4 × 4</span></div></div>
         </div>
-        <div class="pane">
-          <h2>Murderbot</h2>
-          <div class="field">
-            <label>Name</label>
-            <p>
-              Shown under its thumbnail, and on the folder's tab when it's open.
-            </p>
-            <div class="input">Murderbot</div>
-          </div>
-          <div class="field">
-            <label>Folder</label>
-            <p>The Portfolio section it's in. A subfolder is in one section.</p>
-            <div class="input">Fan Work</div>
-          </div>
-          <div class="field">
-            <label>Grid size</label>
-            <p>How many of its pieces its thumbnail shows, newest first.</p>
-            <div class="radios">
-              <span><i class="dot on"></i>2 × 2</span
-              ><span><i class="dot"></i>3 × 3</span
-              ><span><i class="dot"></i>4 × 4</span>
+      </div>
+    </div>
+
+    <div class="wrap"><h6>8 · A piece's Subfolders (illustration): one choice for each section the piece is in; Featured has no subfolders yet; unticking Fan Work warns that it also leaves Murderbot</h6>
+      <div class="studio" id="m8" style="grid-template-columns: 1fr; min-height: 0">
+        <div class="pane"><h2>Night Shift (a piece)</h2>
+          <div class="field"><label>Portfolio sections</label><span class="pill">☑ Fan Work</span><span class="pill">☑ Featured</span><span class="pill">☐ Original Work</span><span class="pill">☐ Past Clients</span><span class="pill">☐ Work in Progress</span></div>
+          <div class="field"><label>Subfolders</label><p>Optional. At most one in each section this piece is in. Left as Loose, the piece shows on its own in that section.</p>
+            <div style="display:grid;grid-template-columns:140px 280px;gap:8px 12px;align-items:center">
+              <span>Fan Work</span><div class="input">Murderbot ▾</div>
+              <span>Featured</span><div class="input" style="color:#6b7280">Loose (no subfolders yet) ▾</div>
             </div>
           </div>
-          <hr
-            style="border: 0; border-top: 1px solid #e5e7eb; margin: 22px 0"
-          />
-          <h2 style="font-size: 15px">A piece's fields (excerpt)</h2>
-          <div class="field">
-            <label>Portfolio sections</label><span class="pill">Fan Work</span
-            ><span class="pill">Featured</span>
-          </div>
-          <div class="field">
-            <label>Subfolders</label>
-            <p>
-              Optional. At most one in each section this piece is in. Left empty
-              in a section, the piece sits loose there.
-            </p>
-            <div class="input">
-              Fan Work: <b>Murderbot</b> &nbsp;·&nbsp; Featured: <i>loose</i>
-            </div>
-          </div>
+          <div style="margin-top:22px;border:1px solid #f59e0b;background:#fffbeb;border-radius:6px;padding:10px 12px;max-width:520px">If you untick <b>Fan Work</b>, this piece also leaves <b>Murderbot</b> when you publish.</div>
+          <p style="color:#6b7280;margin-top:16px">In the Pieces list, its row reads: <b>Night Shift</b> · Fan Work, Featured · Murderbot</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap"><h6>9 · Deleting a subfolder (illustration): the editor says how many pieces it holds and that they stay in Fan Work, loose</h6>
+      <div class="studio" id="m9" style="grid-template-columns: 1fr; min-height: 0; width: 560px">
+        <div class="pane"><h2>Delete Murderbot?</h2>
+          <p>Its 4 pieces stay in Fan Work, shown on their own. Its web address stops working: links people shared to it will show <b>Page not found</b>.</p>
+          <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:18px"><span class="input">Cancel</span><span class="input" style="background:#dc2626;color:#fff;border-color:#dc2626">Delete</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap"><h6>10 · Preview of a new subfolder with no pieces yet: the Portfolio with it open, and a line saying how to fill it</h6>
+      <div class="screen" id="m10">
+        <div style="background:#4a4063;color:#fff;font:600 14px system-ui;padding:8px 16px">Preview: not published yet</div>
+        <div class="folders">
+          <section class="folder right" style="--h: 260px"><div class="tabs"><span class="tab own">Murderbot</span><span class="tab index">INDEX</span></div>
+            <div class="row"><p style="margin:0 5.5rem;padding-top:5rem;font:500 1.4rem 'DM Mono',monospace">No pieces in Murderbot yet. Put pieces in it from each piece's Subfolders.</p></div>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap"><h6>11 · An address for a subfolder that's gone: Page not found, with a link to the Portfolio</h6>
+      <div class="screen phone" id="m11">
+        <div class="hdr"><b>Kettlebird</b><small>Comics + Illustration</small></div>
+        <div style="padding:2rem 1rem 6rem"><h1 style="font:800 2.4rem 'Nunito',sans-serif;margin:0 0 .6rem">Page not found</h1><p style="margin:0 0 1.2rem">There's nothing at this address. It may be an old or mistyped link.</p><p style="font:700 1.05rem 'Nunito',sans-serif;text-decoration:underline">Portfolio</p></div>
+      </div>
+    </div>
+
+    <div class="wrap"><h6>12 · On a 320-pixel phone: a long subfolder name wraps on its tab; thumbnails show at most 2 × 2 on a phone, with the name and count under them</h6>
+      <div class="screen phone" id="m12" style="width:320px">
+        <div class="folders">
+          <section class="folder right" style="--h: 162px"><div class="tabs" style="max-width:300px"><span class="tab own" style="font-size:1.05rem">The Amazing Digital Circus</span><span class="tab index">INDEX</span></div>
+            <div class="row" style="margin-top:2.2rem"><div class="strip"><div class="piece"><img data-a="4"></div><div class="piece"><img data-a="5"></div></div>
+              <span class="arrow l off"><svg viewBox="0 0 24 24"><path d="M17 4 L5 12 L17 20 Z" fill="currentColor"/></svg></span><span class="arrow r"><svg viewBox="0 0 24 24"><path d="M7 4 L19 12 L7 20 Z" fill="currentColor"/></svg></span></div>
+          </section>
+          <section class="folder left" style="--h: 162px"><div class="tabs"><span class="tab own">Past Clients</span></div>
+            <div class="row"><div class="strip"><div class="sub"><div class="grid g2"><img data-a="6"><img data-a="7"><img data-a="2"><img data-a="3"></div><span>Book covers · 3</span></div><div class="piece"><img data-a="1"></div></div>
+              <span class="arrow l off"><svg viewBox="0 0 24 24"><path d="M17 4 L5 12 L17 20 Z" fill="currentColor"/></svg></span><span class="arrow r"><svg viewBox="0 0 24 24"><path d="M7 4 L19 12 L7 20 Z" fill="currentColor"/></svg></span></div>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap"><h6>13 · A piece wider than 16:9 on a phone: at the row's height it's wider than the screen; the row scrolls along it</h6>
+      <div class="screen phone" id="m13">
+        <div class="folders">
+          <section class="folder left" style="--h: 200px"><div class="tabs"><span class="tab own">Original Work</span></div>
+            <div class="row"><div class="strip"><div class="piece"><img data-a="9"></div></div>
+              <span class="arrow l off"><svg viewBox="0 0 24 24"><path d="M17 4 L5 12 L17 20 Z" fill="currentColor"/></svg></span><span class="arrow r"><svg viewBox="0 0 24 24"><path d="M7 4 L19 12 L7 20 Z" fill="currentColor"/></svg></span></div>
+          </section>
         </div>
       </div>
     </div>
@@ -786,6 +808,7 @@
         "../../../../public/assets/images/bkgd-writing.jpg",
         // A 16:9 crop of a landscape piece, standing in for Star's widest.
         "https://cdn.sanity.io/images/1p6w5n0l/production/3e3bb73a5302688198a67fbd2df169aa0ff27050-2041x1379.jpg?w=1600&h=900&fit=crop&auto=format",
+        "https://cdn.sanity.io/images/1p6w5n0l/production/3e3bb73a5302688198a67fbd2df169aa0ff27050-2041x1379.jpg?w=2100&h=700&fit=crop&auto=format",
       ];
       document.querySelectorAll("img[data-a]").forEach((img) => {
         img.src = ART[+img.dataset.a];
