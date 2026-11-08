@@ -23,6 +23,12 @@ export const FIXTURE_PUBLISHED: RawDoc[] = [
   { _id: 'piece-alibi', _type: 'galleryItem', title: 'Late Night Alibi', image: { _type: 'image', asset: { _ref: 'image-Alibi1aaaaaaaaaaaaaaaaaa-1200x1200-jpg' } }, category: ['original', 'fanart'] },
   { _id: 'piece-blank', _type: 'galleryItem', title: 'Coming Soon', category: ['original'] },
   { _id: 'piece-jungle', _type: 'galleryItem', title: 'Jungle Eyes', image: { _type: 'image', asset: { _ref: 'image-Jungle1aaaaaaaaaaaaaaaaa-1600x2000-jpg' } }, category: ['original'] },
+  // Past Clients, for the portfolio's folders (docs/specs/portfolio-folders.md): a subfolder, Book
+  // covers (2 × 2), holding two pieces, and a loose 16:9 piece.
+  { _id: 'sub-books', _type: 'portfolioSubfolder', name: 'Book covers', slug: { current: 'book-covers' }, section: 'commission', gridSize: 2 },
+  { _id: 'piece-cover1', _type: 'galleryItem', title: 'Harbour Cover', date: '2025-05-01', image: { _type: 'image', asset: { _ref: 'image-Cover1aaaaaaaaaaaaaaaaaa-1200x1600-jpg' } }, category: ['commission'], subfolders: [{ _type: 'reference', _ref: 'sub-books', _weak: true, _key: 'c' }] },
+  { _id: 'piece-cover2', _type: 'galleryItem', title: 'Orchard Cover', date: '2025-04-01', image: { _type: 'image', asset: { _ref: 'image-Cover2aaaaaaaaaaaaaaaaaa-1200x1600-jpg' } }, category: ['commission'], subfolders: [{ _type: 'reference', _ref: 'sub-books', _weak: true, _key: 'c' }] },
+  { _id: 'piece-wide', _type: 'galleryItem', title: 'Shopfront', date: '2025-03-01', image: { _type: 'image', asset: { _ref: 'image-Wide1aaaaaaaaaaaaaaaaaaa-1600x900-jpg' } }, category: ['commission'], altText: 'A long shopfront at dusk.' },
   // A comic with pairs off and the flip on, whose draft turns pairs on, and a chapter of it
   // (docs/specs/comic-reader-comic-settings.md AC-8, AC-9).
   { _id: 'series-sheets', _type: 'comicSeries', title: 'Single Sheets', slug: { current: 'single-sheets' }, status: 'ongoing', type: 'original', twoUp: false, pageFlip: true },
@@ -79,6 +85,8 @@ export const FIXTURE_DRAFTS: RawDoc[] = [
     type: 'original',
     chapters: [{ number: 1, title: 'The Kettle', pages: [{ ...img('image-Kettle1aaaaaaaaaaaaaaaaa-800x1200-png'), altText: 'A fox looks up at a kettle.' }] }],
   },
+  // A subfolder never published, with no pieces yet (docs/specs/portfolio-folders.md AC-23).
+  { _id: 'drafts.sub-new', _type: 'portfolioSubfolder', name: 'Murderbot', slug: { current: 'murderbot' }, section: 'fanart', gridSize: 2 },
   // An art piece never published, with a long title, for the portfolio at phone width with large
   // text (tests/e2e/portfolio-reflow.spec.ts).
   {
