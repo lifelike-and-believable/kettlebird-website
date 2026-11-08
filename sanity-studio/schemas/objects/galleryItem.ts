@@ -1,7 +1,8 @@
 import { defineField, defineType } from 'sanity';
 import { MissingSummary } from '../../components/MissingSummary';
+import { PieceSubfoldersInput } from '../../components/SubfolderInputs';
 import { altTextRule } from '../../lib/comic-pages';
-import { fieldText, ITEM_NAMES, listDetail, PIECE_ALT_TEXT_WARNING, PORTFOLIO_SECTIONS, requiredMessage } from '../../lib/editor-content';
+import { fieldText, ITEM_NAMES, listDetail, PIECE_ALT_TEXT_WARNING, PORTFOLIO_SECTIONS, requiredMessage, subfolderProblems } from '../../lib/editor-content';
 
 // A piece in the portfolio (Art). Labels and help: design-organised-editor (Art).
 export default defineType({
@@ -39,6 +40,26 @@ export default defineType({
       options: { layout: 'grid', list: PORTFOLIO_SECTIONS },
       validation: (Rule) => Rule.required().min(1).error(requiredMessage('galleryItem', 'category')),
     }),
+    // portfolio-folders AC-20: weak, so deleting a subfolder leaves its pieces loose (AC-22).
+    defineField({
+      name: 'subfolders',
+      type: 'array',
+      of: [{ type: 'reference', to: [{ type: 'portfolioSubfolder' }], weak: true }],
+      ...fieldText('galleryItem', 'subfolders'),
+      components: { input: PieceSubfoldersInput },
+      validation: (Rule) =>
+        Rule.custom(async (value, context) => {
+          const ids = ((value as { _ref?: string }[] | undefined) ?? []).map((r) => r._ref).filter(Boolean);
+          if (!ids.length) return true;
+          const categories = ((context.document as { category?: string[] } | undefined)?.category) ?? [];
+          const chosen = await context.getClient({ apiVersion: '2024-01-01' }).fetch<{ name: string; section: string }[]>(
+            '*[_id in $ids]{ name, section }', { ids },
+          );
+          // Subfolders in sections the piece no longer has go when it's published (AC-21), so only
+          // the ones it keeps are checked here.
+          return subfolderProblems(categories, chosen.filter((s) => categories.includes(s.section))) ?? true;
+        }),
+    }),
     defineField({
       name: 'description',
       type: 'text',
@@ -70,7 +91,13 @@ export default defineType({
     }),
   ],
   preview: {
-    select: { title: 'title', media: 'image', category: 'category' },
-    prepare: ({ title, media, category }) => ({ title, media, subtitle: listDetail('galleryItem', { category }) }),
+    // "Fan Work, Featured · Murderbot" (portfolio-folders AC-21): at most one subfolder per section.
+    select: {
+      title: 'title', media: 'image', category: 'category',
+      s0: 'subfolders.0.name', s1: 'subfolders.1.name', s2: 'subfolders.2.name', s3: 'subfolders.3.name', s4: 'subfolders.4.name',
+    },
+    prepare: ({ title, media, category, s0, s1, s2, s3, s4 }) => ({
+      title, media, subtitle: listDetail('galleryItem', { category, subfolderNames: [s0, s1, s2, s3, s4] }),
+    }),
   },
 });

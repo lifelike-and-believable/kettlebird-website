@@ -11,25 +11,34 @@ derived-from:
   - story-portfolio-full-screen-view-a-piece-full-screen: 19f9bca00ea0
   - story-portfolio-full-screen-move-between-pieces-full-screen: 496c24c72cca
   - requirements-portfolio#REQ-portfolio-4: 136ce70ca3a4
+  - design-portfolio-folders#how-it-works: 5e072c5913b5
 ---
 
 # Looking at Star's art
 
 <!-- docs/user/viewing-artwork.md. For fans (persona-fan). The portfolio as it is, and full screen
-(epic-portfolio-full-screen, stories 1 and 2). A fans' guide, so it isn't a help page in the editor. -->
+(epic-portfolio-full-screen, stories 1 and 2), as folders with subfolders (epic-portfolio-folders). A fans' guide, so it isn't a help page in the editor. -->
 
 ## Find a piece
 
 1. Open Portfolio from the menu at the top of any page (on a phone, open the menu first).
-2. Star's art is in rows, one for each kind of work, such as Original Work or Fan Work. Scroll a row sideways, or use the arrows at its ends (a screen reader calls them "Scroll left" and "Scroll right"), to see more.
-3. To see one kind only, choose it in the Index at the top. All shows every row again.
-4. Choose a piece. It opens in a window, larger, with its title, what it's about, and its tags. The **✕** at the window's top right takes you back to the portfolio.
+2. Star's art is in folders, one for each kind of work, such as Original Work or Fan Work, each with its name on a tab. A folder's pieces are in a row, each shown whole. Scroll a row sideways, or use the arrows at its ends (a screen reader calls them "Scroll left" and "Scroll right"), to see more. An arrow drawn with a dashed outline can't go further that way. On a phone the arrows are under the row.
+3. Choose a piece. It opens in a window, larger, with its title, what it's about, and its tags. The **✕** at the window's top right takes you back to the portfolio.
+
+## Open a subfolder
+
+Some folders gather pieces into subfolders, such as one fandom in Fan Work. A subfolder shows as one square of its newest pieces with its name under it.
+
+1. Choose a subfolder. The folder shows only its pieces, and its tab reads like "Fan Work: Murderbot".
+2. To go back to the whole folder, choose the pink **INDEX** tab beside it, or your browser's Back button.
+
+Each subfolder has its own address, so you can share it or bookmark it; it opens the Portfolio with that subfolder open. Only one subfolder is open at a time.
 
 ## See a piece full screen
 
 In a piece's window, choose **Full screen** at the bottom right of its picture (on a phone it's an icon of four corners), or tap or click the picture itself.
 
-The piece fills your screen. Your browser's own bars go too, except on an iPhone, where Safari keeps its bars at the top and bottom. A bar at the top shows the piece's title, where it is in its row (for example "3 of 12"; on a laptop also the row's name, "3 of 12 · Original Work"), and **Close** (just **✕** on a phone).
+The piece fills your screen. Your browser's own bars go too, except on an iPhone, where Safari keeps its bars at the top and bottom. A bar at the top shows the piece's title, where it is in its row (for example "3 of 12"; on a laptop also the folder's name, "3 of 12 · Original Work", or the subfolder's, "3 of 4 · Murderbot"), and **Close** (just **✕** on a phone).
 
 At first the piece may look a little soft for a moment while a sharper copy loads. It can happen again for a moment when you zoom in a long way.
 
@@ -48,7 +57,7 @@ While you're zoomed in, dragging or swiping moves around the piece. It won't ski
 
 Choose **Next** or **Previous**: at the sides of the screen on a laptop or a phone held sideways, or at the bottom of a phone held upright. While the piece fits the screen, you can also swipe left for the next piece and right for the previous one. Start the swipe away from the left edge: on an iPhone, a swipe from the edge goes back and closes full screen. The left and right arrow keys go to another piece at any time, even zoomed in.
 
-You go through the pieces in the row you opened the piece from, in the same order. A piece that's in more than one row goes through the row you opened it from, and pieces without a picture are skipped and not counted. Each piece opens whole, not zoomed in. If your device is set to reduce motion, the next piece appears straight away instead of sliding in.
+You go through the pieces you opened the piece from, in the same order: a subfolder's pieces if it's open, otherwise the folder's pieces that aren't in a subfolder. A piece that's in more than one folder goes through the one you opened it from, and pieces without a picture are skipped and not counted. Each piece opens whole, not zoomed in. If your device is set to reduce motion, the next piece appears straight away instead of sliding in.
 
 If you go faster than a piece downloads, its title shows first, then a small loading sign, and the picture follows.
 

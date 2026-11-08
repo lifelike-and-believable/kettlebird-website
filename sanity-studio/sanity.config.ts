@@ -5,6 +5,7 @@ import { withChapters, withStoryChapters } from './actions/deleteSeries';
 import { withStoryChapterChecks, withStoryLinkCheck } from './actions/publishStory';
 import { SceneBreakPlugins } from './components/SceneBreakOnEnter';
 import { withPublishNote } from './actions/publishNote';
+import { withSubfolderDelete, withSubfolderTidy } from './actions/subfolders';
 import { LiveStatus } from './components/LiveStatus';
 import { CONTENT_TYPES } from './lib/live-status';
 import { ThingsToAddBadge } from './badges/thingsToAdd';
@@ -130,6 +131,9 @@ export default defineConfig({
           action.action === 'publish' ? withStoryLinkCheck(action) : action.action === 'delete' ? withStoryChapters(action) : action,
         );
       }
+      // Portfolio subfolders (portfolio-folders AC-21, AC-22).
+      if (context.schemaType === 'galleryItem') actions = actions.map((action) => (action.action === 'publish' ? withSubfolderTidy(action) : action));
+      if (context.schemaType === 'portfolioSubfolder') actions = actions.map((action) => (action.action === 'delete' ? withSubfolderDelete(action) : action));
       if (CONTENT_TYPES.includes(context.schemaType)) actions = actions.map((action) => (action.action === 'publish' ? withPublishNote(action) : action));
       return actions;
     }

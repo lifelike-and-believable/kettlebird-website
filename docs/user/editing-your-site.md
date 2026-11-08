@@ -10,6 +10,7 @@ derived-from:
   - design-organised-editor#layout: 39a5a7b648dc
   - design-organised-editor#states-and-errors: 1685ced558b7
   - story-content-editing-organised-editor: 854514008232
+  - design-portfolio-folders#what-star-does-in-the-editor-mock-ups-7-8-and-9: 9b3c6d5405c2
 ---
 
 # Editing your art, writing, shop and commissions
@@ -30,17 +31,41 @@ Your series, newest first, each with its status. Choose a series to see its deta
 
 ## Art
 
-Your portfolio pieces, newest first, each with the portfolio sections it's in. Choose the + button, **New piece**, to add one.
+**Art** has two lists: **Pieces**, your portfolio pieces, newest first, each with the portfolio sections it's in and any subfolders; and **Subfolders** (see [Subfolders](#subfolders)). In **Pieces**, choose the + button, **New piece**, to add one.
 
 | Field | What it's for |
 |---|---|
 | **Title** (required) | Shown when someone points at the picture, and as the heading when it's opened. |
-| **Picture** (required) | Upload the original file; the site makes smaller copies. Your portfolio shows square thumbnails: to keep the important part in view, choose the picture's **Edit** button, then drag the circle over the part that matters. |
+| **Picture** (required) | Upload the original file; the site makes smaller copies. Pieces show whole; in a subfolder's grid they're cropped square. To keep the important part in view there, choose the picture's **Edit** button, then drag the circle over the part that matters. |
 | **Alt text** | What the picture shows, for people using screen readers. If it's empty, they hear only the title. You can publish without it, but the field reminds you. |
 | **Portfolio sections** (choose at least one) | Original Work, Fan Work, Past Clients, Featured, Work in Progress. A piece can be in more than one. The newest piece in Featured is also the picture when someone shares the Portfolio's link. |
+| **Subfolders** | Optional. At most one in each section this piece is in. Left as Loose, the piece shows on its own in that section. |
 | **Description** | Shown when someone opens the picture on your portfolio. |
 | **Tags** | Words shown under the picture when it's opened, like a character's name. Type one, then press Enter. |
 | **Date** | When you made it. The portfolio shows newest first; pieces without a date come last. |
+
+## Subfolders
+
+A subfolder gathers pieces inside one section of your portfolio, such as one fandom in Fan Work or one client in Past Clients. On the Portfolio it shows as one thumbnail: a grid of its newest pieces with its name under it. Choosing it shows only its pieces, the section's tab reads like "Fan Work: Murderbot", and a pink **INDEX** tab goes back to the whole section. Each subfolder has its own web address, so people can share it.
+
+To make one:
+
+1. In **Art**, choose **Subfolders**, then the + button.
+2. Fill in its fields, then choose **Publish**. Publish the subfolder before you put pieces in it: a piece offers only published subfolders.
+
+| Field | What it's for |
+|---|---|
+| **Name** (required) | Shown under its thumbnail, and on the section's tab after the section's name when it's open ("Fan Work: Murderbot"). |
+| **Web address** (required) | Made from the name. Leave it as it is once people may have shared links to it. |
+| **Section** (required) | The Portfolio section it's in. Set when you make it; to move pieces to another section, make a subfolder there. |
+| **Grid size** | How many of its pieces its thumbnail shows, newest first: 2 × 2, 3 × 3 or 4 × 4. Under it, the editor says how many pieces it has. Phones show at most 2 × 2. |
+
+To put a piece in a subfolder, open the piece and, under **Subfolders**, choose it beside its section. A piece can be in a subfolder in one section and loose in another: a Murderbot piece can sit in Fan Work's Murderbot and loose in Featured. If you untick a section, the piece leaves its subfolder there when you publish; the editor says so first.
+
+In the **Subfolders** list, each one reads like "Fan Work · 2 × 2 · 4 pieces". A subfolder with no published pieces doesn't show on the Portfolio.
+
+- Renaming a subfolder changes its name everywhere; its web address stays, so shared links keep working.
+- Deleting a subfolder asks first and says how many pieces it holds. They stay in the section, shown on their own, and its web address stops working.
 
 ## Writing
 

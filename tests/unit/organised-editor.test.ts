@@ -12,6 +12,7 @@ import { shopSections, SHOP_SECTIONS } from '../../src/lib/shop';
 const SCHEMA_FILES: Record<ItemType, string> = {
   comicSeries: 'sanity-studio/schemas/objects/comicSeries.ts',
   galleryItem: 'sanity-studio/schemas/objects/galleryItem.ts',
+  portfolioSubfolder: 'sanity-studio/schemas/objects/portfolioSubfolder.ts',
   writtenWork: 'sanity-studio/schemas/objects/writtenWork.ts',
   product: 'sanity-studio/schemas/objects/product.ts',
   commissionType: 'sanity-studio/schemas/objects/commissionType.ts',
@@ -26,7 +27,7 @@ describe('content-editing-organised-editor#AC-1 AC-10 AC-11 AC-12 menu sections'
   });
   it('names each kind of item plainly', () => {
     expect(ITEM_NAMES).toEqual({
-      comicSeries: 'Series', comicChapter: 'Chapter', storyChapter: 'Chapter', galleryItem: 'Piece', writtenWork: 'Story', product: 'Product', commissionType: 'Commission type',
+      comicSeries: 'Series', comicChapter: 'Chapter', storyChapter: 'Chapter', galleryItem: 'Piece', portfolioSubfolder: 'Subfolder', writtenWork: 'Story', product: 'Product', commissionType: 'Commission type',
     });
   });
   it('words the empty list for Star (AC-12)', () => {
@@ -85,12 +86,21 @@ const EXPECTED: Record<ItemType, [string, string, string][]> = {
   ],
   galleryItem: [
     ['title', 'Title (required)', "Shown when someone points at the picture, and as the heading when it's opened."],
-    ['image', 'Picture (required)', "Upload the original file; the site makes smaller copies. Your portfolio shows square thumbnails: to keep the important part in view, choose the picture's Edit button, then drag the circle over the part that matters."],
+    // The Picture's help and Subfolders: portfolio-folders AC-20, AC-24.
+    ['image', 'Picture (required)', "Upload the original file; the site makes smaller copies. Pieces show whole; in a subfolder's grid they're cropped square. To keep the important part in view there, choose the picture's Edit button, then drag the circle over the part that matters."],
     ['altText', 'Alt text', "What the picture shows, for people using screen readers. If it's empty, they hear only the title."],
     ['category', 'Portfolio sections (choose at least one)', 'The sections of your portfolio it appears in: Original Work, Fan Work, Past Clients, Featured, Work in Progress. A piece can be in more than one.'],
+    ['subfolders', 'Subfolders', 'Optional. At most one in each section this piece is in. Left as Loose, the piece shows on its own in that section.'],
     ['description', 'Description', 'Shown when someone opens the picture on your portfolio.'],
     ['tags', 'Tags', "Words shown under the picture when it's opened, like a character's name. Type one, then press Enter."],
     ['date', 'Date', 'When you made it. The portfolio shows newest first; pieces without a date come last.'],
+  ],
+  // portfolio-folders AC-18, AC-19.
+  portfolioSubfolder: [
+    ['name', 'Name (required)', "Shown under its thumbnail, and on the section's tab after the section's name when it's open (\"Fan Work: Murderbot\")."],
+    ['slug', 'Web address (required)', 'Made from the name. Leave it as it is once people may have shared links to it.'],
+    ['section', 'Section (required)', "The Portfolio section it's in. Set when you make it; to move pieces to another section, make a subfolder there."],
+    ['gridSize', 'Grid size', 'How many of its pieces its thumbnail shows, newest first.'],
   ],
   // story-reader-editor AC-1 supersedes these: tests/unit/story-editor.test.ts checks every story field.
   writtenWork: [
@@ -140,7 +150,7 @@ describe('content-editing-organised-editor#AC-3 AC-5 field labels and help', () 
   }
   it('hides the fields the site doesn\'t use', () => {
     expect(HIDDEN).toEqual({
-      comicSeries: [], galleryItem: ['slug', 'featured'], writtenWork: [], product: ['slug', 'tags', 'inventory'], commissionType: [],
+      comicSeries: [], galleryItem: ['slug', 'featured'], portfolioSubfolder: [], writtenWork: [], product: ['slug', 'tags', 'inventory'], commissionType: [],
     });
   });
   it('refuses a field it has no text for', () => {
@@ -151,7 +161,7 @@ describe('content-editing-organised-editor#AC-3 AC-5 field labels and help', () 
 describe('content-editing-organised-editor#AC-5 AC-7 required messages', () => {
   it('says what to add and what it\'s for', () => {
     expect(requiredMessage('galleryItem', 'image')).toBe(
-      "Add the picture to publish. Upload the original file; the site makes smaller copies. Your portfolio shows square thumbnails: to keep the important part in view, choose the picture's Edit button, then drag the circle over the part that matters.",
+      "Add the picture to publish. Upload the original file; the site makes smaller copies. Pieces show whole; in a subfolder's grid they're cropped square. To keep the important part in view there, choose the picture's Edit button, then drag the circle over the part that matters.",
     );
     expect(requiredMessage('product', 'category')).toMatch(/^Add a shop section to publish\. Which section/);
     expect(() => requiredMessage('product', 'price')).toThrow("product.price isn't required");

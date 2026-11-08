@@ -4,6 +4,8 @@
 
 export const PREVIEWABLE_TYPES: string[] = [
   'galleryItem',
+  // Since portfolio-folders AC-23.
+  'portfolioSubfolder',
   'comicChapter',
   'comicSeries',
   'commissionSettings',

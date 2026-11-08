@@ -1,4 +1,5 @@
 import { sanityClient } from './sanity';
+import type { Subfolder } from './portfolio/folders';
 
 /** The fixture build (KETTLEBIRD_FIXTURES=1) lists no content, so its pages never depend on what is live. */
 const isFixtureBuild = () => import.meta.env.KETTLEBIRD_FIXTURES === '1' || process.env.KETTLEBIRD_FIXTURES === '1';
@@ -20,12 +21,22 @@ export interface GalleryItem {
   date?: string;
   featured?: boolean;
   altText?: string;
+  /** The ids of the subfolders it's in (portfolio-folders AC-20), weak references. */
+  subfolders?: string[];
 }
 
 export const GALLERY_QUERY = `*[_type == "galleryItem"] | order(date desc) {
   _id, title, slug, image { asset, hotspot },
-  description, category, tags, date, featured, altText
+  description, category, tags, date, featured, altText,
+  "subfolders": subfolders[]._ref
 }`;
+
+/** portfolio-folders AC-8, AC-12: the subfolders; the page leaves out those with no pieces. */
+export const SUBFOLDERS_QUERY = `*[_type == "portfolioSubfolder"] { _id, name, slug, section, gridSize }`;
+
+export async function getAllSubfolders(): Promise<Subfolder[]> {
+  return list(SUBFOLDERS_QUERY);
+}
 
 export const FEATURED_GALLERY_QUERY = `*[_type == "galleryItem" && featured == true] | order(date desc) {
   _id, title, slug, image { asset, hotspot },

@@ -7,12 +7,15 @@ import { afterEach, describe, expect, it } from 'vitest';
 import GalleryGrid from '../../src/components/GalleryGrid';
 import type { GalleryItem } from '../../src/lib/queries';
 
+// Dated newest first, so the rows keep this order (portfolio-folders AC-4 puts undated pieces in title order).
+const DATES: Record<string, string> = { a: '2025-04-01', b: '2025-03-01', c: '2025-02-01', d: '2025-01-01' };
 const item = (id: string, title: string, category: string[], picture = true, altText?: string): GalleryItem => ({
   _id: id,
   title,
   slug: { current: id },
   category,
   altText,
+  date: DATES[id],
   image: picture ? { asset: { _ref: `image-${id}aaaa-3000x2000-jpg` } } : (undefined as unknown as GalleryItem['image']),
 });
 const items = [
