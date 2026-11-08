@@ -72,11 +72,12 @@ test('story-text-frame#AC-4 padding, and no extra space at the ends', async ({ p
   await page.setViewportSize({ width: 390, height: 800 });
   await page.goto(CHAPTER);
   let m = await measure(page);
-  expect(m.padding).toEqual([24, 16, 24, 16]);
+  // story-typewriter AC-6: the bottom padding moves above the typewriter, so the sheet ends inside it.
+  expect(m.padding).toEqual([24, 16, 0, 16]);
   await page.setViewportSize({ width: 1280, height: 800 });
   await page.goto(CHAPTER);
   m = await measure(page);
-  expect(m.padding).toEqual([38.4, 48, 38.4, 48]);
+  expect(m.padding).toEqual([38.4, 48, 0, 48]);
   expect(m.firstMargin).toBe('0px');
   expect(m.lastMargin).toBe('0px');
 });
