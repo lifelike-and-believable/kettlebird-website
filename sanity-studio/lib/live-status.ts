@@ -7,6 +7,8 @@ export const CONTENT_TYPES = [
   'comicSeries', 'comicChapter', 'galleryItem', 'writtenWork', 'product', 'commissionType',
   // A story's chapters (story-reader-editor AC-12).
   'storyChapter',
+  // Portfolio subfolders (portfolio-folders AC-18).
+  'portfolioSubfolder',
   // Site settings' four items (content-editing-site-settings AC-13).
   'commissionSettings', 'aboutPage', 'homePage', 'contactSettings',
 ];

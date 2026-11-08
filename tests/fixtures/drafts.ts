@@ -19,10 +19,11 @@ const storyRef = (id: string) => ({ _type: 'reference', _ref: id });
 export const FIXTURE_PUBLISHED: RawDoc[] = [
   // Art pieces for the portfolio's preview (docs/specs/portfolio-full-screen.md): a large picture, one in
   // two sections, one without a picture; the draft piece-moon comes after them in Original Work.
-  { _id: 'piece-lantern', _type: 'galleryItem', title: 'Night Market', image: { _type: 'image', asset: { _ref: 'image-Lantern1aaaaaaaaaaaaaaaa-3000x2000-jpg' } }, category: ['original'], altText: 'Lanterns over the river stalls.' },
-  { _id: 'piece-alibi', _type: 'galleryItem', title: 'Late Night Alibi', image: { _type: 'image', asset: { _ref: 'image-Alibi1aaaaaaaaaaaaaaaaaa-1200x1200-jpg' } }, category: ['original', 'fanart'] },
-  { _id: 'piece-blank', _type: 'galleryItem', title: 'Coming Soon', category: ['original'] },
-  { _id: 'piece-jungle', _type: 'galleryItem', title: 'Jungle Eyes', image: { _type: 'image', asset: { _ref: 'image-Jungle1aaaaaaaaaaaaaaaaa-1600x2000-jpg' } }, category: ['original'] },
+  // Dated newest first, so the row keeps this order (portfolio-folders AC-4 puts undated pieces in title order).
+  { _id: 'piece-lantern', _type: 'galleryItem', title: 'Night Market', date: '2024-05-01', image: { _type: 'image', asset: { _ref: 'image-Lantern1aaaaaaaaaaaaaaaa-3000x2000-jpg' } }, category: ['original'], altText: 'Lanterns over the river stalls.' },
+  { _id: 'piece-alibi', _type: 'galleryItem', title: 'Late Night Alibi', date: '2024-04-01', image: { _type: 'image', asset: { _ref: 'image-Alibi1aaaaaaaaaaaaaaaaaa-1200x1200-jpg' } }, category: ['original', 'fanart'] },
+  { _id: 'piece-blank', _type: 'galleryItem', title: 'Coming Soon', date: '2024-03-01', category: ['original'] },
+  { _id: 'piece-jungle', _type: 'galleryItem', title: 'Jungle Eyes', date: '2024-02-01', image: { _type: 'image', asset: { _ref: 'image-Jungle1aaaaaaaaaaaaaaaaa-1600x2000-jpg' } }, category: ['original'] },
   // Past Clients, for the portfolio's folders (docs/specs/portfolio-folders.md): a subfolder, Book
   // covers (2 × 2), holding two pieces, and a loose 16:9 piece.
   { _id: 'sub-books', _type: 'portfolioSubfolder', name: 'Book covers', slug: { current: 'book-covers' }, section: 'commission', gridSize: 2 },
@@ -93,6 +94,7 @@ export const FIXTURE_DRAFTS: RawDoc[] = [
     _id: 'drafts.piece-moon',
     _type: 'galleryItem',
     title: 'Crooked Moon Party Portrait',
+    date: '2024-01-01',
     image: img('image-Moon1aaaaaaaaaaaaaaaaaaa-800x1200-png'),
     category: ['original'],
     altText: 'Friends at a party under a crooked moon.',

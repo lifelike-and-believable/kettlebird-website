@@ -11,15 +11,15 @@ derived-from:
 
 ## REQ-portfolio-1: Gallery from the CMS
 
-The portfolio shows every published gallery item from the CMS with its image and title, newest first, grouped into one section per category. An item in several categories appears in each of their sections.
+The portfolio shows every published gallery item from the CMS with its image and title, newest first (undated last), grouped into one folder per category. An item in several categories appears in each of their folders. Star can gather a folder's items into subfolders: a folder shows its subfolders, each as one grid thumbnail, among its items not in a subfolder; a subfolder opens in its folder, with its own address, and **INDEX** goes back (epic-portfolio-folders).
 
 ## REQ-portfolio-2: Category filter
 
-A filter bar lists each category that has at least one item, plus an option for all. Choosing a category shows only that category's section.
+Retired (epic-portfolio-folders, 2026-11-08): the folders are the page, one scroll apart, and **INDEX** goes back up from a subfolder. There is no filter bar.
 
 ## REQ-portfolio-3: Scrolling a section
 
-Each category section scrolls horizontally, with "Scroll left" and "Scroll right" buttons as well as touch or trackpad scrolling.
+Each folder's row scrolls horizontally, its pieces whole at the row's height, with "Scroll left" and "Scroll right" buttons (the site's arrows, which can't be used at the row's ends) as well as touch, trackpad or keyboard scrolling.
 
 ## REQ-portfolio-4: Viewing one piece
 

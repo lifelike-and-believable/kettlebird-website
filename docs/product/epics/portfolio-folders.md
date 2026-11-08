@@ -2,9 +2,9 @@
 id: epic-portfolio-folders
 status: approved
 derived-from:
-  - requirements-portfolio#REQ-portfolio-1: d9493275ee3c
-  - requirements-portfolio#REQ-portfolio-2: 93ec44f1e9b2
-  - requirements-portfolio#REQ-portfolio-3: 542c61b5bbe3
+  - requirements-portfolio#REQ-portfolio-1: 20b0305c93fb
+  - requirements-portfolio#REQ-portfolio-2: bb6500e04b36
+  - requirements-portfolio#REQ-portfolio-3: 89d1e8f7decb
   - persona-fan#goals: 2b047e4cae5d
   - persona-fan#context-of-use: 38883e5abc09
   - persona-artist#goals: f3044c738f84

@@ -1,0 +1,27 @@
+---
+// A subfolder's own page: the Portfolio with it open, built ahead of time for each subfolder with
+// published pieces (docs/specs/portfolio-folders.md AC-12, AC-14). Any other address under
+// /portfolio/ is Page not found.
+import PortfolioPage from '../../../components/pages/PortfolioPage.astro';
+import { folderBySlug, subfolderPaths } from '../../../lib/portfolio/folders';
+import { getAllGalleryItems, getAllSubfolders, type GalleryItem } from '../../../lib/queries';
+
+export async function getStaticPaths() {
+  let items: GalleryItem[] = [];
+  let subfolders: Awaited<ReturnType<typeof getAllSubfolders>> = [];
+  try {
+    [items, subfolders] = await Promise.all([getAllGalleryItems(), getAllSubfolders()]);
+  } catch (e) {
+    console.warn('[portfolio] Could not fetch subfolders:', e);
+  }
+  return subfolderPaths(items, subfolders).map((params) => {
+    const section = folderBySlug(params.folder)!.value;
+    const subfolder = subfolders.find((s) => s.section === section && s.slug?.current === params.subfolder)!;
+    return { params, props: { items, subfolders, open: subfolder._id } };
+  });
+}
+
+const { items, subfolders, open } = Astro.props;
+---
+
+<PortfolioPage items={items} subfolders={subfolders} openSubfolder={open} />

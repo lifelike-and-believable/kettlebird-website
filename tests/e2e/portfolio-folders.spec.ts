@@ -44,16 +44,18 @@ test('portfolio-folders#AC-1 AC-2 the page', async ({ page }) => {
   expect(await tab.evaluate((e) => getComputedStyle(e).fontFamily)).toMatch(/DM Mono/);
   expect(await tab.evaluate((e) => getComputedStyle(e, '::before').borderTopLeftRadius)).toBe('22px');
   expect(await tab.evaluate((e) => getComputedStyle(e, '::before').transform)).not.toBe('none');
-  const shadow = await region(page, 'Fan Work').evaluate((e) => getComputedStyle(e).boxShadow);
+  // The kraft and its shadow are on the folder's body, under its tabs.
+  const shadow = await region(page, 'Fan Work').locator('.folder-body').evaluate((e) => getComputedStyle(e).boxShadow);
   expect(shadow).toContain('0px -1px 0px');
   expect(shadow).toContain('0px -6px 12px -4px');
 });
 
 test('portfolio-folders#AC-3 AC-5 AC-7 the row', async ({ page }) => {
   await cdn(page);
-  // A computer: 480 pixels, arrows over the row's ends.
+  // A computer: 480 pixels, arrows over the row's ends. (Book covers' Preview, so no row starts
+  // scrolled to a piece being previewed.)
   await page.setViewportSize(LAPTOP);
-  await page.goto(PORTFOLIO);
+  await page.goto(BOOKS);
   const row = region(page, 'Original Work').locator('.folder-row');
   expect(Math.round((await row.boundingBox())!.height)).toBe(480);
   const card = region(page, 'Original Work').getByRole('button', { name: 'View Night Market' });
@@ -106,18 +108,21 @@ test('portfolio-folders#AC-8 AC-9 AC-10 subfolders', async ({ page }) => {
   const clients = region(page, 'Past Clients');
   const link = clients.getByRole('link', { name: 'Book covers, 2 pieces' });
   await expect(link).toBeVisible();
-  const thumb = (await link.locator('.subfolder-grid').boundingBox())!;
+  // The thumbnail is a square at the row's height, its name inside it under the grid (mock-up 2).
+  const thumb = (await link.boundingBox())!;
   expect(Math.round(thumb.width)).toBe(Math.round(thumb.height));
+  expect(Math.round(thumb.height)).toBe(480);
   await expect(link.locator('img')).toHaveCount(2);
   await expect(link.locator('[data-cell]')).toHaveCount(4);
   await link.click();
   const open = region(page, 'Past Clients: Book covers');
-  await expect(open.getByRole('button', { name: 'View Harbour Cover' })).toBeFocused();
+  // Preview never moves focus (content-editing-preview); the component tests check focus on the page.
+  await expect(open.getByRole('button', { name: 'View Harbour Cover' })).toBeVisible();
   await expect(open.getByRole('link', { name: 'Index: back to Past Clients' })).toBeVisible();
   await expect(page.getByRole('status').filter({ hasText: 'Past Clients: Book covers, 2 pieces.' })).toHaveCount(1);
   await expect(region(page, 'Original Work')).toBeVisible();
   await open.getByRole('link', { name: 'Index: back to Past Clients' }).click();
-  await expect(region(page, 'Past Clients').getByRole('link', { name: 'Book covers, 2 pieces' })).toBeFocused();
+  await expect(region(page, 'Past Clients').getByRole('link', { name: 'Book covers, 2 pieces' })).toBeVisible();
   await expect(page.getByRole('link', { name: /^Index/ })).toHaveCount(0);
 });
 

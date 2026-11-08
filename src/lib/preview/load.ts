@@ -9,6 +9,7 @@ import { commissionTypeCards } from '../commission-cards';
 import { readerPages, type ComicSeries, type ReaderPage } from '../comics/model';
 import { fromSanity, type SanitySeries } from '../comics/source';
 import type { CommissionType, GalleryItem, Product } from '../queries';
+import { FOLDERS, type Subfolder } from '../portfolio/folders';
 import type { Story, StoryChapter } from '../stories/model';
 import { fromSanity as storyFromSanity, type SanityStory } from '../stories/source';
 import { readSettings, type RawSettings, type Settings } from '../site-settings';
@@ -36,7 +37,7 @@ export type PreviewModel =
   | { page: 'home'; settings: Settings }
   | { page: 'series'; series: ComicSeries }
   | { page: 'reader'; entry: ReaderPage }
-  | { page: 'portfolio'; items: GalleryItem[]; focusId: string; openId?: string }
+  | { page: 'portfolio'; items: GalleryItem[]; subfolders: Subfolder[]; focusId: string; openId?: string; openSubfolder?: string }
   | { page: 'writing'; stories: Story[] }
   | { page: 'story'; story: Story }
   | { page: 'chapter'; story: Story; chapter: StoryChapter }
@@ -60,6 +61,10 @@ export interface PreviewSource {
 
 const SETTINGS_TYPES = ['commissionSettings', 'aboutPage', 'homePage', 'contactSettings'];
 const ref = (value: unknown) => (value as { _ref?: string } | undefined)?._ref;
+
+/** A piece as the portfolio reads it: its subfolders as ids, as the site's query gives them. */
+const pieceFrom = (doc: RawDoc): GalleryItem =>
+  ({ ...doc, subfolders: (Array.isArray(doc.subfolders) ? doc.subfolders : []).map(ref).filter(Boolean) }) as unknown as GalleryItem;
 
 function settingsFrom(docs: RawDoc[]): Settings {
   const raw: RawSettings = Object.fromEntries(docs.map((d) => [d._type, d]));
@@ -167,11 +172,24 @@ export async function loadPreview(
       model = { page: 'reader', entry: entries[pageNumber - 1] };
       break;
     }
-    case 'galleryItem': {
-      const items = overlay(await source.publishedOfType(['galleryItem']), item) as unknown as GalleryItem[];
+    case 'galleryItem':
+    case 'portfolioSubfolder': {
+      // portfolio-folders AC-23: the pieces and subfolders, this item's draft in place.
+      const docs = overlay(await source.publishedOfType(['galleryItem', 'portfolioSubfolder']), item);
+      const items = docs.filter((d) => d._type === 'galleryItem').map(pieceFrom);
+      const subfolders = docs.filter((d) => d._type === 'portfolioSubfolder') as unknown as Subfolder[];
+      if (kind === 'portfolioSubfolder') {
+        model = { page: 'portfolio', items, subfolders, focusId: id, openSubfolder: id };
+        break;
+      }
       const sections = ((item.category as string[] | undefined) ?? []).slice(1);
       context = { ...context, otherSections: sections.map((s) => PORTFOLIO_SECTION_TITLES[s] ?? s) };
-      model = { page: 'portfolio', items, focusId: id, openId: opened ? id : undefined };
+      // A piece in a subfolder opens it, in the first of its sections that has one.
+      const piece = items.find((i) => i._id === id);
+      const holding = FOLDERS.filter((f) => piece?.category?.includes(f.value))
+        .map((f) => subfolders.find((s) => s.section === f.value && piece?.subfolders?.includes(s._id)))
+        .find(Boolean);
+      model = { page: 'portfolio', items, subfolders, focusId: id, openId: opened ? id : undefined, openSubfolder: holding?._id };
       break;
     }
     case 'writtenWork': {

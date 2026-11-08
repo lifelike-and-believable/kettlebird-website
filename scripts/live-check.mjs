@@ -20,6 +20,7 @@ const QUERY = `{
 export const TYPES = [
   'comicSeries', 'comicChapter', 'galleryItem', 'writtenWork', 'product', 'commissionType',
   'storyChapter',
+  'portfolioSubfolder',
   'commissionSettings', 'aboutPage', 'homePage', 'contactSettings',
 ];
 

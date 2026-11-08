@@ -1,13 +1,15 @@
 ---
 import PortfolioPage from '../components/pages/PortfolioPage.astro';
-import { getAllGalleryItems, type GalleryItem } from '../lib/queries';
+import { getAllGalleryItems, getAllSubfolders, type GalleryItem } from '../lib/queries';
+import type { Subfolder } from '../lib/portfolio/folders';
 
 let items: GalleryItem[] = [];
+let subfolders: Subfolder[] = [];
 try {
-  items = await getAllGalleryItems();
+  [items, subfolders] = await Promise.all([getAllGalleryItems(), getAllSubfolders()]);
 } catch (e) {
   console.warn('[portfolio] Could not fetch gallery items:', e);
 }
 ---
 
-<PortfolioPage items={items} />
+<PortfolioPage items={items} subfolders={subfolders} />
