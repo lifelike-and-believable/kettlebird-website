@@ -1,6 +1,6 @@
 ---
 id: story-portfolio-folders-open-a-subfolder
-status: draft
+status: approved
 derived-from:
   - epic-portfolio-folders#outcome: 0a70fc8bd1ef
   - persona-fan#goals: 2b047e4cae5d

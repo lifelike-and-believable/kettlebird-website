@@ -1,6 +1,6 @@
 ---
 id: story-portfolio-folders-put-pieces-in-subfolders
-status: draft
+status: approved
 derived-from:
   - epic-portfolio-folders#outcome: 0a70fc8bd1ef
   - epic-portfolio-folders#decisions-from-the-lead-2026-11-08: e4efe797da18

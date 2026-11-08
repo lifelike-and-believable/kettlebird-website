@@ -1,6 +1,6 @@
 ---
 id: epic-portfolio-folders
-status: draft
+status: approved
 derived-from:
   - requirements-portfolio#REQ-portfolio-1: d9493275ee3c
   - requirements-portfolio#REQ-portfolio-2: 93ec44f1e9b2
