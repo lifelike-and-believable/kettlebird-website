@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 130" preserveAspectRatio="xMidYMax meet" aria-hidden="true" focusable="false">
+  <!-- An original drawing of a 1950s office typewriter, seen from the typist's chair (design-story-typewriter).
+       The paper slot is x 100 to 900: the story's sheet is drawn behind it and comes out above the roller. -->
+  <defs>
+    <linearGradient id="tw-platen" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4a4a4a"/><stop offset=".35" stop-color="#1e1e1e"/><stop offset="1" stop-color="#0e0e0e"/>
+    </linearGradient>
+    <linearGradient id="tw-chrome" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f2f2f2"/><stop offset=".5" stop-color="#a9a9a9"/><stop offset="1" stop-color="#d6d6d6"/>
+    </linearGradient>
+    <linearGradient id="tw-body" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#6b645a"/><stop offset="1" stop-color="#4a443c"/>
+    </linearGradient>
+    <linearGradient id="tw-knob" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#111"/><stop offset=".45" stop-color="#3a3a3a"/><stop offset="1" stop-color="#111"/>
+    </linearGradient>
+  </defs>
+  <!-- carriage return lever, off to the left -->
+  <path d="M74 50 C40 48 22 40 4 26" fill="none" stroke="url(#tw-chrome)" stroke-width="7" stroke-linecap="round"/>
+  <!-- paper bail: a chrome rod with two rubber rollers, in front of the paper -->
+  <rect x="62" y="16" width="876" height="5" rx="2.5" fill="url(#tw-chrome)"/>
+  <rect x="290" y="12" width="26" height="13" rx="4" fill="#2a2a2a"/>
+  <rect x="684" y="12" width="26" height="13" rx="4" fill="#2a2a2a"/>
+  <path d="M62 18 L76 44 M938 18 L924 44" stroke="#8d8d8d" stroke-width="5" stroke-linecap="round"/>
+  <!-- the roller (platen) and its knobs -->
+  <rect x="70" y="38" width="860" height="36" rx="10" fill="url(#tw-platen)"/>
+  <rect x="78" y="42" width="844" height="4" rx="2" fill="#ffffff" opacity=".12"/>
+  <rect x="26" y="34" width="44" height="44" rx="12" fill="url(#tw-knob)"/>
+  <rect x="930" y="34" width="44" height="44" rx="12" fill="url(#tw-knob)"/>
+  <g stroke="#000" stroke-opacity=".45" stroke-width="2">
+    <path d="M34 36v40M42 35v42M50 35v42M58 35v42M66 36v40"/>
+    <path d="M934 36v40M942 35v42M950 35v42M958 35v42M966 36v40"/>
+  </g>
+  <!-- carriage and its scale -->
+  <rect x="56" y="72" width="888" height="16" rx="3" fill="#3a352f"/>
+  <g stroke="#e8dcc8" stroke-opacity=".7" stroke-width="1.5">
+    <path d="M120 75v6M140 75v4M160 75v6M180 75v4M200 75v6M220 75v4M240 75v6M260 75v4M280 75v6M300 75v4M320 75v6M340 75v4M360 75v6M380 75v4M400 75v6M420 75v4M440 75v6M460 75v4"/>
+    <path d="M540 75v4M560 75v6M580 75v4M600 75v6M620 75v4M640 75v6M660 75v4M680 75v6M700 75v4M720 75v6M740 75v4M760 75v6M780 75v4M800 75v6M820 75v4M840 75v6M860 75v4M880 75v6"/>
+  </g>
+  <!-- the body: a rounded hood across the whole paper slot, so no paper shows below the roller -->
+  <path d="M80 130 L80 104 Q80 88 100 88 L900 88 Q920 88 920 104 L920 130 Z" fill="url(#tw-body)"/>
+  <path d="M100 90 L900 90" stroke="#fff" stroke-opacity=".15" stroke-width="2"/>
+  <!-- the type guide and ribbon at the printing point -->
+  <path d="M470 88 Q470 108 500 108 Q530 108 530 88 Z" fill="#141414"/>
+  <path d="M478 88 L492 100 L508 100 L522 88" fill="none" stroke="#b33a3a" stroke-width="3"/>
+  <path d="M488 72 L500 96 L512 72" fill="none" stroke="url(#tw-chrome)" stroke-width="4" stroke-linejoin="round"/>
+  <!-- nameplate (option): chrome letters on the hood -->
+  <g class="tw-nameplate">
+    <text x="500" y="124" text-anchor="middle" font-family="'Bebas Neue','Archivo Black',Impact,sans-serif" font-size="15" letter-spacing="6" fill="#d9d4ca" fill-opacity=".85">KETTLEBIRD</text>
+  </g>
+</svg>
