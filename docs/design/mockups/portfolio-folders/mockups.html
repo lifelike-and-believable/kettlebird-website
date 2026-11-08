@@ -1,0 +1,808 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>The portfolio as folders: mock-ups</title>
+    <!-- Source for the PNG mock-ups beside this file (docs/design/portfolio-folders.md). Built from the site's own
+     fonts, colours, paper and arrow buttons, with Star's real pieces (from the live site and the site's own
+     pictures). Several pieces repeat to fill subfolders: the real subfolders are Star's to make. Frame 7 is
+     the editor (illustration of its fields). Render: node render.mjs -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;700&family=Nunito:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --ink: #2b2b2b;
+        --beige: #f5f1e8;
+        --yellow: #f4ce6a;
+        --magenta: #d9579b;
+        --purple: #4a4063;
+        --kraft: #c4a274;
+        --kraft-dark: #b8956a;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        padding: 24px;
+        background: #9ca3af;
+        font-family: "DM Sans", sans-serif;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 32px;
+        align-items: flex-start;
+      }
+      .wrap h6 {
+        margin: 0 0 6px;
+        font: 600 13px/1.4 system-ui;
+        color: #111827;
+        max-width: 700px;
+      }
+      .screen {
+        width: 1380px;
+        overflow: hidden;
+        position: relative;
+        color: var(--ink);
+        background: #e6e2db
+          url("../../../../public/assets/images/Paper_2_Tileable.png");
+        background-size: 420px;
+        background-blend-mode: multiply;
+      }
+      .screen.phone {
+        width: 390px;
+      }
+
+      /* Header, as built (shortened) */
+      .hdr {
+        position: relative;
+        padding: 1.25rem 1rem 2.6rem;
+      }
+      .hdr::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 -14px 0;
+        z-index: 0;
+        background: url("../../../../public/assets/images/Paper_1_Torn.png")
+          no-repeat center bottom / 160% 100%;
+      }
+      .hdr > * {
+        position: relative;
+      }
+      .hdr b {
+        display: block;
+        font:
+          800 4.2rem/1 "Nunito",
+          sans-serif;
+      }
+      .hdr small {
+        font:
+          600 1.9rem "Nunito",
+          sans-serif;
+      }
+      .phone .hdr b {
+        font-size: 2.3rem;
+      }
+      .phone .hdr small {
+        font-size: 1rem;
+      }
+      .title {
+        padding: 1.6rem 2rem 0;
+      }
+      .title h1 {
+        margin: 0;
+        font:
+          800 4.6rem/1 "Nunito",
+          sans-serif;
+      }
+      .title p {
+        margin: 0.4rem 0 0;
+        color: var(--purple);
+        font-size: 1.05rem;
+      }
+      .phone .title {
+        padding: 1.2rem 1rem 0;
+      }
+      .phone .folders {
+        padding-top: 2.8rem;
+      }
+      .phone .title h1 {
+        font-size: 3rem;
+      }
+
+      /* A folder: kraft paper with a tab; the next folder overlaps it, as a stack. */
+      .folders {
+        padding-top: 3.6rem;
+      }
+      .folder {
+        position: relative;
+        margin-top: -0.6rem;
+        background: var(--kraft)
+          url("../../../../public/assets/images/Paper_2_Tileable.png");
+        background-size: 420px;
+        background-blend-mode: multiply;
+        box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.12);
+        padding: 2rem 0 4.4rem;
+      }
+      .folder:nth-child(even) {
+        background-color: var(--kraft-dark);
+      }
+      .tabs {
+        position: absolute;
+        top: -3.1rem;
+        display: flex;
+        gap: 0.6rem;
+        align-items: flex-end;
+      }
+      .folder.right .tabs {
+        right: 4rem;
+        flex-direction: row-reverse;
+      }
+      .folder.left .tabs {
+        left: 4rem;
+      }
+      .tab {
+        background: inherit;
+        background-color: var(--kraft);
+        background-image: url("../../../../public/assets/images/Paper_2_Tileable.png");
+        background-size: 420px;
+        background-blend-mode: multiply;
+        padding: 0.55rem 2.6rem 0.5rem;
+        border-radius: 14px 14px 0 0;
+        font:
+          500 2.6rem/1.1 "DM Mono",
+          monospace;
+        letter-spacing: 0.02em;
+        clip-path: polygon(4% 0, 96% 0, 100% 100%, 0 100%);
+      }
+      .folder:nth-child(even) .tab.own {
+        background-color: var(--kraft-dark);
+      }
+      .tab.index {
+        background-color: var(--magenta);
+        font-size: 2.1rem;
+        padding: 0.45rem 2.2rem 0.4rem;
+        color: var(--ink);
+      }
+      .phone .tabs {
+        top: -2.3rem;
+      }
+      .phone .folder.right .tabs {
+        right: 1rem;
+      }
+      .phone .folder.left .tabs {
+        left: 1rem;
+      }
+      .phone .tab {
+        font-size: 1.35rem;
+        padding: 0.4rem 1.2rem 0.35rem;
+      }
+      .phone .tab.index {
+        font-size: 1.1rem;
+        padding: 0.35rem 1rem 0.3rem;
+      }
+
+      /* The row: pieces at the row's height, their own shape; cut off at the ends. */
+      .row {
+        position: relative;
+        height: var(--h);
+      }
+      .strip {
+        display: flex;
+        gap: 1.1rem;
+        height: 100%;
+        padding: 0 5.5rem;
+        overflow: hidden;
+      }
+      .strip.start-cut {
+        margin-left: -9rem;
+      }
+      .piece {
+        height: 100%;
+        flex: none;
+        border: 3px solid var(--beige);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+        background: var(--beige);
+      }
+      .piece img {
+        height: 100%;
+        display: block;
+      }
+      .arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 44px;
+        height: 44px;
+        border: 3px solid var(--ink);
+        background: var(--beige);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .arrow.l {
+        left: 1.25rem;
+      }
+      .arrow.r {
+        right: 1.25rem;
+      }
+      .arrow svg {
+        width: 24px;
+        height: 24px;
+      }
+      .arrow.off {
+        border-style: dashed;
+        border-color: rgba(43, 43, 43, 0.4);
+        background: transparent;
+        color: rgba(43, 43, 43, 0.45);
+      }
+
+      /* A subfolder's grid thumbnail, square at the row's height, its name under it inside the square. */
+      .sub {
+        height: 100%;
+        width: var(--h);
+        overflow: hidden;
+        flex: none;
+        display: flex;
+        flex-direction: column;
+        background: var(--beige);
+        border: 3px solid var(--beige);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+      }
+      .grid {
+        flex: 1;
+        display: grid;
+        gap: 3px;
+        min-height: 0;
+        overflow: hidden;
+      }
+      .grid img {
+        width: 100%;
+        height: 100%;
+        min-height: 0;
+        object-fit: cover;
+        display: block;
+      }
+      .grid.g2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-rows: repeat(2, minmax(0, 1fr));
+      }
+      .grid.g3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-rows: repeat(3, minmax(0, 1fr));
+      }
+      .sub span {
+        font:
+          500 1.15rem "DM Mono",
+          monospace;
+        padding: 0.35rem 0.6rem 0.25rem;
+        text-align: center;
+      }
+      .phone .sub span {
+        font-size: 0.85rem;
+        padding: 0.2rem 0.4rem;
+      }
+
+      /* Phone: the row fills the width; the arrows sit under it. */
+      .phone .strip {
+        padding: 0 1rem;
+        gap: 0.6rem;
+      }
+      .phone .row {
+        margin-bottom: 4rem;
+      }
+      .phone .arrow {
+        top: auto;
+        bottom: -3.4rem;
+        transform: none;
+      }
+      .phone .arrow.l {
+        left: 1rem;
+      }
+      .phone .arrow.r {
+        right: 1rem;
+      }
+      .phone .folder {
+        padding: 1.4rem 0 3rem;
+      }
+
+      .sr {
+        position: absolute;
+        right: 1rem;
+        bottom: 1rem;
+        max-width: 560px;
+        background: #111827;
+        color: #f9fafb;
+        font: 14px/1.4 system-ui;
+        padding: 0.6rem 0.8rem;
+        border-radius: 6px;
+        z-index: 5;
+      }
+      .sr span {
+        display: block;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: #9ca3af;
+      }
+      .addr {
+        position: absolute;
+        top: 0.6rem;
+        right: 1rem;
+        z-index: 6;
+        background: #fff;
+        border: 1px solid #d1d5db;
+        border-radius: 16px;
+        padding: 0.25rem 0.8rem;
+        font: 13px system-ui;
+        color: #374151;
+      }
+
+      /* Editor illustration */
+      .studio {
+        width: 1100px;
+        background: #fff;
+        font:
+          14px/1.45 system-ui,
+          sans-serif;
+        color: #1f2937;
+        display: grid;
+        grid-template-columns: 220px 300px 1fr;
+        min-height: 640px;
+      }
+      .studio .col {
+        border-right: 1px solid #e5e7eb;
+        padding: 12px;
+      }
+      .studio h3 {
+        margin: 0 0 10px;
+        font-size: 13px;
+        color: #6b7280;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+      .studio .item {
+        padding: 8px 10px;
+        border-radius: 6px;
+        margin-bottom: 2px;
+      }
+      .studio .item.on {
+        background: #eef2ff;
+      }
+      .studio .item small {
+        display: block;
+        color: #6b7280;
+      }
+      .field {
+        margin-bottom: 18px;
+      }
+      .field label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 2px;
+      }
+      .field p {
+        margin: 0 0 6px;
+        color: #6b7280;
+        font-size: 13px;
+      }
+      .input {
+        border: 1px solid #d1d5db;
+        border-radius: 4px;
+        padding: 7px 9px;
+      }
+      .radios {
+        display: flex;
+        gap: 14px;
+      }
+      .radios span {
+        display: inline-flex;
+        gap: 6px;
+        align-items: center;
+      }
+      .dot {
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        border: 1px solid #9ca3af;
+        display: inline-block;
+      }
+      .dot.on {
+        background: #4338ca;
+        box-shadow: inset 0 0 0 3px #fff;
+        border-color: #4338ca;
+      }
+      .pane {
+        padding: 18px 22px;
+      }
+      .pane h2 {
+        margin: 0 0 16px;
+        font-size: 18px;
+      }
+      .pill {
+        display: inline-block;
+        background: #f3f4f6;
+        border-radius: 4px;
+        padding: 2px 8px;
+        margin: 0 4px 4px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <template id="art">
+      <!-- Star's pieces: four from the live site, four of the site's own pictures. -->
+    </template>
+
+    <div class="wrap">
+      <h6>
+        1 · On a computer: the title and subtitle as today, then the folders,
+        Featured first, tabs alternating sides, pieces at their own shape at the
+        row's height (480px), cut off at the ends
+      </h6>
+      <div class="screen" id="m1">
+        <div class="hdr">
+          <b>Kettlebird</b><small>Comics + Illustration</small>
+        </div>
+        <div class="title">
+          <h1>Portfolio</h1>
+          <p>Illustrations, fanart, and original characters</p>
+        </div>
+        <div class="folders">
+          <section class="folder right" style="--h: 480px">
+            <div class="tabs"><span class="tab own">Featured</span></div>
+            <div class="row">
+              <div class="strip">
+                <div class="piece"><img data-a="1" /></div>
+                <div class="piece"><img data-a="0" /></div>
+                <div class="piece"><img data-a="5" /></div>
+                <div class="piece"><img data-a="2" /></div>
+              </div>
+              <span class="arrow l off"
+                ><svg viewBox="0 0 24 24">
+                  <path
+                    d="M17 4 L5 12 L17 20 Z"
+                    fill="currentColor"
+                  /></svg></span
+              ><span class="arrow r"
+                ><svg viewBox="0 0 24 24">
+                  <path d="M7 4 L19 12 L7 20 Z" fill="currentColor" /></svg
+              ></span>
+            </div>
+          </section>
+          <section class="folder left" style="--h: 480px">
+            <div class="tabs"><span class="tab own">Original Work</span></div>
+            <div class="row">
+              <div class="strip">
+                <div class="piece"><img data-a="3" /></div>
+                <div class="piece"><img data-a="4" /></div>
+                <div class="piece"><img data-a="6" /></div>
+                <div class="piece"><img data-a="7" /></div>
+              </div>
+              <span class="arrow l off"
+                ><svg viewBox="0 0 24 24">
+                  <path
+                    d="M17 4 L5 12 L17 20 Z"
+                    fill="currentColor"
+                  /></svg></span
+              ><span class="arrow r"
+                ><svg viewBox="0 0 24 24">
+                  <path d="M7 4 L19 12 L7 20 Z" fill="currentColor" /></svg
+              ></span>
+            </div>
+          </section>
+          <section class="folder right" style="--h: 120px">
+            <div class="tabs"><span class="tab own">Fan Work</span></div>
+            <div class="row"></div>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <h6>
+        2 · Fan Work's top level on a computer: subfolders as grid thumbnails
+        (Star chose 2 × 2 for Murderbot, 3 × 3 for The Amazing Digital Circus),
+        named under the grid; a loose piece beside them; no INDEX tab
+      </h6>
+      <div class="screen" id="m2">
+        <div class="folders">
+          <section class="folder left" style="--h: 480px">
+            <div class="tabs"><span class="tab own">Fan Work</span></div>
+            <div class="row">
+              <div class="strip">
+                <div class="sub">
+                  <div class="grid g2">
+                    <img data-a="0" /><img data-a="1" /><img data-a="2" /><img
+                      data-a="3"
+                    />
+                  </div>
+                  <span>Murderbot</span>
+                </div>
+                <div class="sub">
+                  <div class="grid g3">
+                    <img data-a="4" /><img data-a="5" /><img data-a="6" /><img
+                      data-a="7"
+                    /><img data-a="0" /><img data-a="1" /><img data-a="2" /><img
+                      data-a="3"
+                    /><img data-a="4" />
+                  </div>
+                  <span>The Amazing Digital Circus</span>
+                </div>
+                <div class="piece"><img data-a="5" /></div>
+                <div class="piece"><img data-a="6" /></div>
+              </div>
+              <span class="arrow l off"
+                ><svg viewBox="0 0 24 24">
+                  <path
+                    d="M17 4 L5 12 L17 20 Z"
+                    fill="currentColor"
+                  /></svg></span
+              ><span class="arrow r"
+                ><svg viewBox="0 0 24 24">
+                  <path d="M7 4 L19 12 L7 20 Z" fill="currentColor" /></svg
+              ></span>
+            </div>
+          </section>
+          <section class="folder right" style="--h: 100px">
+            <div class="tabs"><span class="tab own">Past Clients</span></div>
+            <div class="row"></div>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <h6>
+        3 · After choosing Murderbot: the tab reads "Murderbot", the pink INDEX
+        tab beside it goes back; the row shows Murderbot's pieces; its own
+        address; a screen reader hears where it is
+      </h6>
+      <div class="screen" id="m3">
+        <span class="addr">kettlebird.com/portfolio/fan-work/murderbot</span>
+        <div class="folders">
+          <section class="folder left" style="--h: 480px">
+            <div class="tabs">
+              <span class="tab own">Murderbot</span
+              ><span class="tab index">INDEX</span>
+            </div>
+            <div class="row">
+              <div class="strip">
+                <div class="piece"><img data-a="0" /></div>
+                <div class="piece"><img data-a="1" /></div>
+                <div class="piece"><img data-a="2" /></div>
+                <div class="piece"><img data-a="3" /></div>
+              </div>
+              <span class="arrow l off"
+                ><svg viewBox="0 0 24 24">
+                  <path
+                    d="M17 4 L5 12 L17 20 Z"
+                    fill="currentColor"
+                  /></svg></span
+              ><span class="arrow r"
+                ><svg viewBox="0 0 24 24">
+                  <path d="M7 4 L19 12 L7 20 Z" fill="currentColor" /></svg
+              ></span>
+            </div>
+          </section>
+          <section class="folder right" style="--h: 100px">
+            <div class="tabs"><span class="tab own">Past Clients</span></div>
+            <div class="row"></div>
+          </section>
+        </div>
+        <div class="sr">
+          <span>Screen reader</span>Fan Work: Murderbot, 4 pieces.
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <h6>
+        4 · On a phone (390px): a 16:9 piece fills the width; taller pieces are
+        narrower at the same height; the arrows sit under the row
+      </h6>
+      <div class="screen phone" id="m4">
+        <div class="hdr">
+          <b>Kettlebird</b><small>Comics + Illustration</small>
+        </div>
+        <div class="title">
+          <h1>Portfolio</h1>
+          <p>Illustrations, fanart, and original characters</p>
+        </div>
+        <div class="folders">
+          <section class="folder right" style="--h: 200px">
+            <div class="tabs"><span class="tab own">Featured</span></div>
+            <div class="row">
+              <div class="strip">
+                <div class="piece"><img data-a="8" /></div>
+                <div class="piece"><img data-a="1" /></div>
+              </div>
+              <span class="arrow l off"
+                ><svg viewBox="0 0 24 24">
+                  <path
+                    d="M17 4 L5 12 L17 20 Z"
+                    fill="currentColor"
+                  /></svg></span
+              ><span class="arrow r"
+                ><svg viewBox="0 0 24 24">
+                  <path d="M7 4 L19 12 L7 20 Z" fill="currentColor" /></svg
+              ></span>
+            </div>
+          </section>
+          <section class="folder left" style="--h: 200px">
+            <div class="tabs"><span class="tab own">Original Work</span></div>
+            <div class="row">
+              <div class="strip">
+                <div class="piece"><img data-a="3" /></div>
+                <div class="piece"><img data-a="4" /></div>
+                <div class="piece"><img data-a="6" /></div>
+              </div>
+              <span class="arrow l off"
+                ><svg viewBox="0 0 24 24">
+                  <path
+                    d="M17 4 L5 12 L17 20 Z"
+                    fill="currentColor"
+                  /></svg></span
+              ><span class="arrow r"
+                ><svg viewBox="0 0 24 24">
+                  <path d="M7 4 L19 12 L7 20 Z" fill="currentColor" /></svg
+              ></span>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <h6>
+        5 · On a phone, a subfolder open: its name on the tab, INDEX beside it
+      </h6>
+      <div class="screen phone" id="m5">
+        <div class="folders">
+          <section class="folder left" style="--h: 200px">
+            <div class="tabs">
+              <span class="tab own">Murderbot</span
+              ><span class="tab index">INDEX</span>
+            </div>
+            <div class="row">
+              <div class="strip">
+                <div class="piece"><img data-a="0" /></div>
+                <div class="piece"><img data-a="1" /></div>
+                <div class="piece"><img data-a="2" /></div>
+              </div>
+              <span class="arrow l off"
+                ><svg viewBox="0 0 24 24">
+                  <path
+                    d="M17 4 L5 12 L17 20 Z"
+                    fill="currentColor"
+                  /></svg></span
+              ><span class="arrow r"
+                ><svg viewBox="0 0 24 24">
+                  <path d="M7 4 L19 12 L7 20 Z" fill="currentColor" /></svg
+              ></span>
+            </div>
+          </section>
+          <section class="folder right" style="--h: 60px">
+            <div class="tabs"><span class="tab own">Past Clients</span></div>
+            <div class="row"></div>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <h6>
+        6 · Today, for comparison: square crops in mostly empty bands, filter
+        buttons above
+      </h6>
+      <div class="screen" id="m6">
+        <img src="today-laptop.png" style="display: block; width: 100%" />
+      </div>
+    </div>
+
+    <div class="wrap">
+      <h6>
+        7 · The editor (illustration): Art lists Pieces and Subfolders; a
+        subfolder has a Name, a Folder and a Grid size; a piece chooses at most
+        one subfolder in each of its sections
+      </h6>
+      <div class="studio" id="m7">
+        <div class="col">
+          <h3>Art</h3>
+          <div class="item">Pieces</div>
+          <div class="item on">Subfolders</div>
+        </div>
+        <div class="col">
+          <h3>Subfolders</h3>
+          <div class="item on">
+            Murderbot<small>Fan Work · 2 × 2 · 6 pieces</small>
+          </div>
+          <div class="item">
+            The Amazing Digital Circus<small
+              >Fan Work · 3 × 3 · 12 pieces</small
+            >
+          </div>
+          <div class="item">
+            The Great God Grove<small>Fan Work · 2 × 2 · 4 pieces</small>
+          </div>
+          <div class="item">
+            Book covers<small>Past Clients · 2 × 2 · 3 pieces</small>
+          </div>
+        </div>
+        <div class="pane">
+          <h2>Murderbot</h2>
+          <div class="field">
+            <label>Name</label>
+            <p>
+              Shown under its thumbnail, and on the folder's tab when it's open.
+            </p>
+            <div class="input">Murderbot</div>
+          </div>
+          <div class="field">
+            <label>Folder</label>
+            <p>The Portfolio section it's in. A subfolder is in one section.</p>
+            <div class="input">Fan Work</div>
+          </div>
+          <div class="field">
+            <label>Grid size</label>
+            <p>How many of its pieces its thumbnail shows, newest first.</p>
+            <div class="radios">
+              <span><i class="dot on"></i>2 × 2</span
+              ><span><i class="dot"></i>3 × 3</span
+              ><span><i class="dot"></i>4 × 4</span>
+            </div>
+          </div>
+          <hr
+            style="border: 0; border-top: 1px solid #e5e7eb; margin: 22px 0"
+          />
+          <h2 style="font-size: 15px">A piece's fields (excerpt)</h2>
+          <div class="field">
+            <label>Portfolio sections</label><span class="pill">Fan Work</span
+            ><span class="pill">Featured</span>
+          </div>
+          <div class="field">
+            <label>Subfolders</label>
+            <p>
+              Optional. At most one in each section this piece is in. Left empty
+              in a section, the piece sits loose there.
+            </p>
+            <div class="input">
+              Fan Work: <b>Murderbot</b> &nbsp;·&nbsp; Featured: <i>loose</i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const ART = [
+        "https://cdn.sanity.io/images/1p6w5n0l/production/41ddf8e039af8db2d300db2595670f400d17d002-1379x2041.jpg?h=960&auto=format",
+        "https://cdn.sanity.io/images/1p6w5n0l/production/b7fc5e605358ed3ffd51fb2cd3ecbe1c53676a72-1379x1810.jpg?h=960&auto=format",
+        "https://cdn.sanity.io/images/1p6w5n0l/production/3e3bb73a5302688198a67fbd2df169aa0ff27050-2041x1379.jpg?h=960&auto=format",
+        "https://cdn.sanity.io/images/1p6w5n0l/production/e75204d0a39f88a0ba2c6862706e01635a356ff8-2895x4092.jpg?h=960&auto=format",
+        "../../../../public/assets/images/bkgd-artwork.jpg",
+        "../../../../public/assets/images/bkgd-Comics.jpg",
+        "../../../../public/assets/images/bkgd-commissions.jpeg",
+        "../../../../public/assets/images/bkgd-writing.jpg",
+        // A 16:9 crop of a landscape piece, standing in for Star's widest.
+        "https://cdn.sanity.io/images/1p6w5n0l/production/3e3bb73a5302688198a67fbd2df169aa0ff27050-2041x1379.jpg?w=1600&h=900&fit=crop&auto=format",
+      ];
+      document.querySelectorAll("img[data-a]").forEach((img) => {
+        img.src = ART[+img.dataset.a];
+        img.alt = "";
+      });
+      Promise.all([
+        document.fonts.ready,
+        ...[...document.images].map((i) =>
+          i.complete
+            ? 0
+            : new Promise((r) => {
+                i.onload = i.onerror = r;
+              }),
+        ),
+      ]).then(() => {
+        document.body.dataset.ready = "yes";
+      });
+    </script>
+  </body>
+</html>
