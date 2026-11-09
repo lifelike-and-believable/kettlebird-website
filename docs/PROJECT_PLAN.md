@@ -34,7 +34,7 @@ The project follows rules-for-robots (`.rfr/`, `docs/product/process.yml`):
 
 The look of the site is recorded in `docs/STYLE_GUIDE.md` and in the Kettlebird design system (on claude.ai), which tracks every change to the look and the pull request that built it.
 
-## Where things stand (2026-11-07)
+## Where things stand (2026-11-08)
 
 | Area | On the site | Where it's described |
 |---|---|---|
@@ -42,37 +42,26 @@ The look of the site is recorded in `docs/STYLE_GUIDE.md` and in the Kettlebird 
 | Site-wide | Torn-paper header (shorter on phones, with a menu), one arrow style everywhere, keyboard focus and reduced motion respected, link previews on every page, a sitemap, and structured data for search engines, listed once the site is at kettlebird.com | design-phone-header, design-arrows, design-comic-share-and-announce, design-site-search |
 | Portfolio | Kraft folders with tabs, pieces whole and large; subfolders Star makes in the editor, each with its own address; any piece full screen, with zoom and moving between pieces | epic-portfolio-full-screen, epic-portfolio-folders |
 | Comics | Series and chapter pages; a reader with First, Previous, Next and Newest, all pages of a chapter on one sheet, sharing, screen reader announcements; two pages side by side and a page-flip on wide screens, per comic; panel by panel, with panels found when Star uploads and corrected by Star in the editor; on a computer, pages that fit the screen, the width or the height, set per comic by Star and choosable by fans | epic-comic-reader, epic-comic-reader-flip-and-panels, design-comic-page-width |
-| Writing | Stories read on the site, as one-shots or in chapters, with scene breaks and Star's pictures; Star uploads each chapter as a Word document; stories with mature or explicit content ask before showing the text; news | epic-story-reader, design-story-import, design-story-mature-content |
+| Writing | Stories read on the site, as one-shots or in chapters, with scene breaks and Star's pictures, on a white sheet that comes out of a typewriter as fans scroll; Star uploads each chapter as a Word document; stories with mature or explicit content ask before showing the text; news | epic-story-reader, design-story-import, design-story-mature-content, design-story-text-frame, design-story-typewriter |
 | Shop | Products by category, each linking to Ko-fi | requirements-shop (REQ-shop-1) |
 | Commissions | Open or closed, types and prices, how it works, and an email link to start | requirements-commissions (REQ-commissions-1 to 3) |
 | About and contact | Star's about page, quick facts and social links | design-site-settings |
 | Star runs the site | Sign-in at `/studio`; an editor organised as Comics, Art, Writing, Shop, Commissions and Site settings; preview before publishing; knowing when a change is live; help links to Star's guides on every item | epic-content-editing |
 
-The newest changes:
-- **Writing from Word documents** (design-story-import, docs/specs/story-import-word.md):
-  - Star uploads each chapter, or a one-shot, as a .docx in place of pasting; there's no text box.
-  - Italics, bold, scene breaks and their pictures come through, and a note says what came in and what didn't.
-  - Each picture takes alt text from Word or the editor, or is marked decorative.
-  - A new version asks before replacing the text, and an upload can be undone until it's published.
-  - Pictures show in the story's column, at its width or their own, and open full screen.
-- **Mature or explicit content** (design-story-mature-content, docs/specs/story-mature-content.md):
-  - one checkbox replaces the five ratings, at Star's request;
-  - a ticked story is tagged **Mature or explicit** and asks before showing its text;
-  - content notes show before any story that has them.
-- **Search engines and link previews** (design-site-search, docs/specs/site-search.md):
-  - every public page has a canonical address and a link preview, with a new site card where there's no other picture;
-  - the Portfolio's preview is the newest piece in Featured, and the Commissions page's says whether commissions are open;
-  - a sitemap, `robots.txt` and structured data describing Star and their work;
-  - ticked stories are marked adult for safe search;
-  - search engines are asked not to list the site until it moves to kettlebird.com (below).
+The newest changes (2026-11-08):
+- **The Portfolio as folders, with subfolders** (epic-portfolio-folders, design-portfolio-folders, docs/specs/portfolio-folders.md), from Star's own concept:
+  - each section is a kraft file folder with a tab on its own side, slightly slanted with rounded corners, stacked with a soft shadow;
+  - pieces show whole and large, at 9/16 of the row's width (at most 480 pixels), not as square crops; the filter buttons are gone;
+  - Star gathers pieces into subfolders in the editor (Art, Subfolders), such as one fandom in Fan Work; each shows as a grid of its newest pieces, opens in its folder as "Fan Work: Murderbot" with a pink INDEX tab back, and has its own address;
+  - full screen turns through the open subfolder's pieces, or the folder's loose ones.
+- **Story text on a white sheet** (design-story-text-frame, docs/specs/story-text-frame.md): the text of a story or chapter sits on plain white with a soft shadow, keeping its reading width.
+- **The sheet comes out of a typewriter** (design-story-typewriter, docs/specs/story-typewriter.md): a 1950s office typewriter with a KETTLEBIRD nameplate under the sheet follows the reader at the bottom of the screen, so the story scrolls up out of it, and rests under the last line; phones too. The drawing is a stand-in until Star's artwork comes.
 
-Also since the last update:
-- The old ratings are gone from the editor and the site: the test story, the only one saved with a rating, is deleted, so no one-off change was needed.
-- The story reader's user stories were brought up to date with these designs.
-- The Commissions page no longer has the line "Custom artwork made just for you", at Star's request, and its description no longer says "custom".
-- The Writing page's subtitle is "Fiction and other words"; its description says "Fiction and other written works", as all the writing on the site is Star's own for now (the lead, 2026-11-07).
-- The docs now use Star's pronouns, they/them, as the about page does.
-- How pages fit on a computer (design-comic-page-width) is done, with four fixes to the reader and the editor.
+Earlier (2026-11-07):
+- **Writing from Word documents** (design-story-import): Star uploads each chapter, or a one-shot, as a .docx with its italics, bold, scene breaks and pictures; each picture takes alt text or is marked decorative.
+- **Mature or explicit content** (design-story-mature-content): one checkbox in place of the five ratings; a ticked story asks before showing its text, and content notes show first.
+- **Search engines and link previews** (design-site-search): canonical addresses, link previews, a sitemap and structured data, listed once the site moves to kettlebird.com (below).
+- Smaller changes: the Commissions page lost "Custom artwork made just for you"; the Writing page's subtitle is "Fiction and other words"; the docs use Star's pronouns, they/them.
 
 ## What's left
 
@@ -101,9 +90,12 @@ Search engines list the site only once its address is `https://kettlebird.com` (
 
 - The two pictures for **Panel by panel** and **All pages** on phones; interim ones are in place until they come.
 - The **home tiles' label colours**: white with a shadow for now; the alternatives (an ink outline, or ink) are in design-home-tiles-and-icon, mock-up 3.
+- The **typewriter artwork**, nameplate included, to replace the stand-in drawing (design-story-typewriter, The artwork from Star).
+- The Portfolio's **subfolders**, made in the editor (Art, Subfolders). Until then every piece shows on its own in its folder.
 
 ### Checks only a person can do
 
+- The editor's subfolder steps, which the tests can't sign in to try (portfolio-folders AC-19 to AC-22): make a subfolder and publish it, put a piece in it, untick that piece's section and publish (the note, then the piece leaving the subfolder), and delete the subfolder (the question with its count).
 - The Word upload tutorial (`docs/tutorials/publishing-stories.md`) with one of Star's own chapters, including its pictures and a phone photo's location data being removed (story-import-word AC-12, AC-28).
 - A read of the new "In search results and link previews" section of Star's guide `going-live.md`, and the lines added to the other guides (site-search AC-12).
 - The page-flip on a page taller than the window, in Chrome and Safari on a computer (comic-reader-page-size AC-24).
@@ -116,7 +108,7 @@ Search engines list the site only once its address is `https://kettlebird.com` (
 |---|---|
 | 1. Foundation and planning | Done: Astro with React islands, Sanity, Vercel, deploying from `main` with a preview for every pull request. |
 | 2. Design and branding | Done: `docs/STYLE_GUIDE.md`, then the design system. The radial menu became the home page's tiles. |
-| 3. Portfolio | Done, and extended with the full-screen view. Built with the site's own code rather than PhotoSwipe. |
+| 3. Portfolio | Done, and extended with the full-screen view, then rebuilt as folders with subfolders from Star's concept. Built with the site's own code rather than PhotoSwipe. |
 | 3A. Comic reader | Done, and extended: page-flip, two pages side by side, panel by panel with panels found automatically, and page sizes on a computer. Built without panzoom. |
 | 3B. Written works page-flip | Replaced: stories read as web pages, which suit phones and screen readers better than a page-flip (epic-story-reader), uploaded from Word documents with their pictures. |
 | 3C. Commerce | In part: the shop lists products and links to Ko-fi; buying on the site is open (above). |
@@ -141,3 +133,4 @@ Search engines list the site only once its address is `https://kettlebird.com` (
 | 2026-11-07 | Search engines and link previews, and the move to kettlebird.com as a launch step. |
 | 2026-11-07 | Brought up to date after the search engines build: the newest changes in one list, the Writing page's subtitle, the Commissions description, the docs' pronouns for Star, and the guide review as a check. |
 | 2026-11-08 | The Portfolio as folders, with subfolders, from Star's concept. |
+| 2026-11-08 | Brought up to date after the folders and typewriter builds: the newest changes, the story's white sheet and typewriter, the artwork and subfolders waiting on Star, and the editor's subfolder check. |
