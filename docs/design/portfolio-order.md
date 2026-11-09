@@ -21,7 +21,7 @@ the pieces' shapes. -->
 
 ## Personas
 
-- persona-artist: presents their work in a way that feels like their own (#goals). Some sections read best newest first (Work in Progress, Featured); others tell a story from the start (a comic's pages, a client's covers in the order they were made). Today every section is newest first and Star can't change it. One setting per section, which its subfolders follow unless Star says otherwise, keeps the common case to one choice.
+- persona-artist: presents their work in a way that feels like their own (#goals). Some sections read best newest first (Work in Progress, Featured); others tell a story from the start (a comic's pages, a client's covers in the order they were made). Today every section is newest first and Star can't change it. A section and each of its subfolders have their own setting (the lead's decision, 2026-11-09), so a comic told in order can sit in a section that's newest first.
 - persona-fan: arrives to see what's new (#goals). Newest first stays the starting order everywhere, so nothing changes for fans until Star chooses otherwise. In a section Star sets to oldest first, a fan who wants the newest piece finds it at the end of the row (mock-up 11); the site gives no other sign of the order, since the order is Star's way of presenting the work. The editor's text says so, so Star chooses it knowingly.
 
 ## The change
@@ -30,10 +30,10 @@ This amends design-portfolio-folders, "The row" (**Order**), "Subfolders" (the t
 
 ### Two settings
 
-- **Each section's order** (mock-up 1): in the editor, **Art** gains a third item, **Portfolio order**, after **Pieces** and **Subfolders**. It's one page, headed "Portfolio order", with the five sections in the Portfolio's order, each a choice of **Newest first** or **Oldest first**. Text under the heading: "The order each Portfolio section shows its pieces in, by their dates. Pieces without a date come last, either way. Its subfolders follow it too, unless you choose otherwise in a subfolder's **Order of pieces**. Oldest first suits work that tells a story from the start; fans who come to see what's new will find it at the end of the row." It works like a Site settings item: one page, opened straight away, with **Publish** and **Preview**, and no delete or duplicate.
-- **Each subfolder's order** (mock-up 2): a subfolder gains **Order of pieces**, after **Grid size**: **Same as \<its section\> (\<that section's order\>)**, **Newest first** or **Oldest first**. Help: "The order its pieces show in when it's open, and which of them its thumbnail shows. Pieces without a date come last." A new subfolder starts at **Same as its section**. Its row in the Subfolders list names the order only when Star chose one: "Fan Work · 2 × 2 · 4 pieces · Oldest first".
-- **What's ticked at first:** Portfolio order opens with every section's **Newest first** ticked (its starting values, as the Site settings items have theirs) until Star publishes it. A subfolder made before this change has nothing ticked under **Order of pieces**, and is treated as **Same as its section**; the field's help covers it.
-- **So at first nothing on the site changes:** every section is newest first, and every subfolder follows its section.
+- **Each section's order** (mock-up 1): in the editor, **Art** gains a third item, **Portfolio order**, after **Pieces** and **Subfolders**. It's one page, headed "Portfolio order", with the five sections in the Portfolio's order, each a choice of **Newest first** or **Oldest first**. Text under the heading: "The order each Portfolio section shows its pieces in, by their dates. Pieces without a date come last, either way. A subfolder has its own order: its **Order of pieces**. Oldest first suits work that tells a story from the start; fans who come to see what's new will find it at the end of the row." It works like a Site settings item: one page, opened straight away, with **Publish** and **Preview**, and no delete or duplicate.
+- **Each subfolder's order** (mock-up 2), independent of its section's (the lead's decision): a subfolder gains **Order of pieces**, after **Grid size**: **Newest first** or **Oldest first**. Help: "The order its pieces show in when it's open, and which of them its thumbnail shows, whatever its section's order. Pieces without a date come last." A new subfolder starts at **Newest first**. Its row in the Subfolders list adds "Oldest first" when it's set: "Fan Work · 2 × 2 · 4 pieces · Oldest first".
+- **What's ticked at first:** Portfolio order opens with every section's **Newest first** ticked (its starting values, as the Site settings items have theirs) until Star publishes it. A subfolder made before this change has nothing ticked under **Order of pieces** and shows newest first, as today, until Star chooses.
+- **So at first nothing on the site changes:** every section and every subfolder is newest first.
 
 ### What the order changes on the site
 
@@ -43,7 +43,7 @@ This amends design-portfolio-folders, "The row" (**Order**), "Subfolders" (the t
 - **A subfolder's place in its section's row** follows the section's order: newest first, it sits where its newest piece would be (today's rule); oldest first, where its oldest piece would be (mock-up 6). A subfolder whose pieces are all undated sits among the undated pieces, by its name. The subfolder's own order doesn't move it.
 - **A subfolder's thumbnail** (mock-ups 7, 10) shows the first pieces in the subfolder's own order: newest first, its newest; oldest first, its oldest. A 3 × 3 thumbnail of an oldest-first subfolder of twelve pieces shows the oldest nine (mock-up 10); the count beside its name gives all twelve, as today.
 - **An open subfolder** (mock-up 8) shows its pieces in its own order.
-- **When a subfolder's order differs from its section's** (only when Star chose one, mock-up 12), it still sits by its section's rule while its thumbnail starts from its own first piece.
+- **When a subfolder's order differs from its section's** (mock-up 12), it still sits by its section's rule while its thumbnail starts from its own first piece.
 - **The row starts at its first piece,** as today; the arrows scroll along it, and full screen turns through the same pieces in the same order: from a loose piece, the section's loose pieces in the row's order (subfolders' pieces are not among them, as today); in an open subfolder, its pieces in its order. The count ("1 of 4 · Murderbot") counts from the row's first piece.
 - **Unchanged:** a shared subfolder link's picture is its newest piece, and a shared Portfolio link's picture is the newest piece in Featured (going-live), whatever the order: a link preview shows the latest work.
 
@@ -71,8 +71,8 @@ Source: `mockups/portfolio-order/mockups.html` (frames 1 and 2) and `mockups/por
 | 4 | Original Work, Oldest first | `mockups/portfolio-order/4-original-oldest-1280.png` |
 | 5 | Past Clients, Newest first: Book covers where its newest piece would be | `mockups/portfolio-order/5-clients-newest-1280.png` |
 | 6 | Past Clients, Oldest first: Shopfront first, Book covers where its oldest piece would be | `mockups/portfolio-order/6-clients-oldest-1280.png` |
-| 7 | Past Clients Oldest first, Book covers Same as its section: its thumbnail starts from its oldest piece | `mockups/portfolio-order/7-books-oldest-1280.png` |
-| 8 | Book covers open, oldest first | `mockups/portfolio-order/8-books-oldest-open-1280.png` |
+| 7 | Book covers set to Oldest first: its thumbnail starts from its oldest piece | `mockups/portfolio-order/7-books-oldest-1280.png` |
+| 8 | Book covers open, Oldest first | `mockups/portfolio-order/8-books-oldest-open-1280.png` |
 | 9 | On a phone, Original Work Oldest first | `mockups/portfolio-order/9-original-oldest-phone.png` |
 | 10 | A 3 × 3 subfolder of twelve pieces, oldest first: its oldest nine | `mockups/portfolio-order/10-books-oldest-3x3-1280.png` |
 | 11 | A long row, oldest first: the newest piece at the far end | `mockups/portfolio-order/11-long-row-oldest-1280.png` |
@@ -83,7 +83,7 @@ Source: `mockups/portfolio-order/mockups.html` (frames 1 and 2) and `mockups/por
 | # | Where | After |
 | --- | --- | --- |
 | 1 | `sanity-studio/structure.ts`, `sanity-studio/lib/editor-content.ts` (`ART_LISTS`), a new single-page type `portfolioOrder` with its schema | Art lists Pieces, Subfolders and Portfolio order; Portfolio order opens straight away, with its starting values, and only Publish, Discard changes and Restore. |
-| 2 | `sanity-studio/schemas/objects/portfolioSubfolder.ts`, `FIELDS.portfolioSubfolder`, `listDetail` | Order of pieces, after Grid size, with its choice naming the section's order; Grid size's help and hint; the list row. |
+| 2 | `sanity-studio/schemas/objects/portfolioSubfolder.ts`, `FIELDS.portfolioSubfolder`, `listDetail` | Order of pieces, after Grid size; Grid size's help and hint; the list row. |
 | 3 | `FIELDS.galleryItem.date` | The Date help above. |
 | 4 | `src/lib/portfolio/folders.ts` (`sortPieces`, `buildFolders`, `gridCells`, `folderTurnOrder`) | Each section's entries sorted in its order (a subfolder by its newest or oldest piece, or its name when undated); each subfolder's own pieces re-sorted in its own order, for its grid, its open row and full screen; ties by title. |
 | 5 | `src/lib/queries.ts`, `src/components/pages/PortfolioPage.astro`, `src/pages/portfolio/[folder]/[subfolder].astro`, `src/lib/preview/load.ts` | The Portfolio, a subfolder's page and Preview fetch Portfolio order (drafts in Preview) and each subfolder's order; the subfolder page's link picture stays its newest piece. |
@@ -97,7 +97,7 @@ Source: `mockups/portfolio-order/mockups.html` (frames 1 and 2) and `mockups/por
 | Situation | What happens |
 | --- | --- |
 | Portfolio order never published | Every section Newest first, as today. The page opens with Newest first ticked for each. |
-| A subfolder made before this change | Same as its section; nothing ticked in the editor until Star chooses. |
+| A subfolder made before this change | Newest first, as today; nothing ticked in the editor until Star chooses. |
 | A section with only undated pieces | Title order, in either setting. |
 | A subfolder whose pieces are all undated | Among the section's undated pieces, by its name; its own pieces in title order. |
 | Pieces with the same date | Title order, A to Z, in both orders. |
@@ -115,25 +115,29 @@ Source: `mockups/portfolio-order/mockups.html` (frames 1 and 2) and `mockups/por
 
 - The section order: by date, newest or oldest first; undated last by title; same dates by title; Newest first when unset.
 - A subfolder's place: by its newest piece in a newest-first section, its oldest in an oldest-first one, by its name when all its pieces are undated.
-- A subfolder's own order: Same as its section when unset; its grid, open row and full screen in that order; the link picture stays its newest piece.
-- The editor: Art's three items; Portfolio order as a single page with its heading, text, five choices, starting values, actions, Preview and help link; the subfolder's Order of pieces, its choice naming the section's order, its help, and the list row; the Date and Grid size help; the hint.
+- A subfolder's own order, independent of its section's: Newest first when unset; its grid, open row and full screen in that order; the link picture stays its newest piece.
+- The editor: Art's three items; Portfolio order as a single page with its heading, text, five choices, starting values, actions, Preview and help link; the subfolder's Order of pieces, its help, and the list row; the Date and Grid size help; the hint.
 - The guides' changes above.
 - Existing tests that name the Date help, Grid size's help, "shows the newest 9", or Art's two lists change.
 
 ## Questions for the lead
 
 1. **Where the sections' order is set:** under **Art**, as **Portfolio order** beside Pieces and Subfolders (recommended: it's where Star works on the Portfolio), or in **Site settings** with Commissions, About page, Home page and Contact.
-2. **Subfolders follow their section** unless Star chooses otherwise (recommended: one choice for the common case), or each subfolder has only Newest first and Oldest first, set on its own.
+2. **Subfolders' order:** decided, see below.
 3. **A subfolder's place in an oldest-first section:** where its oldest piece would be (recommended: the whole row reads oldest to newest), or always where its newest piece would be.
 4. **An oldest-first subfolder's thumbnail:** its oldest pieces, the ones it opens with (recommended), or its newest.
 5. **Undated pieces:** last in both orders (recommended), or first when oldest first.
 6. **No sign of the order on the site** (recommended: the order is Star's presentation, and the editor tells Star that fans find the newest at the end), or a small line under an oldest-first section's tab such as "Oldest first".
 
+## Decisions from the lead (2026-11-09)
+
+- **A subfolder's order is independent of its section's** (question 2): each subfolder has **Newest first** or **Oldest first**, set on its own; there's no "Same as its section". A subfolder sits in its section's row by the section's rule (question 3) and shows its pieces in its own order.
+
 ## Persona walkthrough
 
 Run with `rfr-process:persona-walkthrough` for persona-artist and persona-fan on the first draft (2026-11-09). What it found and what changed:
 
-- **Subfolders didn't follow their section:** turning a section to Oldest first left its subfolders newest first. Subfolders now follow their section unless Star chooses otherwise (**Same as \<section\>**, question 2), and mock-up 12 shows the case where they differ.
+- **Subfolders didn't follow their section:** turning a section to Oldest first left its subfolders newest first. The second draft had subfolders follow their section unless Star chose otherwise; the lead decided a subfolder's order is its own (see the decisions above), so the Portfolio order page now says so, the subfolder's help says "whatever its section's order", and mock-up 12 shows a subfolder set differently from its section.
 - **Ties and undated subfolders** weren't defined, and "title order, as today" for ties was wrong (today ties keep the order the site receives them in). Ties are now by title in both orders, said to be new; a subfolder of undated pieces sits by its name.
 - **The link-preview picture** would have changed for an oldest-first subfolder. It now stays the newest piece, and Featured's stays its newest.
 - **Wording that would be wrong** wasn't all listed: the Date help, the guide's "newest pieces" lines and the fans' guide. They're now listed with their new text, and where the fans' guide sentence goes.
