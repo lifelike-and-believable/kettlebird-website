@@ -1,5 +1,5 @@
 ---
-status: draft
+status: implemented
 tests-commit: 362569318d6db7983925156b692cf66a219e373a
 unlocks:
   - tests/unit/portfolio-folders.test.ts: rowHeight's cap is 240 (AC-1, amending portfolio-folders AC-3); rowHeight(427) and rowHeight(1280) are 240.
