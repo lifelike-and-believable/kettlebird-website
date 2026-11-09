@@ -41,7 +41,8 @@ describe('portfolio-folders#AC-18 AC-19 subfolder type', () => {
     );
     expect(fieldText('portfolioSubfolder', 'gridSize')).toEqual({
       title: 'Grid size',
-      description: 'How many of its pieces its thumbnail shows, newest first.',
+      // portfolio-size AC-6 adds what computers and phones show.
+      description: 'How many of its pieces its thumbnail shows, newest first. Computers show at most 3 × 3, phones 2 × 2.',
     });
     expect(GRID_SIZES).toEqual([
       { title: '2 × 2', value: 2 },

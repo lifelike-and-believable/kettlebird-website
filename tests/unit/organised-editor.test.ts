@@ -100,7 +100,7 @@ const EXPECTED: Record<ItemType, [string, string, string][]> = {
     ['name', 'Name (required)', "Shown under its thumbnail, and on the section's tab after the section's name when it's open (\"Fan Work: Murderbot\")."],
     ['slug', 'Web address (required)', 'Made from the name. Leave it as it is once people may have shared links to it.'],
     ['section', 'Section (required)', "The Portfolio section it's in. Set when you make it; to move pieces to another section, make a subfolder there."],
-    ['gridSize', 'Grid size', 'How many of its pieces its thumbnail shows, newest first.'],
+    ['gridSize', 'Grid size', 'How many of its pieces its thumbnail shows, newest first. Computers show at most 3 × 3, phones 2 × 2.'],
   ],
   // story-reader-editor AC-1 supersedes these: tests/unit/story-editor.test.ts checks every story field.
   writtenWork: [

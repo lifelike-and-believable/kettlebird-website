@@ -43,6 +43,7 @@ At the first look at the mock-ups (2026-11-08): the tabs' corners are rounded a 
 - The header, title "Portfolio" and subtitle as today. The filter buttons and the pink "Index" label above them go.
 - One folder per Portfolio section that has pieces, in the order today: Featured, Original Work, Fan Work, Past Clients, Work in Progress.
 - **A folder** is kraft paper (the band's colour and texture today) with a **tab** at its top edge: the same kraft, sides slanting in slightly and top corners rounded (22 pixels on a computer, 14 on a phone; drawn by tilting the tab's paper back a little in perspective, so the slant and the rounding go together), the folder's name in DM Mono (the site's typewriter face), 2.6rem on a computer and 1.35rem on a phone.
+- **Since design-portfolio-size (2026-11-09):** the phone's tab sizes apply at every width: 1.35rem words, top corners rounded 14 pixels, and the tabs rise 2.25rem above the folder's edge.
 - **Each section's tab has a fixed side:** Featured right, Original Work left, Fan Work right, Past Clients left, Work in Progress right. They alternate down the page when every section has pieces; a section with no pieces leaves its neighbours' sides as they are, so a folder never jumps sides when another empties.
 - **Shadows:** each folder overlaps the one above it a little. Its top edge and its tab have a thin contact line (`0 -1px 0` at 16% ink) and a soft shadow cast upward onto the folder behind (`0 -6px 12px -4px` at 28% ink); the tab also casts a little to each side. So the page reads as a stack of folders. The torn-paper seam and the highlighter labels of today go.
 
@@ -50,6 +51,7 @@ At the first look at the mock-ups (2026-11-08): the tabs' corners are rounded a 
 
 - A folder's pieces sit in one row, each **at its own shape** (no square crop), all at the row's height, with a thin paper-coloured edge and a soft shadow, as in Star's concept.
 - **The row's height** is set by the widest pieces, taken to be 16:9: it's 9/16 of the row's width, but never more than 480 pixels. On a 390-pixel phone that's about 200 pixels, so a 16:9 piece fills the width; a portrait piece (3:4) is about 150 by 200 pixels and shows beside part of the next (mock-up 4). On a computer the row is 480 pixels, as in Star's concept (mock-up 1).
+- **Since design-portfolio-size (2026-11-09):** the row is at most 240 pixels, so on a computer it's 240 pixels; a phone's row is unchanged.
 - **A piece wider than 16:9** is shown whole at the row's height, so on a phone it's wider than the screen; the row scrolls along it like any other piece (mock-up 13).
 - The row runs to the folder's edges, so pieces at either end are cut off, showing there's more.
 - **Order:** newest first by date, as today; pieces with no date come last. A subfolder takes the place of its newest piece among the loose pieces.
@@ -61,7 +63,7 @@ At the first look at the mock-ups (2026-11-08): the tabs' corners are rounded a 
 ### Subfolders (mock-ups 2, 3, 5 and 12)
 
 - **A subfolder's thumbnail** is a square at the row's height: a grid of its newest pieces, each cropped to fill its cell around the point Star chose with the picture's hotspot (the circle in the picture's **Edit**; the centre if none), at the grid size Star chose (2 × 2, 3 × 3 or 4 × 4), with the subfolder's name under the grid in DM Mono. A subfolder with fewer pieces than cells shows paper-coloured empty cells for the rest. A subfolder with no published pieces doesn't show.
-- **On a phone** the grid shows at most 2 × 2, whatever Star chose: a 3 × 3 cell would be about 60 pixels. The name under it also gives the count, "Book covers · 3", since the grid no longer shows them all (mock-up 12). On a phone an open tab's words are 1.15rem, so "Fan Work: Murderbot" fits on one line beside **INDEX** (mock-up 5). A longer name wraps, on the thumbnail and on the tab; the tab grows upward from the folder's edge, and its sides keep the same slant whatever its height (mock-up 12).
+- **On a phone** the grid shows at most 2 × 2, whatever Star chose: a 3 × 3 cell would be about 60 pixels. The name under it also gives the count, "Book covers · 3", since the grid no longer shows them all (mock-up 12). **Since design-portfolio-size (2026-11-09):** a computer shows at most 3 × 3, and the name gives the count at every width, in 0.85rem. On a phone an open tab's words are 1.15rem, so "Fan Work: Murderbot" fits on one line beside **INDEX** (mock-up 5). A longer name wraps, on the thumbnail and on the tab; the tab grows upward from the folder's edge, and its sides keep the same slant whatever its height (mock-up 12).
 - **Opening a subfolder:** choosing its thumbnail shows its pieces in the folder's row, in place of the folder's top level, scrolled to the start; the folder's tab reads the section's name and the subfolder's, "Fan Work: Murderbot" (the lead's choice at review: it says where you are), and a pink **INDEX** tab appears beside it, on the tab's inner side (mock-up 3). Choosing **INDEX** goes back to the folder's top level, scrolled to the subfolder's thumbnail. At the top level there's no **INDEX** tab.
 - **One subfolder open at a time** on the page. Opening a subfolder in another folder closes the open one (its folder goes back to its top level). Opening one changes only those folders; the page doesn't move.
 - **Its address:** each subfolder has one, `/portfolio/<folder>/<subfolder>` (for example `/portfolio/fan-work/murderbot`), built ahead of time like every page. The folders' parts are fixed: `featured`, `original-work`, `fan-work`, `past-clients`, `work-in-progress`. The subfolder's part is its **Web address** in the editor, made from its name when it's first made and kept when it's renamed, as a series' is (design-organised-editor), so a renamed subfolder's shared links keep working.
@@ -175,7 +177,7 @@ Built from the site's own fonts, colours, paper and arrow buttons, with Star's r
 
 ## Decisions from the lead at review (2026-11-08)
 
-1. **Row height:** 9/16 of the row's width, at most 480 pixels (Star's concept). A portrait piece about 150 by 200 pixels on a phone is fine.
+1. **Row height:** 9/16 of the row's width, at most 480 pixels (Star's concept). A portrait piece about 150 by 200 pixels on a phone is fine. (Changed by design-portfolio-size, 2026-11-09: at most 240 pixels.)
 2. **Arrows' places:** over the row's ends on a computer; under the row on a phone, so the pieces keep the full width.
 3. **Grid sizes:** 2 × 2, 3 × 3 or 4 × 4, with 2 × 2 at first; the newest pieces fill the grid; empty cells are paper-coloured; at most 2 × 2 on a phone.
 4. **Order:** a subfolder sits where its newest piece would, among the loose pieces.

@@ -108,7 +108,7 @@ export const FIELDS: Record<ItemType, Record<string, FieldText>> = {
       help: "The Portfolio section it's in. Set when you make it; to move pieces to another section, make a subfolder there.",
       missing: 'a section',
     },
-    gridSize: { label: 'Grid size', help: 'How many of its pieces its thumbnail shows, newest first.' },
+    gridSize: { label: 'Grid size', help: 'How many of its pieces its thumbnail shows, newest first. Computers show at most 3 × 3, phones 2 × 2.' },
   },
   writtenWork: {
     title: { label: 'Title', help: "The story's title.", missing: 'a title' },

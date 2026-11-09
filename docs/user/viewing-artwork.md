@@ -11,7 +11,7 @@ derived-from:
   - story-portfolio-full-screen-view-a-piece-full-screen: 19f9bca00ea0
   - story-portfolio-full-screen-move-between-pieces-full-screen: 496c24c72cca
   - requirements-portfolio#REQ-portfolio-4: 136ce70ca3a4
-  - design-portfolio-folders#how-it-works: 5e072c5913b5
+  - design-portfolio-folders#how-it-works: 53821b64f6a4
 ---
 
 # Looking at Star's art

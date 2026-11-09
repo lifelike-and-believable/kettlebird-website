@@ -46,9 +46,9 @@ export interface FolderView {
   subfolders: { subfolder: Subfolder; pieces: GalleryItem[] }[];
 }
 
-/** AC-3: 9/16 of the width, at most 480 pixels. */
+/** AC-3: 9/16 of the width, at most 240 pixels (portfolio-size AC-1; it was 480). */
 export function rowHeight(width: number): number {
-  return Math.min(Math.round((width * 9) / 16), 480);
+  return Math.min(Math.round((width * 9) / 16), 240);
 }
 
 /** AC-3: a piece's width at the row's height, from its asset's size; square if unknown. */
@@ -93,9 +93,9 @@ export function buildFolders(items: GalleryItem[], subfolders: Subfolder[]): Fol
 
 const GRID_SIZES = [2, 3, 4];
 
-/** AC-8: the grid's cells: the newest pieces, then empty cells; at most 2 × 2 on a phone. */
+/** AC-8: the grid's cells: the newest pieces, then empty cells; at most 3 × 3 on a computer and 2 × 2 on a phone (portfolio-size AC-5). */
 export function gridCells(pieces: GalleryItem[], gridSize: number | undefined, phone: boolean): (GalleryItem | null)[] {
-  const size = phone ? 2 : GRID_SIZES.includes(gridSize ?? 0) ? gridSize! : 2;
+  const size = phone ? 2 : Math.min(GRID_SIZES.includes(gridSize ?? 0) ? gridSize! : 2, 3);
   return Array.from({ length: size * size }, (_, i) => pieces[i] ?? null);
 }
 

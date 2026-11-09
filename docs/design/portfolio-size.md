@@ -2,9 +2,9 @@
 id: design-portfolio-size
 status: approved
 derived-from:
-  - design-portfolio-folders#the-page-mock-ups-1-and-4: e84941da8657
-  - design-portfolio-folders#the-row-mock-ups-1-2-and-4: b0271524ba50
-  - design-portfolio-folders#subfolders-mock-ups-2-3-5-and-12: f0f2d070d6cf
+  - design-portfolio-folders#the-page-mock-ups-1-and-4: cc447aa2c5ee
+  - design-portfolio-folders#the-row-mock-ups-1-2-and-4: 80db0c42fd05
+  - design-portfolio-folders#subfolders-mock-ups-2-3-5-and-12: 39a0e23d0971
   - persona-fan#goals: 2b047e4cae5d
   - persona-fan#context-of-use: 38883e5abc09
   - persona-artist#goals: f3044c738f84

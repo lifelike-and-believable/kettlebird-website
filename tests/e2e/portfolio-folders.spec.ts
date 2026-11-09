@@ -42,7 +42,8 @@ test('portfolio-folders#AC-1 AC-2 the page', async ({ page }) => {
   }
   const tab = region(page, 'Original Work').locator('.folder-tab').first();
   expect(await tab.evaluate((e) => getComputedStyle(e).fontFamily)).toMatch(/DM Mono/);
-  expect(await tab.evaluate((e) => getComputedStyle(e, '::before').borderTopLeftRadius)).toBe('22px');
+  // 14px since portfolio-size AC-3 (it was 22px).
+  expect(await tab.evaluate((e) => getComputedStyle(e, '::before').borderTopLeftRadius)).toBe('14px');
   expect(await tab.evaluate((e) => getComputedStyle(e, '::before').transform)).not.toBe('none');
   // The kraft and its shadow are on the folder's body, under its tabs.
   const shadow = await region(page, 'Fan Work').locator('.folder-body').evaluate((e) => getComputedStyle(e).boxShadow);
@@ -53,14 +54,16 @@ test('portfolio-folders#AC-1 AC-2 the page', async ({ page }) => {
 test('portfolio-folders#AC-3 AC-5 AC-7 the row', async ({ page }) => {
   await cdn(page);
   // A computer: 480 pixels, arrows over the row's ends. (Book covers' Preview, so no row starts
-  // scrolled to a piece being previewed.)
-  await page.setViewportSize(LAPTOP);
+  // scrolled to a piece being previewed.) 800 wide since portfolio-size: at 1280 the fixture's Original
+  // Work now fits in one row, so nothing scrolls.
+  await page.setViewportSize({ width: 800, height: 800 });
   await page.goto(BOOKS);
   const row = region(page, 'Original Work').locator('.folder-row');
-  expect(Math.round((await row.boundingBox())!.height)).toBe(480);
+  // 240 since portfolio-size AC-1 (it was 480).
+  expect(Math.round((await row.boundingBox())!.height)).toBe(240);
   const card = region(page, 'Original Work').getByRole('button', { name: 'View Night Market' });
   const pic = (await card.boundingBox())!;
-  expect(Math.round(pic.height)).toBeGreaterThanOrEqual(470);
+  expect(Math.round(pic.height)).toBeGreaterThanOrEqual(235);
   expect(pic.width / pic.height).toBeCloseTo(1.5, 1);
   const left = region(page, 'Original Work').getByRole('button', { name: 'Scroll left' });
   const right = region(page, 'Original Work').getByRole('button', { name: 'Scroll right' });
@@ -95,7 +98,7 @@ test('portfolio-folders#AC-6 pictures', async ({ page }) => {
   await page.goto(PORTFOLIO);
   await expect(region(page, 'Original Work').getByRole('button', { name: 'View Night Market' }).locator('img')).toBeVisible();
   const lantern = asked.find((u) => u.pathname.includes('Lantern1'))!;
-  expect(Number(lantern.searchParams.get('h'))).toBe(480);
+  expect(Number(lantern.searchParams.get('h'))).toBe(240);
   expect(lantern.searchParams.get('fit')).not.toBe('crop');
   const lazy = await page.locator('.folder-row img').evaluateAll((imgs) => imgs.slice(1).every((i) => i.getAttribute('loading') === 'lazy'));
   expect(lazy).toBe(true);
@@ -111,7 +114,7 @@ test('portfolio-folders#AC-8 AC-9 AC-10 subfolders', async ({ page }) => {
   // The thumbnail is a square at the row's height, its name inside it under the grid (mock-up 2).
   const thumb = (await link.boundingBox())!;
   expect(Math.round(thumb.width)).toBe(Math.round(thumb.height));
-  expect(Math.round(thumb.height)).toBe(480);
+  expect(Math.round(thumb.height)).toBe(240);
   await expect(link.locator('img')).toHaveCount(2);
   await expect(link.locator('[data-cell]')).toHaveCount(4);
   await link.click();
