@@ -1,6 +1,6 @@
 ---
 id: design-portfolio-size
-status: draft
+status: approved
 derived-from:
   - design-portfolio-folders#the-page-mock-ups-1-and-4: e84941da8657
   - design-portfolio-folders#the-row-mock-ups-1-2-and-4: b0271524ba50
