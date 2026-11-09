@@ -47,11 +47,12 @@ describe('portfolio-folders#AC-1 folders', () => {
 });
 
 describe('portfolio-folders#AC-3 row height', () => {
-  it('is 9/16 of the width, rounded, at most 480', () => {
+  // At most 240 since portfolio-size AC-1 (it was 480).
+  it('is 9/16 of the width, rounded, at most 240', () => {
     expect(rowHeight(390)).toBe(219);
     expect(rowHeight(320)).toBe(180);
-    expect(rowHeight(853)).toBe(480);
-    expect(rowHeight(1280)).toBe(480);
+    expect(rowHeight(427)).toBe(240);
+    expect(rowHeight(1280)).toBe(240);
     expect(rowHeight(0)).toBe(0);
   });
   it('gives a piece its own width at the row height, from the asset size', () => {
