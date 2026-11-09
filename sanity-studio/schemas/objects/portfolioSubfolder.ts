@@ -1,7 +1,10 @@
 import { defineField, defineType, type SlugValidationContext } from 'sanity';
 import { MissingSummary } from '../../components/MissingSummary';
-import { GridSizeInput, SectionInput, subfolderSubtitle } from '../../components/SubfolderInputs';
-import { FIELDS, fieldText, GRID_SIZES, ITEM_NAMES, listDetail, PORTFOLIO_SECTIONS, requiredMessage, sectionLocked, SUBFOLDER_ORDERS } from '../../lib/editor-content';
+import { GridSizeInput, SectionInput, subfolderPreviewWith } from '../../components/SubfolderInputs';
+import { FIELDS, fieldText, GRID_SIZES, ITEM_NAMES, listDetail, PORTFOLIO_SECTIONS, requiredMessage, sectionLocked, SUBFOLDER_ORDERS, subfolderPreview } from '../../lib/editor-content';
+
+// The list row with its count (AC-18); the prepared preview stays text, as Sanity requires.
+const SubfolderPreview = subfolderPreviewWith((value) => listDetail('portfolioSubfolder', value));
 
 // A subfolder of a Portfolio section (Art, Subfolders). Spec: docs/specs/portfolio-folders.md AC-18, AC-19;
 // design-portfolio-folders, What Star does in the editor (mock-up 7).
@@ -23,7 +26,7 @@ export default defineType({
   name: 'portfolioSubfolder',
   title: ITEM_NAMES.portfolioSubfolder,
   type: 'document',
-  components: { input: MissingSummary },
+  components: { input: MissingSummary, preview: SubfolderPreview },
   fields: [
     defineField({
       name: 'name',
@@ -74,11 +77,7 @@ export default defineType({
   ],
   preview: {
     select: { title: 'name', section: 'section', gridSize: 'gridSize', order: 'order', id: '_id' },
-    // "Fan Work · 2 × 2 · 4 pieces" (AC-18); the count is read when the row shows.
-    // PreviewValue types subtitle as a string; the list's preview also renders a component (PreviewProps).
-    prepare: ({ title, section, gridSize, order, id }) => ({
-      title,
-      subtitle: subfolderSubtitle(id, section, (count) => listDetail('portfolioSubfolder', { section, gridSize, order, count })) as unknown as string,
-    }),
+    // Text only: a component here showed "Invalid preview config". SubfolderPreview adds the count.
+    prepare: ({ title, section, gridSize, order, id }) => subfolderPreview({ title, section, gridSize, order, id }),
   },
 });
