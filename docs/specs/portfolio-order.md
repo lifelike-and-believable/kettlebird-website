@@ -1,5 +1,5 @@
 ---
-status: draft
+status: implemented
 tests-commit: 72baa1906a104ea3d869dfa2847e6ff3d2d4e5b3
 unlocks:
   - tests/unit/organised-editor.test.ts: the subfolder gains Order of pieces after Grid size (AC-6); Grid size's help reads "starting from the first in its order" and the Date help names oldest-first subfolders (AC-7).
