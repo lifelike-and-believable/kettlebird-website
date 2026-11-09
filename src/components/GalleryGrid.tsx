@@ -21,10 +21,10 @@ function pieceSources(item: DisplayItem): { src: string; srcSet: string; sizes: 
   const ratio = pieceWidth(item, 1000) / 1000;
   const at = (h: number) => urlFor(item.image).height(h).auto('format').url();
   return {
-    src: at(480),
+    src: at(240),
     srcSet: ROW_HEIGHTS.map((h) => `${at(h)} ${Math.round(h * ratio)}w`).join(', '),
     // The row's height (AC-3) times the piece's shape.
-    sizes: `calc(min(100vw * 9 / 16, 480px) * ${ratio.toFixed(4)})`,
+    sizes: `calc(min(100vw * 9 / 16, 240px) * ${ratio.toFixed(4)})`,
   };
 }
 

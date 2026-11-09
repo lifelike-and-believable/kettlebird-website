@@ -58,7 +58,7 @@ To make one:
 | **Name** (required) | Shown under its thumbnail, and on the section's tab after the section's name when it's open ("Fan Work: Murderbot"). |
 | **Web address** (required) | Made from the name. Leave it as it is once people may have shared links to it. |
 | **Section** (required) | The Portfolio section it's in. Set when you make it; to move pieces to another section, make a subfolder there. |
-| **Grid size** | How many of its pieces its thumbnail shows, newest first: 2 × 2, 3 × 3 or 4 × 4. Under it, the editor says how many pieces it has. Phones show at most 2 × 2. |
+| **Grid size** | How many of its pieces its thumbnail shows, newest first: 2 × 2, 3 × 3 or 4 × 4. Under it, the editor says how many pieces it has. Computers show at most 3 × 3, phones 2 × 2. |
 
 To put a piece in a subfolder, open the piece and, under **Subfolders**, choose it beside its section. A piece can be in a subfolder in one section and loose in another: a Murderbot piece can sit in Fan Work's Murderbot and loose in Featured. If you untick a section, the piece leaves its subfolder there when you publish; the editor says so first.
 

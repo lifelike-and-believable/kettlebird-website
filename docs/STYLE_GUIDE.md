@@ -126,10 +126,10 @@ The sheet comes out of a typewriter (design-story-typewriter): a 1950s office ty
 
 From design-portfolio-folders (Star's concept). Each Portfolio section is a kraft file folder (`#c4a274`, every other one `#b8956a`, with the paper texture multiplied in) that overlaps the one above it, with a fine contact line (`0 -1px 0` at 16% ink) and a soft shadow cast upward (`0 -6px 12px -4px` at 28% ink).
 
-- **Tab:** the same kraft, the name in DM Mono 500 (2.6rem; 1.35rem on a phone), top corners rounded 22 px (14 px on a phone) and sides slanting in a little (the paper is tilted back in perspective, so the slant and the rounding go together). Each section's tab has a fixed side: Featured right, Original Work left, Fan Work right, Past Clients left, Work in Progress right.
-- **Open subfolder:** the tab reads "Fan Work: Murderbot" (1.15rem on a phone), with a highlighter-pink (`#e88ab9`) **INDEX** tab beside it, ink text.
-- **Row:** pieces whole at the row's height, 9/16 of its width and at most 480 px, each with a 3 px paper edge and a soft shadow; the site's arrow buttons over the row's ends, or under it on a phone.
-- **Subfolder thumbnail:** a square at the row's height on paper, a 2 × 2, 3 × 3 or 4 × 4 grid of its newest pieces cropped square (at most 2 × 2 on a phone) with 3 px gaps, and its name in DM Mono under it.
+- **Tab:** the same kraft, the name in DM Mono 500 (1.35rem at every width, since design-portfolio-size), top corners rounded 14 px and sides slanting in a little (the paper is tilted back in perspective, so the slant and the rounding go together). Each section's tab has a fixed side: Featured right, Original Work left, Fan Work right, Past Clients left, Work in Progress right.
+- **Open subfolder:** the tab reads "Fan Work: Murderbot" (1.15rem on a phone), with a highlighter-pink (`#e88ab9`) **INDEX** tab (1.1rem) beside it, ink text.
+- **Row:** pieces whole at the row's height, 9/16 of its width and at most 240 px, each with a 3 px paper edge and a soft shadow; the site's arrow buttons over the row's ends, or under it on a phone.
+- **Subfolder thumbnail:** a square at the row's height on paper, a 2 × 2, 3 × 3 or 4 × 4 grid of its newest pieces cropped square, at most 3 × 3 on a computer and 2 × 2 on a phone, with 3 px gaps, and its name and count in DM Mono 0.85rem under it ("Book covers · 3").
 
 ## Motion
 

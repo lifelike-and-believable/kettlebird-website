@@ -54,8 +54,9 @@ test('portfolio-folders#AC-1 AC-2 the page', async ({ page }) => {
 test('portfolio-folders#AC-3 AC-5 AC-7 the row', async ({ page }) => {
   await cdn(page);
   // A computer: 480 pixels, arrows over the row's ends. (Book covers' Preview, so no row starts
-  // scrolled to a piece being previewed.)
-  await page.setViewportSize(LAPTOP);
+  // scrolled to a piece being previewed.) 800 wide since portfolio-size: at 1280 the fixture's Original
+  // Work now fits in one row, so nothing scrolls.
+  await page.setViewportSize({ width: 800, height: 800 });
   await page.goto(BOOKS);
   const row = region(page, 'Original Work').locator('.folder-row');
   // 240 since portfolio-size AC-1 (it was 480).

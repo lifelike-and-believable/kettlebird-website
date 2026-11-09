@@ -252,7 +252,8 @@ test('site-arrows#AC-8 edge arrows', async ({ page }) => {
 });
 
 test('site-arrows#AC-9 carousel', async ({ page }) => {
-  for (const [width, height, size] of [[1280, 800, '100%'], [320, 640, '200%']] as const) {
+  // 800 wide: since portfolio-size the fixture's Original Work fits in one row at 1280, so nothing scrolls there.
+  for (const [width, height, size] of [[800, 800, '100%'], [320, 640, '200%']] as const) {
     await page.setViewportSize({ width, height });
     await cdn(page);
     await page.goto(PORTFOLIO);

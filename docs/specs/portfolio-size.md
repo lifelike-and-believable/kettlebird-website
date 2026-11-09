@@ -1,5 +1,11 @@
 ---
 status: draft
+tests-commit: 362569318d6db7983925156b692cf66a219e373a
+unlocks:
+  - tests/unit/portfolio-folders.test.ts: rowHeight's cap is 240 (AC-1, amending portfolio-folders AC-3); rowHeight(427) and rowHeight(1280) are 240.
+  - tests/e2e/portfolio-folders.spec.ts: the row and the subfolder thumbnail are 240 pixels on a computer and pictures are asked for at h=240 (AC-1, AC-2); the tab's corners are 14 pixels (AC-3).
+  - tests/e2e/portfolio-folders.spec.ts ("the row"), tests/e2e/arrows.spec.ts (site-arrows AC-9): the arrows' checks run at 800 pixels wide, since at 1280 the fixture's Original Work now fits in one 240-pixel row and nothing scrolls; what they check is unchanged.
+  - tests/unit/portfolio-folders-editor.test.ts, tests/unit/organised-editor.test.ts: Grid size's help gains "Computers show at most 3 × 3, phones 2 × 2." (AC-6).
 ---
 
 # Smaller folders on a computer
