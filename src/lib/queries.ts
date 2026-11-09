@@ -32,7 +32,7 @@ export const GALLERY_QUERY = `*[_type == "galleryItem"] | order(date desc) {
 }`;
 
 /** portfolio-folders AC-8, AC-12: the subfolders; the page leaves out those with no pieces. */
-export const SUBFOLDERS_QUERY = `*[_type == "portfolioSubfolder"] { _id, name, slug, section, gridSize }`;
+export const SUBFOLDERS_QUERY = `*[_type == "portfolioSubfolder"] { _id, name, slug, section, gridSize, order }`;
 
 export async function getAllSubfolders(): Promise<Subfolder[]> {
   return list(SUBFOLDERS_QUERY);

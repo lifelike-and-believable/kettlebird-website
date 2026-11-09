@@ -1,5 +1,9 @@
 ---
 status: draft
+tests-commit: 72baa1906a104ea3d869dfa2847e6ff3d2d4e5b3
+unlocks:
+  - tests/unit/organised-editor.test.ts, tests/unit/portfolio-folders-editor.test.ts, tests/unit/portfolio-size.test.ts: the subfolder gains Order of pieces after Grid size (AC-6); Grid size's help reads "starting from the first in its order" and the Date help names oldest-first subfolders (AC-7); the hint says "the first 9" (AC-7).
+  - tests/unit/portfolio-folders-edges.test.ts (found when the build ran the whole suite, after the tests commit): pieces with the same date now come in title order, so the case given b then a gives a, b (AC-1, amending portfolio-folders AC-4); the hint says "the first 4" (AC-7).
 ---
 
 # Oldest first in a subfolder

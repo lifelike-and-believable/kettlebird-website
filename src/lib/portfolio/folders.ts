@@ -32,6 +32,8 @@ export interface Subfolder {
   slug?: { current?: string };
   section: string;
   gridSize?: number;
+  /** Its pieces' order (portfolio-order AC-6); newest first when unset. */
+  order?: 'newest' | 'oldest';
 }
 
 export type Entry = { kind: 'piece'; item: GalleryItem } | { kind: 'subfolder'; subfolder: Subfolder; pieces: GalleryItem[] };
@@ -57,14 +59,21 @@ export function pieceWidth(item: GalleryItem, height: number): number {
   return size ? Math.round((height * size.width) / size.height) : height;
 }
 
-/** AC-4: newest first; undated after, by title. */
-function compare(a: GalleryItem, b: GalleryItem): number {
-  if (a.date && b.date) return a.date < b.date ? 1 : a.date > b.date ? -1 : 0;
-  if (a.date) return -1;
-  if (b.date) return 1;
-  return a.title.localeCompare(b.title);
+/** AC-4, portfolio-order AC-1: by date, newest or oldest first; the same date by title; undated after, by title. */
+function comparer(order?: Subfolder['order']) {
+  return (a: GalleryItem, b: GalleryItem): number => {
+    // Dates are YYYY-MM-DD, so they sort as text.
+    if (a.date && b.date && a.date !== b.date) return order === 'oldest' ? a.date.localeCompare(b.date) : b.date.localeCompare(a.date);
+    if (a.date && !b.date) return -1;
+    if (b.date && !a.date) return 1;
+    return a.title.localeCompare(b.title);
+  };
 }
-export const sortPieces = (items: GalleryItem[]) => [...items].sort(compare);
+export const orderPieces = (items: GalleryItem[], order: Subfolder['order']) => [...items].sort(comparer(order));
+export const sortPieces = (items: GalleryItem[]) => orderPieces(items, undefined);
+const compare = comparer();
+/** portfolio-order AC-2, AC-5: a subfolder's newest piece, whatever its order. */
+export const newestPiece = (items: GalleryItem[]): GalleryItem | undefined => sortPieces(items)[0];
 
 /** AC-1, AC-4, AC-22: the folders with pieces, in order, and what each holds. */
 export function buildFolders(items: GalleryItem[], subfolders: Subfolder[]): FolderView[] {
@@ -80,10 +89,11 @@ export function buildFolders(items: GalleryItem[], subfolders: Subfolder[]): Fol
       if (sub) held.set(sub._id, [...(held.get(sub._id) ?? []), item]);
       else loose.push(item);
     }
-    const subs = own.filter((s) => held.has(s._id)).map((subfolder) => ({ subfolder, pieces: held.get(subfolder._id)! }));
+    // portfolio-order AC-2: each subfolder's pieces in its own order; its place by its newest piece.
+    const subs = own.filter((s) => held.has(s._id)).map((subfolder) => ({ subfolder, pieces: orderPieces(held.get(subfolder._id)!, subfolder.order) }));
     const entries: (Entry & { newest: GalleryItem })[] = [
       ...loose.map((item) => ({ kind: 'piece' as const, item, newest: item })),
-      ...subs.map(({ subfolder, pieces }) => ({ kind: 'subfolder' as const, subfolder, pieces, newest: pieces[0] })),
+      ...subs.map(({ subfolder, pieces }) => ({ kind: 'subfolder' as const, subfolder, pieces, newest: held.get(subfolder._id)![0] })),
     ];
     entries.sort((a, b) => compare(a.newest, b.newest));
     views.push({ folder, entries: entries.map(({ newest: _, ...entry }) => entry as Entry), loose, subfolders: subs });

@@ -1,7 +1,7 @@
 import { defineField, defineType, type SlugValidationContext } from 'sanity';
 import { MissingSummary } from '../../components/MissingSummary';
 import { GridSizeInput, SectionInput, subfolderSubtitle } from '../../components/SubfolderInputs';
-import { FIELDS, fieldText, GRID_SIZES, ITEM_NAMES, listDetail, PORTFOLIO_SECTIONS, requiredMessage, sectionLocked } from '../../lib/editor-content';
+import { FIELDS, fieldText, GRID_SIZES, ITEM_NAMES, listDetail, PORTFOLIO_SECTIONS, requiredMessage, sectionLocked, SUBFOLDER_ORDERS } from '../../lib/editor-content';
 
 // A subfolder of a Portfolio section (Art, Subfolders). Spec: docs/specs/portfolio-folders.md AC-18, AC-19;
 // design-portfolio-folders, What Star does in the editor (mock-up 7).
@@ -63,14 +63,22 @@ export default defineType({
       initialValue: 2,
       components: { input: GridSizeInput },
     }),
+    // portfolio-order AC-6.
+    defineField({
+      name: 'order',
+      type: 'string',
+      ...fieldText('portfolioSubfolder', 'order'),
+      options: { list: SUBFOLDER_ORDERS, layout: 'radio', direction: 'horizontal' },
+      initialValue: 'newest',
+    }),
   ],
   preview: {
-    select: { title: 'name', section: 'section', gridSize: 'gridSize', id: '_id' },
+    select: { title: 'name', section: 'section', gridSize: 'gridSize', order: 'order', id: '_id' },
     // "Fan Work · 2 × 2 · 4 pieces" (AC-18); the count is read when the row shows.
     // PreviewValue types subtitle as a string; the list's preview also renders a component (PreviewProps).
-    prepare: ({ title, section, gridSize, id }) => ({
+    prepare: ({ title, section, gridSize, order, id }) => ({
       title,
-      subtitle: subfolderSubtitle(id, section, (count) => listDetail('portfolioSubfolder', { section, gridSize, count })) as unknown as string,
+      subtitle: subfolderSubtitle(id, section, (count) => listDetail('portfolioSubfolder', { section, gridSize, order, count })) as unknown as string,
     }),
   },
 });
