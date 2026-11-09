@@ -4,7 +4,7 @@
 // for each section the piece is in.
 import { Card, Select, Stack, Text } from '@sanity/ui';
 import { useEffect, useState, type ComponentType } from 'react';
-import { set, unset, useClient, useFormValue, type ArrayOfObjectsInputProps, type NumberInputProps, type StringInputProps } from 'sanity';
+import { set, unset, useClient, useFormValue, type ArrayOfObjectsInputProps, type NumberInputProps, type PreviewProps, type StringInputProps } from 'sanity';
 import { gridHint, leaveNote, sectionTitle, subfolderChoices } from '../lib/editor-content';
 
 const API = { apiVersion: '2024-01-01' };
@@ -57,11 +57,14 @@ export function GridSizeInput(props: NumberInputProps) {
   );
 }
 
-/** AC-18: the list row's detail, "Fan Work · 2 × 2 · 4 pieces", with the count read when it shows. */
-export function subfolderSubtitle(id: string | undefined, section: string | undefined, detail: (count: number) => string | undefined): ComponentType {
-  return function SubfolderSubtitle() {
-    const count = usePieceCount(id, section);
-    return <>{detail(count ?? 0)}</>;
+/** AC-18: the list row, "Fan Work · 2 × 2 · 4 pieces", with the count read when it shows. The prepared subtitle
+ * is text (subfolderPreview); this replaces it with the full line once the count is known. */
+export function subfolderPreviewWith(detail: (value: { section?: string; gridSize?: number; order?: string; count: number }) => string | undefined): ComponentType<PreviewProps> {
+  return function SubfolderPreview(props: PreviewProps) {
+    const value = props as PreviewProps & { subfolderId?: string; section?: string; gridSize?: number; order?: string };
+    const count = usePieceCount(value.subfolderId, value.section);
+    if (count === undefined) return props.renderDefault(props);
+    return props.renderDefault({ ...props, subtitle: detail({ section: value.section, gridSize: value.gridSize, order: value.order, count }) });
   };
 }
 

@@ -219,6 +219,16 @@ export const SERIES_KIND: Option[] = [
 const labelOf = (options: Option[], value: unknown) => options.find((o) => o.value === value)?.title;
 
 /** AC-2: the short detail under an item in its list. */
+/** A subfolder's prepared list preview: text only, as Sanity requires for title and subtitle; the count is
+ * added by the preview component (SubfolderPreview), which reads the other values. */
+export function subfolderPreview(s: { title?: string; section?: string; gridSize?: number; order?: string; id?: string }) {
+  const size = typeof s.gridSize === 'number' ? s.gridSize : 2;
+  const subtitle = typeof s.section === 'string'
+    ? [sectionTitle(s.section), `${size} × ${size}`, ...(s.order === 'oldest' ? ['Oldest first'] : [])].join(' · ')
+    : undefined;
+  return { title: s.title, subtitle, subfolderId: s.id, section: s.section, gridSize: s.gridSize, order: s.order };
+}
+
 export function listDetail(type: ItemType, item: Record<string, unknown>): string | undefined {
   switch (type) {
     case 'comicSeries':
