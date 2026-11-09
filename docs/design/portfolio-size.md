@@ -30,7 +30,7 @@ Featured folder; on the site Featured comes first. -->
 
 This amends design-portfolio-folders, "The page", "The row" and "Subfolders".
 
-**One rule for every width (option A, proposed):**
+**One rule for every width (option A, the lead's choice):**
 
 - **Rows:** 9/16 of the row's width, at most **240 pixels** (today 480). A phone up to 427 pixels wide is unchanged (a 390-pixel phone's row is still 219 pixels, mock-ups 8 and 9); wider than that, every screen gets 240. There's no step at 640 pixels: the row grows smoothly to 240 and stays there.
 - **Tabs:** the phone's tab at every width. Its name in DM Mono 1.35rem (today 2.6rem on a computer), padding 0.4rem 1.2rem 0.35rem, top corners 14 pixels, its paper tilted with a 70-pixel perspective (an open tab's, 220 pixels), so the slant is the one phones have today. It rises 2.25rem above its folder's edge and overlaps the edge by 0.05rem. Its contact line and shadow are unchanged.
@@ -40,48 +40,48 @@ This amends design-portfolio-folders, "The page", "The row" and "Subfolders".
 - **Unchanged:** the arrows (44 pixels, over the row's ends from 640 pixels wide, under it below), the pieces' 3-pixel edge and shadow, the row's side padding, the order, the fixed sides, the colours, full screen and the dialog.
 - **Pictures:** fetched for the row's height, so a computer asks for about 240 pixels tall (480 on a sharp screen) instead of 480 (960).
 
-**Option B, a middle step:** rows at most 320 pixels, tabs 1.75rem, INDEX 1.4rem, tab corners 16 pixels, subfolder names 1rem, on screens 640 pixels and wider; phones unchanged. Two folders at once on 1920 × 1200 (mock-ups 3 and 6). It keeps a step at 640 pixels (a 639-pixel window's row is 359 pixels, a 640-pixel one's 320).
+**Option B, a middle step (not chosen):** rows at most 320 pixels, tabs 1.75rem, INDEX 1.4rem, tab corners 16 pixels, subfolder names 1rem, on screens 640 pixels and wider; phones unchanged. Two folders at once on 1920 × 1200 (mock-ups 3 and 6). It keeps a step at 640 pixels (a 639-pixel window's row is 359 pixels, a 640-pixel one's 320).
 
 ## Mock-ups
 
 Screenshots of the fixture build's Portfolio in Preview, with the option's styles added. Source: `mockups/portfolio-size/render.mjs`.
 
-| # | What it shows | File |
-| --- | --- | --- |
-| 1 | Today at 1920 × 1200: one folder fills the screen | `mockups/portfolio-size/1-today-1920.png` |
-| 2 | Option A at 1920 × 1200: three folders at once | `mockups/portfolio-size/2-option-a-1920.png` |
-| 3 | Option B at 1920 × 1200 | `mockups/portfolio-size/3-option-b-1920.png` |
-| 4 | Today, a subfolder open (Past Clients: Book covers) | `mockups/portfolio-size/4-today-open-1920.png` |
-| 5 | Option A, a subfolder open, with INDEX | `mockups/portfolio-size/5-option-a-open-1920.png` |
-| 6 | Option B, a subfolder open | `mockups/portfolio-size/6-option-b-open-1920.png` |
-| 7 | Option A on a 1280 × 800 laptop | `mockups/portfolio-size/7-option-a-1280.png` |
-| 8 | A 390-pixel phone today | `mockups/portfolio-size/8-today-phone.png` |
-| 9 | The same phone with option A: the same | `mockups/portfolio-size/9-option-a-phone.png` |
-| 10 | Option A, a 3 × 3 subfolder of nine pieces, with its count | `mockups/portfolio-size/10-option-a-3x3-1920.png` |
-| 11 | Option A, a long open tab | `mockups/portfolio-size/11-option-a-long-tab-1920.png` |
-| 12 | Option A on a 768 × 1024 tablet | `mockups/portfolio-size/12-option-a-tablet-768.png` |
-| 13 | Option A at 1920 × 1200 with text at 200% | `mockups/portfolio-size/13-option-a-200-percent-1920.png` |
+| #   | What it shows                                              | File                                                      |
+| --- | ---------------------------------------------------------- | --------------------------------------------------------- |
+| 1   | Today at 1920 × 1200: one folder fills the screen          | `mockups/portfolio-size/1-today-1920.png`                 |
+| 2   | Option A at 1920 × 1200: three folders at once             | `mockups/portfolio-size/2-option-a-1920.png`              |
+| 3   | Option B at 1920 × 1200                                    | `mockups/portfolio-size/3-option-b-1920.png`              |
+| 4   | Today, a subfolder open (Past Clients: Book covers)        | `mockups/portfolio-size/4-today-open-1920.png`            |
+| 5   | Option A, a subfolder open, with INDEX                     | `mockups/portfolio-size/5-option-a-open-1920.png`         |
+| 6   | Option B, a subfolder open                                 | `mockups/portfolio-size/6-option-b-open-1920.png`         |
+| 7   | Option A on a 1280 × 800 laptop                            | `mockups/portfolio-size/7-option-a-1280.png`              |
+| 8   | A 390-pixel phone today                                    | `mockups/portfolio-size/8-today-phone.png`                |
+| 9   | The same phone with option A: the same                     | `mockups/portfolio-size/9-option-a-phone.png`             |
+| 10  | Option A, a 3 × 3 subfolder of nine pieces, with its count | `mockups/portfolio-size/10-option-a-3x3-1920.png`         |
+| 11  | Option A, a long open tab                                  | `mockups/portfolio-size/11-option-a-long-tab-1920.png`    |
+| 12  | Option A on a 768 × 1024 tablet                            | `mockups/portfolio-size/12-option-a-tablet-768.png`       |
+| 13  | Option A at 1920 × 1200 with text at 200%                  | `mockups/portfolio-size/13-option-a-200-percent-1920.png` |
 
 ## Where it applies
 
-| # | Where | After |
-| --- | --- | --- |
-| 1 | `src/components/pages/PortfolioPage.astro` | The sizes above. |
-| 2 | `src/lib/portfolio/folders.ts` (`rowHeight`: at most 240), `src/components/GalleryGrid.tsx` (the pictures' `sizes`; the grid's cap of 3 × 3 on a computer) | The row and grid rules. |
-| 3 | `sanity-studio/lib/editor-content.ts` (Grid size's help) and `docs/user/editing-your-site.md` | "Computers show at most 3 × 3, phones 2 × 2." |
-| 4 | `docs/design/portfolio-folders.md` | A note at "The page", "The row", "Subfolders" and decision 1 that this design changes the sizes. |
-| 5 | `docs/STYLE_GUIDE.md` ("Portfolio folders") and the Kettlebird design system (`row-height`, `folder-tab`, `subfolder-name`, `radius-tab`, SubfolderThumbnail) | The new sizes. |
+| #   | Where                                                                                                                                                         | After                                                                                            |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| 1   | `src/components/pages/PortfolioPage.astro`                                                                                                                    | The sizes above.                                                                                 |
+| 2   | `src/lib/portfolio/folders.ts` (`rowHeight`: at most 240), `src/components/GalleryGrid.tsx` (the pictures' `sizes`; the grid's cap of 3 × 3 on a computer)    | The row and grid rules.                                                                          |
+| 3   | `sanity-studio/lib/editor-content.ts` (Grid size's help) and `docs/user/editing-your-site.md`                                                                 | "Computers show at most 3 × 3, phones 2 × 2."                                                    |
+| 4   | `docs/design/portfolio-folders.md`                                                                                                                            | A note at "The page", "The row", "Subfolders" and decision 1 that this design changes the sizes. |
+| 5   | `docs/STYLE_GUIDE.md` ("Portfolio folders") and the Kettlebird design system (`row-height`, `folder-tab`, `subfolder-name`, `radius-tab`, SubfolderThumbnail) | The new sizes.                                                                                   |
 
 ## States and errors
 
-| Situation | What happens |
-| --- | --- |
-| A phone up to 427 pixels wide | Unchanged: the row 9/16 of its width. |
-| A large phone held sideways, a tablet, a laptop, a desktop | Rows 240 pixels; arrows under the row below 640 pixels wide, over its ends from 640. |
-| A 4 × 4 subfolder on a computer | Its newest 9 pieces in a 3 × 3 grid, with its count. |
-| A long subfolder name or open tab | Wraps, as today; at the smaller size it wraps less often (mock-up 11). |
-| A piece wider than 16:9 | Whole at the row's height, as today; the row scrolls along it. |
-| Text at 200% | The tabs and names grow and wrap; nothing scrolls sideways but the rows (mock-up 13). |
+| Situation                                                  | What happens                                                                          |
+| ---------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| A phone up to 427 pixels wide                              | Unchanged: the row 9/16 of its width.                                                 |
+| A large phone held sideways, a tablet, a laptop, a desktop | Rows 240 pixels; arrows under the row below 640 pixels wide, over its ends from 640.  |
+| A 4 × 4 subfolder on a computer                            | Its newest 9 pieces in a 3 × 3 grid, with its count.                                  |
+| A long subfolder name or open tab                          | Wraps, as today; at the smaller size it wraps less often (mock-up 11).                |
+| A piece wider than 16:9                                    | Whole at the row's height, as today; the row scrolls along it.                        |
+| Text at 200%                                               | The tabs and names grow and wrap; nothing scrolls sideways but the rows (mock-up 13). |
 
 ## Accessibility
 
@@ -97,13 +97,13 @@ Screenshots of the fixture build's Portfolio in Preview, with the option's style
 - Folder padding from 640 pixels wide.
 - Existing tests that name the old sizes change: portfolio-folders AC-3 ("at 1280 wide the row is 480 px"); `tests/unit/portfolio-folders.test.ts` (`rowHeight` at 853 and 1280); `tests/e2e/portfolio-folders.spec.ts` (the 480-pixel row, the `h=480` picture, the 480-pixel thumbnail, the tab's 22-pixel corners); `tests/unit/portfolio-folders-editor.test.ts` (Grid size's help).
 
-## Decisions at review
+## Decisions from the lead at review (2026-11-09)
 
-Proposed, for the lead to confirm or change:
+The lead chose option A, as proposed:
 
-1. **Option A:** about half: rows at most 240 pixels and the phone's tabs at every width.
-2. **One rule for every width,** so laptops (mock-up 7) and tablets (mock-up 12) get it too, with no step at 640 pixels. The alternative, option B, is two thirds on computers only.
-3. **Subfolder grids at most 3 × 3 on a computer,** with the count shown at every width. The alternative is to keep 4 × 4 on a computer with 52-pixel cells. With the cap, 4 × 4 in the editor shows as 3 × 3 on a computer; it could be removed from the editor later.
+1. **Option A:** about half: rows at most 240 pixels and the phone's tabs at every width. Option B isn't taken; its mock-ups (3, 6) stay as a record.
+2. **One rule for every width,** so laptops (mock-up 7) and tablets (mock-up 12) get it too, with no step at 640 pixels.
+3. **Subfolder grids at most 3 × 3 on a computer,** with the count shown at every width. With the cap, 4 × 4 in the editor shows as 3 × 3 on a computer; it could be removed from the editor later.
 4. **Detail in the row:** lettering in a piece isn't readable in the row on a computer, as on a phone today; the dialog and full screen show it.
 5. **Phones unchanged.**
 
