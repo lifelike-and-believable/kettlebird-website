@@ -27,7 +27,8 @@ describe('portfolio-folders#AC-17 editor menu', () => {
 describe('portfolio-folders#AC-18 AC-19 subfolder type', () => {
   it('has its name and fields in order, with the design help', () => {
     expect(ITEM_NAMES.portfolioSubfolder).toBe('Subfolder');
-    expect(Object.keys(FIELDS.portfolioSubfolder)).toEqual(['name', 'slug', 'section', 'gridSize']);
+    // portfolio-order AC-6 adds Order of pieces.
+    expect(Object.keys(FIELDS.portfolioSubfolder)).toEqual(['name', 'slug', 'section', 'gridSize', 'order']);
     expect(fieldText('portfolioSubfolder', 'name')).toEqual({
       title: 'Name (required)',
       description: "Shown under its thumbnail, and on the section's tab after the section's name when it's open (\"Fan Work: Murderbot\").",
@@ -41,8 +42,8 @@ describe('portfolio-folders#AC-18 AC-19 subfolder type', () => {
     );
     expect(fieldText('portfolioSubfolder', 'gridSize')).toEqual({
       title: 'Grid size',
-      // portfolio-size AC-6 adds what computers and phones show.
-      description: 'How many of its pieces its thumbnail shows, newest first. Computers show at most 3 × 3, phones 2 × 2.',
+      // portfolio-size AC-6 adds what computers and phones show; portfolio-order AC-7 follows the subfolder's order.
+      description: 'How many of its pieces its thumbnail shows, starting from the first in its order. Computers show at most 3 × 3, phones 2 × 2.',
     });
     expect(GRID_SIZES).toEqual([
       { title: '2 × 2', value: 2 },
@@ -52,7 +53,8 @@ describe('portfolio-folders#AC-18 AC-19 subfolder type', () => {
   });
   it('says what the grid shows for its pieces', () => {
     expect(gridHint('Murderbot', 4, 2)).toBe('Murderbot has 4 pieces: 2 × 2 shows them all.');
-    expect(gridHint('Murderbot', 12, 3)).toBe('Murderbot has 12 pieces: 3 × 3 shows the newest 9.');
+    // "the first 9" since portfolio-order AC-7 (it was "the newest 9").
+    expect(gridHint('Murderbot', 12, 3)).toBe('Murderbot has 12 pieces: 3 × 3 shows the first 9.');
     expect(gridHint('Books', 1, 2)).toBe('Books has 1 piece: 2 × 2 shows it, with 3 empty cells.');
     expect(gridHint('Books', 0, 2)).toBe('Books has no pieces yet.');
     expect(gridHint('Ten', 9, 3)).toBe('Ten has 9 pieces: 3 × 3 shows them all.');

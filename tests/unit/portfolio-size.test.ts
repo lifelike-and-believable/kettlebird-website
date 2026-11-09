@@ -35,7 +35,8 @@ describe('portfolio-size#AC-5 grid', () => {
 describe('portfolio-size#AC-6 editor', () => {
   it("Grid size's help says what computers and phones show", () => {
     expect(fieldText('portfolioSubfolder', 'gridSize').description).toBe(
-      'How many of its pieces its thumbnail shows, newest first. Computers show at most 3 × 3, phones 2 × 2.',
+      // portfolio-order AC-7 changes the start of the sentence.
+      'How many of its pieces its thumbnail shows, starting from the first in its order. Computers show at most 3 × 3, phones 2 × 2.',
     );
     expect(read('docs/user/editing-your-site.md')).toContain('Computers show at most 3 × 3, phones 2 × 2.');
   });
