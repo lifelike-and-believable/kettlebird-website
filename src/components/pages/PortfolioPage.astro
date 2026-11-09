@@ -7,7 +7,7 @@ import GalleryGrid from '../GalleryGrid';
 import type { GalleryItem } from '../../lib/queries';
 import { canonicalUrl, siteHref } from '../../lib/seo';
 import { featuredPiece, portfolioPreviewImage } from '../../lib/portfolio-preview';
-import { buildFolders, subfolderDescription, subfolderPath, subfolderTitle, type Subfolder } from '../../lib/portfolio/folders';
+import { buildFolders, newestPiece, subfolderDescription, subfolderPath, subfolderTitle, type Subfolder } from '../../lib/portfolio/folders';
 
 const { items, subfolders = [], openSubfolder, focusId, openId, preview = false } = Astro.props as {
   items: GalleryItem[];
@@ -28,7 +28,8 @@ const pageDescription = opened
   ? subfolderDescription(opened.subfolder.name, opened.folder.title, opened.pieces.length)
   : 'Illustrations, fanart, original characters, and commissioned work by Star Goldberg (Kettlebird).';
 const canonical = canonicalUrl(siteHref(Astro.site), (opened && subfolderPath(opened.subfolder)) || '/portfolio');
-const piece = opened ? opened.pieces[0] : featuredPiece(items);
+// portfolio-order AC-5: the newest piece, whatever the subfolder's order.
+const piece = opened ? newestPiece(opened.pieces) : featuredPiece(items);
 const picture = piece && portfolioPreviewImage(piece);
 ---
 

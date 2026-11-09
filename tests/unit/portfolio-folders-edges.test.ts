@@ -12,9 +12,10 @@ const piece = (id: string, date?: string, extra: Partial<GalleryItem> = {}): Gal
 });
 
 describe('portfolio-folders#AC-4 order edges', () => {
-  it('keeps pieces with the same date in the order given, whichever order they come in', () => {
+  // portfolio-order AC-1: pieces with the same date come in title order (they kept the order given).
+  it('puts pieces with the same date in title order, whichever order they come in', () => {
     expect(sortPieces([piece('a', '2025-01-01'), piece('b', '2025-01-01')]).map((p) => p._id)).toEqual(['a', 'b']);
-    expect(sortPieces([piece('b', '2025-01-01'), piece('a', '2025-01-01')]).map((p) => p._id)).toEqual(['b', 'a']);
+    expect(sortPieces([piece('b', '2025-01-01'), piece('a', '2025-01-01')]).map((p) => p._id)).toEqual(['a', 'b']);
   });
   it('puts the newer first from either side', () => {
     expect(sortPieces([piece('old', '2024-01-01'), piece('new', '2025-01-01')]).map((p) => p._id)).toEqual(['new', 'old']);
@@ -54,7 +55,8 @@ describe('portfolio-folders#AC-12 address edges', () => {
 describe('portfolio-folders#AC-18 AC-20 editor edges', () => {
   it('says what a grid shows, from fewer pieces than cells to more', () => {
     expect(gridHint('A', 2, 2)).toBe('A has 2 pieces: 2 × 2 shows them all.');
-    expect(gridHint('A', 5, 2)).toBe('A has 5 pieces: 2 × 2 shows the newest 4.');
+    // "the first 4" since portfolio-order AC-7.
+    expect(gridHint('A', 5, 2)).toBe('A has 5 pieces: 2 × 2 shows the first 4.');
     expect(gridHint('A', 1, 3)).toBe('A has 1 piece: 3 × 3 shows it, with 8 empty cells.');
   });
   it('offers a choice for every section the piece is in, in the portfolio order', () => {

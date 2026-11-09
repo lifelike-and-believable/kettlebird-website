@@ -11,3 +11,10 @@ The process is rules-for-robots (`.rfr/`, `docs/product/process.yml`): stories, 
   - links from the item types it covers (`ITEM_HELP`), when it's the guide for them.
 
   A feature's design says where its guide sits in the help. Fans' guides (like `reading-comics.md`) go in `FAN_GUIDES` instead. `tests/unit/help-every-guide.test.ts` fails if a guide is in neither list.
+
+- **A test change that follows an approved spec doesn't ask** (2026-11-09). When an approved behaviour change needs an existing test changed, first add an entry to that spec's `unlocks:` front matter, then edit the test. The rfr-core test guard (TEST-001) lets the edit through only when it finds the entry, so:
+  - one file per entry: `- tests/unit/example.test.ts: why it changes (AC-3)`;
+  - the reason cites a criterion ID from the spec's own table;
+  - the entry is on the branch before the edit, not added afterwards.
+
+  A test change that no spec criterion explains still goes to the lead.

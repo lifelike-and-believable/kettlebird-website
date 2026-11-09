@@ -93,7 +93,7 @@ export const FIELDS: Record<ItemType, Record<string, FieldText>> = {
     },
     description: { label: 'Description', help: 'Shown when someone opens the picture on your portfolio.' },
     tags: { label: 'Tags', help: "Words shown under the picture when it's opened, like a character's name. Type one, then press Enter." },
-    date: { label: 'Date', help: 'When you made it. The portfolio shows newest first; pieces without a date come last.' },
+    date: { label: 'Date', help: 'When you made it. The portfolio shows newest first, except in a subfolder set to oldest first; pieces without a date come last.' },
   },
   // portfolio-folders AC-18, AC-19
   portfolioSubfolder: {
@@ -108,7 +108,9 @@ export const FIELDS: Record<ItemType, Record<string, FieldText>> = {
       help: "The Portfolio section it's in. Set when you make it; to move pieces to another section, make a subfolder there.",
       missing: 'a section',
     },
-    gridSize: { label: 'Grid size', help: 'How many of its pieces its thumbnail shows, newest first. Computers show at most 3 × 3, phones 2 × 2.' },
+    gridSize: { label: 'Grid size', help: 'How many of its pieces its thumbnail shows, starting from the first in its order. Computers show at most 3 × 3, phones 2 × 2.' },
+    // portfolio-order AC-6.
+    order: { label: 'Order of pieces', help: "The order its pieces show in when it's open, and which of them its thumbnail shows. Pieces without a date come last." },
   },
   writtenWork: {
     title: { label: 'Title', help: "The story's title.", missing: 'a title' },
@@ -233,7 +235,8 @@ export function listDetail(type: ItemType, item: Record<string, unknown>): strin
       if (typeof item.section !== 'string') return undefined;
       const size = typeof item.gridSize === 'number' ? item.gridSize : 2;
       const count = typeof item.count === 'number' ? item.count : 0;
-      return `${sectionTitle(item.section)} · ${size} × ${size} · ${count} ${count === 1 ? 'piece' : 'pieces'}`;
+      // portfolio-order AC-6: " · Oldest first" when it's set.
+      return `${sectionTitle(item.section)} · ${size} × ${size} · ${count} ${count === 1 ? 'piece' : 'pieces'}${item.order === 'oldest' ? ' · Oldest first' : ''}`;
     }
     case 'writtenWork':
       return typeof item.publishDate === 'string' && item.publishDate ? item.publishDate : undefined;
@@ -279,6 +282,12 @@ export const isItemType = (name: string): name is ItemType => (ITEM_TYPES as str
 /** AC-18 */
 export const GRID_SIZES: { title: string; value: number }[] = [2, 3, 4].map((n) => ({ title: `${n} × ${n}`, value: n }));
 
+/** portfolio-order AC-6: a subfolder's Order of pieces. */
+export const SUBFOLDER_ORDERS = [
+  { title: 'Newest first', value: 'newest' },
+  { title: 'Oldest first', value: 'oldest' },
+];
+
 /** A section's title, as the portfolio shows it. */
 export const sectionTitle = (value: string) => labelOf(PORTFOLIO_SECTIONS, value) ?? value;
 
@@ -288,7 +297,7 @@ const pieces = (count: number) => `${count} ${count === 1 ? 'piece' : 'pieces'}`
 export function gridHint(name: string, count: number, size: number): string {
   if (count <= 0) return `${name} has no pieces yet.`;
   const cells = size * size;
-  const shows = count > cells ? `the newest ${cells}` : count === 1 ? `it, with ${cells - 1} empty cells` : 'them all';
+  const shows = count > cells ? `the first ${cells}` : count === 1 ? `it, with ${cells - 1} empty cells` : 'them all';
   return `${name} has ${pieces(count)}: ${size} × ${size} shows ${shows}.`;
 }
 

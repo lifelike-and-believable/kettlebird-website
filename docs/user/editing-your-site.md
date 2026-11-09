@@ -42,11 +42,11 @@ Your series, newest first, each with its status. Choose a series to see its deta
 | **Subfolders** | Optional. At most one in each section this piece is in. Left as Loose, the piece shows on its own in that section. |
 | **Description** | Shown when someone opens the picture on your portfolio. |
 | **Tags** | Words shown under the picture when it's opened, like a character's name. Type one, then press Enter. |
-| **Date** | When you made it. The portfolio shows newest first; pieces without a date come last. |
+| **Date** | When you made it. The portfolio shows newest first, except in a subfolder set to oldest first; pieces without a date come last. |
 
 ## Subfolders
 
-A subfolder gathers pieces inside one section of your portfolio, such as one fandom in Fan Work or one client in Past Clients. On the Portfolio it shows as one thumbnail: a grid of its newest pieces with its name under it. Choosing it shows only its pieces, the section's tab reads like "Fan Work: Murderbot", and a pink **INDEX** tab goes back to the whole section. Each subfolder has its own web address, so people can share it.
+A subfolder gathers pieces inside one section of your portfolio, such as one fandom in Fan Work or one client in Past Clients. On the Portfolio it shows as one thumbnail: a grid of its first pieces with its name under it. Choosing it shows only its pieces, the section's tab reads like "Fan Work: Murderbot", and a pink **INDEX** tab goes back to the whole section. Each subfolder has its own web address, so people can share it.
 
 To make one:
 
@@ -58,11 +58,12 @@ To make one:
 | **Name** (required) | Shown under its thumbnail, and on the section's tab after the section's name when it's open ("Fan Work: Murderbot"). |
 | **Web address** (required) | Made from the name. Leave it as it is once people may have shared links to it. |
 | **Section** (required) | The Portfolio section it's in. Set when you make it; to move pieces to another section, make a subfolder there. |
-| **Grid size** | How many of its pieces its thumbnail shows, newest first: 2 × 2, 3 × 3 or 4 × 4. Under it, the editor says how many pieces it has. Computers show at most 3 × 3, phones 2 × 2. |
+| **Grid size** | How many of its pieces its thumbnail shows, starting from the first in its order: 2 × 2, 3 × 3 or 4 × 4. Under it, the editor says how many pieces it has. Computers show at most 3 × 3, phones 2 × 2. |
+| **Order of pieces** | **Newest first** or **Oldest first**: the order its pieces show in when it's open, and which of them its thumbnail shows. Oldest first suits pieces that tell a story from the start, like a comic's pages. Pieces without a date come last either way. It doesn't move the subfolder: it sits in its section where its newest piece would be. |
 
 To put a piece in a subfolder, open the piece and, under **Subfolders**, choose it beside its section. A piece can be in a subfolder in one section and loose in another: a Murderbot piece can sit in Fan Work's Murderbot and loose in Featured. If you untick a section, the piece leaves its subfolder there when you publish; the editor says so first.
 
-In the **Subfolders** list, each one reads like "Fan Work · 2 × 2 · 4 pieces". A subfolder with no published pieces doesn't show on the Portfolio.
+In the **Subfolders** list, each one reads like "Fan Work · 2 × 2 · 4 pieces", with " · Oldest first" when it's set. A subfolder with no published pieces doesn't show on the Portfolio.
 
 - Renaming a subfolder changes its name everywhere; its web address stays, so shared links keep working.
 - Deleting a subfolder asks first and says how many pieces it holds. They stay in the section, shown on their own, and its web address stops working.

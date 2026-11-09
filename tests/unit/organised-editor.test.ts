@@ -93,14 +93,17 @@ const EXPECTED: Record<ItemType, [string, string, string][]> = {
     ['subfolders', 'Subfolders', 'Optional. At most one in each section this piece is in. Left as Loose, the piece shows on its own in that section.'],
     ['description', 'Description', 'Shown when someone opens the picture on your portfolio.'],
     ['tags', 'Tags', "Words shown under the picture when it's opened, like a character's name. Type one, then press Enter."],
-    ['date', 'Date', 'When you made it. The portfolio shows newest first; pieces without a date come last.'],
+    // portfolio-order AC-7: a subfolder can be oldest first.
+    ['date', 'Date', 'When you made it. The portfolio shows newest first, except in a subfolder set to oldest first; pieces without a date come last.'],
   ],
   // portfolio-folders AC-18, AC-19.
   portfolioSubfolder: [
     ['name', 'Name (required)', "Shown under its thumbnail, and on the section's tab after the section's name when it's open (\"Fan Work: Murderbot\")."],
     ['slug', 'Web address (required)', 'Made from the name. Leave it as it is once people may have shared links to it.'],
     ['section', 'Section (required)', "The Portfolio section it's in. Set when you make it; to move pieces to another section, make a subfolder there."],
-    ['gridSize', 'Grid size', 'How many of its pieces its thumbnail shows, newest first. Computers show at most 3 × 3, phones 2 × 2.'],
+    // portfolio-order AC-6, AC-7: Grid size follows the subfolder's order, which follows it.
+    ['gridSize', 'Grid size', 'How many of its pieces its thumbnail shows, starting from the first in its order. Computers show at most 3 × 3, phones 2 × 2.'],
+    ['order', 'Order of pieces', "The order its pieces show in when it's open, and which of them its thumbnail shows. Pieces without a date come last."],
   ],
   // story-reader-editor AC-1 supersedes these: tests/unit/story-editor.test.ts checks every story field.
   writtenWork: [

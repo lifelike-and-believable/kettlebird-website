@@ -11,7 +11,7 @@ derived-from:
   - story-portfolio-full-screen-view-a-piece-full-screen: 19f9bca00ea0
   - story-portfolio-full-screen-move-between-pieces-full-screen: 496c24c72cca
   - requirements-portfolio#REQ-portfolio-4: 136ce70ca3a4
-  - design-portfolio-folders#how-it-works: 53821b64f6a4
+  - design-portfolio-folders#how-it-works: dda878ddf4ae
 ---
 
 # Looking at Star's art
@@ -27,9 +27,9 @@ derived-from:
 
 ## Open a subfolder
 
-Some folders gather pieces into subfolders, such as one fandom in Fan Work. A subfolder shows as one square of its newest pieces with its name under it.
+Some folders gather pieces into subfolders, such as one fandom in Fan Work. A subfolder shows as one square of its first pieces with its name under it.
 
-1. Choose a subfolder. The folder shows only its pieces, and its tab reads like "Fan Work: Murderbot".
+1. Choose a subfolder. The folder shows only its pieces, and its tab reads like "Fan Work: Murderbot". Its pieces run newest first, or from the oldest where Star has chosen that, so a story reads from its start.
 2. To go back to the whole folder, choose the pink **INDEX** tab beside it, or your browser's Back button.
 
 Each subfolder has its own address, so you can share it or bookmark it; it opens the Portfolio with that subfolder open. Only one subfolder is open at a time.
