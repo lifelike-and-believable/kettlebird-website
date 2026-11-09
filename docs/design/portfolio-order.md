@@ -1,6 +1,6 @@
 ---
 id: design-portfolio-order
-status: draft
+status: approved
 derived-from:
   - design-portfolio-folders#subfolders-mock-ups-2-3-5-and-12: 39a0e23d0971
   - design-portfolio-folders#what-star-does-in-the-editor-mock-ups-7-8-and-9: 9b3c6d5405c2
